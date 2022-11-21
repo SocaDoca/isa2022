@@ -1,4 +1,6 @@
-﻿namespace MedicApp.Models
+﻿using MedicApp.Utils;
+
+namespace MedicApp.Models
 {
     public class Account
     {
@@ -7,7 +9,8 @@
         public string Password { get; set; }
         public string Email { get; set; }
         public bool IsActive { get; set; }
-        public LoyaltyLevel LoyaltyLevel { get; set; }
+        public Role Role;
+        //public LoyaltyLevel LoyaltyLevel { get; set; }
    
         
         public DateTime CreatedAt { get; set; }
@@ -15,19 +18,11 @@
 
     }
 
-    public enum LoyaltyLevel
+    public enum Role
     {
-        Silver = 0,
-        Gold = 1,
-        Platinum = 2,
-        Diamond = 3,
-    }
-
-    public static class Role
-    {
-        public const string Administrator = "Administrator";
-        public const string User = "User";
-        public const string Guest = "Guest";
-        public const string Employee = "Employee";
+        Guest = 0,
+        User = 1,
+        AdminCenter = 2,
+        SysAdmin = 3
     }
 }

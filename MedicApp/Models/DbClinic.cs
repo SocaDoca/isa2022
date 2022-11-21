@@ -8,8 +8,8 @@
         public string? Description { get; set; }
         public double? Rating { get; set; }
         public int Capacity { get; set; }
-        public DateTime? WorkingFrom { get; set; }
-        public DateTime? WorkingTo { get; set; }
+        public DateTime? WorkingTimeFrom { get; set; }
+        public DateTime? WorkingTimeTo { get; set; }
         public bool IsDeleted { get; set; }
 
 
@@ -29,6 +29,15 @@
             public double? Rating { get; set; }
             public List<DbAppointment> Appointments { get; set; }
             public List<DbEmployee>Employees { get; set; }
+        }
+
+        public class ClinicListModel
+        {
+            public Guid Id { get; set; }
+            public string Name { get; set; }
+            public DbAddress Address { get; set; }
+            public int Capacity { get; set; }
+            public string Description { get; set; }
         }
     }
 }
