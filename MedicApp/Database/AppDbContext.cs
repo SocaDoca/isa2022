@@ -24,17 +24,18 @@ namespace MedicApp.Database
 
         #region DbSets 
 
-        public DbSet<DbClinic>Clinics { get; set; }
+        public DbSet<DbClinic> Clinics { get; set; }
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<DbCommunicationChannel> CommunicationChannels{ get; set; }
-
+        public DbSet<DbAddress> Addresses { get; set; }
+        public DbSet<DbWorkingHours> WorkingHours { get; set; }
+        public DbSet<DbSessions> Sessions { get; set; }
+        public DbSet<DbPatient> Patients { get; set; }
+        public DbSet<DbAppointment> Appointments { get; set; }
         public DbSet<DbEmployee> Employees { get; set; }
-        public DbSet<DbPersonInfo> PersonInfos{ get; set; }
-        public DbSet<DbSessions> Sessions{ get; set; }
 
         #region AssignmentTables
-        public DbSet<Clinic2Laboratory> Clinic2Laboratories { get; set; }
-        public DbSet<Clinic2CommunicationChannels> Clinic2CommunicationChannels { get; set; }
+        public DbSet<Clinic2Address> Clinic2Addresses { get; set; }
+        public DbSet<Clinic2WorkingHours> Clinic2WorkingHours { get; set; }
         #endregion
         #endregion
     }

@@ -19,11 +19,11 @@ namespace MedicApp.Controllers
 
         }
 
-        [HttpGet("/load-clinics")]
-        public async Task<ClinicListModel> LoadAllClinics()
-        {
-            return await _clinicIntegration.LoadAllClinics();
-        }
+        //[HttpGet("/load-clinics")]
+        //public async Task<ClinicListModel> LoadAllClinics()
+        //{
+        //    return await _clinicIntegration.LoadAllClinics();
+        //}
     }
 
 
