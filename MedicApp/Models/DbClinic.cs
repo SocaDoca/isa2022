@@ -17,7 +17,21 @@
         public DbClinic()
         {
             Id = Guid.NewGuid();
-            IsDeleted = false;
+            
+        }
+
+        public class ClinicSaveModel
+        {
+            public Guid Id { get; set;}
+            public string? Name { get; set; }   
+            public int Capacity { get; set; }
+            public AddressBasicInfo Address { get; set; }
+            public string Description { get; set; }
+            public double Rating { get;set; }
+            public string Email { get; set; }
+            public EmployeeBasicModel AdminCenter { get; set; }
+            public List<EmployeeBasicModel> Employees { get; set; }
+            public List<DbWorkingHours> WorkingHours { get; set; }
         }
     }
 }

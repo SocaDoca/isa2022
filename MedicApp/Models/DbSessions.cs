@@ -9,5 +9,10 @@
         public DateTime ValidTo { get; set; }
         public bool IsDeleted { get; set; }
 
+        public DbSessions()
+        {
+            Id = Guid.NewGuid();
+        }
+
     }
 }

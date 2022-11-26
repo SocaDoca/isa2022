@@ -16,6 +16,12 @@ namespace MedicApp.Models
         public DateTime CreatedAt { get; set; }
         public bool IsDeleted { get; set; }
 
+        public Account()
+        {
+            Id = Guid.NewGuid();
+            CreatedAt = DateTime.Now;
+        }
+
     }
 
     public enum Role

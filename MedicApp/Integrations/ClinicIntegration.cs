@@ -1,6 +1,7 @@
 ﻿using MedicApp.Controllers;
 using MedicApp.Database;
 using MedicApp.Models;
+using MedicApp.RelationshipTables;
 using static MedicApp.Models.DbClinic;
 
 namespace MedicApp.Integrations
@@ -17,52 +18,135 @@ namespace MedicApp.Integrations
             _appDbContext = appDbContext;
         }
 
+        public async Task<DbClinic> SaveClinic(ClinicSaveModel clincSaveModel)
+        {
+            var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => x.Id == clincSaveModel.Id && x.IsDeleted == false);
+            if (dbClinic == null)
+            {
+                dbClinic = new DbClinic();
+            }
+            dbClinic.Name = clincSaveModel.Name;
+            dbClinic.Description = clincSaveModel.Description;
+            dbClinic.Rating = clincSaveModel.Rating;
+            dbClinic.Email = clincSaveModel.Email;
 
-        //public async Task<List<ClinicListModel>> LoadAllClinics()
-        //{
-        //    var dbClinics = await _appDbContext.Clinics.Where(clinic => clinic.IsDeleted == false).ToList();
-        //    var returnList = new List<ClinicListModel>();
-        //    if(dbClinics.Any() && dbClinics is not null)
-        //    {
-        //        foreach(var clinic in dbClinics)
-        //        {
-        //            var model = new ClinicListModel()
-        //            {
-        //                Id = clinic.Id,
-        //                Capacity = clinic.Capacity,
-        //                Name = clinic.Name ?? string.Empty,
-        //                Description = clinic.Description ?? string.Empty,
-        //            };
-        //            returnList.Add(model);
-        //        }
-        //    }
-        //    return returnList;
-        //}
+            #region Address
+            var dbAddress = _appDbContext.Addresses.FirstOrDefault(x => x.Id == clincSaveModel.Address.Id && x.IsDeleted == false);
+            if (dbAddress == null)
+            {
+                dbAddress = new DbAddress()
+                {
+                    Address = clincSaveModel.Address.Address,
+                    City = clincSaveModel.Address.City,
+                };
 
-        //#region Sort
-        //private List<ClinicListModel> Sort(List<ClinicListModel> clinics , string sortBy , bool sortAscending)
-        //{
+                _appDbContext.Addresses.Add(dbAddress);
 
-        //    switch (sortBy)
-        //    {
-        //        case "name":
-        //            clinics = sortAscending ?
-        //                 clinics.OrderBy(x => x.Name.ToLower()).ToList() : clinics.OrderByDescending(x => x.Name.ToLower()).ToList();
-        //            break;
+                var clinic2Address = new Clinic2Address()
+                {
+                    Clinic_RefID = dbClinic.Id,
+                    Address_RefID = dbAddress.Id
+                };
+                _appDbContext.Clinic2Addresses.Add(clinic2Address);
 
-        //        case "rating":
-        //            clinics = sortAscending ?
-        //                  clinics.OrderBy(x => x.Name.ToLower()).ToList() : clinics.OrderByDescending(x => x.Name.ToLower()).ToList();
-        //            break;
+                _appDbContext.SaveChanges();
+            }
+            #endregion
 
-        //        case "address":
-        //            clinics = sortAscending ?
-        //                 clinics.OrderBy(x => x.Name.ToLower()).ToList() : clinics.OrderByDescending(x => x.Name.ToLower()).ToList();
-        //            break;
-        //    }
+            #region AdminCenter
+            var dbAdminCenter = _appDbContext.Employees.FirstOrDefault(x => x.Id == clincSaveModel.AdminCenter.Id && x.IsAdminCenter == true && x.IsDeleted == false);
+            if (dbAdminCenter == null)
+            {
+                dbAdminCenter = new DbEmployee()
+                {
+                    FistName = clincSaveModel.AdminCenter.FistName,
+                    LastName = clincSaveModel.AdminCenter.LastName,
+                    Email = clincSaveModel.AdminCenter.Email,
+                    Mobile = clincSaveModel.AdminCenter.Mobile,
+                    Birthday = clincSaveModel.AdminCenter.Birthday,
+                    IsAdminCenter = true,
+                };
+                _appDbContext.Employees.Add(dbAdminCenter);
 
-        //    return clinics; 
-        //}
-        //#endregion
+                var clinic2AdminCenter = new Clinic2AdminCenter()
+                {
+                    Clinic_RefID = dbClinic.Id,
+                    AdminCenter_RefID = dbAdminCenter.Id
+                };
+                _appDbContext.Clinic2AdminCenters.Add(clinic2AdminCenter);
+                _appDbContext.SaveChanges();
+            }
+
+            #endregion
+
+            #region Employees
+            if (clincSaveModel.Employees.Any())
+            {
+                List<DbEmployee> employees = _appDbContext.Employees.Where(x => x.IsDeleted == false).ToList();
+                foreach (var employee in clincSaveModel.Employees)
+                {
+                    if (!employees.Any(x => x.Id == employee.Id))
+                    {
+                        var dbModelEmployee = new DbEmployee()
+                        {
+                            FistName = employee.FistName,
+                            LastName = employee.FistName,
+                            Email = employee.FistName,
+                            Mobile = employee.FistName,
+                            IsAdminCenter = false
+                        };
+
+                        var clinic2Employee = new Clinic2Employee()
+                        {
+                            Clinic_RefID = dbClinic.Id,
+                            Employee_RefID = dbModelEmployee.Id
+                        };
+                        _appDbContext.Clinic2Employees.Add(clinic2Employee);
+                        _appDbContext.Employees.Add(dbModelEmployee);
+                        _appDbContext.SaveChanges();
+                    }
+                }
+            }
+            #endregion
+
+            #region Working Hours
+            if (clincSaveModel.WorkingHours.Any())
+            {
+                var dbWorkingHours = _appDbContext.WorkingHours.Where(x => x.IsDeleted == false).ToList();
+                foreach(var item in clincSaveModel.WorkingHours)
+                {
+                    if(!dbWorkingHours.Any(x =>x.Id == item.Id))
+                    {
+                        var model = new DbWorkingHours()
+                        {
+                            WorkDay = item.WorkDay,
+                            WorkDuration = item.WorkDuration,
+                            WorkStart = item.WorkStart,
+                        };
+
+                        var clinic2WorkingHours = new Clinic2WorkingHours()
+                        {
+                            Clinic_RefID = dbClinic.Id,
+                            WorkingHours_RefID = model.Id
+                        };
+
+                        _appDbContext.Clinic2WorkingHours.Add(clinic2WorkingHours);
+                        _appDbContext.WorkingHours.Add(model);
+                        _appDbContext.SaveChanges();
+                    }
+                }
+
+            }
+            #endregion;
+
+            return dbClinic;
+        }
+
+        public async Task<ClinicSaveModel> LoadClinicById(Guid id)
+        {
+           var dbClinic = 
+
+            return null;
+        }
     }
 }

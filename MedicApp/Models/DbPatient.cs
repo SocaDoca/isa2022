@@ -11,6 +11,11 @@ namespace MedicApp.Models
         public string JMBG { get; set; }
         public LoyaltyLevel LoyaltyLevel { get; set; }
         public bool IsDeleted { get; set; }
+
+        public DbPatient()
+        {
+            Id = Guid.NewGuid();
+        }
         
         //public Guid PersonInfo_RefID { get; set; }
         //public AppointmentHistory AppointmentHistory { get; set; }

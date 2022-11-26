@@ -36,6 +36,8 @@ namespace MedicApp.Database
         #region AssignmentTables
         public DbSet<Clinic2Address> Clinic2Addresses { get; set; }
         public DbSet<Clinic2WorkingHours> Clinic2WorkingHours { get; set; }
+        public DbSet<Clinic2AdminCenter> Clinic2AdminCenters { get; set; }
+        public DbSet<Clinic2Employee> Clinic2Employees { get; set; }
         #endregion
         #endregion
     }

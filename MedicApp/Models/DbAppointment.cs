@@ -11,5 +11,10 @@
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }
 
+        public DbAppointment()
+        {
+            Id = Guid.NewGuid();
+            CreatedAt = DateTime.Now;
+        }
     }
 }

@@ -2,16 +2,25 @@
 {
     public class DbWorkingHours
     {
-        public Guid Id { get; set; }    
+        public Guid Id { get; set; }
         public DateTime WorkStart { get; set; }
         public double WorkDuration { get; set; }
-        public bool IsMonday { get; set; }
-        public bool IsTuesday { get; set; }
-        public bool Wednesday { get; set; }
-        public bool IsThursday { get; set; }
-        public bool IsFriday { get; set; }
-        public bool IsSaturday { get; set; }
-        public bool IsSunday { get; set; }
-        
+        public WorkingDay WorkDay { get; set; }
+        public bool IsDeleted { get; set; } 
+
+        public DbWorkingHours()
+        {
+            Id = Guid.NewGuid();
+        }        
+    }
+    public enum WorkingDay
+    {
+        Monday = 1,
+        Tuesday = 2,
+        Wednesday = 3,
+        Thursday = 4,
+        Friday = 5,
+        Saturday = 6,
+        Sunday = 7,
     }
 }
