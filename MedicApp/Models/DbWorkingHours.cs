@@ -4,7 +4,7 @@
     {
         public Guid Id { get; set; }
         public DateTime WorkStart { get; set; }
-        public double WorkDuration { get; set; }
+        public int WorkDuration { get; set; }
         public WorkingDay WorkDay { get; set; }
         public bool IsDeleted { get; set; } 
 
@@ -12,6 +12,14 @@
         {
             Id = Guid.NewGuid();
         }        
+    }
+
+    public class WorkingHoursBasicInfo
+    {
+        public Guid Id { get; set; }
+        public DateTime WorkStart { get; set; }
+        public int Duration { get; set; }
+        public WorkingDay WorkingDay { get; set; }
     }
     public enum WorkingDay
     {

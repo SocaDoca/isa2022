@@ -9,15 +9,19 @@ namespace MedicApp.Models
         public string? LastName { get; set; }
         public DateTime Birthday { get; set; }
         public string JMBG { get; set; }
-        public LoyaltyLevel LoyaltyLevel { get; set; }
+        public Gender Gender { get; set; }
+        //public LoyaltyLevel LoyaltyLevel { get; set; }
         public bool IsDeleted { get; set; }
+        public string Job { get; set; }
 
         public DbPatient()
         {
             Id = Guid.NewGuid();
         }
         
-        //public Guid PersonInfo_RefID { get; set; }
-        //public AppointmentHistory AppointmentHistory { get; set; }
+        
+        
     }
+
+
 }

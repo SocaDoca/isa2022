@@ -1,5 +1,6 @@
 ﻿using MedicApp.Database;
 using MedicApp.Integrations;
+using MedicApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using static MedicApp.Models.DbClinic;
 
@@ -19,6 +20,17 @@ namespace MedicApp.Controllers
 
         }
 
+        [HttpGet("/save-clinic")]
+        public DbClinic SaveClinic(ClinicSaveModel clinic)
+        {
+            return _clinicIntegration.SaveClinic(clinic);
+        }
+
+        [HttpPost("/load-clinic-by-id")]
+        public ClinicSaveModel LoadClinicById(Guid id)
+        {
+            return _clinicIntegration.LoadClinicById(id);
+        }
         //[HttpGet("/load-clinics")]
         //public async Task<ClinicListModel> LoadAllClinics()
         //{

@@ -31,7 +31,17 @@
             public string Email { get; set; }
             public EmployeeBasicModel AdminCenter { get; set; }
             public List<EmployeeBasicModel> Employees { get; set; }
-            public List<DbWorkingHours> WorkingHours { get; set; }
+            public List<WorkingHoursBasicInfo> WorkingHours { get; set; }
+        }
+
+
+        public class LoadAllClinicsModel
+        {
+            public Guid Id { get; set;}
+            public string Name { get; set; }    
+            public string Address { get;set;}
+            public double Rating { get;set; }
+            public int Capacity { get; set; }
         }
     }
 }
