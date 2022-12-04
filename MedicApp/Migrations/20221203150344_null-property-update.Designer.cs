@@ -3,6 +3,7 @@ using System;
 using MedicApp.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedicApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221203150344_null-property-update")]
+    partial class nullpropertyupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,19 +114,21 @@ namespace MedicApp.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("Capacity")
+                    b.Property<int>("Capacity")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Mobile")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
@@ -144,13 +148,15 @@ namespace MedicApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("Birthday")
+                    b.Property<DateTime>("Birthday")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("FistName")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<bool>("IsAdminCenter")
@@ -160,18 +166,21 @@ namespace MedicApp.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("JMBG")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Mobile")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("StartWorkingHours")
+                    b.Property<DateTime>("StartWorkingHours")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<double?>("WorkDuration")
+                    b.Property<double>("WorkDuration")
                         .HasColumnType("double");
 
                     b.HasKey("Id");
@@ -185,22 +194,24 @@ namespace MedicApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("Birthday")
+                    b.Property<DateTime>("Birthday")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("Gender")
+                    b.Property<int>("Gender")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("JMBG")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Job")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("LastName")
@@ -250,13 +261,13 @@ namespace MedicApp.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int?>("WorkDay")
+                    b.Property<int>("WorkDay")
                         .HasColumnType("int");
 
-                    b.Property<int?>("WorkDuration")
+                    b.Property<int>("WorkDuration")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("WorkStart")
+                    b.Property<DateTime>("WorkStart")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");

@@ -8,7 +8,7 @@ namespace MedicApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ClinicController : AbastractController
+    public class ClinicController : AbstractController
     {
         private readonly AppDbContext _appDbContext;
         private readonly IClinicIntegration _clinicIntegration;
@@ -21,9 +21,9 @@ namespace MedicApp.Controllers
         }
 
         [HttpGet("/save-clinic")]
-        public DbClinic SaveClinic(ClinicSaveModel clinic)
+        public async Task<Guid> SaveClinic(ClinicSaveModel clinic)
         {
-            return _clinicIntegration.SaveClinic(clinic);
+            return await _clinicIntegration.SaveClinic(clinic);
         }
 
         [HttpPost("/load-clinic-by-id")]
