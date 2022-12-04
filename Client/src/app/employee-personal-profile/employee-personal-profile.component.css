@@ -1,0 +1,48 @@
+.center {
+  margin: 10px;
+  width: 50%;
+  padding: 10px;
+  background-color: darkolivegreen
+}
+
+h1, h2, h3 {
+  text-align: center;
+  color: white;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.comp1, .comp2, .comp3 {
+  border: 1px solid black;
+  flex-grow: 1;
+  margin-left: 30px;
+}
+
+.btn {
+  width: 300px;
+  height: 50px;
+  margin-left: 50px;
+  margin-top: 5px;
+}
+
+label {
+  display: block;
+  text-align: center;
+  line-height: 150%;
+  font-size: 1.5em;
+  color: white;
+}
+
+.topics {
+  height: 100%;
+  width: 100%;
+}
+
+.conn {
+  color: blue;
+}
