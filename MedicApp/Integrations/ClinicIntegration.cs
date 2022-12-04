@@ -8,10 +8,10 @@ namespace MedicApp.Integrations
 {
     public interface IClinicIntegration
     {
-        DbClinic SaveClinic(ClinicSaveModel model);
+        Task<Guid> SaveClinic(ClinicSaveModel model);
         ClinicSaveModel LoadClinicById(Guid id);
     }
-    public class ClinicIntegration
+    public class ClinicIntegration : IClinicIntegration
     {
         private readonly AppDbContext _appDbContext;
         public ClinicIntegration(AppDbContext appDbContext)
@@ -19,7 +19,7 @@ namespace MedicApp.Integrations
             _appDbContext = appDbContext;
         }
 
-        public DbClinic SaveClinic(ClinicSaveModel clincSaveModel)
+        public async Task<Guid> SaveClinic(ClinicSaveModel clincSaveModel)
         {
             var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => x.Id == clincSaveModel.Id && x.IsDeleted == false);
             if (dbClinic == null)
@@ -37,8 +37,10 @@ namespace MedicApp.Integrations
             {
                 dbAddress = new DbAddress()
                 {
+
                     Address = clincSaveModel.Address.Address,
                     City = clincSaveModel.Address.City,
+                    Country = clincSaveModel.Address.Country,
                 };
 
                 _appDbContext.Addresses.Add(dbAddress);
@@ -113,7 +115,7 @@ namespace MedicApp.Integrations
             #region Working Hours
             if (clincSaveModel.WorkingHours.Any())
             {
-                var dbWorkingHours = _appDbContext.WorkingHours.Where(x => x.IsDeleted == false).ToList();
+                var dbWorkingHours   = _appDbContext.WorkingHours.Where(x => x.IsDeleted == false).ToList();
                 foreach (var item in clincSaveModel.WorkingHours)
                 {
                     if (!dbWorkingHours.Any(x => x.Id == item.Id))
@@ -140,7 +142,7 @@ namespace MedicApp.Integrations
             }
             #endregion;
 
-            return dbClinic;
+            return dbClinic.Id;
         }
 
         public ClinicSaveModel LoadClinicById(Guid id)
@@ -176,7 +178,7 @@ namespace MedicApp.Integrations
                         Id = dbModel.Id,
                         FistName = dbModel.FistName,
                         LastName = dbModel.LastName,
-                        Birthday = dbModel.Birthday,
+                        Birthday = dbModel.Birthday.Value,
                         Email = dbModel.Email,
                         IsAdmin = dbModel.IsAdminCenter,
                         Mobile = dbModel.Mobile,
@@ -209,7 +211,7 @@ namespace MedicApp.Integrations
                     Id = adminCenter.Id,
                     FistName = adminCenter.FistName,
                     LastName = adminCenter.LastName,
-                    Birthday = adminCenter.Birthday,
+                    Birthday = adminCenter.Birthday.Value,
                     Email = adminCenter.Email,
                     IsAdmin = adminCenter.IsAdminCenter,
                     Mobile = adminCenter.Mobile,
@@ -228,9 +230,9 @@ namespace MedicApp.Integrations
                     clinicWorkingHours.Add(new WorkingHoursBasicInfo
                     {
                         Id = dbWorkingHours.Id,
-                        Duration = dbWorkingHours.WorkDuration,
-                        WorkingDay = dbWorkingHours.WorkDay,
-                        WorkStart = dbWorkingHours.WorkStart,
+                        Duration = dbWorkingHours.WorkDuration.Value,
+                        WorkingDay = dbWorkingHours.WorkDay.Value,
+                        WorkStart = dbWorkingHours.WorkStart.Value,
                     });
                 }
             }
@@ -251,7 +253,7 @@ namespace MedicApp.Integrations
                     Id = clinic.Id,
                     Name = clinic.Name,
                     Address = clinic.Address,
-                    Capacity = clinic.Capacity,
+                    Capacity = clinic.Capacity.Value,
                     Rating = clinic.Rating.Value
                 });
             }

@@ -7,9 +7,9 @@
         public string? Address { get; set; }
         public string? Description { get; set; }
         public double? Rating { get; set; }
-        public int Capacity { get; set; }
-        public string Email { get; set; }
-        public string Mobile { get; set; }
+        public int? Capacity { get; set; }
+        public string? Email { get; set; }
+        public string? Mobile { get; set; }
         public List<DbWorkingHours> WorkHours { get; set; }
         public bool IsDeleted { get; set; }
 
@@ -17,6 +17,8 @@
         public DbClinic()
         {
             Id = Guid.NewGuid();
+            IsDeleted = false;
+            WorkHours = new List<DbWorkingHours>();
             
         }
 
@@ -24,11 +26,11 @@
         {
             public Guid Id { get; set;}
             public string? Name { get; set; }   
-            public int Capacity { get; set; }
+            public int? Capacity { get; set; }
             public AddressBasicInfo Address { get; set; }
-            public string Description { get; set; }
-            public double Rating { get;set; }
-            public string Email { get; set; }
+            public string? Description { get; set; }
+            public double? Rating { get;set; }
+            public string? Email { get; set; }
             public EmployeeBasicModel AdminCenter { get; set; }
             public List<EmployeeBasicModel> Employees { get; set; }
             public List<WorkingHoursBasicInfo> WorkingHours { get; set; }

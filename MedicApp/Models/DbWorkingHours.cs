@@ -3,14 +3,15 @@
     public class DbWorkingHours
     {
         public Guid Id { get; set; }
-        public DateTime WorkStart { get; set; }
-        public int WorkDuration { get; set; }
-        public WorkingDay WorkDay { get; set; }
+        public DateTime? WorkStart { get; set; }
+        public int? WorkDuration { get; set; }
+        public WorkingDay? WorkDay { get; set; }
         public bool IsDeleted { get; set; } 
 
         public DbWorkingHours()
         {
             Id = Guid.NewGuid();
+            IsDeleted = false;
         }        
     }
 
