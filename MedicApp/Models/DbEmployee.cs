@@ -1,4 +1,6 @@
-﻿namespace MedicApp.Models
+﻿using MedicApp.Enums;
+
+namespace MedicApp.Models
 {
     public class DbEmployee
     {
@@ -12,6 +14,7 @@
         public string? Mobile { get; set; }
         public DateTime? StartWorkingHours { get; set; }
         public double? WorkDuration { get; set; }
+        public Role Role { get; set; }
         public bool IsDeleted { get; set; } 
 
         public DbEmployee()
