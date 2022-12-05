@@ -10,6 +10,10 @@ h1, h2, h3 {
   color: white;
 }
 
+.form-group input {
+  border-radius: 6px;
+}
+
 .container {
   display: flex;
   justify-content: space-between;
@@ -46,3 +50,4 @@ label {
 .conn {
   color: blue;
 }
+

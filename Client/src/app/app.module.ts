@@ -22,6 +22,8 @@ import { VisitationHistoryUserComponent } from './visitation-history-user/visita
 import { TransfusionQuestionnaireComponent } from './transfusion-questionnaire/transfusion-questionnaire.component';
 import { UserComplaintComponent } from './user-complaint/user-complaint.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 
 
@@ -45,6 +47,7 @@ import { CalendarComponent } from './calendar/calendar.component';
     TransfusionQuestionnaireComponent,
     UserComplaintComponent,
     CalendarComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -52,6 +55,7 @@ import { CalendarComponent } from './calendar/calendar.component';
     MatIconModule,
     NgImageSliderModule,
     GoogleMapsModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
