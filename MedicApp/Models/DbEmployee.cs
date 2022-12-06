@@ -7,12 +7,13 @@ namespace MedicApp.Models
         public Guid Id { get; set; }
         public string? FistName { get; set; }
         public string? LastName { get; set; }
-        public DateTime? Birthday { get; set; }
+        public DateTime Birthday { get; set; }
         public string? JMBG { get; set; }
         public bool IsAdminCenter { get; set; }
         public string? Email { get; set; }
         public string? Mobile { get; set; }
-        public DateTime? StartWorkingHours { get; set; }
+        public Gender Gender { get; set; }
+        public DateTime StartWorkingHours { get; set; }
         public double? WorkDuration { get; set; }
         public Role Role { get; set; }
         public bool IsDeleted { get; set; } 

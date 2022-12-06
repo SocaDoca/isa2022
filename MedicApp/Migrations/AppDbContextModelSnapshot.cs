@@ -51,7 +51,7 @@ namespace MedicApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Accounts", (string)null);
                 });
 
             modelBuilder.Entity("MedicApp.Models.DbAddress", b =>
@@ -74,7 +74,7 @@ namespace MedicApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("MedicApp.Models.DbAppointment", b =>
@@ -100,7 +100,7 @@ namespace MedicApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Appointments");
+                    b.ToTable("Appointments", (string)null);
                 });
 
             modelBuilder.Entity("MedicApp.Models.DbClinic", b =>
@@ -108,9 +108,6 @@ namespace MedicApp.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("longtext");
 
                     b.Property<int?>("Capacity")
                         .HasColumnType("int");
@@ -135,7 +132,7 @@ namespace MedicApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clinics");
+                    b.ToTable("Clinics", (string)null);
                 });
 
             modelBuilder.Entity("MedicApp.Models.DbEmployee", b =>
@@ -153,6 +150,9 @@ namespace MedicApp.Migrations
                     b.Property<string>("FistName")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsAdminCenter")
                         .HasColumnType("tinyint(1)");
 
@@ -168,6 +168,9 @@ namespace MedicApp.Migrations
                     b.Property<string>("Mobile")
                         .HasColumnType("longtext");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("StartWorkingHours")
                         .HasColumnType("datetime(6)");
 
@@ -176,7 +179,7 @@ namespace MedicApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("MedicApp.Models.DbPatient", b =>
@@ -208,7 +211,7 @@ namespace MedicApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patients", (string)null);
                 });
 
             modelBuilder.Entity("MedicApp.Models.DbSessions", b =>
@@ -235,7 +238,7 @@ namespace MedicApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sessions");
+                    b.ToTable("Sessions", (string)null);
                 });
 
             modelBuilder.Entity("MedicApp.Models.DbWorkingHours", b =>
@@ -263,7 +266,7 @@ namespace MedicApp.Migrations
 
                     b.HasIndex("DbClinicId");
 
-                    b.ToTable("WorkingHours");
+                    b.ToTable("WorkingHours", (string)null);
                 });
 
             modelBuilder.Entity("MedicApp.RelationshipTables.Clinic2Address", b =>
@@ -283,7 +286,7 @@ namespace MedicApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clinic2Addresses");
+                    b.ToTable("Clinic2Addresses", (string)null);
                 });
 
             modelBuilder.Entity("MedicApp.RelationshipTables.Clinic2AdminCenter", b =>
@@ -303,7 +306,7 @@ namespace MedicApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clinic2AdminCenters");
+                    b.ToTable("Clinic2AdminCenters", (string)null);
                 });
 
             modelBuilder.Entity("MedicApp.RelationshipTables.Clinic2Employee", b =>
@@ -323,7 +326,7 @@ namespace MedicApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clinic2Employees");
+                    b.ToTable("Clinic2Employees", (string)null);
                 });
 
             modelBuilder.Entity("MedicApp.RelationshipTables.Clinic2WorkingHours", b =>
@@ -343,7 +346,7 @@ namespace MedicApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clinic2WorkingHours");
+                    b.ToTable("Clinic2WorkingHours", (string)null);
                 });
 
             modelBuilder.Entity("MedicApp.Models.DbWorkingHours", b =>

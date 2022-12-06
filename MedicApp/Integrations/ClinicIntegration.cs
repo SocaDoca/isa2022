@@ -30,6 +30,7 @@ namespace MedicApp.Integrations
             dbClinic.Description = clincSaveModel.Description;
             dbClinic.Rating = clincSaveModel.Rating;
             dbClinic.Email = clincSaveModel.Email;
+            _appDbContext.Clinics.Add(dbClinic);
 
             #region Address
             var dbAddress = _appDbContext.Addresses.FirstOrDefault(x => x.Id == clincSaveModel.Address.Id && x.IsDeleted == false);
@@ -52,7 +53,7 @@ namespace MedicApp.Integrations
                 };
                 _appDbContext.Clinic2Addresses.Add(clinic2Address);
 
-                _appDbContext.SaveChanges();
+
             }
             #endregion
 
@@ -77,7 +78,7 @@ namespace MedicApp.Integrations
                     AdminCenter_RefID = dbAdminCenter.Id
                 };
                 _appDbContext.Clinic2AdminCenters.Add(clinic2AdminCenter);
-                _appDbContext.SaveChanges();
+                
             }
 
             #endregion
@@ -106,7 +107,7 @@ namespace MedicApp.Integrations
                         };
                         _appDbContext.Clinic2Employees.Add(clinic2Employee);
                         _appDbContext.Employees.Add(dbModelEmployee);
-                        _appDbContext.SaveChanges();
+                        
                     }
                 }
             }
@@ -141,13 +142,13 @@ namespace MedicApp.Integrations
 
             }
             #endregion;
-
+            _appDbContext.SaveChanges();
             return dbClinic.Id;
         }
 
         public ClinicSaveModel LoadClinicById(Guid id)
         {
-            var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => x.Id == id && x.IsDeleted == false);
+            var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => x.Id == id && !x.IsDeleted);
             if (dbClinic == null)
             {
                 return null;
@@ -173,12 +174,13 @@ namespace MedicApp.Integrations
                 var dbModel = dbEmployees.FirstOrDefault(x => x.Id == item);
                 if (dbModel != null)
                 {
+
                     employeeList.Add(new EmployeeBasicModel()
                     {
                         Id = dbModel.Id,
                         FistName = dbModel.FistName,
                         LastName = dbModel.LastName,
-                        Birthday = dbModel.Birthday.Value,
+                        Birthday = dbModel.Birthday,
                         Email = dbModel.Email,
                         IsAdmin = dbModel.IsAdminCenter,
                         Mobile = dbModel.Mobile,
@@ -211,7 +213,7 @@ namespace MedicApp.Integrations
                     Id = adminCenter.Id,
                     FistName = adminCenter.FistName,
                     LastName = adminCenter.LastName,
-                    Birthday = adminCenter.Birthday.Value,
+                    Birthday = adminCenter.Birthday,
                     Email = adminCenter.Email,
                     IsAdmin = adminCenter.IsAdminCenter,
                     Mobile = adminCenter.Mobile,
@@ -252,7 +254,6 @@ namespace MedicApp.Integrations
                 {
                     Id = clinic.Id,
                     Name = clinic.Name,
-                    Address = clinic.Address,
                     Capacity = clinic.Capacity.Value,
                     Rating = clinic.Rating.Value
                 });
