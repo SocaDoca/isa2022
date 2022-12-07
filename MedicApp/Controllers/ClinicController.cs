@@ -20,14 +20,14 @@ namespace MedicApp.Controllers
 
         }
 
-        [HttpGet("/save-clinic")]
+        [HttpGet("save-clinic")]
         public async Task<Guid> SaveClinic(ClinicSaveModel clinic)
         {
             return await _clinicIntegration.SaveClinic(clinic);
         }
 
-        [HttpPost("/load-clinic-by-id")]
-        public ClinicSaveModel LoadClinicById(Guid id)
+        [HttpPost("load-clinic-by-id")]
+        public ClinicSaveModel LoadClinicById([FromBody]Guid id)
         {
             return _clinicIntegration.LoadClinicById(id);
         }
