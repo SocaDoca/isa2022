@@ -12,22 +12,18 @@
   margin: 5px;
 }
 
-.form-search input {
-  margin-top: 10px;
-  margin-bottom:10px;
-  border-radius: 6px;
-  border: 1px solid rgb(116, 116, 116);
-  font-size: 19px;
+  .form-search input {
+    margin-top: 10px;
+    height: 40px;
+    border-radius: 6px;
+    border: 1px solid rgb(116, 116, 116);
+    font-size: 19px;
+    width: 300px;
+    margin-left: 10px;
+  }
 
-  margin-left: 10px;
-}
-
-h3{
-    color:white;
-}
-
-label{
-    color: white;
+h3 {
+  color: white;
 }
 
 .btn {
