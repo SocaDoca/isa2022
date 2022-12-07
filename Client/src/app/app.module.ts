@@ -24,6 +24,7 @@ import { UserComplaintComponent } from './user-complaint/user-complaint.componen
 import { CalendarComponent } from './calendar/calendar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserScheduledAppointmentsComponent } from './user-scheduled-appointments/user-scheduled-appointments.component';
+import { SearchUserComponent } from './search-user/search-user.component';
 
 
 
@@ -49,6 +50,7 @@ import { UserScheduledAppointmentsComponent } from './user-scheduled-appointment
     UserComplaintComponent,
     CalendarComponent,
     UserScheduledAppointmentsComponent,
+    SearchUserComponent,
 
   ],
   imports: [

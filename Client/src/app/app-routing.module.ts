@@ -17,6 +17,7 @@ import { VisitationHistoryUserComponent } from './visitation-history-user/visita
 import { TransfusionQuestionnaireComponent } from './transfusion-questionnaire/transfusion-questionnaire.component';
 import { UserComplaintComponent } from './user-complaint/user-complaint.component';
 import { UserScheduledAppointmentsComponent } from './user-scheduled-appointments/user-scheduled-appointments.component';
+import { SearchUserComponent } from './search-user/search-user.component';
 
 
 const routes: Routes = [
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'profileEmployee/:id/addTerm', component: AdminAddTermComponent },
   { path: 'profileEmployee/:id/updateEmployeeProfile', component: EmployeePersonalProfileUpdateComponent },
   { path: 'profile/:id/updateProfile', component: UserPersonalProfileUpdateComponent },
+  { path: 'profileEmployee/:id/searchUser', component: SearchUserComponent },
   { path: 'search', component: SearchClinicComponent },
 ];
 
