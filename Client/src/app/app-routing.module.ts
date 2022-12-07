@@ -16,6 +16,7 @@ import { AdminAddTermComponent } from './admin-add-term/admin-add-term.component
 import { VisitationHistoryUserComponent } from './visitation-history-user/visitation-history-user.component';
 import { TransfusionQuestionnaireComponent } from './transfusion-questionnaire/transfusion-questionnaire.component';
 import { UserComplaintComponent } from './user-complaint/user-complaint.component';
+import { UserScheduledAppointmentsComponent } from './user-scheduled-appointments/user-scheduled-appointments.component';
 
 
 const routes: Routes = [
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'profile/:id/viewClinic', component: ViewClinicComponent },
   { path: 'profile/:id/questionnaire', component: TransfusionQuestionnaireComponent },
   { path: 'profile/:id/complaint', component: UserComplaintComponent },
+  { path: 'profile/:id/scheduledAppointments', component: UserScheduledAppointmentsComponent },
   { path: 'profileEmployee/:id', component: EmployeePersonalProfileComponent },
   { path: 'profileEmployee/:id/viewClinic', component: ViewClinicComponent },
   { path: 'profileEmployee/:id/addTerm', component: AdminAddTermComponent },

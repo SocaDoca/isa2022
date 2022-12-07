@@ -23,6 +23,7 @@ import { TransfusionQuestionnaireComponent } from './transfusion-questionnaire/t
 import { UserComplaintComponent } from './user-complaint/user-complaint.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { UserScheduledAppointmentsComponent } from './user-scheduled-appointments/user-scheduled-appointments.component';
 
 
 
@@ -47,6 +48,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     TransfusionQuestionnaireComponent,
     UserComplaintComponent,
     CalendarComponent,
+    UserScheduledAppointmentsComponent,
 
   ],
   imports: [
