@@ -2,6 +2,7 @@
 using MedicApp.Database;
 using MedicApp.Models;
 using MedicApp.RelationshipTables;
+using Microsoft.AspNetCore.Authorization;
 using static MedicApp.Models.DbClinic;
 
 namespace MedicApp.Integrations
@@ -11,6 +12,7 @@ namespace MedicApp.Integrations
         Task<Guid> SaveClinic(ClinicSaveModel model);
         ClinicSaveModel LoadClinicById(Guid id);
     }
+    
     public class ClinicIntegration : IClinicIntegration
     {
         private readonly AppDbContext _appDbContext;
@@ -136,10 +138,9 @@ namespace MedicApp.Integrations
 
                         _appDbContext.Clinic2WorkingHours.Add(clinic2WorkingHours);
                         _appDbContext.WorkingHours.Add(model);
-                        _appDbContext.SaveChanges();
+                        
                     }
                 }
-
             }
             #endregion;
             _appDbContext.SaveChanges();

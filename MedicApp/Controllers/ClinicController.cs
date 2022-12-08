@@ -1,14 +1,16 @@
 ﻿using MedicApp.Database;
 using MedicApp.Integrations;
 using MedicApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static MedicApp.Models.DbClinic;
 
 namespace MedicApp.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
-    public class ClinicController : AbstractController
+    public class ClinicController : Controller
     {
         private readonly AppDbContext _appDbContext;
         private readonly IClinicIntegration _clinicIntegration;
@@ -19,7 +21,7 @@ namespace MedicApp.Controllers
             _clinicIntegration = clinicIntegration;
 
         }
-
+        [Authorize(Roles = "AdminCenter")]
         [HttpGet("save-clinic")]
         public async Task<Guid> SaveClinic(ClinicSaveModel clinic)
         {
