@@ -13,7 +13,7 @@ namespace MedicApp.Models
         public string? Email { get; set; }
         public string? Mobile { get; set; }
         public Gender Gender { get; set; }
-        public DateTime StartWorkingHours { get; set; }
+        public Guid WorkingHours_RefId { get; set; }
         public double? WorkDuration { get; set; }
         public Role Role { get; set; }
         public bool IsDeleted { get; set; } 
@@ -23,6 +23,7 @@ namespace MedicApp.Models
             Id = Guid.NewGuid();
             JMBG = String.Empty;
             IsAdminCenter = false;
+            
         }
          
     }

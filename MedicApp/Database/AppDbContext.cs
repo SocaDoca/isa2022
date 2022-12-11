@@ -1,12 +1,14 @@
 ﻿using MedicApp.Models;
 using MedicApp.RelationshipTables;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using MySql.EntityFrameworkCore.Extensions;
 
 namespace MedicApp.Database
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<IdentityUser>
     {
         protected readonly IConfiguration Configuration;
 
