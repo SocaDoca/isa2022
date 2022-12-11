@@ -2,6 +2,7 @@
 using MedicApp.Integrations;
 using MedicApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using static MedicApp.Models.DbClinic;
 
@@ -14,9 +15,10 @@ namespace MedicApp.Controllers
     {
         private readonly AppDbContext _appDbContext;
         private readonly IClinicIntegration _clinicIntegration;
-        public ClinicController(AppDbContext appDbContext, IClinicIntegration clinicIntegration)
+        private readonly UserManager<IdentityUser> _userManager;
+        public ClinicController(AppDbContext appDbContext, IClinicIntegration clinicIntegration, UserManager<IdentityUser> userManager)
         {
-
+            _userManager = userManager;
             _appDbContext = appDbContext;
             _clinicIntegration = clinicIntegration;
 
@@ -29,7 +31,7 @@ namespace MedicApp.Controllers
         }
 
         [HttpPost("load-clinic-by-id")]
-        public ClinicSaveModel LoadClinicById([FromBody]Guid id)
+        public ClinicSaveModel LoadClinicById([FromBody] Guid id)
         {
             return _clinicIntegration.LoadClinicById(id);
         }
