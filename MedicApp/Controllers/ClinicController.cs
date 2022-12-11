@@ -23,7 +23,7 @@ namespace MedicApp.Controllers
             _clinicIntegration = clinicIntegration;
 
         }
-        [Authorize(Roles = "AdminCenter")]
+        [Authorize(Roles = "CenterAdmin")]
         [HttpGet("save-clinic")]
         public async Task<Guid> SaveClinic(ClinicSaveModel clinic)
         {
@@ -31,10 +31,12 @@ namespace MedicApp.Controllers
         }
 
         [HttpPost("load-clinic-by-id")]
-        public ClinicSaveModel LoadClinicById([FromBody] Guid id)
+        public async Task<ClinicSaveModel> LoadClinicById([FromBody] Guid id)
         {
-            return _clinicIntegration.LoadClinicById(id);
+            return await _clinicIntegration.LoadClinicById(id);
         }
+
+        public void Assing
         //[HttpGet("/load-clinics")]
         //public async Task<ClinicListModel> LoadAllClinics()
         //{

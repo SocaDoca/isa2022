@@ -1,4 +1,5 @@
 ﻿using MedicApp.Enums;
+using MedicApp.Utils;
 
 namespace MedicApp.Models
 {
@@ -15,7 +16,7 @@ namespace MedicApp.Models
         public Gender Gender { get; set; }
         public Guid WorkingHours_RefId { get; set; }
         public double? WorkDuration { get; set; }
-        public Role Role { get; set; }
+        public Roles Role { get; set; }
         public bool IsDeleted { get; set; } 
 
         public DbEmployee()

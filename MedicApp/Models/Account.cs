@@ -1,5 +1,5 @@
 ﻿using MedicApp.Enums;
-
+using MedicApp.Utils;
 
 namespace MedicApp.Models
 {
@@ -10,7 +10,7 @@ namespace MedicApp.Models
         public string Password { get; set; }
         public string Email { get; set; }
         public bool IsActive { get; set; }
-        public Role Role { get; set; }   
+        public Roles Role { get; set; }   
         public DateTime CreatedAt { get; set; }
         public bool IsDeleted { get; set; }
 
