@@ -12,6 +12,4 @@
             IsDeleted = false;
         }
     }
-
-
 }

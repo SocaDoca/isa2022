@@ -11,7 +11,7 @@ namespace MedicApp.Controllers
     [ApiController]
     [Authorize]
     [Route("[controller]")]
-    public class ClinicController : Controller
+    public class ClinicController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
         private readonly IClinicIntegration _clinicIntegration;
@@ -23,7 +23,7 @@ namespace MedicApp.Controllers
             _clinicIntegration = clinicIntegration;
 
         }
-        [Authorize(Roles = "CenterAdmin")]
+        
         [HttpGet("save-clinic")]
         public async Task<Guid> SaveClinic(ClinicSaveModel clinic)
         {
@@ -33,15 +33,10 @@ namespace MedicApp.Controllers
         [HttpPost("load-clinic-by-id")]
         public async Task<ClinicSaveModel> LoadClinicById([FromBody] Guid id)
         {
-            return await _clinicIntegration.LoadClinicById(id);
+            return _clinicIntegration.LoadClinicById(id);
         }
 
-        public void Assing
-        //[HttpGet("/load-clinics")]
-        //public async Task<ClinicListModel> LoadAllClinics()
-        //{
-        //    return await _clinicIntegration.LoadAllClinics();
-        //}
+       
     }
 
 

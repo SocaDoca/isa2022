@@ -143,7 +143,8 @@ namespace MedicApp.Integrations
                 }
             }
             #endregion;
-            _appDbContext.SaveChanges();
+
+             _appDbContext.SaveChanges();
             return dbClinic.Id;
         }
 

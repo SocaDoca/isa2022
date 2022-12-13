@@ -1,9 +1,8 @@
 using MedicApp.Database;
 using MedicApp.Integrations;
 using MedicApp.Middlewares;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,23 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
                                             options.UseMySQL(connectionString));
 
 builder.Services.AddTransient<IClinicIntegration, ClinicIntegration>();
-builder.Services.AddAuthorization(options =>
-{
-    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-});
 
-builder.Services.AddIdentityCore<IdentityUser>(options => {
-    options.SignIn.RequireConfirmedAccount = false;
-    options.User.RequireUniqueEmail = true;
-    options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 6;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
-})
-    .AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -47,6 +30,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
