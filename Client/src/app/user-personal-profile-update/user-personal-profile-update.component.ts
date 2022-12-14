@@ -6,5 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./user-personal-profile-update.component.css']
 })
 export class UserPersonalProfileUpdateComponent {
+show: boolean = false;
 
+constructor() {
+}
+
+// click event function toggle
+password() {
+    this.show = !this.show;
+}
 }
