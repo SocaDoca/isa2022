@@ -1,15 +1,14 @@
 .center {
-  padding: 20px;
+  margin: 10px;
+  width: 50%;
+  padding: 10px;
   background-color: darkolivegreen;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  margin-left: 450px;
-  width: 400px;
+  color: white;
 }
 
 h1, h2, h3 {
   text-align: center;
-  color: white;
+  font-style: normal;
 }
 
 .container {
@@ -17,15 +16,60 @@ h1, h2, h3 {
   justify-content: space-between;
   margin-top: 20px;
   margin-bottom: 30px;
+  font-style: normal;
 }
 
 .comp1, .comp2, .comp3 {
   border: 1px solid black;
   flex-grow: 1;
   margin-left: 30px;
+  font-style: normal;
+}
+
+.btn {
+  width: 200px;
+  height: 50px;
+}
+
+.btn1 {
+  width: 200px;
+  height: 50px;
+  margin-left: 100px;
+  background-color: deepskyblue;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.input1 {
+  margin-left: 100px;
+}
+
+
+
+label {
+  display: block;
+  text-align: center;
+  line-height: 150%;
+  font-size: 1.5em;
+  font-style: normal;
+}
+
+.topics {
+  height: 100%;
+  width: 100%;
+}
+
+.form-group textarea {
+  margin-top: 10px;
+  height: 40px;
+  border-radius: 6px;
+  font-size: 19px;
+  width: 300px;
 }
 
 .form-group input {
+  margin-left: 50px;
   margin-top: 10px;
   height: 40px;
   border-radius: 6px;
@@ -44,47 +88,11 @@ h1, h2, h3 {
   width: 300px;
 }
 
-.form-group textarea {
+.modal-content {
+  padding: 20px;
+  background-color: #AEC2D5;
   margin-top: 10px;
-  height: 40px;
-  border-radius: 6px;
-  font-size: 19px;
-  width: 300px;
-}
-
-label {
-  font-size: 20px;
-  color: white;
-  text-align:center;
-}
-
-h1,
-h2,
-p {
-  text-align: center;
-  color: white;
-}
-
-.btn {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  width: 300px;
-}
-
-h5 {
-  margin-bottom: 0px;
-}
-
-.error {
-  color: red;
-}
-
-.alert alert-success {
-  width: 50px;
-}
-
-.role {
-  margin: auto;
-  width: 300px;
-  text-align: left;
+  margin-bottom: 20px;
+  margin-left: 690px;
+  width: 400px;
 }
