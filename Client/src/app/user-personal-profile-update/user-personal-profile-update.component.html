@@ -14,71 +14,74 @@
 
 
       <br><br>
-      <label style="font-weight: bold;">Name</label>
+      <label style="font-weight: bold;">First name</label>
       <div class="form-group">
         <input id="name" name="name" type="text" class="from-control">
       </div>
-      <label style="font-weight: bold;">Surname</label>
+      <label style="font-weight: bold;">Last name</label>
       <div class="form-group">
         <input id="surname" name="surname" type="text" class="from-control">
       </div>
-      <label style="font-weight: bold;">Username</label>
+      <label style="font-weight: bold;">Gender</label>
       <div class="form-group">
-        <input id="type" name="type" type="text" class="from-control">
+        <input id="gender" name="gender" type="text" class="from-control">
       </div>
 
 
       <h3> PROFILE</h3>
 
     </div><br>
-          <div class="center" id="comp2">
-            <br><br>
-            <label style="font-weight: bold;">JMBG</label>
-            <div class="form-group">
-              <input id="username" name="username" type="text" class="from-control">
-            </div>
+    <div class="center" id="comp2">
+      <br><br>
+      <label style="font-weight: bold;">JMBG</label>
+      <div class="form-group">
+        <input id="jmbg" name="jmbg" type="text" class="from-control">
+      </div>
 
-            <label style="font-weight: bold;">Gender</label>
-            <div class="form-group">
-              <input id="email" name="email" type="text" class="from-control">
-            </div>
 
-            <label style="font-weight: bold;">Mobile</label>
-            <div class="form-group">
-              <input id="mobile" name="mobile" type="text" class="from-control">
-            </div>
+      <label style="font-weight: bold;">Mobile</label>
+      <div class="form-group">
+        <input id="mobile" name="mobile" type="text" class="from-control">
+      </div>
 
-            <label style="font-weight: bold;">Address</label>
-            <div class="form-group">
-              <input id="address" name="address" type="text" class="from-control">
-            </div>
+      <label style="font-weight: bold;">Address</label>
+      <div class="form-group">
+        <input id="address" name="address" type="text" class="from-control">
+      </div>
 
-            <label style="font-weight: bold;">Profession</label>
-            <div class="form-group">
-              <input id="gender" name="gender" type="text" class="from-control">
-            </div>
+      <label style="font-weight: bold;">Profession</label>
+      <div class="form-group">
+        <input id="proff" name="proff" type="text" class="from-control">
+      </div>
 
-            <br><br><br><button class="btn1" style="color:white;"> Save changes</button>
-          </div>
+      <br><br><br><button class="btn1" style="color:white;"> Save changes</button>
+    </div>
     <div class="center" id="comp3">
       <br><br>
 
       <label style="font-weight: bold;">Education</label>
       <div class="form-group">
-        <input  id="education" name="education" type="text" class="from-control">
+        <input id="education" name="education" type="text" class="from-control">
       </div>
 
 
-      <label style="font-weight: bold;">Additional information</label>
+      <label style="font-weight: bold;">Username</label>
       <div class="form-group">
-        <input  id="additionInformation" name="additionInformation" type="text" class="from-control">
+        <input id="username" name="username" type="text" class="from-control">
       </div>
 
 
-      <label style="font-weight: bold;">Ex companies</label>
+      <label style="font-weight: bold;">Password</label>
       <div class="form-group">
-        <input class="from-control"  type="text">
+        <input class="from-control" [type]="show ? 'text' : 'password'" />
+        &nbsp;
+        <mat-icon (click)="password()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
       </div>
+
+
+
+
+
     </div>
   </div>
 

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ContentChild} from '@angular/core';
+
 
 @Component({
   selector: 'app-employee-personal-profile-update',
@@ -6,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./employee-personal-profile-update.component.css']
 })
 export class EmployeePersonalProfileUpdateComponent {
+show: boolean = false;
+
+constructor() {
+}
+
+// click event function toggle
+password() {
+    this.show = !this.show;
+}
 
 }

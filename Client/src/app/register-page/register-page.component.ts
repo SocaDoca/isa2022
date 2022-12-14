@@ -6,5 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./register-page.component.css']
 })
 export class RegisterPageComponent {
+show: boolean = false;
 
+constructor() {
+}
+
+// click event function toggle
+password() {
+    this.show = !this.show;
+}
 }

@@ -68,23 +68,25 @@
             <br>
           <button class="btn1" style="color:white;">Register </button>
           </div>
-    <div class="center" id="comp3">
-      <br><br>
+          <div class="center" id="comp3">
+            <br><br>
 
-      <label style="font-weight: bold;">Username</label>
-      <div class="form-group">
-        <input id="username" name="username" type="text" class="from-control">
-      </div>
+            <label style="font-weight: bold;">Username</label>
+            <div class="form-group">
+              <input id="username" name="username" type="text" class="from-control">
+            </div>
 
 
-      <label style="font-weight: bold;">Password</label>
-      <div class="form-group">
-        <input id="pass" name="pass" type="text" class="from-control" placeholder="password">
-      </div>
-      <div class="form-group">
-        <input id="pass1" name="pass1" class="from-control" type="text" placeholder="confirm password">
-      </div>
-    </div>
+            <label style="font-weight: bold;">Password</label>
+            <div class="form-group">
+              <input class="from-control" [type]="show ? 'text' : 'password'" placeholder="password"/>
+              &nbsp;
+              <mat-icon (click)="password()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </div>
+            <div class="form-group">
+              <input id="pass1" name="pass1" class="from-control" type="text" placeholder="confirm password">
+            </div>
+          </div>
   </div>
 
 
