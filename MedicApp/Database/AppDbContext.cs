@@ -44,9 +44,11 @@ namespace MedicApp.Database
         public DbSet<Clinic2WorkingHours> Clinic2WorkingHours { get; set; }
         public DbSet<Clinic2AdminCenter> Clinic2AdminCenters { get; set; }
         public DbSet<Clinic2Employee> Clinic2Employees { get; set; }
+        public DbSet<Account2Clinic>Account2Clinics { get; set; }
+        public DbSet<Account2Patient> Account2Patients { get; set; }
         #endregion
         #endregion
-             
+
 
         public class MysqlEntityFrameworkDesignTimeServices : IDesignTimeServices
         {

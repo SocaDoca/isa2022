@@ -10,16 +10,17 @@ namespace MedicApp.Models
         public DateTime? Birthday { get; set; }
         public string? JMBG { get; set; }
         public Gender? Gender { get; set; }
-       
-        public bool IsDeleted { get; set; }
         public string? Job { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool IsConfirmed { get; set; }
 
         public DbPatient()
         {
             Id = Guid.NewGuid();
             IsDeleted = false;
-        }          
-        
+            IsConfirmed = false;
+        }
+
     }
 
 

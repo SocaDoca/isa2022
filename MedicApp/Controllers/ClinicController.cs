@@ -36,6 +36,8 @@ namespace MedicApp.Controllers
             return _clinicIntegration.LoadClinicById(id);
         }
 
+
+
        
     }
 
