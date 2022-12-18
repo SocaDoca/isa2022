@@ -24,9 +24,17 @@
         <input id="lastName" name="lastName" type="text" class="from-control">
       </div>
 
-      <label style="font-weight: bold;">Email address</label>
-      <div class="form-group">
-        <input id="email" name="email" type="email" class="from-control" placeholder="dodati reggex">
+      <label style="font-weight: bold;">Role</label>
+      <div class="form-search">
+
+        <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="name">
+        <label class="form-check-label" for="inlineRadio2">patient</label>
+
+        <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="address">
+        <label class="form-check-label" for="inlineRadio2">staff</label>
+
+        <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="address">
+        <label class="form-check-label" for="inlineRadio2">admin</label>
       </div>
 
 
@@ -61,25 +69,22 @@
               <input id="proff" name="proff" type="text" class="from-control">
             </div>
 
-            <label style="font-weight: bold;">Role</label>
-            <div class="form-group">
-              <input id="role" name="role" type="text" class="from-control" placeholder="admin/staff or patient">
-            </div>
+
             <br>
           <button class="btn1" style="color:white;">Register </button>
           </div>
           <div class="center" id="comp3">
             <br><br>
 
+
             <label style="font-weight: bold;">Username</label>
             <div class="form-group">
-              <input id="username" name="username" type="text" class="from-control">
+              <input id="email" name="email" type="email" class="from-control" placeholder="dodati reggex">
             </div>
-
 
             <label style="font-weight: bold;">Password</label>
             <div class="form-group">
-              <input class="from-control" [type]="show ? 'text' : 'password'" placeholder="password"/>
+              <input class="from-control" [type]="show ? 'text' : 'password'" placeholder="password" />
               &nbsp;
               <mat-icon (click)="password()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
             </div>
