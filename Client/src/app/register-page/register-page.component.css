@@ -96,3 +96,12 @@ label {
   margin-left: 690px;
   width: 400px;
 }
+
+.form-search {
+    text-align:center;
+    font-size: 14px;
+}
+
+  .form-search input {
+    margin-left: 10px;
+  }
