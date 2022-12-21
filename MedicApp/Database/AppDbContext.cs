@@ -13,9 +13,8 @@ namespace MedicApp.Database
     public class AppDbContext : DbContext
     {
         protected readonly IConfiguration Configuration;
-
      
-        public AppDbContext(IConfiguration configuration) 
+        public AppDbContext(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -27,28 +26,7 @@ namespace MedicApp.Database
             options.UseMySQL(connectionString);
         }
 
-        #region DbSets 
-
-        public DbSet<DbClinic> Clinics { get; set; }
-        public DbSet<DbAccount> Accounts { get; set; }
-        public DbSet<DbAddress> Addresses { get; set; }
-        public DbSet<DbWorkingHours> WorkingHours { get; set; }
-        public DbSet<DbSessions> Sessions { get; set; }
-        public DbSet<DbPatient> Patients { get; set; }
-        public DbSet<DbAppointment> Appointments { get; set; }
-        public DbSet<DbEmployee> Employees { get; set; }
-      
-
-        #region AssignmentTables
-        public DbSet<Clinic2Address> Clinic2Addresses { get; set; }
-        public DbSet<Clinic2WorkingHours> Clinic2WorkingHours { get; set; }
-        public DbSet<Clinic2AdminCenter> Clinic2AdminCenters { get; set; }
-        public DbSet<Clinic2Employee> Clinic2Employees { get; set; }
-        public DbSet<Account2Clinic>Account2Clinics { get; set; }
-        public DbSet<Account2Patient> Account2Patients { get; set; }
-        #endregion
-        #endregion
-
+        public DbSet<User>Users { get; set; }
 
         public class MysqlEntityFrameworkDesignTimeServices : IDesignTimeServices
         {
