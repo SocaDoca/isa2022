@@ -1,25 +1,25 @@
 ﻿namespace MedicApp.Enums
 {
-    public enum LoyaltyLevel
+    public enum LoyaltyLevels
     {
-        Silver = 1,
-        Gold = 2,
-        Platinum = 3,
-        Diamond = 4,
+        Silver,
+        Gold,
+        Platinum,
+        Diamond,
     }
 
-    public enum Gender
+    public enum Genders
     {
-        Male = 1,
-        Female = 2,
-        Other = 3,
+        Male,
+        Female,
+        Other,
     }
 
-    public enum Role
+    public enum Roles
     {
-        Guest = 0,
-        User = 1,
-        AdminCenter = 2,
-        SysAdmin = 3
+        Guest,
+        User,
+        Employee,
+        SysAdmin
     }
 }

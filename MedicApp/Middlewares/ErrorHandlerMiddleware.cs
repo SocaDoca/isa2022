@@ -1,13 +1,21 @@
-﻿using Microsoft.Extensions.Options;
+<<<<<<< HEAD
+using MedicApp.Utils;
+using Microsoft.Extensions.Options;
 using System.Globalization;
 using System.Net;
 using System.Text;
+=======
+﻿using MedicApp.Utils;
+using System.Net;
+using System.Text.Json;
+>>>>>>> AccountRegistration
 
 namespace MedicApp.Middlewares
 {
     public class ErrorHandlerMiddleware
     {
         private readonly RequestDelegate _next;
+
         public ErrorHandlerMiddleware(RequestDelegate next)
         {
             _next = next;
@@ -26,9 +34,11 @@ namespace MedicApp.Middlewares
 
                 switch (error)
                 {
-                    case UnauthorizedException e:
+
+                    case AppException e:
                         // custom application error
-                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        response.StatusCode = (int)HttpStatusCode.BadRequest;
+
                         break;
                     case KeyNotFoundException e:
                         // not found error
@@ -40,23 +50,11 @@ namespace MedicApp.Middlewares
                         break;
                 }
 
-                var result = System.Text.Json.JsonSerializer.Serialize(error?.Message);
+
+                var result = JsonSerializer.Serialize(new { message = error?.Message });
+
                 await response.WriteAsync(result);
             }
-        }
-    }
-
-
-    public class UnauthorizedException : Exception
-    {
-        public UnauthorizedException() : base() { }
-
-        public UnauthorizedException(string message) : base(message) { }
-
-        public UnauthorizedException(string message, params object[] args)
-            : base(string.Format(CultureInfo.CurrentCulture, message, args))
-        {
-
         }
     }
 }
