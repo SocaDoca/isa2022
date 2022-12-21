@@ -1,14 +1,7 @@
-<<<<<<< HEAD
+
 using MedicApp.Utils;
-using Microsoft.Extensions.Options;
-using System.Globalization;
-using System.Net;
-using System.Text;
-=======
-﻿using MedicApp.Utils;
 using System.Net;
 using System.Text.Json;
->>>>>>> AccountRegistration
 
 namespace MedicApp.Middlewares
 {
