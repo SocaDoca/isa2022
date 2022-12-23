@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
-import {Employee} from "../app/model/DbEmployee";
+import {User} from "../app/model/User";
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +10,15 @@ import {Employee} from "../app/model/DbEmployee";
 export class AuthenticationService {
   private access_token = null;
 
-  constructor(private http : HttpClient) { }
-  /*authenticate(korisnicko: string, password: string) {
+  constructor(private http: HttpClient) { }
+  authenticate(username: string, password: string) {
 
     return this.http
-      .post<any>("http://localhost:8082/auth/login", { korisnicko, password })
+      .post<any>("http://localhost:5017/Users/authenticate", { username, password })
       .pipe(
         map((userData) => {
           sessionStorage.setItem("currentUser", JSON.stringify(userData))
-          sessionStorage.setItem("username", korisnicko);
+          sessionStorage.setItem("username", username);
           let tokenStr = "Bearer " + userData.token.accessToken;
           this.access_token = userData.token.accessToken;
           sessionStorage.setItem("token", tokenStr);
@@ -28,7 +28,7 @@ export class AuthenticationService {
           return userData;
         })
       );
-  }*/
+  }
   tokenIsPresent() {
     return this.access_token != undefined && this.access_token != null;
   }

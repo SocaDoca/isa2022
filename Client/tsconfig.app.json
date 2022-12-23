@@ -9,7 +9,9 @@
     "src/main.ts",
     "src/polyfills.ts"
   ],
-  "include": [
-    "src/**/*.d.ts"
+
+  "exclude": [
+    "node_modules",
+    "../node_modules/your_package/**/*.d.ts"
   ]
 }
