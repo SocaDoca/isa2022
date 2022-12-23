@@ -13,18 +13,18 @@
     <div class="modal-dialog text-center" >
       <div class="modal-content">
         <h2 class="text-center">Welcome !</h2>
-        <form id="loginform" name="loginform" >
+        <form id="loginform" name="loginform">
           <div class="form-group">
-            <input id="korisnickoIme" name="korisnickoIme" type="text" class="from-control"
+            <input [(ngModel)]="username" id="korisnickoIme" name="korisnickoIme" type="text" class="from-control"
                    placeholder="username">
           </div>
           <div class="form-group">
-            <input id="lozinka" name="lozinka" type="password" class="from-control"
+            <input [(ngModel)]="password" id="lozinka" name="lozinka" type="password" class="from-control"
                    placeholder="password">
           </div>
+          <p>{{ error }}</p>
 
-
-          <button type="submit" class="btn btn-primary">Log in</button>
+          <button type="submit" (click)="login()" class="btn btn-primary">Log in</button>
         </form>
       </div>
     </div>
