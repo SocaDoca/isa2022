@@ -10,10 +10,9 @@ export interface UserRequestInterface {
   address?: string;
   country?: string;
   city?: string;
-//  mobile?: string;
-//  job?: string;
+  job?: string;
   role?: string;
- // gender?: Genders;
+  gender?: Genders;
   password: string;
 }
 
@@ -26,10 +25,9 @@ export class UserRequest implements UserRequestInterface {
   address?: string;
   country?: string;
   city?: string;
- // mobile?: string;
- // job?: string;
+  job?: string;
   role?: string;
- // gender?: Genders;
+  gender?: Genders;
   password: string;
 
   constructor(obj: UserRequestInterface) {
@@ -42,9 +40,8 @@ export class UserRequest implements UserRequestInterface {
     this.country = obj.country;
     this.city = obj.city;
     this.role = obj.role;
-  //  this.gender = obj.gender;
-  //  this.mobile = obj.mobile;
-  //  this.job = obj.job;
+    this.gender = obj.gender;
+    this.job = obj.job;
     this.password = obj.password;
 
   }

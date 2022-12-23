@@ -17,9 +17,9 @@ import { UserService } from "../../service/user.service";
 })
 export class RegisterPageComponent implements OnInit{
   show: boolean = false;
-  which_role: string | undefined;
-  which_gender: string | undefined;
-  //confirmedPassword: string;
+  which_gender = Genders;
+  
+  confirmedPassword: string | undefined;
 
 
   constructor(private registrationService: RegistrationService, private router: Router, private http: HttpClient, private userService: UserService) {
@@ -32,18 +32,20 @@ export class RegisterPageComponent implements OnInit{
     firstName: '',
     lastName: '',
     username: '',
-    email:'da',
+    email:'',
     address: '',
-   // gender: Genders.Female,
-    role: Role.Guest,
+    gender:0,
+    role: '',
+    job: '',
+    password: '',
     country: '',
-    city: '',
-    //job: '',
-    password: '43',
+    city:''
 
   });
   choices_for_gender = ['Female', 'Male', 'Other'];
-  choices_for_roles = ['Guest', 'user', 'employee'];
+  choices_for_roles = ['Guest', 'Employee', 'Admin'];
+  error: string | undefined;
+  which_role = Role;
 
   registrationRequest: UserRequest = new UserRequest({
     //id: 0,
@@ -53,9 +55,10 @@ export class RegisterPageComponent implements OnInit{
     lastName: this.newUser.lastName,
     address: this.newUser.address,
     email: this.newUser.email,
-   // job: this.newUser.job,
+    job: this.newUser.job,
     role: this.newUser.role,
-    //gender: this.newUser.gender,
+    gender: this.newUser.gender,
+   // moblie: this.newUser.moblie
     country: this.newUser.country,
     city: this.newUser.city
 
@@ -66,34 +69,31 @@ export class RegisterPageComponent implements OnInit{
 
     //if (this.newUser.password == this.confirmedPassword) {
     //this.registrationRequest.id = this.newUser.id;
-    this.registrationRequest.username = this.newUser.username;
-    this.registrationRequest.password = this.newUser.password;
-    this.registrationRequest.firstName = this.newUser.firstName;
-    this.registrationRequest.lastName = this.newUser.lastName;
-    //this.registrationRequest.gender = this.newUser.gender;
-    this.registrationRequest.email = this.newUser.email;
-    this.registrationRequest.address = this.newUser.address;
-    //  this.registrationRequest.job = this.newUser.job;
-    this.registrationRequest.country = this.newUser.country;
-    this.registrationRequest.city = this.newUser.city;
-    if (this.which_role == "Guest") {
-      this.registrationRequest.role == this.newUser.role;
-    }
-    /*if (this.which_gender == "Female") {
+      this.registrationRequest.username = this.newUser.username;
+      this.registrationRequest.password = this.newUser.password;
+      this.registrationRequest.firstName = this.newUser.firstName;
+      this.registrationRequest.lastName = this.newUser.lastName;
+      this.registrationRequest.gender = this.newUser.gender;
+      this.registrationRequest.email = this.newUser.email;
+      this.registrationRequest.address = this.newUser.address;
+      this.registrationRequest.job = this.newUser.job;
+    //this.registrationRequest.moblie = this.newUser.moblie;
+      this.registrationRequest.country = this.newUser.country;
+      this.registrationRequest.city = this.newUser.city;
+    /*if (this.which_gender == Genders.Female) {
       this.registrationRequest.gender == this.newUser.gender;
     }*/
 
-    this.registrationService.registerUser(this.registrationRequest).subscribe(res => {
-      this.newUser = res;
-      //this.registrationService.registerUser(res).subscribe();
-      //this.userService.saveUserProfile(res).subscribe();
-      //this.profileService.createProfile(res).subscribe();
+      this.registrationService.registerUser(this.registrationRequest).subscribe(res => {
+        this.newUser = res
       //this.userService.saveUser(res).subscribe(
       //);
         
      } );
       this.router.navigate(['sign-in'])
-
+    /*} else {
+      this.error = "passwords are not equal";
+    }*/
 
     }
 
