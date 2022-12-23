@@ -17,24 +17,20 @@
       <br><br>
       <label style="font-weight: bold;">First name</label>
       <div class="form-group">
-        <input id="firstName" name="firstName" type="text" class="from-control">
+        <input id="firstName" name="firstName" type="text" class="from-control"  [(ngModel)]="newUser.firstName">
       </div>
       <label style="font-weight: bold;">Last name</label>
       <div class="form-group">
-        <input id="lastName" name="lastName" type="text" class="from-control">
+        <input id="lastName" name="lastName" type="text" class="from-control"  [(ngModel)]="newUser.lastName">
       </div>
 
       <label style="font-weight: bold;">Role</label>
-      <div class="form-search">
+      <div id="which_role" *ngFor="let choice of choices_for_roles" class="form-search">
 
-        <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="name">
-        <label class="form-check-label" for="inlineRadio2">patient</label>
+        <input class="form-check-input" type="radio" name="inlineRadioOptions3" id="inlineRadio3" value="{{choice}}" [(ngModel)]="which_role">
+        <label class="form-check-label" for="inlineRadio3">{{choice}}</label>
 
-        <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="address">
-        <label class="form-check-label" for="inlineRadio2">staff</label>
 
-        <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="address">
-        <label class="form-check-label" for="inlineRadio2">admin</label>
       </div>
 
 
@@ -46,32 +42,30 @@
 
             <label style="font-weight: bold;">JMBG</label>
             <div class="form-group">
-              <input id="username" name="username" type="text" class="from-control">
+              <input id="username" name="username" type="text" class="from-control" [(ngModel)]="newUser.username">
             </div>
 
-            <label style="font-weight: bold;">Gender</label>
-            <div class="form-group">
-              <input id="email" name="email" type="text" class="from-control">
-            </div>
 
-            <label style="font-weight: bold;">Mobile</label>
+
+            <label style="font-weight: bold;">City</label>
             <div class="form-group">
-              <input id="mobile" name="mobile" type="text" class="from-control">
+              <input id="city" name="city" type="text" class="from-control" [(ngModel)]="newUser.city">
             </div>
 
             <label style="font-weight: bold;">Address</label>
             <div class="form-group">
-              <input id="address" name="address" type="text" class="from-control">
+              <input id="address" name="address" type="text" class="from-control" [(ngModel)]="newUser.address">
             </div>
 
-            <label style="font-weight: bold;">Profession</label>
+            <label style="font-weight: bold;">Country</label>
             <div class="form-group">
-              <input id="proff" name="proff" type="text" class="from-control">
+              <input id="country" name="country" type="text" class="from-control" [(ngModel)]="newUser.country">
             </div>
 
 
             <br>
-          <button class="btn1" style="color:white;">Register </button>
+
+            <button class="btn" (click)="addNewUser()" style="color:white;">Register </button>
           </div>
           <div class="center" id="comp3">
             <br><br>
@@ -79,12 +73,12 @@
 
             <label style="font-weight: bold;">Username</label>
             <div class="form-group">
-              <input id="email" name="email" type="email" class="from-control" placeholder="dodati reggex">
+              <input id="email" name="email" type="text" class="from-control" placeholder="dodati reggex">
             </div>
 
             <label style="font-weight: bold;">Password</label>
             <div class="form-group">
-              <input class="from-control" [type]="show ? 'text' : 'password'" placeholder="password" />
+              <input id="password" name="password" type="text" class="from-control" [type]="show ? 'text' : 'password'" placeholder="password" />
               &nbsp;
               <mat-icon (click)="password()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
             </div>
@@ -95,5 +89,4 @@
   </div>
 
 
-</body>
-</html>
+

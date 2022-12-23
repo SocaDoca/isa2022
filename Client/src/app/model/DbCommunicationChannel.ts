@@ -1,11 +1,11 @@
-import { CommunicationMessageType } from "./CommunicationMessageType";
+import { CommunicationMessType } from "./../model/CommunicationMessType";
 
 export interface DbCommunicationChannelInterface {
   id: number;
   value: string;
   isDeleted: boolean;
   createdAt: Date;
-  type: CommunicationMessageType;
+  type: CommunicationMessType;
 }
 
 export class DbCommunicationChannel implements DbCommunicationChannelInterface {
@@ -13,7 +13,7 @@ export class DbCommunicationChannel implements DbCommunicationChannelInterface {
   value: string;
   isDeleted: boolean;
   createdAt: Date;
-  type: CommunicationMessageType;
+  type: CommunicationMessType;
 
   constructor(obj: DbCommunicationChannelInterface) {
     this.id = obj.id;
