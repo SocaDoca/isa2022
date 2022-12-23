@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MedicApp.Migrations
 {
-    public partial class init : Migration
+    public partial class ChangePassword : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,7 +23,7 @@ namespace MedicApp.Migrations
                     Gender = table.Column<int>(type: "int", nullable: false),
                     City = table.Column<string>(type: "longtext", nullable: false),
                     Roles = table.Column<int>(type: "int", nullable: false),
-                    PasswordHash = table.Column<string>(type: "longtext", nullable: false)
+                    Password = table.Column<string>(type: "longtext", nullable: false)
                 },
                 constraints: table =>
                 {

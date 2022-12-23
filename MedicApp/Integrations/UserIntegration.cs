@@ -2,8 +2,11 @@
 using MedicApp.Enums;
 using MedicApp.Models;
 using MedicApp.Utils;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-
+using static MedicApp.Controllers.AuthController;
+using System.Security.Claims;
 
 namespace MedicApp.Integrations
 {
@@ -19,7 +22,7 @@ namespace MedicApp.Integrations
 
     public class UserIntegration : IUserIntegration
     {
-        private AppDbContext _context;
+        private AppDbContext _appDbContext;
         private IJwtUtils _jwtUtils;
 
 
@@ -29,35 +32,54 @@ namespace MedicApp.Integrations
 
             )
         {
-            _context = context;
+            _appDbContext = context;
             _jwtUtils = jwtUtils;
 
 
         }
 
-        public AuthenticateResponse Authenticate(AuthenticateRequest model)
-        {
-            var user = _context.Users.SingleOrDefault(x => x.Username == model.Username);
-
-            // validate
-            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
-                throw new AppException("Username or password is incorrect");
-
-            // authentication successful
-            var response = new AuthenticateResponse
+        public async Task<ClaimsIdentity> SignInAsync(SignInRequest signInRequest)
+        {           
+            var user = _appDbContext.Users.FirstOrDefault(x => x.Email == signInRequest.Username &&
+                                       x.Password == signInRequest.Password);
+            if (user is null)
             {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Username = model.Username,
+                var error = new AppException();
+                throw new Exception();
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim(type: ClaimTypes.Email, value: signInRequest.Username),
+                new Claim(type: ClaimTypes.Name,value: String.Format("{0} {1}", user.FirstName, user.LastName))
             };
-            response.Token = _jwtUtils.GenerateToken(user);
-            return response;
+
+            return new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         }
+
+        //public AuthenticateResponse Authenticate(AuthenticateRequest model)
+        //{
+        //    var user = _context.Users.SingleOrDefault(x => x.Username == model.Username);
+
+        //    // validate
+        //    if (user == null || (model.Password != user.Password))
+        //        throw new AppException("Username or password is incorrect");
+
+        //    // authentication successful
+        //    var response = new AuthenticateResponse
+        //    {
+        //        Id = user.Id,
+        //        FirstName = user.FirstName,
+        //        LastName = user.LastName,
+        //        Username = model.Username,
+        //    };
+        //    response.Token = _jwtUtils.GenerateToken(user);
+        //    return response;
+        //}
 
         public IEnumerable<User> GetAll()
         {
-            return _context.Users;
+            return _appDbContext.Users;
         }
 
         public User GetById(Guid id)
@@ -68,7 +90,7 @@ namespace MedicApp.Integrations
         public void Register(RegisterRequest model)
         {
             // validate
-            if (_context.Users.Any(x => x.Username == model.Username))
+            if (_appDbContext.Users.Any(x => x.Username == model.Username))
                 throw new AppException("Username '" + model.Username + "' is already taken");
 
             // map model to new user object
@@ -86,11 +108,11 @@ namespace MedicApp.Integrations
             };
 
             // hash password
-            newUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
-
+            //newUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+            newUser.Password = model.Password;
             // save user
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
+            _appDbContext.Users.Add(newUser);
+            _appDbContext.SaveChanges();
         }
 
         public void Update(Guid id, UpdateRequest model)
@@ -98,12 +120,12 @@ namespace MedicApp.Integrations
             var user = getUser(id);
 
             // validate
-            if (model.Username != user.Username && _context.Users.Any(x => x.Username == model.Username))
+            if (model.Username != user.Username && _appDbContext.Users.Any(x => x.Username == model.Username))
                 throw new AppException("Username '" + model.Username + "' is already taken");
 
             // hash password if it was entered
             if (!string.IsNullOrEmpty(model.Password))
-                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
+                user.Password = model.Password;
 
             // copy model to user and save
             user.Username = model.Username;
@@ -112,22 +134,22 @@ namespace MedicApp.Integrations
             user.Email = model.Email;
             user.Roles = model.Role;
 
-            _context.Users.Update(user);
-            _context.SaveChanges();
+            _appDbContext.Users.Update(user);
+            _appDbContext.SaveChanges();
         }
 
         public void Delete(Guid id)
         {
             var user = getUser(id);
-            _context.Users.Remove(user);
-            _context.SaveChanges();
+            _appDbContext.Users.Remove(user);
+            _appDbContext.SaveChanges();
         }
 
         // helper methods
 
         private User getUser(Guid id)
         {
-            var user = _context.Users.Find(id);
+            var user = _appDbContext.Users.Find(id);
             if (user == null) throw new KeyNotFoundException("User not found");
             return user;
         }

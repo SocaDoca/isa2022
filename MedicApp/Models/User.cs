@@ -18,8 +18,8 @@ namespace MedicApp.Models
         public Roles Roles { get; set; }
 
 
-        [JsonIgnore]
-        public string PasswordHash { get; set; }
+        
+        public string Password { get; set; }
 
         public User()
         {

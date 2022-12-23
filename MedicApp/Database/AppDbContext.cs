@@ -13,7 +13,11 @@ namespace MedicApp.Database
     public class AppDbContext : DbContext
     {
         protected readonly IConfiguration Configuration;
-     
+
+        public AppDbContext()
+        {
+
+        }
         public AppDbContext(IConfiguration configuration)
         {
             Configuration = configuration;

@@ -2,6 +2,7 @@ using MedicApp.Database;
 using MedicApp.Integrations;
 using MedicApp.Middlewares;
 using MedicApp.Utils;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 
@@ -23,7 +24,15 @@ builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSet
 builder.Services.AddTransient<IJwtUtils, JwtUtils>();
 builder.Services.AddTransient<IUserIntegration, UserIntegration>();
 
-
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Events.OnRedirectToLogin = (context) =>
+        {
+            context.Response.StatusCode = 401;
+            return Task.CompletedTask;
+        };
+    });
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -36,7 +45,7 @@ if (app.Environment.IsDevelopment())
    
 
     // custom jwt auth middleware
-    app.UseMiddleware<JwtMiddleware>();
+    //app.UseMiddleware<JwtMiddleware>();
 }
 
 app.UseRouting();
@@ -46,6 +55,7 @@ app.UseCors(x => x
        .AllowAnyHeader());
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

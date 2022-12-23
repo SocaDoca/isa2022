@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedicApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221221233339_init")]
-    partial class init
+    [Migration("20221223152606_ChangePassword")]
+    partial class ChangePassword
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,7 +54,7 @@ namespace MedicApp.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
 
