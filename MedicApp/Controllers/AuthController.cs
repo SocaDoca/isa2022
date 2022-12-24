@@ -6,6 +6,7 @@ using System.Security.Claims;
 using MedicApp.Database;
 using MedicApp.Enums;
 using Microsoft.AspNetCore.Authorization;
+using MedicApp.Integrations;
 
 namespace MedicApp.Controllers
 {
@@ -13,25 +14,18 @@ namespace MedicApp.Controllers
     [Route("/api/auth")]
     public class AuthController : ControllerBase
     {
-       
-        
-        [HttpPost("signin")]
-        public async Task<IActionResult> SignInAsync([FromBody] SignInRequest signInRequest)
-        {
-            
-            var user = appDbContext.Users.FirstOrDefault(x => x.Username == signInRequest.Username &&
-                                                x.Password == signInRequest.Password);
-            if (user is null)
-            {
-                return BadRequest(new Response(false, "Invalid credentials."));
-            }
+        private IUserIntegration _userIntegration;
 
-            var claims = new List<Claim>
-            {
-                new Claim(type: ClaimTypes.Email, value: signInRequest.Username),
-                new Claim(type: ClaimTypes.Name,value: String.Format("{0} {1}", user.FirstName, user.LastName))
-            };
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        public AuthController(
+           IUserIntegration userIntegration)
+        {
+            _userIntegration = userIntegration;
+        }
+
+       [HttpPost("signin")]
+        public async Task<IActionResult> SignInAsync([FromBody] SignInRequest signInRequest)
+        {       
+            var identity = await _userIntegration.SignInAsync(signInRequest);
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
@@ -45,7 +39,6 @@ namespace MedicApp.Controllers
 
             return Ok(new Response(true, "Signed in successfully"));
         }
-
 
         [Authorize]
         [HttpGet("user")]
@@ -64,12 +57,9 @@ namespace MedicApp.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
-
         public record SignInRequest(string Username, string Password);
         public record Response(bool IsSuccess, string Message);
-        public record UserClaim(string Type, string Value);
-
-        
+        public record UserClaim(string Type, string Value);        
  
     }
 }

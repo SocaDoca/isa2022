@@ -28,13 +28,13 @@ namespace MedicApp.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [AllowAnonymous]
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate(AuthenticateRequest model)
-        {
-            var response = _userService.Authenticate(model);
-            return Ok(response);
-        }
+        //[AllowAnonymous]
+        //[HttpPost("authenticate")]
+        //public IActionResult Authenticate(AuthenticateRequest model)
+        //{
+        //    var response = _userService.Authenticate(model);
+        //    return Ok(response);
+        //}
 
         [AllowAnonymous]
         [HttpPost("register")]

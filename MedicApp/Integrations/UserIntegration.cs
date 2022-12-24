@@ -12,12 +12,13 @@ namespace MedicApp.Integrations
 {
     public interface IUserIntegration
     {
-        AuthenticateResponse Authenticate(AuthenticateRequest model);
+        //AuthenticateResponse Authenticate(AuthenticateRequest model);
         IEnumerable<User> GetAll();
         User GetById(Guid id);
         void Register(RegisterRequest model);
         void Update(Guid id, UpdateRequest model);
         void Delete(Guid id);
+        Task<ClaimsIdentity> SignInAsync(SignInRequest signInRequest);
     }
 
     public class UserIntegration : IUserIntegration
@@ -26,21 +27,15 @@ namespace MedicApp.Integrations
         private IJwtUtils _jwtUtils;
 
 
-        public UserIntegration(
-            AppDbContext context,
-            IJwtUtils jwtUtils
-
-            )
+        public UserIntegration(AppDbContext context, IJwtUtils jwtUtils)
         {
             _appDbContext = context;
             _jwtUtils = jwtUtils;
-
-
         }
 
         public async Task<ClaimsIdentity> SignInAsync(SignInRequest signInRequest)
-        {           
-            var user = _appDbContext.Users.FirstOrDefault(x => x.Email == signInRequest.Username &&
+        {
+            var user = _appDbContext.Users.FirstOrDefault(x => x.Username == signInRequest.Username &&
                                        x.Password == signInRequest.Password);
             if (user is null)
             {
@@ -145,7 +140,7 @@ namespace MedicApp.Integrations
             _appDbContext.SaveChanges();
         }
 
-        // helper methods
+        
 
         private User getUser(Guid id)
         {
