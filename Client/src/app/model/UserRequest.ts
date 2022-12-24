@@ -3,7 +3,7 @@ import { Genders } from './Genders';
 
 export interface UserRequestInterface {
   id?: number;
-  firstName: string;
+  firstName?: string;
   lastName: string;
   username?: string;
   email?: string;
@@ -18,7 +18,7 @@ export interface UserRequestInterface {
 
 export class UserRequest implements UserRequestInterface {
   id?: number;
-  firstName: string;
+  firstName?: string;
   lastName: string;
   username?: string;
   email?: string;

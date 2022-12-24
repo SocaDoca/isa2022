@@ -7,6 +7,8 @@ import { Genders } from './../model/Genders';
 import { Role } from './../model/Role';
 import { UserRequest } from './../model/UserRequest';
 import { UserService } from "../../service/user.service";
+import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { ReactiveFormsModule } from "@angular/forms";
 
 
 
@@ -16,17 +18,62 @@ import { UserService } from "../../service/user.service";
   styleUrls: ['./register-page.component.css']
 })
 export class RegisterPageComponent implements OnInit{
+  form: FormGroup = new FormGroup({
+    firstName: new FormControl(''),
+    //username: new FormControl(''),
+    //email: new FormControl(''),
+    //password: new FormControl(''),
+    //confirmPassword: new FormControl(''),
+    //acceptTerms: new FormControl(false),
+  });
+  submitted: boolean = false;
   show: boolean = false;
   which_gender = Genders;
-  
+
   confirmedPassword: string | undefined;
 
+  constructor(private registrationService: RegistrationService, private router: Router, private http: HttpClient, private userService: UserService, private formBuilder: FormBuilder) {
 
-  constructor(private registrationService: RegistrationService, private router: Router, private http: HttpClient, private userService: UserService) {
 }
-    ngOnInit(): void {
+  ngOnInit(): void {
+    this.form = this.formBuilder.group(
+      {
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
+        email: ['', [Validators.required,  Validators.email]],
+        username: ['', Validators.required],
+        password: ['', Validators.required],
+        country: ['', Validators.required],
+        city: ['', Validators.required],
+        address: ['', Validators.required],
+        job: ['', Validators.required],
+
+      });
         
   }
+
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.form.controls;
+  }
+
+  onSubmit(): void {
+    this.submitted = true;
+
+    if (this.form.invalid) {
+      return;
+    } else {
+      this.addNewUser();
+    }
+
+    console.log(JSON.stringify(this.form.value, null, 2));
+  }
+
+  onReset(): void {
+    this.submitted = false;
+    this.form.reset();
+  }
+
   newUser: User = new User({
     //id: 0,
     firstName: '',
@@ -46,6 +93,7 @@ export class RegisterPageComponent implements OnInit{
   choices_for_roles = ['Guest', 'Employee', 'Admin'];
   error: string | undefined;
   which_role = Role;
+  firstName : string | undefined;
 
   registrationRequest: UserRequest = new UserRequest({
     //id: 0,
@@ -69,6 +117,11 @@ export class RegisterPageComponent implements OnInit{
 
     //if (this.newUser.password == this.confirmedPassword) {
     //this.registrationRequest.id = this.newUser.id;
+    if (this.form.invalid) {
+      return;
+    } else {
+
+
       this.registrationRequest.username = this.newUser.username;
       this.registrationRequest.password = this.newUser.password;
       this.registrationRequest.firstName = this.newUser.firstName;
@@ -77,25 +130,25 @@ export class RegisterPageComponent implements OnInit{
       this.registrationRequest.email = this.newUser.email;
       this.registrationRequest.address = this.newUser.address;
       this.registrationRequest.job = this.newUser.job;
-    //this.registrationRequest.moblie = this.newUser.moblie;
+      //this.registrationRequest.moblie = this.newUser.moblie;
       this.registrationRequest.country = this.newUser.country;
       this.registrationRequest.city = this.newUser.city;
-    /*if (this.which_gender == Genders.Female) {
-      this.registrationRequest.gender == this.newUser.gender;
-    }*/
+      /*if (this.which_gender == Genders.Female) {
+        this.registrationRequest.gender == this.newUser.gender;
+      }*/
 
       this.registrationService.registerUser(this.registrationRequest).subscribe(res => {
         this.newUser = res
-      //this.userService.saveUser(res).subscribe(
-      //);
-        
-     } );
-      this.router.navigate(['sign-in'])
-    /*} else {
-      this.error = "passwords are not equal";
-    }*/
+        //this.userService.saveUser(res).subscribe(
+        //);
 
+      });
+      this.router.navigate(['sign-in'])
+      /*} else {
+        this.error = "passwords are not equal";
+      }*/
     }
+   }
 
   
 
