@@ -140,16 +140,31 @@
 
                   <label style="font-weight: bold;">Password</label>
                   <div class="form-group">
-                    <input id="password"  type="text" class="form-control" [type]="show ? 'text' : 'password'" placeholder="password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" [(ngModel)]="newUser.password"/>
+                    <input id="password"  type="password" class="form-control" [type]="show ? 'text' : 'password'" placeholder="password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" [(ngModel)]="newUser.password"/>
                     &nbsp;
                     <mat-icon (click)="password()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
-
-                    <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-                      <div *ngIf="f['password'].errors['required']" style="text-align:center">Password is required</div>
+                  <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                    <div *ngIf="f['password'].errors['required']" style="text-align:center">Password is required</div>
+                    <div *ngIf="f['password'].errors['minlength']" style="text-align:center">
+                      Password must be at least 6 characters
+                    </div>
+                    <div *ngIf="f['password'].errors['maxlength']" style="text-align:center">
+                      Username must not exceed 40 characters
                     </div>
                   </div>
+
+                  </div>
                   <div class="form-group">
-                    <input id="pass1" name="pass1" class="form-control" type="text" placeholder="confirm password">
+                    <input id="confirmPassword" name="confirmPassword" class="form-control" type="password" placeholder="confirm password" formControlName="confirmPassword" [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }">
+                    <div *ngIf="submitted && f['confirmPassword'].errors"
+                         class="invalid-feedback">
+                      <div *ngIf="f['confirmPassword'].errors['required']" style="text-align:center">
+                        Confirm Password is required
+                      </div>
+                      <div *ngIf="f['confirmPassword'].errors['matching']" style="text-align:center">
+                        Confirm Password does not match
+                      </div>
+                    </div>
                   </div>
                 </form>
           </div>

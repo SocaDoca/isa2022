@@ -9,6 +9,7 @@ import { UserRequest } from './../model/UserRequest';
 import { UserService } from "../../service/user.service";
 import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ReactiveFormsModule } from "@angular/forms";
+import Validation from './../utils/validation';
 
 
 
@@ -40,16 +41,27 @@ export class RegisterPageComponent implements OnInit{
       {
         firstName: ['', Validators.required],
         lastName: ['', Validators.required],
-        email: ['', [Validators.required,  Validators.email]],
-        username: ['', Validators.required],
-        password: ['', Validators.required],
         country: ['', Validators.required],
         city: ['', Validators.required],
         address: ['', Validators.required],
         job: ['', Validators.required],
-
-      });
-        
+        username: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(40)
+          ]
+        ],
+        confirmPassword: ['', Validators.required],
+        acceptTerms: [false, Validators.requiredTrue]
+      },
+      {
+        validators: [Validation.match('password', 'confirmPassword')]
+      }
+    );
   }
 
 
