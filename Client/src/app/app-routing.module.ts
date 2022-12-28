@@ -18,6 +18,7 @@ import { TransfusionQuestionnaireComponent } from './transfusion-questionnaire/t
 import { UserComplaintComponent } from './user-complaint/user-complaint.component';
 import { UserScheduledAppointmentsComponent } from './user-scheduled-appointments/user-scheduled-appointments.component';
 import { SearchUserComponent } from './search-user/search-user.component';
+import { CalendarComponent } from './calendar/calendar.component';
 
 
 const routes: Routes = [
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'profile/:id/updateProfile', component: UserPersonalProfileUpdateComponent },
   { path: 'profileEmployee/:id/searchUser', component: SearchUserComponent },
   { path: 'search', component: SearchClinicComponent },
+  { path: 'calendar', component: CalendarComponent },
 ];
 
 @NgModule({
