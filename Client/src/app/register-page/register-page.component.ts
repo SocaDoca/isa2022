@@ -21,10 +21,10 @@ import Validation from './../utils/validation';
 export class RegisterPageComponent implements OnInit{
   form: FormGroup = new FormGroup({
     firstName: new FormControl(''),
-    //username: new FormControl(''),
-    //email: new FormControl(''),
-    //password: new FormControl(''),
-    //confirmPassword: new FormControl(''),
+    username: new FormControl(''),
+    email: new FormControl(''),
+    password: new FormControl(''),
+    confirmPassword: new FormControl(''),
     //acceptTerms: new FormControl(false),
   });
   submitted: boolean = false;

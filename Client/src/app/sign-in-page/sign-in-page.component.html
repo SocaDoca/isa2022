@@ -13,16 +13,28 @@
     <div class="modal-dialog text-center" >
       <div class="modal-content">
         <h2 class="text-center">Welcome !</h2>
-        <form id="loginform" name="loginform">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" name="loginform">
           <div class="form-group">
             <input [(ngModel)]="username" id="korisnickoIme" name="korisnickoIme" type="text" class="from-control"
-                   placeholder="username">
+                   placeholder="username" formControlName="username" [ngClass]="{ 'is-invalid': submitted && f['username'].errors }">
+            <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+              <div *ngIf="f['username'].errors['required']" style="text-align:center">Username is required</div>
+            </div>
           </div>
           <div class="form-group">
-            <input [(ngModel)]="password" id="lozinka" name="lozinka" type="password" class="from-control"
-                   placeholder="password">
+            <input [(ngModel)]="password" id="password" name="password" type="password" class="from-control"
+                   placeholder="password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
+            <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+              <div *ngIf="f['password'].errors['required']" style="text-align:center">Password is required</div>
+              <div *ngIf="f['password'].errors['minlength']" style="text-align:center">
+                Password must be at least 6 characters
+              </div>
+              <div *ngIf="f['password'].errors['maxlength']" style="text-align:center">
+                Username must not exceed 40 characters
+              </div>
+            </div>
           </div>
-          <p>{{ error }}</p>
+          
 
           <button type="submit" (click)="login()" class="btn btn-primary">Log in</button>
         </form>
