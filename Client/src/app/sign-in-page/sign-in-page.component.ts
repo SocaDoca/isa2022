@@ -1,6 +1,10 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { AuthenticationService } from "../../service/authentication.service";
 import { Router } from "@angular/router";
+import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { ReactiveFormsModule } from "@angular/forms";
+import Validation from './../utils/validation';
+
 
 @Component({
   selector: 'app-sign-in-page',
@@ -8,18 +12,65 @@ import { Router } from "@angular/router";
   styleUrls: ['./sign-in-page.component.css']
 })
 export class SignInPageComponent implements OnInit {
+  form: FormGroup = new FormGroup({
+    firstName: new FormControl(''),
+    username: new FormControl(''),
+    //email: new FormControl(''),
+    password: new FormControl(''),
+    //confirmPassword: new FormControl(''),
+    //acceptTerms: new FormControl(false),
+  });
   username: any
-  password = ''
+  password: any;
+  show: boolean = false;
   invalidLogin = false;
+  submitted: boolean = false;
+
   @Output()
   LogIn: EventEmitter<void> = new EventEmitter();
 
   @Input() error: string | null | undefined;
-  constructor(private router: Router, private loginservice: AuthenticationService) { }
+  constructor(private router: Router, private loginservice: AuthenticationService, private formBuilder: FormBuilder) { }
 
 
   ngOnInit(): void {
+    this.form = this.formBuilder.group(
+      {
+
+        username: ['', Validators.required],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.maxLength(40)
+          ]
+        ],
+        confirmPassword: ['', Validators.required],
+        acceptTerms: [false, Validators.requiredTrue]
+      },
+      {
+        validators: [Validation.match('password', 'confirmPassword')]
+      }
+    );
   }
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.form.controls;
+  }
+
+  onSubmit(): void {
+    this.submitted = true;
+
+    if (this.form.invalid) {
+      return;
+    } else {
+      this.login();
+    }
+
+    console.log(JSON.stringify(this.form.value, null, 2));
+  }
+  
   login() {
     if (this.username == '' || this.password == '')
       this.error = "Username and password must be filled out";
@@ -38,6 +89,11 @@ export class SignInPageComponent implements OnInit {
 
         })
     }
+  }
+
+  // click event function toggle
+  password1() {
+    this.show = !this.show;
   }
 
 }

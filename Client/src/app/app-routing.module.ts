@@ -38,7 +38,7 @@ const routes: Routes = [
   { path: 'profile/:id/updateProfile', component: UserPersonalProfileUpdateComponent },
   { path: 'profileEmployee/:id/searchUser', component: SearchUserComponent },
   { path: 'search', component: SearchClinicComponent },
-  { path: 'calendar', component: CalendarComponent },
+  { path: 'profileEmployee/:id/calendar', component: CalendarComponent },
 ];
 
 @NgModule({
