@@ -33,6 +33,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from "@angular/forms";
 
 
+import { FullCalendarModule } from '@fullcalendar/angular';
+import listPlugin from '@fullcalendar/list';
+
 
 
 
@@ -70,7 +73,8 @@ import { ReactiveFormsModule } from "@angular/forms";
     HttpClientModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FullCalendarModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],
