@@ -7,59 +7,38 @@ using MedicApp.Database;
 using MedicApp.Enums;
 using Microsoft.AspNetCore.Authorization;
 using MedicApp.Integrations;
+using MedicApp.Utils;
+using System.Configuration;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Cryptography;
 
 namespace MedicApp.Controllers
 {
     [ApiController]
-    [Route("/api/auth")]
+    [Route("/[controller]")]
     public class AuthController : ControllerBase
     {
-        private IUserIntegration _userIntegration;
+        public readonly IUserIntegration _userIntegration;
 
-        public AuthController(
-           IUserIntegration userIntegration)
+        public AuthController(IUserIntegration userIntegration)
         {
             _userIntegration = userIntegration;
         }
 
-       [HttpPost("signin")]
-        public async Task<IActionResult> SignInAsync([FromBody] SignInRequest signInRequest)
-        {       
-            var identity = await _userIntegration.SignInAsync(signInRequest);
-
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(identity),
-                new AuthenticationProperties
-                {
-                    IsPersistent = true,
-                    AllowRefresh = true,
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                });
-
-            return Ok(new Response(true, "Signed in successfully"));
-        }
-
-        [Authorize]
-        [HttpGet("user")]
-        public IActionResult GetUser()
+        [HttpPost]
+        [Route("register")]
+        public IActionResult Register([FromBody] RegisterRequest model)
         {
-            var appDbContext = new AppDbContext();
-            var userClaims = User.Claims.Select(x => new UserClaim(x.Type, x.Value)).ToList();
-            return Ok(userClaims);
+            return Ok(_userIntegration.Register(model));
         }
 
-
-        [Authorize]
-        [HttpGet("signout")]
-        public async Task SignOutAsync()
+        [HttpPost]
+        [Route("login")]
+        public IActionResult Login([FromBody] LoginModel model)
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Ok(_userIntegration.LogIn(model));
         }
 
-        public record SignInRequest(string Username, string Password);
-        public record Response(bool IsSuccess, string Message);
-        public record UserClaim(string Type, string Value);        
- 
+
     }
 }

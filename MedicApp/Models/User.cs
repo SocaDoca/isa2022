@@ -15,19 +15,19 @@ namespace MedicApp.Models
         public string Country { get; set; }
         public Genders Gender { get; set; }
         public string City { get; set; }
-        public Roles Roles { get; set; }
-
-
+        public Roles Roles { get; set; }        
+        public byte[] PasswordHash { get; set; }
+        public byte[] PasswordSalt { get; set; }
+       
         
-        public string Password { get; set; }
-
+        
         public User()
         {
             Id = Guid.NewGuid();
         }
     }
 
-    public class AuthenticateRequest
+    public class LoginModel
     {
         [Required]
         public string Username { get; set; }
@@ -35,7 +35,7 @@ namespace MedicApp.Models
         public string Password { get; set; }
 
     }
-    public class AuthenticateResponse
+    public class LoginResponse
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }
@@ -52,7 +52,9 @@ namespace MedicApp.Models
         [Required]
         public string Username { get; set; }
         [Required]
-        public string Password { get; set; }
+        public string Password { get; set; } 
+        [Required]
+        public string ConfirmPassword { get; set; }
         [Required]
         public string Email { get; set; }
         public string? Moblie { get; set; }

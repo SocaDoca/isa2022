@@ -1,4 +1,5 @@
 ﻿using MedicApp.Enums;
+using MedicApp.Integrations;
 using MedicApp.Models;
 using MedicApp.RelationshipTables;
 using Microsoft.AspNetCore.Identity;
@@ -31,6 +32,13 @@ namespace MedicApp.Database
         }
 
         public DbSet<User>Users { get; set; }
+        public DbSet<Clinic> Clinics { get; set; }
+        //public DbSet<User> Users { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
 
         public class MysqlEntityFrameworkDesignTimeServices : IDesignTimeServices
         {

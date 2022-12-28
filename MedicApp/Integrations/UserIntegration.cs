@@ -1,76 +1,88 @@
 ﻿using MedicApp.Database;
-using MedicApp.Enums;
 using MedicApp.Models;
 using MedicApp.Utils;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
 using static MedicApp.Controllers.AuthController;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Identity;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MedicApp.Integrations
 {
     public interface IUserIntegration
     {
-        //AuthenticateResponse Authenticate(AuthenticateRequest model);
+        User? Register(RegisterRequest model);
+        LoginResponse LogIn(LoginModel model);
         IEnumerable<User> GetAll();
         User GetById(Guid id);
-        void Register(RegisterRequest model);
-        void Update(Guid id, UpdateRequest model);
+        bool UpdatePassword(Guid Id, string password);
         void Delete(Guid id);
-        Task<ClaimsIdentity> SignInAsync(SignInRequest signInRequest);
     }
 
     public class UserIntegration : IUserIntegration
     {
-        private AppDbContext _appDbContext;
-        private IJwtUtils _jwtUtils;
+        private readonly AppDbContext _appDbContext;
+        private readonly IConfiguration _config;
+        
 
-
-        public UserIntegration(AppDbContext context, IJwtUtils jwtUtils)
+        public UserIntegration(AppDbContext context , IConfiguration config)
         {
             _appDbContext = context;
-            _jwtUtils = jwtUtils;
+            _config = config;
+
+
         }
 
-        public async Task<ClaimsIdentity> SignInAsync(SignInRequest signInRequest)
+        public LoginResponse LogIn(LoginModel model)
         {
-            var user = _appDbContext.Users.FirstOrDefault(x => x.Username == signInRequest.Username &&
-                                       x.Password == signInRequest.Password);
-            if (user is null)
+
+            var findUser = _appDbContext.Users.FirstOrDefault(x => x.Username == model.Username);
+            if (findUser == null)
             {
-                var error = new AppException();
                 throw new Exception();
             }
-
-            var claims = new List<Claim>
+            var matchPassword = CheckPassword(model.Password, findUser);
+            if (!matchPassword)
             {
-                new Claim(type: ClaimTypes.Email, value: signInRequest.Username),
-                new Claim(type: ClaimTypes.Name,value: String.Format("{0} {1}", user.FirstName, user.LastName))
+                throw new Exception();
+            }
+            var secret = _config.GetSection("AppSettings").Value;
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_config.GetSection("Secret").Value);
+            var tokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("id", findUser.Username) }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var encrypterToken = tokenHandler.WriteToken(token);
 
-            return new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            return new LoginResponse
+            {
+                Id = findUser.Id,
+                Username = findUser.Username,
+                FirstName = findUser.FirstName,
+                LastName = findUser.LastName,
+                Token = encrypterToken,
+            };
         }
 
-        //public AuthenticateResponse Authenticate(AuthenticateRequest model)
-        //{
-        //    var user = _context.Users.SingleOrDefault(x => x.Username == model.Username);
-
-        //    // validate
-        //    if (user == null || (model.Password != user.Password))
-        //        throw new AppException("Username or password is incorrect");
-
-        //    // authentication successful
-        //    var response = new AuthenticateResponse
-        //    {
-        //        Id = user.Id,
-        //        FirstName = user.FirstName,
-        //        LastName = user.LastName,
-        //        Username = model.Username,
-        //    };
-        //    response.Token = _jwtUtils.GenerateToken(user);
-        //    return response;
-        //}
+        private bool CheckPassword(string password, User user)
+        {
+            bool result;
+            using (HMACSHA512? hmac = new HMACSHA512(user.PasswordSalt))
+            {
+                var compute = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                result = compute.SequenceEqual(user.PasswordHash);
+            }
+            return result;
+        }
 
         public IEnumerable<User> GetAll()
         {
@@ -82,7 +94,7 @@ namespace MedicApp.Integrations
             return getUser(id);
         }
 
-        public void Register(RegisterRequest model)
+        public User? Register(RegisterRequest model)
         {
             // validate
             if (_appDbContext.Users.Any(x => x.Username == model.Username))
@@ -102,35 +114,37 @@ namespace MedicApp.Integrations
                 Roles = model.Roles
             };
 
-            // hash password
-            //newUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password);
-            newUser.Password = model.Password;
+            if (model.Password == model.ConfirmPassword)
+            {
+                using (HMACSHA512? hmac = new HMACSHA512())
+                {
+                    newUser.PasswordSalt = hmac.Key;
+                    newUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(model.Password));
+                }
+            }
+            else
+            {
+                return null;
+            }
             // save user
             _appDbContext.Users.Add(newUser);
             _appDbContext.SaveChanges();
+            return newUser;
         }
 
-        public void Update(Guid id, UpdateRequest model)
+        public bool UpdatePassword(Guid Id, string password)
         {
-            var user = getUser(id);
-
-            // validate
-            if (model.Username != user.Username && _appDbContext.Users.Any(x => x.Username == model.Username))
-                throw new AppException("Username '" + model.Username + "' is already taken");
-
-            // hash password if it was entered
-            if (!string.IsNullOrEmpty(model.Password))
-                user.Password = model.Password;
-
-            // copy model to user and save
-            user.Username = model.Username;
-            user.Address = model.Address;
-            user.City = model.City;
-            user.Email = model.Email;
-            user.Roles = model.Role;
-
-            _appDbContext.Users.Update(user);
-            _appDbContext.SaveChanges();
+            var findUser = _appDbContext.Users.FirstOrDefault(x => x.Id == Id);
+            if (findUser == null)
+            {
+                return false;
+            }
+            using (HMACSHA512? hmac = new HMACSHA512())
+            {
+                findUser.PasswordSalt = hmac.Key;
+                findUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+            return true;
         }
 
         public void Delete(Guid id)
@@ -140,7 +154,7 @@ namespace MedicApp.Integrations
             _appDbContext.SaveChanges();
         }
 
-        
+
 
         private User getUser(Guid id)
         {
