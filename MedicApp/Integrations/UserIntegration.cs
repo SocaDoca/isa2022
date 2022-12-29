@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Options;
 
 namespace MedicApp.Integrations
 {
@@ -27,15 +28,13 @@ namespace MedicApp.Integrations
     public class UserIntegration : IUserIntegration
     {
         private readonly AppDbContext _appDbContext;
-        private readonly IConfiguration _config;
-        
+        private readonly IOptions<SecretSettings> _secretSettings;
 
-        public UserIntegration(AppDbContext context , IConfiguration config)
+
+        public UserIntegration(AppDbContext context, IConfiguration config, IOptions<SecretSettings> secretSettings)
         {
             _appDbContext = context;
-            _config = config;
-
-
+            _secretSettings = secretSettings;
         }
 
         public LoginResponse LogIn(LoginModel model)
@@ -51,12 +50,12 @@ namespace MedicApp.Integrations
             {
                 throw new Exception();
             }
-            var secret = _config.GetSection("AppSettings").Value;
+            var role = _appDbContext.Roles.FirstOrDefault(x => x.Id == findUser.Role_RefID);
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_config.GetSection("Secret").Value);
+            var key = Encoding.UTF8.GetBytes(_secretSettings.Value.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", findUser.Username) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("id", findUser.Username), new Claim(ClaimTypes.Role, role.Name) }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
@@ -96,6 +95,8 @@ namespace MedicApp.Integrations
 
         public User? Register(RegisterRequest model)
         {
+            var roles = _appDbContext.Roles.Where(x => !x.IsDeleted).ToList();
+
             // validate
             if (_appDbContext.Users.Any(x => x.Username == model.Username))
                 throw new AppException("Username '" + model.Username + "' is already taken");
@@ -106,13 +107,17 @@ namespace MedicApp.Integrations
                 Username = model.Username,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                Address = model.Address,
-                Country = model.Country,
-                City = model.City,
+                Address = model?.Address ?? string.Empty,
+                Country = model?.Country ?? string.Empty,
+                City = model?.City ?? string.Empty,
                 Email = model.Email,
                 Gender = model.Gender,
-                Roles = model.Roles
+
             };
+            if (roles.Any(x => x.Id == model.Roles.Id))
+            {
+                newUser.Role_RefID = roles.FirstOrDefault(x => x.Id == model.Roles.Id).Id;
+            }
 
             if (model.Password == model.ConfirmPassword)
             {

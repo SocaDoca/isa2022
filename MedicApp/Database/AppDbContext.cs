@@ -15,10 +15,6 @@ namespace MedicApp.Database
     {
         protected readonly IConfiguration Configuration;
 
-        public AppDbContext()
-        {
-
-        }
         public AppDbContext(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,7 +29,7 @@ namespace MedicApp.Database
 
         public DbSet<User>Users { get; set; }
         public DbSet<Clinic> Clinics { get; set; }
-        //public DbSet<User> Users { get; set; }
+        public DbSet<Roles> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

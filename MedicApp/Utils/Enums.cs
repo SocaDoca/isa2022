@@ -14,12 +14,4 @@
         Female,
         Other,
     }
-
-    public enum Roles
-    {
-        Guest,
-        User,
-        Employee,
-        SysAdmin
-    }
 }

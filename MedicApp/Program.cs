@@ -26,13 +26,28 @@ var connectionString = builder.Configuration.GetConnectionString("MySqlConnectio
 builder.Services.AddDbContext<AppDbContext>(options =>
                                             options.UseMySQL(connectionString));
 
-builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+builder.Services.Configure<SecretSettings>(builder.Configuration.GetSection("SecretSettings"));
 //builder.Services.AddTransient<IJwtUtils, JwtUtils>();
 builder.Services.AddTransient<IUserIntegration, UserIntegration>();
-//builder.Services.AddTransient<IAppSettings, AppSettings>();
+builder.Services.AddTransient<IClinicIntegration, ClinicIntegration>();
+builder.Services.AddTransient<IRolesIntegration, RolesIntegration>();
 
-//builder.Services.AddTransient<IClinicIntegration, ClinicIntegration>();
-
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["SecretSettings:Secret"])),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+    };
+});
 
 
 

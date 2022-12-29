@@ -15,15 +15,17 @@ namespace MedicApp.Models
         public string Country { get; set; }
         public Genders Gender { get; set; }
         public string City { get; set; }
-        public Roles Roles { get; set; }        
+        public Guid Role_RefID { get; set; }        
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+        public bool IsDeleted { get; set; }
        
         
         
         public User()
         {
             Id = Guid.NewGuid();
+            IsDeleted = false;
         }
     }
 

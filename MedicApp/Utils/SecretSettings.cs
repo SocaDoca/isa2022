@@ -1,7 +1,7 @@
 ﻿namespace MedicApp.Utils
 {
   
-    public class AppSettings 
+    public class SecretSettings 
     {
         public string Secret { get; set; }
     }

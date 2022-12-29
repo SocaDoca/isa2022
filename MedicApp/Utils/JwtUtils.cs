@@ -15,9 +15,9 @@ namespace MedicApp.Utils
 
     public class JwtUtils : IJwtUtils
     {
-        private readonly AppSettings _appSettings;
+        private readonly SecretSettings _appSettings;
 
-        public JwtUtils(IOptions<AppSettings> appSettings)
+        public JwtUtils(IOptions<SecretSettings> appSettings)
         {
             _appSettings = appSettings.Value;
         }
