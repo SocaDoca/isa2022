@@ -1,5 +1,5 @@
 import { LoyaltyLevel } from "./LoyaltyLevel";
-import { Role } from "./Role";
+import { Roles } from "./Roles";
 
 
 export interface AccountInterface {
@@ -11,7 +11,7 @@ export interface AccountInterface {
   createdAt: Date;
   isDeleted: boolean;
   loyaltyLevel: LoyaltyLevel;
-  role: Role
+  role: Roles
 }
 
 export class Account implements AccountInterface {
@@ -23,7 +23,7 @@ export class Account implements AccountInterface {
   createdAt: Date;
   isDeleted: boolean;
   loyaltyLevel: LoyaltyLevel;
-  role: Role
+  role: Roles
 
   constructor(obj: AccountInterface) {
     this.id = obj.id;

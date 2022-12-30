@@ -1,4 +1,4 @@
-import { Role } from './Role';
+import { Roles } from './Roles';
 import { Genders } from './Genders';
 
 export interface UserRequestInterface {
@@ -11,9 +11,10 @@ export interface UserRequestInterface {
   country?: string;
   city?: string;
   job?: string;
-  role?: string;
+  roles?: Roles;
   gender?: Genders;
   password: string;
+  confirmPassword: string;
 }
 
 export class UserRequest implements UserRequestInterface {
@@ -26,9 +27,10 @@ export class UserRequest implements UserRequestInterface {
   country?: string;
   city?: string;
   job?: string;
-  role?: string;
+  roles?: Roles;
   gender?: Genders;
   password: string;
+  confirmPassword: string;
 
   constructor(obj: UserRequestInterface) {
     this.id = obj.id;
@@ -39,10 +41,11 @@ export class UserRequest implements UserRequestInterface {
     this.address = obj.address;
     this.country = obj.country;
     this.city = obj.city;
-    this.role = obj.role;
+    this.roles = obj.roles;
     this.gender = obj.gender;
     this.job = obj.job;
     this.password = obj.password;
+    this.confirmPassword = obj.confirmPassword;
 
   }
 }
