@@ -4,7 +4,7 @@ import { RegistrationService } from "../../service/registration.service";
 import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { Genders } from './../model/Genders';
-import { Role } from './../model/Role';
+import { Roles } from './../model/Roles';
 import { UserRequest } from './../model/UserRequest';
 import { UserService } from "../../service/user.service";
 import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
@@ -25,11 +25,15 @@ export class RegisterPageComponent implements OnInit{
     email: new FormControl(''),
     password: new FormControl(''),
     confirmPassword: new FormControl(''),
-    //acceptTerms: new FormControl(false),
+    //roles: new FormControl('')
+
   });
   submitted: boolean = false;
   show: boolean = false;
   which_gender = Genders;
+
+  private genders =  Genders;
+
 
   confirmedPassword: string | undefined;
 
@@ -46,6 +50,7 @@ export class RegisterPageComponent implements OnInit{
         address: ['', Validators.required],
         job: ['', Validators.required],
         username: ['', Validators.required],
+       // roles: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         password: [
           '',
@@ -86,29 +91,32 @@ export class RegisterPageComponent implements OnInit{
     this.form.reset();
   }
 
+
+
+
   newUser: User = new User({
-    //id: 0,
+
     firstName: '',
     lastName: '',
     username: '',
-    email:'',
+    email: '',
     address: '',
-    gender:0,
-    role: '',
+    gender: 0,
+      roles: new Roles({
+        name: ''
+    }),
     job: '',
     password: '',
+    confirmPassword: '',
     country: '',
     city:''
 
   });
   choices_for_gender = ['Female', 'Male', 'Other'];
-  choices_for_roles = ['Guest', 'Employee', 'Admin'];
-  error: string | undefined;
-  which_role = Role;
-  firstName : string | undefined;
+
+
 
   registrationRequest: UserRequest = new UserRequest({
-    //id: 0,
     username: this.newUser.username,
     password: this.newUser.password,
     firstName: this.newUser.firstName,
@@ -116,7 +124,8 @@ export class RegisterPageComponent implements OnInit{
     address: this.newUser.address,
     email: this.newUser.email,
     job: this.newUser.job,
-    role: this.newUser.role,
+    confirmPassword: this.newUser.confirmPassword,
+    roles: this.newUser.roles,
     gender: this.newUser.gender,
    // moblie: this.newUser.moblie
     country: this.newUser.country,
@@ -127,27 +136,26 @@ export class RegisterPageComponent implements OnInit{
 
   addNewUser() {
 
-    //if (this.newUser.password == this.confirmedPassword) {
-    //this.registrationRequest.id = this.newUser.id;
-    if (this.form.invalid) {
-      return;
-    } else {
+
+   // if (this.form.invalid) {
+    //  return;
+     //} else {
 
 
       this.registrationRequest.username = this.newUser.username;
       this.registrationRequest.password = this.newUser.password;
+      this.registrationRequest.confirmPassword = this.newUser.confirmPassword;
       this.registrationRequest.firstName = this.newUser.firstName;
       this.registrationRequest.lastName = this.newUser.lastName;
       this.registrationRequest.gender = this.newUser.gender;
       this.registrationRequest.email = this.newUser.email;
       this.registrationRequest.address = this.newUser.address;
       this.registrationRequest.job = this.newUser.job;
+      this.registrationRequest.roles = this.newUser.roles;
       //this.registrationRequest.moblie = this.newUser.moblie;
       this.registrationRequest.country = this.newUser.country;
       this.registrationRequest.city = this.newUser.city;
-      /*if (this.which_gender == Genders.Female) {
-        this.registrationRequest.gender == this.newUser.gender;
-      }*/
+
 
       this.registrationService.registerUser(this.registrationRequest).subscribe(res => {
         this.newUser = res
@@ -159,7 +167,7 @@ export class RegisterPageComponent implements OnInit{
       /*} else {
         this.error = "passwords are not equal";
       }*/
-    }
+   // }
    }
 
   

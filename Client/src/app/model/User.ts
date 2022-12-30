@@ -1,4 +1,4 @@
-import { Role } from './Role';
+import { Roles } from './Roles';
 import { Genders } from './Genders';
 
 export interface UserInterface {
@@ -11,9 +11,10 @@ export interface UserInterface {
   country?: string;
   city?: string;
   job?: string;
-  role?: string;
+  roles?: Roles;
   gender?: Genders;
   password: string;
+  confirmPassword: string;
 
 }
 
@@ -27,9 +28,10 @@ export class User implements UserInterface {
   country?: string;
   city?: string;
   job?: string;
-  role?: string;
+  roles?: Roles;
   gender?: Genders;
   password: string;
+  confirmPassword: string;
 
   constructor(obj: UserInterface) {
     this.id = obj.id;
@@ -40,10 +42,11 @@ export class User implements UserInterface {
     this.address = obj.address;
     this.country = obj.country;
     this.city = obj.city;
-    this.role = obj.role;
+    this.roles = obj.roles;
     this.gender = obj.gender;
    this.job = obj.job;
     this.password = obj.password;
+    this.confirmPassword = obj.confirmPassword;
 
   }
 }

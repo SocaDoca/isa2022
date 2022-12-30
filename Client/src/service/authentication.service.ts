@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
-import {User} from "../app/model/User";
+import {User} from "./../app/model/User";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class AuthenticationService {
   authenticate(username: string, password: string) {
 
     return this.http
-      .post<any>("http://localhost:5017/Users/authenticate", { username, password })
+      .post<any>("http://localhost:5017/Auth/login", { username, password })
       .pipe(
         map((userData) => {
           sessionStorage.setItem("currentUser", JSON.stringify(userData))

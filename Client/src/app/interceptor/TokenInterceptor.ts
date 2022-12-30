@@ -13,7 +13,7 @@ import { AuthenticationService } from '../../service/authentication.service';
 export class TokenInterceptor implements HttpInterceptor {
   constructor(public auth: AuthenticationService) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
+    //changed username to role
     if (sessionStorage.getItem('username') && sessionStorage.getItem('token')) {
       request = request.clone({
         setHeaders: {
