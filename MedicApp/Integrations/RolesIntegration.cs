@@ -11,6 +11,7 @@ namespace MedicApp.Integrations
         Task<Roles> CreateRole([FromBody] SaveRole role);
         Task<bool> Delete(Guid Id);
         Task<LoadRole> GetRoleById(Guid Id);
+        Task<List<LoadRole>> GetAllRoles();
     }
     public class RolesIntegration : IRolesIntegration
     {
@@ -50,6 +51,22 @@ namespace MedicApp.Integrations
             _appDbContext.SaveChanges();
 
             return true;
+        }
+        public async Task<List<LoadRole>> GetAllRoles()
+        {
+            var dbRoles = await _appDbContext.Roles.Where(x => !x.IsDeleted).ToList();
+
+            var result = new List<LoadRole>();
+            if(dbRoles.Any())
+            {
+                result = dbRoles.Select(role => new LoadRole
+                {
+                    Id = role.Id,
+                    Name = role.Name
+                }).ToList();
+            }
+
+            return result;
         }
         public async Task<LoadRole> GetRoleById(Guid Id)
         {

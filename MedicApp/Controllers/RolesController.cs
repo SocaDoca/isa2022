@@ -28,5 +28,16 @@ namespace MedicApp.Controllers
             };
 
         }
+
+        [HttpPost("load-all-roles")]
+        public async Task<StandardIntegrationResponse> GetAllRoles()
+        {
+            return new StandardIntegrationResponse
+            {
+                IsSuccess = true,
+                Payload = await _rolesIntegration.GetAllRoles()
+            };
+
+        }
     }
 }

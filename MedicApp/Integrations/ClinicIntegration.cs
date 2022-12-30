@@ -8,6 +8,7 @@ namespace MedicApp.Integrations
     public interface IClinicIntegration
     {
         Task<Clinic> SaveClinic(ClinicSaveModel clinicSave);
+        List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters)
     }
     public class ClinicIntegration : IClinicIntegration
     {
@@ -42,7 +43,7 @@ namespace MedicApp.Integrations
         }
 
 
-        public List<ClinicList> LoadAllCustomers(ClinicLoadParameters parameters)
+        public List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters)
         {
             List<Clinic> dbClinics = _appDbContext.Clinics.ToList();
             List<ClinicList> resultList = new List<ClinicList>();

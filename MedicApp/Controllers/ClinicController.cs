@@ -21,6 +21,14 @@ namespace MedicApp.Controllers
         {
             return Ok(_clinicIntegration.SaveClinic(clinic));
         }
+
+        [HttpPost("load-all-clinics")]
+        public async Task<IActionResult> LoadAllClinics([FromBody] ClinicLoadParameters parameters)
+        {
+            return Ok(_clinicIntegration.LoadAllClinics(parameters));
+        }
+
+
       
     }
 }
