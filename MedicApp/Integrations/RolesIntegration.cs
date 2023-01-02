@@ -54,7 +54,7 @@ namespace MedicApp.Integrations
         }
         public async Task<List<LoadRole>> GetAllRoles()
         {
-            var dbRoles = await _appDbContext.Roles.Where(x => !x.IsDeleted).ToList();
+            var dbRoles =  _appDbContext.Roles.Where(x => !x.IsDeleted).ToList();
 
             var result = new List<LoadRole>();
             if(dbRoles.Any())

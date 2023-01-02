@@ -6,5 +6,13 @@
         public Guid Clinic_RefID { get; set; }
         public Guid WorkingHours_RefID { get; set; }
         public bool IsDeleted { get; set; }
+
+        public Clinic2WorkingHours()
+        {
+            Id = Guid.NewGuid();
+            IsDeleted = false;
+        }
     }
+
+
 }

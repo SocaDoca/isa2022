@@ -29,6 +29,7 @@
         public string Country { get; set; }
         public string Phone { get; set; }
         public float Rating { get; set; }
+        public List<WorkingHours> WorkHours { get; set; } = new List<WorkingHours>();
        
     }
 
@@ -42,6 +43,7 @@
         public string Country { get; set; }
         public string Phone { get; set; }
         public float Rating { get; set; }
+        public List<WorkingHours>WorkingHours { get; set; } = new List<WorkingHours>();
     }
 
 }

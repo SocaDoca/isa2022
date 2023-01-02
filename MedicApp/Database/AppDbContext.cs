@@ -30,6 +30,9 @@ namespace MedicApp.Database
         public DbSet<User>Users { get; set; }
         public DbSet<Clinic> Clinics { get; set; }
         public DbSet<Roles> Roles { get; set; }
+        public DbSet<WorkingHours> WorkingHours { get; set; }
+        public DbSet<Clinic2WorkingHours> Clinic2WorkingHours { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

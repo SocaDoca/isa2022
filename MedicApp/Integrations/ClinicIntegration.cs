@@ -1,5 +1,6 @@
 ﻿using MedicApp.Database;
 using MedicApp.Models;
+using MedicApp.RelationshipTables;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Metrics;
 
@@ -8,7 +9,7 @@ namespace MedicApp.Integrations
     public interface IClinicIntegration
     {
         Task<Clinic> SaveClinic(ClinicSaveModel clinicSave);
-        List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters)
+        List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters);
     }
     public class ClinicIntegration : IClinicIntegration
     {
@@ -36,7 +37,30 @@ namespace MedicApp.Integrations
             dbClinic.Description = clinicSave.Description;
             dbClinic.Phone = clinicSave.Phone;
             dbClinic.Rating = clinicSave.Rating;
+            foreach (var item in clinicSave.WorkHours)
+            {
+                var workHours = new WorkingHours
+                {
+                    Start = item.Start,
+                    End = item.End,
+                    IsMonday = item.IsMonday,
+                    IsTuesday = item.IsTuesday,
+                    IsWednesday = item.IsWednesday,
+                    IsThursday = item.IsThursday,
+                    IsFriday = item.IsFriday,
+                    IsSaturday = item.IsSaturday,
+                };
 
+                _appDbContext.WorkingHours.Add(workHours);
+
+                var clinic2WorkingHours = new Clinic2WorkingHours
+                {
+                    Clinic_RefID = dbClinic.Id,
+                    WorkingHours_RefID = item.Id
+                };
+
+                _appDbContext.Clinic2WorkingHours.Add(clinic2WorkingHours);
+            }
 
             _appDbContext.SaveChanges();
             return dbClinic;
@@ -47,24 +71,40 @@ namespace MedicApp.Integrations
         {
             List<Clinic> dbClinics = _appDbContext.Clinics.ToList();
             List<ClinicList> resultList = new List<ClinicList>();
+            var dbWorkingHours = _appDbContext.WorkingHours.ToList();
+            var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours
+                .Where(x => !x.IsDeleted)
+                .GroupBy(x => x.Clinic_RefID)
+                .ToDictionary(x => x.Key, x => x.Select(x => x.WorkingHours_RefID).ToList());
             foreach (var clinic in dbClinics)
             {
-                if (dbClinics != null && dbClinics.Any())
+                var clinicModel = new ClinicList
                 {
-                    var customerModel = new ClinicList
+                    Id = clinic.Id,
+                    Name = clinic.Name,
+                    Address = String.Format("{0}, {1}, {2}", clinic.Address, clinic.City, clinic.Country),
+                    Phone = clinic.Phone,
+                    Description = clinic.Description,
+                    Rating = clinic.Rating,
+                };
+                if (clinic2WorkingHours.ContainsKey(clinicModel.Id))
+                {
+                   if(clinic2WorkingHours.TryGetValue(clinic.Id , out var workHoursList))
                     {
-                        Id = clinic.Id,
-                        Name = clinic.Name,
-                        Address = String.Format("{0}, {1}, {2}" , clinic.Address, clinic.City, clinic.Country),
-                        Phone = clinic.Phone,
-                        Description = clinic.Description,
-                        Rating = clinic.Rating,
-                      
-
-                    };
-                    resultList.Add(customerModel);
+                        if (workHoursList.Any() && dbWorkingHours.Any() && dbWorkingHours != null)
+                        {
+                            foreach (var workDay in workHoursList)
+                            {
+                                clinicModel.WorkingHours.Add(dbWorkingHours?.FirstOrDefault(x => x.Id == workDay));
+                            }
+                        }
+                    }
                 }
+
+
+                resultList.Add(clinicModel);
             }
+
 
             #region SEARCH
             if (!String.IsNullOrEmpty(parameters.SearchCriteria))
@@ -104,7 +144,7 @@ namespace MedicApp.Integrations
                     resultList = parameters.OrderAsc ?
                         resultList.OrderBy(x => x.Name.ToLower()).ToList() : resultList.OrderByDescending(x => x.Name.ToLower()).ToList();
                     break;
-               
+
                 case "city":
                     resultList = parameters.OrderAsc ?
                         resultList.OrderBy(x => x.City.ToLower()).ToList() : resultList.OrderByDescending(x => x.City.ToLower()).ToList();
@@ -127,7 +167,7 @@ namespace MedicApp.Integrations
         public string SearchCriteria { get; set; }
         public ClinicFilterData ClinicFilterData { get; set; }
         public int Offset { get; set; }
-        public int Limit { get; set; } 
+        public int Limit { get; set; }
         public string SortBy { get; set; }
         public bool OrderAsc { get; set; }
 
@@ -137,7 +177,7 @@ namespace MedicApp.Integrations
     {
         public string Name { get; set; }
         public string Address { get; set; }
-        public string City { get;set; }
+        public string City { get; set; }
         public string Country { get; set; }
     }
 
