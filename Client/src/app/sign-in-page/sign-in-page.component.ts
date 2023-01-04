@@ -22,6 +22,8 @@ export class SignInPageComponent implements OnInit {
   });
   username: any
   password: any;
+  role: any;
+  id: any;
   show: boolean = false;
   invalidLogin = false;
   submitted: boolean = false;
@@ -81,6 +83,7 @@ export class SignInPageComponent implements OnInit {
           this.LogIn.next();
           //window.location.reload();
           this.router.navigate(['']);
+         
           this.invalidLogin = false
         },
         (error: { message: string | null; }) => {
