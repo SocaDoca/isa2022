@@ -50,12 +50,12 @@ namespace MedicApp.Integrations
             {
                 throw new Exception();
             }
-            var role = _appDbContext.Roles.FirstOrDefault(x => x.Id == findUser.Role_RefID);
+            //var role = _appDbContext.Roles.FirstOrDefault(x => x.Name == findUser.Role);
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_secretSettings.Value.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", findUser.Username), new Claim(ClaimTypes.Role, role.Name) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("id", findUser.Username), new Claim(ClaimTypes.Role, findUser.Role) }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
@@ -95,7 +95,7 @@ namespace MedicApp.Integrations
 
         public User? Register(RegisterRequest model)
         {
-            var roles = _appDbContext.Roles.Where(x => !x.IsDeleted).ToList();
+            //var roles = _appDbContext.Roles.Where(x => !x.IsDeleted).ToList();
 
             // validate
             if (_appDbContext.Users.Any(x => x.Username == model.Username))
@@ -112,12 +112,13 @@ namespace MedicApp.Integrations
                 City = model?.City ?? string.Empty,
                 Email = model.Email,
                 Gender = model.Gender,
+                Role = model.Roles
 
             };
-            if (roles.Any(x => x.Id == model.Roles.Id))
-            {
-                newUser.Role_RefID = roles.FirstOrDefault(x => x.Id == model.Roles.Id).Id;
-            }
+            //if (roles.Any(x => x.Id == model.Roles.Id))
+            //{
+            //    newUser.Role_RefID = roles.FirstOrDefault(x => x.Id == model.Roles.Id).Id;
+            //}
 
             if (model.Password == model.ConfirmPassword)
             {

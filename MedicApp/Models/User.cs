@@ -14,18 +14,20 @@ namespace MedicApp.Models
         public string Address { get; set; }
         public string Country { get; set; }
         public Genders Gender { get; set; }
+        public int LoyaltyPoints { get; set; }
         public string City { get; set; }
-        public Guid Role_RefID { get; set; }        
+        public string Role { get; set; }
+        //public Guid Role_RefID { get; set; }        
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public bool IsDeleted { get; set; }
-       
+        public bool IsDeleted { get; set; }  
         
         
         public User()
         {
             Id = Guid.NewGuid();
             IsDeleted = false;
+            LoyaltyPoints = 1000;
         }
     }
 
@@ -65,7 +67,7 @@ namespace MedicApp.Models
         public string? City { get; set; }
         public Genders Gender { get; set; }
        
-        public Roles Roles { get; set; }
+        public string Roles { get; set; }
         public string Job { get; set; }
     }
     public class UpdateRequest
@@ -76,7 +78,7 @@ namespace MedicApp.Models
         public string Email { get; set; }
         public string Address { get; set; }
         public string Country { get; set; }
-        public Roles Role { get; set; }
+        public string Role { get; set; }
         public string City { get; set; }
         public string Job { get; set; }
     }
