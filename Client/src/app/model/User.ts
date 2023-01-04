@@ -11,7 +11,7 @@ export interface UserInterface {
   country?: string;
   city?: string;
   job?: string;
-  roles?: Roles;
+  roles?: string;
   gender?: Genders;
   password: string;
   confirmPassword: string;
@@ -28,7 +28,7 @@ export class User implements UserInterface {
   country?: string;
   city?: string;
   job?: string;
-  roles?: Roles;
+  roles?: string;
   gender?: Genders;
   password: string;
   confirmPassword: string;

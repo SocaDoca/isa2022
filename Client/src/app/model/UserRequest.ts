@@ -11,7 +11,7 @@ export interface UserRequestInterface {
   country?: string;
   city?: string;
   job?: string;
-  roles?: Roles;
+  roles?: string;
   gender?: Genders;
   password: string;
   confirmPassword: string;
@@ -27,7 +27,7 @@ export class UserRequest implements UserRequestInterface {
   country?: string;
   city?: string;
   job?: string;
-  roles?: Roles;
+  roles?: string;
   gender?: Genders;
   password: string;
   confirmPassword: string;

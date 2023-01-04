@@ -25,7 +25,7 @@ export class RegisterPageComponent implements OnInit{
     email: new FormControl(''),
     password: new FormControl(''),
     confirmPassword: new FormControl(''),
-    //roles: new FormControl('')
+    roles: new FormControl('')
 
   });
   submitted: boolean = false;
@@ -50,7 +50,7 @@ export class RegisterPageComponent implements OnInit{
         address: ['', Validators.required],
         job: ['', Validators.required],
         username: ['', Validators.required],
-       // roles: ['', Validators.required],
+        roles: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         password: [
           '',
@@ -102,9 +102,7 @@ export class RegisterPageComponent implements OnInit{
     email: '',
     address: '',
     gender: 0,
-      roles: new Roles({
-        name: ''
-    }),
+    roles: '',
     job: '',
     password: '',
     confirmPassword: '',
@@ -137,10 +135,6 @@ export class RegisterPageComponent implements OnInit{
   addNewUser() {
 
 
-   // if (this.form.invalid) {
-    //  return;
-     //} else {
-
 
       this.registrationRequest.username = this.newUser.username;
       this.registrationRequest.password = this.newUser.password;
@@ -167,7 +161,7 @@ export class RegisterPageComponent implements OnInit{
       /*} else {
         this.error = "passwords are not equal";
       }*/
-   // }
+  //  }
    }
 
   

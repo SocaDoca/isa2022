@@ -43,8 +43,11 @@
         
         <div class="form-group">
           <label style="font-weight: bold;">Role</label>
-          <input id="roles" name="roles" type="text"  ng-model="newUser.roles.name">
+          <input id="roles" name="roles" type="text" placeholder="Admin/Staff or User" formControlName="roles" [ngClass]="{ 'is-invalid': submitted && f['roles'].errors }" [(ngModel)]="newUser.roles">
 
+          <div *ngIf="submitted && f['roles'].errors" class="invalid-feedback">
+            <div *ngIf="f['roles'].errors['required']" style="text-align:center">Role is required</div>
+          </div>
 
 
         </div>
@@ -130,7 +133,7 @@
 
                   <label style="font-weight: bold;">Username</label>
                   <div class="form-group">
-                    <input id="email"  type="text" class="form-control" placeholder="dodati reggex" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" [(ngModel)]="newUser.email">
+                    <input id="email"  type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" [(ngModel)]="newUser.email">
 
                     <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
                       <div *ngIf="f['email'].errors['required']" style="text-align:center">Username is required</div>
