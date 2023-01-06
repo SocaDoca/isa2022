@@ -69,6 +69,7 @@ namespace MedicApp.Integrations
                 FirstName = findUser.FirstName,
                 LastName = findUser.LastName,
                 Token = encrypterToken,
+                Role = findUser.Role,
             };
         }
 
