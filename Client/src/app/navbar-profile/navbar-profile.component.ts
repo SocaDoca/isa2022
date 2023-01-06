@@ -33,11 +33,11 @@ export class NavbarProfileComponent {
     this.id = sessionStorage.getItem('id');
     this.role = sessionStorage.getItem('role');
     if (this.role == 'User') {
-      this.router.navigate(['profile', this.id]);
+      this.router.navigate(['/profile', this.id]);
 
     }  else if (this.role == 'Admin' || this.role == 'SysAdmin') {
 
-      this.router.navigate(['profileEmployee', this.id]);
+      this.router.navigate(['/profileEmployee', this.id]);
     } 
 
   }
