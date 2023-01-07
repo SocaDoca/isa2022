@@ -31,9 +31,20 @@ namespace MedicApp.Database
         public DbSet<Clinic> Clinics { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<WorkingHours> WorkingHours { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<AppointmentHistory> AppointmentHistories { get; set; }
+
+
+
+
+        #region Assignment Tables
         public DbSet<Clinic2WorkingHours> Clinic2WorkingHours { get; set; }
+        public DbSet<Appointment2Patient> Appointment2Patients { get; set; }
+        public DbSet<Appointment2Doctor> Appointment2Doctors { get; set; }
+        public DbSet<Appointment2Clinic> Appointment2Clinics { get; set; }
 
 
+        #endregion
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

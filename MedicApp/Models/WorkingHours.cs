@@ -3,8 +3,8 @@
     public class WorkingHours
     {
         public Guid Id { get; set; }
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
+        public int Start { get; set; }
+        public int End { get; set; }
         public bool IsMonday { get; set; }
         public bool IsTuesday { get; set; }
         public bool IsWednesday { get; set; }

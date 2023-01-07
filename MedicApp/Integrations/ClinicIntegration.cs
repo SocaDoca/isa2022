@@ -100,7 +100,6 @@ namespace MedicApp.Integrations
                     }
                 }
 
-
                 resultList.Add(clinicModel);
             }
 
@@ -158,6 +157,7 @@ namespace MedicApp.Integrations
             return resultList.Skip(parameters.Offset).Take(parameters.Limit).ToList();
         }
 
+        
     }
 
 

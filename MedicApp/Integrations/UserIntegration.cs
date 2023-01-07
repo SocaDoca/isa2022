@@ -19,8 +19,8 @@ namespace MedicApp.Integrations
     {
         User? Register(RegisterRequest model);
         LoginResponse LogIn(LoginModel model);
-        IEnumerable<User> GetAll();
-        User GetById(Guid id);
+        IEnumerable<UserLoadModel> GetAll();
+        UserLoadModel GetUserById(Guid id);
         bool UpdatePassword(Guid Id, string password);
         void Delete(Guid id);
     }
@@ -84,14 +84,16 @@ namespace MedicApp.Integrations
             return result;
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<UserLoadModel> GetAll()
         {
-            return _appDbContext.Users;
-        }
+            var resultList = new List<UserLoadModel>();
+            
+            foreach(var user in _appDbContext.Users)
+            {
+                resultList.Add(GetUserById(user.Id));
+            };
 
-        public User GetById(Guid id)
-        {
-            return getUser(id);
+            return resultList;
         }
 
         public User? Register(RegisterRequest model)
@@ -156,18 +158,34 @@ namespace MedicApp.Integrations
 
         public void Delete(Guid id)
         {
-            var user = getUser(id);
+            var user = _appDbContext.Users.FirstOrDefault(x => x.Id == id);
             _appDbContext.Users.Remove(user);
             _appDbContext.SaveChanges();
         }
 
 
 
-        private User getUser(Guid id)
+        public UserLoadModel GetUserById(Guid id)
         {
-            var user = _appDbContext.Users.Find(id);
-            if (user == null) throw new KeyNotFoundException("User not found");
-            return user;
+            var dbUser = _appDbContext.Users.Find(id);
+            if (dbUser == null)
+            {
+                throw (new KeyNotFoundException("User not found"));
+            }
+            var resultUser = new UserLoadModel
+            {
+                Id = dbUser.Id,
+                FullAddress = String.Format("{0}, {1}, {2}", dbUser.Address, dbUser.City, dbUser.Country),
+                Gender = dbUser.Gender,
+                //Job = dbUser.Jobs, 
+                Role = dbUser.Role,
+                LoyaltyPoints = dbUser.LoyaltyPoints,
+                Name = String.Format("{0} {1}", dbUser.FirstName, dbUser.LastName),
+                Username = dbUser.Username
+            };
+
+            return resultUser;
+
         }
     }
 

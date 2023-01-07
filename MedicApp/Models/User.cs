@@ -84,4 +84,18 @@ namespace MedicApp.Models
         public string City { get; set; }
         public string Job { get; set; }
     }
+
+
+    public class UserLoadModel
+    {
+        public Guid Id { get; set; }
+        public string Username { get; set; }
+        public string Name { get; set; }
+        public string FullAddress { get; set; }
+        public string Role { get; set; }
+        public string Job { get; set; }
+        public int LoyaltyPoints { get; set; }
+        public Genders Gender { get; set; }
+        public AppointmentHistory appointmentHistory { get; set; }
+    }
 }
