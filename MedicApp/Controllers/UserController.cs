@@ -22,7 +22,7 @@ namespace MedicApp.Controllers
         }
 
         [HttpGet("user/{id}")]
-        public UserLoadModel GetUserById([FromBody]Guid Id)
+        public UserLoadModel GetUserById(Guid Id)
         {
             return _userIntegration.GetUserById(Id);
         }

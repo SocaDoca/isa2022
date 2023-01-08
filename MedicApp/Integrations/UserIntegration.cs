@@ -98,9 +98,6 @@ namespace MedicApp.Integrations
 
         public User? Register(RegisterRequest model)
         {
-            //var roles = _appDbContext.Roles.Where(x => !x.IsDeleted).ToList();
-
-            // validate
             if (_appDbContext.Users.Any(x => x.Username == model.Username))
                 throw new AppException("Username '" + model.Username + "' is already taken");
 
@@ -115,14 +112,13 @@ namespace MedicApp.Integrations
                 City = model?.City ?? string.Empty,
                 Email = model.Email,
                 Gender = model.Gender,
-                Role = model.Roles
+                Role = model.Roles,
+                JMBG = model.JMBG,
+                Mobile = model.Moblie,
+                Job = model.Job,
 
             };
-            //if (roles.Any(x => x.Id == model.Roles.Id))
-            //{
-            //    newUser.Role_RefID = roles.FirstOrDefault(x => x.Id == model.Roles.Id).Id;
-            //}
-
+            
             if (model.Password == model.ConfirmPassword)
             {
                 using (HMACSHA512? hmac = new HMACSHA512())
@@ -177,11 +173,14 @@ namespace MedicApp.Integrations
                 Id = dbUser.Id,
                 FullAddress = String.Format("{0}, {1}, {2}", dbUser.Address, dbUser.City, dbUser.Country),
                 Gender = dbUser.Gender,
-                //Job = dbUser.Jobs, 
+                Job = dbUser.Job, 
                 Role = dbUser.Role,
                 LoyaltyPoints = dbUser.LoyaltyPoints,
                 Name = String.Format("{0} {1}", dbUser.FirstName, dbUser.LastName),
-                Username = dbUser.Username
+                Username = dbUser.Username,
+                Email = dbUser.Email,
+                Mobile = dbUser.Mobile,
+                JMBG = dbUser.JMBG
             };
 
             return resultUser;

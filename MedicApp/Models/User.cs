@@ -11,13 +11,15 @@ namespace MedicApp.Models
         public string LastName { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
+        public string Mobile { get; set; }
+        public string JMBG { get; set; }
         public string Address { get; set; }
         public string Country { get; set; }
         public Genders Gender { get; set; }
         public int LoyaltyPoints { get; set; }
         public string City { get; set; }
         public string Role { get; set; }
-        //public Guid Role_RefID { get; set; }        
+        public string Job { get; set; }        
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public bool IsDeleted { get; set; }  
@@ -63,36 +65,27 @@ namespace MedicApp.Models
         public string ConfirmPassword { get; set; }
         [Required]
         public string Email { get; set; }
+        [Required]
+        public string JMBG { get; set; }
         public string? Moblie { get; set; }
         public string? Address { get; set; }
         public string? Country { get; set; }
         public string? City { get; set; }
         public Genders Gender { get; set; }
-       
         public string Roles { get; set; }
         public string Job { get; set; }
     }
-    public class UpdateRequest
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string Moblie { get; set; }
-        public string Email { get; set; }
-        public string Address { get; set; }
-        public string Country { get; set; }
-        public string Role { get; set; }
-        public string City { get; set; }
-        public string Job { get; set; }
-    }
-
 
     public class UserLoadModel
     {
         public Guid Id { get; set; }
         public string Username { get; set; }
         public string Name { get; set; }
+        public string JMBG { get; set; }
         public string FullAddress { get; set; }
         public string Role { get; set; }
+        public string Email { get; set; }
+        public string Mobile { get; set; }
         public string Job { get; set; }
         public int LoyaltyPoints { get; set; }
         public Genders Gender { get; set; }
