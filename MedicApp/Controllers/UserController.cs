@@ -21,10 +21,15 @@ namespace MedicApp.Controllers
             _appDbContext = appDbContext;
         }
 
-        [HttpGet("user/{id}")]
+        [HttpGet("/{id}")]
         public UserLoadModel GetUserById(Guid Id)
         {
             return _userIntegration.GetUserById(Id);
+        }
+        [HttpGet("update/{id}")]
+        public bool UpdateUser(UpdateUser updateUser)
+        {
+            return _userIntegration.UpdateUser(updateUser);
         }
 
     }

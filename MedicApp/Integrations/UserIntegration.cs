@@ -21,6 +21,7 @@ namespace MedicApp.Integrations
         LoginResponse LogIn(LoginModel model);
         IEnumerable<UserLoadModel> GetAll();
         UserLoadModel GetUserById(Guid id);
+        bool UpdateUser(UpdateUser updateUser);
         bool UpdatePassword(Guid Id, string password);
         void Delete(Guid id);
     }
@@ -87,8 +88,8 @@ namespace MedicApp.Integrations
         public IEnumerable<UserLoadModel> GetAll()
         {
             var resultList = new List<UserLoadModel>();
-            
-            foreach(var user in _appDbContext.Users)
+
+            foreach (var user in _appDbContext.Users)
             {
                 resultList.Add(GetUserById(user.Id));
             };
@@ -118,7 +119,7 @@ namespace MedicApp.Integrations
                 Job = model.Job,
 
             };
-            
+
             if (model.Password == model.ConfirmPassword)
             {
                 using (HMACSHA512? hmac = new HMACSHA512())
@@ -159,7 +160,24 @@ namespace MedicApp.Integrations
             _appDbContext.SaveChanges();
         }
 
+        public bool UpdateUser(UpdateUser updateUser)
+        {
+            var getUser = _appDbContext.Users.First(x => x.Id == updateUser.Id);
 
+            if (getUser == null)
+            {
+                return false;
+            }
+            getUser.Address = updateUser.Address;
+            getUser.Email = updateUser.Email;
+            getUser.Role = updateUser.Role;
+            getUser.City = updateUser.City;
+            getUser.Country = updateUser.Country;
+
+            _appDbContext.Users.Update(getUser);
+            _appDbContext.SaveChanges();
+            return true;
+        }
 
         public UserLoadModel GetUserById(Guid id)
         {
@@ -173,7 +191,7 @@ namespace MedicApp.Integrations
                 Id = dbUser.Id,
                 FullAddress = String.Format("{0}, {1}, {2}", dbUser.Address, dbUser.City, dbUser.Country),
                 Gender = dbUser.Gender,
-                Job = dbUser.Job, 
+                Job = dbUser.Job,
                 Role = dbUser.Role,
                 LoyaltyPoints = dbUser.LoyaltyPoints,
                 Name = String.Format("{0} {1}", dbUser.FirstName, dbUser.LastName),
