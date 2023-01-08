@@ -13,12 +13,12 @@
     <div class="center" id="comp1">
 
 
-      <form [formGroup]="form" >
+      <form [formGroup]="form">
         <br><br>
 
         <div class="form-group">
           <label style="font-weight: bold;">First name</label>
-          <input id="firstName"  type="text" class="form-control" formControlName="firstName" [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }" [(ngModel)]="newUser.firstName"/>
+          <input id="firstName" type="text" class="form-control" formControlName="firstName" [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }" [(ngModel)]="newUser.firstName" />
 
 
           <div *ngIf="submitted && f['firstName'].errors" class="invalid-feedback">
@@ -32,7 +32,7 @@
 
         <div class="form-group">
           <label style="font-weight: bold;">Last name</label>
-          <input id="lastName"  type="text" class="form-control" formControlName="lastName" [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }" [(ngModel)]="newUser.lastName">
+          <input id="lastName" type="text" class="form-control" formControlName="lastName" [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }" [(ngModel)]="newUser.lastName">
 
           <div *ngIf="submitted && f['lastName'].errors" class="invalid-feedback">
             <div *ngIf="f['lastName'].errors['required']" style="text-align:center">Lastname is required</div>
@@ -40,7 +40,7 @@
         </div>
 
 
-        
+
         <div class="form-group">
           <label style="font-weight: bold;">Role</label>
           <input id="roles" name="roles" type="text" placeholder="Admin/Staff or User" formControlName="roles" [ngClass]="{ 'is-invalid': submitted && f['roles'].errors }" [(ngModel)]="newUser.roles">
@@ -54,16 +54,35 @@
 
         <label style="font-weight: bold;">JMBG</label>
         <div class="form-group">
-          <input id="username"  type="text" class="form-control" formControlName="username" [ngClass]="{ 'is-invalid': submitted && f['username'].errors }" [(ngModel)]="newUser.username">
+          <input id="jmbg" type="text" class="form-control" formControlName="jmbg" [ngClass]="{ 'is-invalid': submitted && f['jmbg'].errors }" [(ngModel)]="newUser.jmbg">
 
-          <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
-            <div *ngIf="f['username'].errors['required']" style="text-align:center">JMBG is required</div>
+
+          <div *ngIf="submitted && f['jmbg'].errors" class="invalid-feedback">
+            <div *ngIf="f['jmbg'].errors['required']" style="text-align:center">Jmbg is required</div>
+            <div *ngIf="f['jmbg'].errors['minlength']" style="text-align:center">
+              Jmbg must be at least 13 characters
+            </div>
+            <div *ngIf="f['jmbg'].errors['maxlength']" style="text-align:center">
+              Jmbg must not exceed 13 characters
+            </div>
+          </div>
+        </div>
+
+        <label style="font-weight: bold;">Mobile</label>
+        <div class="form-group">
+          <input id="moblie" type="text" class="form-control" formControlName="moblie" [ngClass]="{ 'is-invalid': submitted && f['moblie'].errors }" [(ngModel)]="newUser.moblie">
+
+
+          <div *ngIf="submitted && f['moblie'].errors" class="invalid-feedback">
+            <div *ngIf="f['moblie'].errors['required']" style="text-align:center">Mobile is required</div>
+
           </div>
         </div>
 
 
 
-        </form>
+
+      </form>
 
 
     </div><br>
@@ -133,11 +152,11 @@
 
                   <label style="font-weight: bold;">Username</label>
                   <div class="form-group">
-                    <input id="email"  type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" [(ngModel)]="newUser.email">
+                    <input id="username"  type="text" class="form-control" formControlName="username" [ngClass]="{ 'is-invalid': submitted && f['username'].errors }" [(ngModel)]="newUser.username">
 
-                    <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-                      <div *ngIf="f['email'].errors['required']" style="text-align:center">Username is required</div>
-                      <div *ngIf="f['email'].errors['email']" style="text-align:center">Email is invalid</div>
+                    <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+                      <div *ngIf="f['username'].errors['required']" style="text-align:center">Username is required</div>
+                      <div *ngIf="f['username'].errors['email']" style="text-align:center">Email is invalid</div>
                     </div>
                   </div>
 

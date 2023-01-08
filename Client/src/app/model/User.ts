@@ -15,6 +15,8 @@ export interface UserInterface {
   gender?: Genders;
   password: string;
   confirmPassword: string;
+  jmbg?: string;
+  moblie?: string;
 
 }
 
@@ -32,6 +34,8 @@ export class User implements UserInterface {
   gender?: Genders;
   password: string;
   confirmPassword: string;
+  jmbg?: string;
+  moblie?: string;
 
   constructor(obj: UserInterface) {
     this.id = obj.id;
@@ -47,6 +51,8 @@ export class User implements UserInterface {
    this.job = obj.job;
     this.password = obj.password;
     this.confirmPassword = obj.confirmPassword;
+    this.jmbg = obj.jmbg;
+    this.moblie = obj.moblie;
 
   }
 }
