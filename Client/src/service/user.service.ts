@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from './../app/model/User';
+import { UserLoadModel } from './../app/model/UserLoadModel';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
@@ -7,12 +8,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UserService {
-  url = "http://localhost:5017/Users/saveUser";
+  url = "http://localhost:5017/User/user";
   constructor(private http: HttpClient) { }
 
-  saveUser(user: User): Observable<User> {
-    return this.http.post<User>(this.url, user);
-  }
 
+  getUser(id: string): Observable<UserLoadModel> {
+    return this.http.get<UserLoadModel>(`${this.url}/${id}`);
+  }
 
 }

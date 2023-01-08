@@ -32,11 +32,12 @@
 
   <div class="row" class="container">
     <div class="center" id="comp1">
-      <h1></h1>
 
       <h3> PROFILE</h3>
 
-      <label [routerLink]="['view-connections']" id="conn"> category </label>
+      <label>{{user.name}}</label>
+
+      <label > {{user.role}} </label>
 
 
 
@@ -50,16 +51,13 @@
           <div class="center" id="comp2">
             <br>
             <label style="font-weight: bold;">Username</label>
-            <label></label>
-            <label>----------------------------------------</label><br>
-            <label style="font-weight: bold;">Email</label>
-            <label></label>
+            <label>{{user.username}}</label>
             <label>----------------------------------------</label><br>
             <label style="font-weight: bold;">JMBG</label>
-            <label></label>
+            <label>{{user.jmbg}}</label>
             <label>----------------------------------------</label><br>
             <label style="font-weight: bold;">Gender</label>
-            <label></label>
+            <label>{{user.gender}}</label>
             <label>----------------------------------------</label><br>
 
           </div>
@@ -67,17 +65,15 @@
 
       <br>
       <label style="font-weight: bold;">Mobile</label>
-      <label></label>
+      <label>{{user.mobile}}</label>
       <label>----------------------------------------</label><br>
       <label style="font-weight: bold;">Address</label>
-      <label></label>
+      <label>{{user.fullAddress}}</label>
       <label>----------------------------------------</label><br>
       <label style="font-weight: bold;">Profession</label>
-      <label></label>
+      <label>{{user.job}}</label>
       <label>----------------------------------------</label><br>
-      <label style="font-weight: bold;">Education</label>
-      <label></label>
-      <label>----------------------------------------</label><br>
+
     </div>
   </div>
 

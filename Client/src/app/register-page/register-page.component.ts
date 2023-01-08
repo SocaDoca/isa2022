@@ -49,9 +49,10 @@ export class RegisterPageComponent implements OnInit{
         city: ['', Validators.required],
         address: ['', Validators.required],
         job: ['', Validators.required],
-        username: ['', Validators.required],
+        moblie: ['', Validators.required],
+        jmbg: ['', [Validators.required, Validators.maxLength(13), Validators.minLength(13)]],
         roles: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
+        username: ['', [Validators.required, Validators.email]],
         password: [
           '',
           [
@@ -99,7 +100,7 @@ export class RegisterPageComponent implements OnInit{
     firstName: '',
     lastName: '',
     username: '',
-    email: '',
+    email: 'bla',
     address: '',
     gender: 0,
     roles: '',
@@ -107,7 +108,9 @@ export class RegisterPageComponent implements OnInit{
     password: '',
     confirmPassword: '',
     country: '',
-    city:''
+    city: '',
+    jmbg: '',
+    moblie: ''
 
   });
   choices_for_gender = ['Female', 'Male', 'Other'];
@@ -122,13 +125,13 @@ export class RegisterPageComponent implements OnInit{
     address: this.newUser.address,
     email: this.newUser.email,
     job: this.newUser.job,
+    jmbg: this.newUser.jmbg,
     confirmPassword: this.newUser.confirmPassword,
     roles: this.newUser.roles,
     gender: this.newUser.gender,
-   // moblie: this.newUser.moblie
+    moblie: this.newUser.moblie,
     country: this.newUser.country,
     city: this.newUser.city
-
   })
 
 
@@ -145,8 +148,9 @@ export class RegisterPageComponent implements OnInit{
       this.registrationRequest.email = this.newUser.email;
       this.registrationRequest.address = this.newUser.address;
       this.registrationRequest.job = this.newUser.job;
+      this.registrationRequest.jmbg = this.newUser.jmbg;
       this.registrationRequest.roles = this.newUser.roles;
-      //this.registrationRequest.moblie = this.newUser.moblie;
+    this.registrationRequest.moblie = this.newUser.moblie;
       this.registrationRequest.country = this.newUser.country;
       this.registrationRequest.city = this.newUser.city;
 

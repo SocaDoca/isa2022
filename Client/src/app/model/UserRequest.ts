@@ -15,6 +15,8 @@ export interface UserRequestInterface {
   gender?: Genders;
   password: string;
   confirmPassword: string;
+  jmbg?: string;
+  moblie?: string;
 }
 
 export class UserRequest implements UserRequestInterface {
@@ -31,6 +33,8 @@ export class UserRequest implements UserRequestInterface {
   gender?: Genders;
   password: string;
   confirmPassword: string;
+  jmbg?: string;
+  moblie?: string;
 
   constructor(obj: UserRequestInterface) {
     this.id = obj.id;
@@ -46,6 +50,7 @@ export class UserRequest implements UserRequestInterface {
     this.job = obj.job;
     this.password = obj.password;
     this.confirmPassword = obj.confirmPassword;
-
+    this.jmbg = obj.jmbg;
+    this.moblie = obj.moblie;
   }
 }
