@@ -9,70 +9,62 @@
 </head>
 <body>
 
-  <div class="row" class="container">
+  <div class="center" class="container">
     <div class="center" id="comp1">
 
-
-      <br><br>
-      <label style="font-weight: bold;">First name</label>
-      <div class="form-group">
-        <input id="name" name="name" type="text" class="from-control">
-      </div>
-      <label style="font-weight: bold;">Last name</label>
-      <div class="form-group">
-        <input id="surname" name="surname" type="text" class="from-control">
-      </div>
-      <label style="font-weight: bold;">Username</label>
-      <div class="form-group">
-        <input id="username" name="username" type="text" class="from-control">
-      </div>
-
-
       <h3> PROFILE</h3>
-
-    </div><br>
-    <div class="center" id="comp2">
       <br><br>
-      <label style="font-weight: bold;">JMBG</label>
+
+      <label style="font-weight: bold;">Email</label>
       <div class="form-group">
-        <input id="jmbg" name="jmbg" type="text" class="from-control">
+        <input id="email" name="email" type="text" class="from-control" [(ngModel)]="user.email">
       </div>
-
-
-      <label style="font-weight: bold;">Gender</label>
+      <label style="font-weight: bold;">Address</label>
       <div class="form-group">
-        <input id="gender" name="gender" type="text" class="from-control">
+        <input id="address" name="address" type="text" class="from-control" [(ngModel)]="user.address">
       </div>
-
       <label style="font-weight: bold;">Mobile</label>
       <div class="form-group">
-        <input id="mobile" name="mobile" type="text" class="from-control">
+        <input id="mobile" name="mobile" type="text" class="from-control" [(ngModel)]="user.mobile">
       </div>
+      <br><br>
+
+    </div><br>
+          <div class="center" id="comp2">
+            <br><br>
+
+            <label style="font-weight: bold;">City</label>
+            <div class="form-group">
+              <input id="city" name="city" type="text" class="from-control" [(ngModel)]="user.city">
+            </div>
 
 
-      <br><br><br><button class="btn1" style="color:white;"> Save changes</button>
-    </div>
+            <label style="font-weight: bold;">Profession</label>
+            <div class="form-group">
+              <input id="job" name="job" type="text" class="from-control" [(ngModel)]="user.job">
+            </div>
+
+
+            <label style="font-weight: bold;">Country</label>
+            <div class="form-group">
+              <input id="country" name="country" type="text" class="from-control" [(ngModel)]="user.country">
+            </div>
+
+
+            <label style="font-weight: bold;">Password</label>
+            <div class="form-group">
+              <input class="from-control" [type]="show ? 'text' : 'password'" [(ngModel)]="user.password" />
+              &nbsp;
+              <mat-icon (click)="password()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </div>
+
+
+            <br><br><br><button class="btn1" style="color:white;" (click)="showDashboard()"> Save changes</button>
+          </div>
     <div class="center" id="comp3">
       <br><br>
 
-      <label style="font-weight: bold;">Address</label>
-      <div class="form-group">
-        <input id="address" name="address" type="text" class="from-control">
-      </div>
 
-
-      <label style="font-weight: bold;">Profession</label>
-      <div class="form-group">
-        <input id="job" name="job" type="text" class="from-control">
-      </div>
-
-
-      <label style="font-weight: bold;">Password</label>
-      <div class="form-group">
-        <input class="from-control" [type]="show ? 'text' : 'password'" />
-        &nbsp;
-        <mat-icon (click)="password()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
-      </div>
 
 
 
