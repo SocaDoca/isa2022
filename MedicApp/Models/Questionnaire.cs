@@ -3,29 +3,20 @@
     public class Questionnaire
     {
         public Guid Id { get; set; }
-
-        //Patient 
-        public string PatienetName { get; set; }
-        public string JMBG { get; set; }
-        public DateTime BirthDate { get; set; }
-        public string Address { get;set; }
-        public string City { get; set; }
-        public string HomePhone { get; set; }
-        public string MobilePhone { get; set; } 
-        public string Job { get; set; }
-        public int NumberOfGivenBlood { get; set; }
-        public string PatientSignature { get;set;}
-
-
-        //Employee
-        //Registration 
-        public BloodType BloodType { get; set; }
-        public string DoctorAttention { get; set; }
-        public string ResponsiblePerson { get; set; }
+        public bool question1 { get; set; }
+        public bool question2 { get; set; }
+        public bool question3 { get; set; }
+        public bool question4 { get; set; }
+        public bool question5 { get; set; }
+        public bool question6 { get; set; }
+        public bool question7 { get; set; }
+        public bool question8 { get; set; }
+        public bool question9 { get; set; }
+        public bool question10 { get; set; }
+        public bool question11 { get; set; }
+        public bool question12 { get; set; }
 
         public bool IsDeleted { get; set; }
-
-
 
         public Questionnaire()
         {
@@ -33,14 +24,5 @@
             IsDeleted = false;
         }        
         
-    }
-
-
-    public enum BloodType
-    {
-        A = 1,
-        B = 2,
-        AB = 3,
-        O = 4,
     } 
 }

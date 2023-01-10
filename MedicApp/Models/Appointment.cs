@@ -6,33 +6,33 @@ namespace MedicApp.Models
     {
         public Guid Id { get; set; }
         public string? Title { get; set; }
-        public DateTime PlannedDate { get; set; }
         public DateTime StartTime { get; set; }
-        public int Duration { get; set; } //in minutes
+        public int Duration { get; set; } //in minutes rounded
         public bool IsDeleted { get; set; }
-        public AppointmentStatus Status { get; set; }
+        public Guid? Clinic_RefID { get; set; }
+        public Guid? Patient_RefID { get; set; }
+        public Guid? Doctor_RefID { get; set; }
+        public bool IsCanceled { get; set; }
+        public bool IsFinished { get; set; }
 
         public Appointment()
         {
             Id = Guid.NewGuid();
             IsDeleted = false;
             Duration = 20;
-            Status = AppointmentStatus.Planned;
+            Title = "Blood appointment";            
         }
     }
 
-
-
     public class AppointmentByPatientSaveModel
     {
-
         // We use this model only when Patient is logged on
         public Guid? Id { get; set; }
         public Guid Clinic_RefID { get; set; }
-        public string? Title { get; set; }
+        public string? Title { get; set; } 
         public DateTime PlannedDate { get; set; }
         public DateTime StartTime { get; set; }
-        public Guid Patient_RefID{ get; set; } 
+        public Guid? Patient_RefID{ get; set; } 
         public User? Doctor{ get; set; }
         
     }

@@ -16,7 +16,7 @@ namespace MedicApp.Models
         public string? Address { get; set; }
         public string? Country { get; set; }
         public Genders Gender { get; set; }
-        public int? LoyaltyPoints { get; set; }
+        public int LoyaltyPoints { get; set; }
         public string? City { get; set; }
         public string? Role { get; set; }
         public string? Job { get; set; }        

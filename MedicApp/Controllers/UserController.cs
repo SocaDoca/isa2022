@@ -21,18 +21,31 @@ namespace MedicApp.Controllers
             _appDbContext = appDbContext;
         }
 
-        [HttpGet("/{id:guid}")]
+        [HttpGet("get-by-id")]
         public UserLoadModel GetUserById(Guid Id)
         {
             return _userIntegration.GetUserById(Id);
         }
-        [HttpGet("update/{id:guid}")]
+
+        [HttpGet]
+        public List<UserLoadModel> GetAll()
+        {
+            return _userIntegration.GetAll();
+        }
+
+        [HttpDelete("remove")]
+        public bool DeleteUserById(Guid id)
+        {
+            return _userIntegration.Delete(id);
+        }
+
+        [HttpPut("update/{id:guid}")]
         public bool UpdateUser(UpdateUser updateUser)
         {
             return _userIntegration.UpdateUser(updateUser);
         }
 
-        [HttpGet("user/{id:guid}/update-password")]
+        [HttpPut("{id:guid}/update-password")]
         public bool UpdatePassword(Guid id, string password)
         {
             return _userIntegration.UpdatePassword(id, password);

@@ -19,11 +19,11 @@ namespace MedicApp.Integrations
     {
         User? Register(RegisterRequest model);
         LoginResponse LogIn(LoginModel model);
-        IEnumerable<UserLoadModel> GetAll();
+        List<UserLoadModel> GetAll();
         UserLoadModel GetUserById(Guid id);
         bool UpdateUser(UpdateUser updateUser);
         bool UpdatePassword(Guid Id, string password);
-        void Delete(Guid id);
+        bool Delete(Guid id);
     }
 
     public class UserIntegration : IUserIntegration
@@ -85,7 +85,7 @@ namespace MedicApp.Integrations
             return result;
         }
 
-        public IEnumerable<UserLoadModel> GetAll()
+        public List<UserLoadModel> GetAll()
         {
             var resultList = new List<UserLoadModel>();
 
@@ -153,11 +153,16 @@ namespace MedicApp.Integrations
             return true;
         }
 
-        public void Delete(Guid id)
+        public bool Delete(Guid id)
         {
             var user = _appDbContext.Users.FirstOrDefault(x => x.Id == id);
+            if(user  == null)
+            {
+                throw new KeyNotFoundException("User does not exist");
+            }
             _appDbContext.Users.Remove(user);
             _appDbContext.SaveChanges();
+            return true;
         }
 
         public bool UpdateUser(UpdateUser updateUser)
