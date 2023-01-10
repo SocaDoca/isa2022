@@ -2,9 +2,9 @@ import { Roles } from './Roles';
 import { Genders } from './Genders';
 
 export interface UserRequestInterface {
-  id?: number;
+  id?: string;
   firstName?: string;
-  lastName: string;
+  lastName?: string;
   username?: string;
   email?: string;
   address?: string;
@@ -13,16 +13,17 @@ export interface UserRequestInterface {
   job?: string;
   roles?: string;
   gender?: Genders;
-  password: string;
-  confirmPassword: string;
+  password?: string;
+  fullAddress?: string;
+  confirmPassword?: string;
   jmbg?: string;
-  moblie?: string;
+  mobile?: string;
 }
 
 export class UserRequest implements UserRequestInterface {
-  id?: number;
+  id?: string;
   firstName?: string;
-  lastName: string;
+  lastName?: string;
   username?: string;
   email?: string;
   address?: string;
@@ -31,10 +32,11 @@ export class UserRequest implements UserRequestInterface {
   job?: string;
   roles?: string;
   gender?: Genders;
-  password: string;
-  confirmPassword: string;
+  password?: string;
+  confirmPassword?: string;
   jmbg?: string;
-  moblie?: string;
+  mobile?: string;
+  fullAddress?: string;
 
   constructor(obj: UserRequestInterface) {
     this.id = obj.id;
@@ -51,6 +53,7 @@ export class UserRequest implements UserRequestInterface {
     this.password = obj.password;
     this.confirmPassword = obj.confirmPassword;
     this.jmbg = obj.jmbg;
-    this.moblie = obj.moblie;
+    this.mobile = obj.mobile;
+    this.fullAddress = obj.fullAddress;
   }
 }

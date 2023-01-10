@@ -15,6 +15,7 @@ export interface UserLoadModelInterface {
   gender?: Genders;
   fullAddress?: string;
   mobile?: string;
+  password?: string;
 
 
 }
@@ -33,6 +34,7 @@ export class UserLoadModel implements UserLoadModelInterface {
   gender?: Genders;
   fullAddress?: string;
   mobile?: string;
+  password?: string;
 
 
   constructor(obj: UserLoadModelInterface) {
@@ -49,6 +51,7 @@ export class UserLoadModel implements UserLoadModelInterface {
     this.job = obj.job;
     this.fullAddress = obj.fullAddress;
     this.mobile = obj.mobile;
+    this.password = obj.password;
 
 
   }
