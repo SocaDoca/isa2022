@@ -16,7 +16,14 @@ namespace MedicApp.Integrations
 
         public Appointment CreateAppointment(AppointmentSaveModel appointmentSave)
         {
+            var dbAppointment = _appDbContext.Appointments.Where(x => !x.IsDeleted && x.Id == appointmentSave.Id).FirstOrDefault();
+            if (dbAppointment == null)
+            {
+                dbAppointment = new Appointment();
+                
+            }
 
+            return dbAppointment;
         } 
 
         //public async Task<Appointment> CreateAppointmentByPatient(AppointmentByPatientSaveModel appointmentSave)
