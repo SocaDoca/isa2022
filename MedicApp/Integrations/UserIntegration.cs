@@ -150,7 +150,7 @@ namespace MedicApp.Integrations
                 findUser.PasswordSalt = hmac.Key;
                 findUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
-            _appDbContext.Users.Add(findUser);
+            _appDbContext.Users.Update(findUser);
             _appDbContext.SaveChanges();
             return true;
         }
