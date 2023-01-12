@@ -14,9 +14,12 @@ namespace MedicApp.Integrations
     public class ClinicIntegration : IClinicIntegration
     {
         public readonly AppDbContext _appDbContext;
-        public ClinicIntegration(AppDbContext appDbContext)
+        public readonly IWorkingHoursIntegration _workingHoursIntegration;
+
+        public ClinicIntegration(AppDbContext appDbContext , IWorkingHoursIntegration workingHoursIntegration)
         {
             _appDbContext = appDbContext;
+            _workingHoursIntegration = workingHoursIntegration;
         }
 
 
@@ -28,6 +31,9 @@ namespace MedicApp.Integrations
                 dbClinic = new Clinic();
                 _appDbContext.Clinics.Add(dbClinic);
             }
+            var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id).ToList();
+            var dbWorkingHoursIds = clinic2WorkingHours.Select(x => x.WorkingHours_RefID).ToList();
+            
 
             dbClinic.Name = clinicSave.Name;
             dbClinic.Address = clinicSave.Address;
@@ -36,29 +42,32 @@ namespace MedicApp.Integrations
             dbClinic.Description = clinicSave.Description;
             dbClinic.Phone = clinicSave.Phone;
             dbClinic.Rating = clinicSave.Rating;
+
             foreach (var item in clinicSave.WorkHours)
             {
-                var workHours = new WorkingHours
+                if(!dbWorkingHoursIds.Contains(item.Id))
                 {
-                    Start = item.Start,
-                    End = item.End,
-                    IsMonday = item.IsMonday,
-                    IsTuesday = item.IsTuesday,
-                    IsWednesday = item.IsWednesday,
-                    IsThursday = item.IsThursday,
-                    IsFriday = item.IsFriday,
-                    IsSaturday = item.IsSaturday,
-                };
+                    var workHours = _workingHoursIntegration.SaveWorkingHours(item);
+                    var dbClinic2WorkingHours = new Clinic2WorkingHours
+                    {
+                        Clinic_RefID = dbClinic.Id,
+                        WorkingHours_RefID = workHours.Id
+                    };
 
-                _appDbContext.WorkingHours.Add(workHours);
+                    _appDbContext.Clinic2WorkingHours.Add(dbClinic2WorkingHours);
+                }
+                var workingHour = _workingHoursIntegration.LoadWorkingHourById(item.Id);
+                workingHour.Start = item.Start;
+                workingHour.End = item.End;
+                workingHour.IsMonday = item.IsMonday;
+                workingHour.IsTuesday = item.IsTuesday;
+                workingHour.IsWednesday = item.IsWednesday;
+                workingHour.IsThursday = item.IsThursday;
+                workingHour.IsFriday = item.IsFriday;
+                workingHour.IsSaturday = item.IsSaturday;
 
-                var clinic2WorkingHours = new Clinic2WorkingHours
-                {
-                    Clinic_RefID = dbClinic.Id,
-                    WorkingHours_RefID = item.Id
-                };
-
-                _appDbContext.Clinic2WorkingHours.Add(clinic2WorkingHours);
+                _appDbContext.WorkingHours.Update(workingHour);          
+         
             }
 
             _appDbContext.SaveChanges();

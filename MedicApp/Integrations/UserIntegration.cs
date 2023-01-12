@@ -74,29 +74,39 @@ namespace MedicApp.Integrations
             };
         }
 
-        private bool CheckPassword(string password, User user)
+        public User SaveUser(SaveUserModel createUser)
         {
-            bool result;
-            using (HMACSHA512? hmac = new HMACSHA512(user.PasswordSalt))
+            var dbUser = _appDbContext.Users.Where(x => !x.IsDeleted && x.Id == createUser.Id).FirstOrDefault();
+            if(dbUser == null)
             {
-                var compute = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                result = compute.SequenceEqual(user.PasswordHash);
+                dbUser = new User()
+                {
+                    JMBG = createUser.JMBG,
+                };
             }
-            return result;
-        }
+            dbUser.FirstName = createUser.FirstName;
+            dbUser.LastName = createUser.LastName;
+            dbUser.Email = createUser.Email;
+            dbUser.Address = createUser.Address;
+            dbUser.Username = createUser.Username;
+            dbUser.City = createUser.City;
+            dbUser.Country = createUser.Country;
+            dbUser.Gender = createUser.Gender;
+            dbUser.Job = createUser.Job;
 
-        public List<UserLoadModel> GetAll()
-        {
-            var resultList = new List<UserLoadModel>();
-
-            foreach (var user in _appDbContext.Users)
+            if(createUser.Password == createUser.ConfirmPassword)
             {
-                resultList.Add(GetUserById(user.Id));
-            };
+                using (HMACSHA512? hmac = new HMACSHA512())
+                {
+                    dbUser.PasswordSalt = hmac.Key;
+                    dbUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(createUser.Password));
+                }
+            }
 
-            return resultList;
+            _appDbContext.Users.Add(dbUser);
+            _appDbContext.SaveChanges();
+            return dbUser;
         }
-
         public User? Register(RegisterRequest model)
         {
             if (_appDbContext.Users.Any(x => x.Username == model.Username))
@@ -138,23 +148,7 @@ namespace MedicApp.Integrations
             return newUser;
         }
 
-        public bool UpdatePassword(Guid Id, string password)
-        {
-            var findUser = _appDbContext.Users.FirstOrDefault(x => x.Id == Id);
-            if (findUser == null)
-            {
-                return false;
-            }
-            using (HMACSHA512? hmac = new HMACSHA512())
-            {
-                findUser.PasswordSalt = hmac.Key;
-                findUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-            _appDbContext.Users.Update(findUser);
-            _appDbContext.SaveChanges();
-            return true;
-        }
-
+        #region Delete
         public bool Delete(Guid id)
         {
             var user = _appDbContext.Users.FirstOrDefault(x => x.Id == id);
@@ -167,6 +161,9 @@ namespace MedicApp.Integrations
             return true;
         }
 
+        #endregion
+
+        #region Update 
         public bool UpdateUser(UpdateUser updateUser)
         {
             var getUser = _appDbContext.Users.First(x => x.Id == updateUser.Id);
@@ -184,6 +181,38 @@ namespace MedicApp.Integrations
             _appDbContext.Users.Update(getUser);
             _appDbContext.SaveChanges();
             return true;
+        }
+        public bool UpdatePassword(Guid Id, string password)
+        {
+            var findUser = _appDbContext.Users.FirstOrDefault(x => x.Id == Id);
+            if (findUser == null)
+            {
+                return false;
+            }
+            using (HMACSHA512? hmac = new HMACSHA512())
+            {
+                findUser.PasswordSalt = hmac.Key;
+                findUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+            _appDbContext.Users.Update(findUser);
+            _appDbContext.SaveChanges();
+            return true;
+        }
+
+
+        #endregion
+
+        #region Get Methods
+        public List<UserLoadModel> GetAll()
+        {
+            var resultList = new List<UserLoadModel>();
+
+            foreach (var user in _appDbContext.Users)
+            {
+                resultList.Add(GetUserById(user.Id));
+            };
+
+            return resultList;
         }
 
         public UserLoadModel GetUserById(Guid id)
@@ -211,6 +240,21 @@ namespace MedicApp.Integrations
             return resultUser;
 
         }
+
+        #endregion
+
+        #region Support methods
+        private bool CheckPassword(string password, User user)
+        {
+            bool result;
+            using (HMACSHA512? hmac = new HMACSHA512(user.PasswordSalt))
+            {
+                var compute = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                result = compute.SequenceEqual(user.PasswordHash);
+            }
+            return result;
+        }
+        #endregion
     }
 
 

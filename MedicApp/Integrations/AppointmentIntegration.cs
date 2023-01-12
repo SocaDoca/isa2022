@@ -17,11 +17,28 @@ namespace MedicApp.Integrations
         public Appointment CreateAppointment(AppointmentSaveModel appointmentSave)
         {
             var dbAppointment = _appDbContext.Appointments.Where(x => !x.IsDeleted && x.Id == appointmentSave.Id).FirstOrDefault();
+            var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => !x.IsDeleted && x.Id == appointmentSave.Clinic.Id);
+            var allDbWorkingHours = _appDbContext.WorkingHours.ToList();
+            var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.Where(x => x.Clinic_RefID == dbClinic.Id).ToList();
+            var dbWorkingHoursId = clinic2WorkingHours.Select(x => x.WorkingHours_RefID).ToList();
+            var dbClinicWorkingHours = allDbWorkingHours.Where(x => dbWorkingHoursId.Any(s => s == x.Id)).ToList();
+
+
+            if(dbClinic == null)
+            {
+                throw new KeyNotFoundException("Clinic does not exist");
+            }
+            
             if (dbAppointment == null)
             {
-                dbAppointment = new Appointment();
-                
+                dbAppointment = new Appointment();                
             }
+            dbAppointment.StartTime = appointmentSave.StartTime;
+            dbAppointment.Patient_RefID = appointmentSave.Patient.Id;
+            dbAppointment.Clinic_RefID = appointmentSave.Clinic.Id;
+            dbAppointment.ResponsiblePerson_RefID = appointmentSave.ResponsiblePerson.Id;
+            dbAppointment.IsCanceled = appointmentSave.IsCanceled;
+            dbAppointment.IsFinished = appointmentSave.IsFinished;
 
             return dbAppointment;
         } 
@@ -136,9 +153,11 @@ namespace MedicApp.Integrations
         public Guid Id { get; set; }
         public string Title { get; set; }
         public DateTime StartTime { get; set;}
-        public User Doctor { get; set; }
+        public User ResponsiblePerson { get; set; }
         public User Patient { get; set; }
         public Clinic Clinic { get; set; } // maybe only send gid?
+        public bool IsCanceled { get; set; }
+        public bool IsFinished { get; set; }
     }
 
     public class AppointmentLoadModel

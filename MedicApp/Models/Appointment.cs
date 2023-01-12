@@ -11,7 +11,7 @@ namespace MedicApp.Models
         public bool IsDeleted { get; set; }
         public Guid? Clinic_RefID { get; set; }
         public Guid? Patient_RefID { get; set; }
-        public Guid? Doctor_RefID { get; set; }
+        public Guid? ResponsiblePerson_RefID { get; set; } //employee or nurse who is taking blood from donor
         public bool IsCanceled { get; set; }
         public bool IsFinished { get; set; }
 
@@ -19,7 +19,7 @@ namespace MedicApp.Models
         {
             Id = Guid.NewGuid();
             IsDeleted = false;
-            Duration = 20;
+            Duration = 15;
             Title = "Blood appointment";            
         }
     }
