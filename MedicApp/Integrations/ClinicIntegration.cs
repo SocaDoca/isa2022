@@ -10,6 +10,7 @@ namespace MedicApp.Integrations
     {
         Task<Clinic> SaveClinic(ClinicSaveModel clinicSave);
         List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters);
+        ClinicLoadModel GetClinicById(Guid Id);
     }
     public class ClinicIntegration : IClinicIntegration
     {
@@ -31,9 +32,6 @@ namespace MedicApp.Integrations
                 dbClinic = new Clinic();
                 _appDbContext.Clinics.Add(dbClinic);
             }
-            var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id).ToList();
-            var dbWorkingHoursIds = clinic2WorkingHours.Select(x => x.WorkingHours_RefID).ToList();
-            
 
             dbClinic.Name = clinicSave.Name;
             dbClinic.Address = clinicSave.Address;
@@ -42,6 +40,9 @@ namespace MedicApp.Integrations
             dbClinic.Description = clinicSave.Description;
             dbClinic.Phone = clinicSave.Phone;
             dbClinic.Rating = clinicSave.Rating;
+
+            var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id).ToList();
+            var dbWorkingHoursIds = clinic2WorkingHours.Select(x => x.WorkingHours_RefID).ToList();            
 
             foreach (var item in clinicSave.WorkHours)
             {
@@ -56,9 +57,10 @@ namespace MedicApp.Integrations
 
                     _appDbContext.Clinic2WorkingHours.Add(dbClinic2WorkingHours);
                 }
-                var workingHour = _workingHoursIntegration.LoadWorkingHourById(item.Id);
-                workingHour.Start = item.Start;
-                workingHour.End = item.End;
+                var workingHour = _workingHoursIntegration.LoadDBWorkingHourById(item.Id);
+                var dbWorkingHour = new WorkingHours();
+                workingHour.Start = item.Start.TimeOfDay;
+                workingHour.End = item.End.TimeOfDay;
                 workingHour.IsMonday = item.IsMonday;
                 workingHour.IsTuesday = item.IsTuesday;
                 workingHour.IsWednesday = item.IsWednesday;
@@ -66,8 +68,7 @@ namespace MedicApp.Integrations
                 workingHour.IsFriday = item.IsFriday;
                 workingHour.IsSaturday = item.IsSaturday;
 
-                _appDbContext.WorkingHours.Update(workingHour);          
-         
+                _appDbContext.WorkingHours.Update(workingHour);        
             }
 
             _appDbContext.SaveChanges();
@@ -166,28 +167,43 @@ namespace MedicApp.Integrations
             return resultList.Skip(parameters.Offset).Take(parameters.Limit).ToList();
         }
 
+        public ClinicLoadModel GetClinicById(Guid Id)
+        {
+            var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => x.Id == Id && !x.IsDeleted);
+            if(dbClinic == null)
+            {
+                throw new KeyNotFoundException("Clinic does not exist");
+            }
+
+            var result = new ClinicLoadModel
+            {
+                Id = dbClinic.Id,
+                Address = dbClinic.Address,
+                City = dbClinic.City,
+                Country = dbClinic.Country,
+                Description = dbClinic.Description,
+                Name = dbClinic.Name,
+                Phone = dbClinic.Phone,
+                Rating = dbClinic.Rating
+            };
+
+            var clinic2WorkingHoursIds = _appDbContext.Clinic2WorkingHours.Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id).Select(x => x.WorkingHours_RefID).ToList();
+            var workingHoursList = new List<LoadWorkingHoursModel>();
+            foreach(var id in clinic2WorkingHoursIds)
+            {
+                workingHoursList.Add(_workingHoursIntegration.LoadWorkingHourById(Id));
+            }
+
+            result.WorkHours = workingHoursList;
+
+            return result;
+        } 
+
         
     }
 
 
-    public class ClinicLoadParameters
-    {
-        public string SearchCriteria { get; set; }
-        public ClinicFilterData ClinicFilterData { get; set; }
-        public int Offset { get; set; }
-        public int Limit { get; set; }
-        public string SortBy { get; set; }
-        public bool OrderAsc { get; set; }
-
-    }
-
-    public class ClinicFilterData
-    {
-        public string Name { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public string Country { get; set; }
-    }
+ 
 
 
 

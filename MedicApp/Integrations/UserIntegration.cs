@@ -24,6 +24,7 @@ namespace MedicApp.Integrations
         bool UpdateUser(UpdateUser updateUser);
         bool UpdatePassword(Guid Id, string password);
         bool Delete(Guid id);
+        User SaveUser(SaveUserModel createUser);
     }
 
     public class UserIntegration : IUserIntegration
@@ -93,6 +94,7 @@ namespace MedicApp.Integrations
             dbUser.Country = createUser.Country;
             dbUser.Gender = createUser.Gender;
             dbUser.Job = createUser.Job;
+            dbUser.IsAdminCenter = createUser.IsAdminCenter;
 
             if(createUser.Password == createUser.ConfirmPassword)
             {
@@ -217,7 +219,7 @@ namespace MedicApp.Integrations
 
         public UserLoadModel GetUserById(Guid id)
         {
-            var dbUser = _appDbContext.Users.Find(id);
+            var dbUser = _appDbContext.Users.FirstOrDefault(x => x.Id == id);
             if (dbUser == null)
             {
                 throw (new KeyNotFoundException("User not found"));
@@ -225,16 +227,18 @@ namespace MedicApp.Integrations
             var resultUser = new UserLoadModel
             {
                 Id = dbUser.Id,
-                FullAddress = String.Format("{0}, {1}, {2}", dbUser.Address, dbUser.City, dbUser.Country),
+                FullAddress = String.Format("{0}, {1}, {2}", dbUser.Address, dbUser.City, dbUser.Country) ?? String.Empty,
                 Gender = dbUser.Gender,
-                Job = dbUser.Job,
+                Job = dbUser.Job ?? String.Empty,
                 Role = dbUser.Role,
                 LoyaltyPoints = dbUser.LoyaltyPoints,
-                Name = String.Format("{0} {1}", dbUser.FirstName, dbUser.LastName),
+                Name = String.Format("{0} {1}", dbUser.FirstName, dbUser.LastName) ?? String.Empty,
                 Username = dbUser.Username,
-                Email = dbUser.Email,
-                Mobile = dbUser.Mobile,
-                JMBG = dbUser.JMBG
+                Email = dbUser.Email ?? String.Empty,
+                Mobile = dbUser.Mobile ?? String.Empty,
+                JMBG = dbUser.JMBG ?? String.Empty,
+                IsAdminCenter = dbUser.IsAdminCenter
+                
             };
 
             return resultUser;

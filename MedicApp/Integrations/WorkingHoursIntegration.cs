@@ -6,10 +6,11 @@ namespace MedicApp.Integrations
     public interface IWorkingHoursIntegration
     {
         WorkingHours SaveWorkingHours(SaveWorkingHoursModel wokringHoursModel);
-        WorkingHours LoadWorkingHourById(Guid Id)
+        WorkingHours LoadDBWorkingHourById(Guid Id);
+        LoadWorkingHoursModel LoadWorkingHourById(Guid Id)
     }
 
-    public class WorkingHoursIntegration
+    public class WorkingHoursIntegration : IWorkingHoursIntegration
     {
         private readonly AppDbContext _appDbContext;
 
@@ -26,8 +27,8 @@ namespace MedicApp.Integrations
                 dbWorkingHour = new WorkingHours();
             }
 
-            dbWorkingHour.Start = wokringHoursModel.Start;
-            dbWorkingHour.End = wokringHoursModel.End;
+            dbWorkingHour.Start = wokringHoursModel.Start.TimeOfDay;
+            dbWorkingHour.End = wokringHoursModel.End.TimeOfDay;
             dbWorkingHour.IsMonday = wokringHoursModel.IsMonday;
             dbWorkingHour.IsTuesday = wokringHoursModel.IsTuesday;
             dbWorkingHour.IsWednesday = wokringHoursModel.IsWednesday;
@@ -40,7 +41,7 @@ namespace MedicApp.Integrations
             return dbWorkingHour;
         }
 
-        public WorkingHours LoadWorkingHourById(Guid Id)
+        public WorkingHours LoadDBWorkingHourById(Guid Id)
         {
             var dbWorkingHour = _appDbContext.WorkingHours.FirstOrDefault(x => !x.IsDeleted && x.Id == Id);
             if(dbWorkingHour == null)
@@ -50,7 +51,26 @@ namespace MedicApp.Integrations
             
             return dbWorkingHour;
         }
-
-
+        public LoadWorkingHoursModel LoadWorkingHourById(Guid Id)
+        {
+            var dbWorkingHour = _appDbContext.WorkingHours.FirstOrDefault(x => !x.IsDeleted && x.Id == Id);
+            if(dbWorkingHour == null)
+            {
+                throw new KeyNotFoundException("Working hours does not exist");
+            }
+            var result = new LoadWorkingHoursModel()
+            {
+                Id = dbWorkingHour.Id,
+                Start = dbWorkingHour.Start,
+                End = dbWorkingHour.End,
+                IsMonday = dbWorkingHour.IsMonday,
+                IsTuesday = dbWorkingHour.IsTuesday,
+                IsWednesday = dbWorkingHour.IsWednesday,
+                IsThursday = dbWorkingHour.IsThursday,
+                IsFriday = dbWorkingHour.IsFriday,
+                IsSaturday = dbWorkingHour.IsSaturday,
+            };
+            return result;
+        }
     }
 }

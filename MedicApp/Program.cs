@@ -31,6 +31,9 @@ builder.Services.Configure<SecretSettings>(builder.Configuration.GetSection("Sec
 builder.Services.AddTransient<IUserIntegration, UserIntegration>();
 builder.Services.AddTransient<IClinicIntegration, ClinicIntegration>();
 builder.Services.AddTransient<IRolesIntegration, RolesIntegration>();
+builder.Services.AddTransient<IWorkingHoursIntegration, WorkingHoursIntegration>();
+builder.Services.AddTransient<IAppointmentIntegration, AppointmentIntegration>();
+
 
 builder.Services.AddAuthentication(options =>
 {

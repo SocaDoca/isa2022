@@ -22,6 +22,8 @@ namespace MedicApp.Models
             Duration = 15;
             Title = "Blood appointment";            
         }
+
+        
     }
 
     public class AppointmentByPatientSaveModel

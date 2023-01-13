@@ -51,5 +51,11 @@ namespace MedicApp.Controllers
             return _userIntegration.UpdatePassword(id, password);
         }
 
+        [HttpPost]
+        public User SaveUser(SaveUserModel user)
+        {
+            return _userIntegration.SaveUser(user);
+        }
+
     }
 }

@@ -19,7 +19,8 @@ namespace MedicApp.Models
         public int LoyaltyPoints { get; set; }
         public string? City { get; set; }
         public string? Role { get; set; }
-        public string? Job { get; set; }        
+        public string? Job { get; set; }
+        public bool IsAdminCenter { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public bool IsDeleted { get; set; }  
@@ -76,6 +77,7 @@ namespace MedicApp.Models
         public Genders Gender { get; set; }
         public string Roles { get; set; }
         public string Job { get; set; }
+        public bool IsAdminCenter { get; set; }
     }
     public class RegisterRequest
     {
@@ -101,6 +103,7 @@ namespace MedicApp.Models
         public Genders Gender { get; set; }
         public string Roles { get; set; }
         public string Job { get; set; }
+        public bool IsAdminCenter { get; set; }
     }
 
     public class UpdateUser
@@ -128,6 +131,6 @@ namespace MedicApp.Models
         public string Job { get; set; }
         public int LoyaltyPoints { get; set; }
         public Genders Gender { get; set; }
-        public AppointmentHistory appointmentHistory { get; set; }
+        public bool IsAdminCenter { get; set; }
     }
 }
