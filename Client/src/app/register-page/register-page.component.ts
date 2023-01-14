@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { User } from './../model/User';
 import { RegistrationService } from "../../service/registration.service";
 import { Router } from "@angular/router";
@@ -18,28 +18,35 @@ import Validation from './../utils/validation';
   templateUrl: './register-page.component.html',
   styleUrls: ['./register-page.component.css']
 })
-export class RegisterPageComponent implements OnInit{
+
+
+export class RegisterPageComponent implements OnInit {
+
   form: FormGroup = new FormGroup({
     firstName: new FormControl(''),
     username: new FormControl(''),
     email: new FormControl(''),
     password: new FormControl(''),
     confirmPassword: new FormControl(''),
-    roles: new FormControl('')
+    roles: new FormControl(''),
+    mobile: new FormControl(''),
+    lastName: new FormControl(''),
+    country: new FormControl(''),
+    city: new FormControl(''),
+    address: new FormControl(''),
+    job: new FormControl(''),
+    jmbg: new FormControl(''),
 
   });
   submitted: boolean = false;
   show: boolean = false;
   which_gender = Genders;
+  private genders = Genders;
 
-  private genders =  Genders;
-
-
-  confirmedPassword: string | undefined;
 
   constructor(private registrationService: RegistrationService, private router: Router, private http: HttpClient, private userService: UserService, private formBuilder: FormBuilder) {
 
-}
+  }
   ngOnInit(): void {
     this.form = this.formBuilder.group(
       {
@@ -51,7 +58,7 @@ export class RegisterPageComponent implements OnInit{
         job: ['', Validators.required],
         mobile: ['', Validators.required],
         jmbg: ['', [Validators.required, Validators.maxLength(13), Validators.minLength(13)]],
-        roles: ['', Validators.required],
+        roles: ['', [Validators.required, Validators.pattern(/^(User|Admin)$/)]],
         username: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         password: [
@@ -62,8 +69,7 @@ export class RegisterPageComponent implements OnInit{
             Validators.maxLength(40)
           ]
         ],
-        confirmPassword: ['', Validators.required],
-        acceptTerms: [false, Validators.requiredTrue]
+        confirmPassword: ['', Validators.required]
       },
       {
         validators: [Validation.match('password', 'confirmPassword')]
@@ -79,13 +85,13 @@ export class RegisterPageComponent implements OnInit{
   onSubmit(): void {
     this.submitted = true;
 
+
     if (this.form.invalid) {
       return;
     } else {
       this.addNewUser();
+      //console.log(JSON.stringify(this.form.value, null, 2));
     }
-
-    console.log(JSON.stringify(this.form.value, null, 2));
   }
 
   onReset(): void {
@@ -111,7 +117,8 @@ export class RegisterPageComponent implements OnInit{
     country: '',
     city: '',
     jmbg: '',
-    mobile: ''
+    mobile: '',
+    isAdminCenter: undefined
 
   });
   choices_for_gender = ['Female', 'Male', 'Other'];
@@ -132,12 +139,25 @@ export class RegisterPageComponent implements OnInit{
     gender: this.newUser.gender,
     mobile: this.newUser.mobile,
     country: this.newUser.country,
-    city: this.newUser.city
+    city: this.newUser.city,
+    isAdminCenter: this.newUser.isAdminCenter
   })
 
 
-  addNewUser() {
 
+
+
+
+  addNewUser() {
+    
+   /* if (this.isChecked == true) {
+      this.registrationRequest.isAdminCenter = this.newUser.isAdminCenter == true;
+      console.log(this.newUser);
+    } else if (this.isChecked == false) 
+
+      this.registrationRequest.isAdminCenter = this.newUser.isAdminCenter == false;
+    */
+    
 
 
       this.registrationRequest.username = this.newUser.username;
@@ -151,9 +171,10 @@ export class RegisterPageComponent implements OnInit{
       this.registrationRequest.job = this.newUser.job;
       this.registrationRequest.jmbg = this.newUser.jmbg;
       this.registrationRequest.roles = this.newUser.roles;
-    this.registrationRequest.mobile = this.newUser.mobile;
+      this.registrationRequest.mobile = this.newUser.mobile;
       this.registrationRequest.country = this.newUser.country;
       this.registrationRequest.city = this.newUser.city;
+      this.registrationRequest.isAdminCenter = this.newUser.isAdminCenter;
 
 
       this.registrationService.registerUser(this.registrationRequest).subscribe(res => {
@@ -166,13 +187,17 @@ export class RegisterPageComponent implements OnInit{
       /*} else {
         this.error = "passwords are not equal";
       }*/
-  //  }
-   }
+      //  }
 
-  
+    }
 
-// click event function toggle
+
+
+
+
+  // click event function toggle
   password() {
-      this.show = !this.show;
+    this.show = !this.show;
   }
 }
+

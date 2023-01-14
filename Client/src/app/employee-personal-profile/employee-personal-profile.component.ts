@@ -6,6 +6,10 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute } from '@angular/router';
+import { UserService } from '../../service/user.service';
+import { UserLoadModel } from '../../app/model/UserLoadModel';
+import { Genders } from '../model/Genders';
 
 @Component({
   selector: 'app-employee-personal-profile',
@@ -16,12 +20,38 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit{
   title = 'appBootstrap';
   @ViewChild('mymodal') mymodal: ElementRef | undefined;
   closeResult = '';
+  id!: string;
+  user: UserLoadModel;
 
-constructor(private modalService: NgbModal) {}
+  constructor(private modalService: NgbModal, private userService: UserService, private route: ActivatedRoute) {
+    this.user = new UserLoadModel({
+      role: '',
+      username: '',
+      name: '',
+      fullAddress: '',
+      mobile: '',
+      job: '',
+      gender: 0,
+      jmbg: ''
+
+    })
+  }
   ngAfterViewInit(): void {
     this.open(this.mymodal);
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadProfile();
+  }
+
+  loadProfile() {
+    this.id = this.route.snapshot.params['id'];
+    this.userService.getUser(this.id)
+      .subscribe(res => {
+        this.user = res;
+
+      })
+  }
+
 
   open(content: any) {
     this.modalService
