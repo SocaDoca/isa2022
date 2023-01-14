@@ -32,6 +32,7 @@ namespace MedicApp.Database
         public DbSet<Roles> Roles { get; set; }
         public DbSet<WorkingHours> WorkingHours { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Questionnaire> Questionnaire { get; set; }
         public DbSet<AppointmentHistory> AppointmentHistories { get; set; }
 
 
@@ -49,6 +50,7 @@ namespace MedicApp.Database
 
         public DbSet<Account2Clinic> Account2Clinics { get; set; }
         public DbSet<Account2Patient> Account2Patients { get; set; }
+        public DbSet<Patient2Questionnaire> Patient2Questionnaires { get; set; }
         public DbSet<Employee2WokringHours> Employee2WokringHours{ get; set; }
 
 

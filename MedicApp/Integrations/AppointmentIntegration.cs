@@ -7,6 +7,7 @@ namespace MedicApp.Integrations
     public interface IAppointmentIntegration
     {
         Appointment SaveAppointment(AppointmentSaveModel appointmentSave);
+        AppointmentLoadModel LoadAppointmentById(Guid Id);
     }
     public class AppointmentIntegration : IAppointmentIntegration
     {
@@ -38,10 +39,30 @@ namespace MedicApp.Integrations
 
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.Patient.Id == x.Id && x.Role == "User");
             var dbResponsiblePerson = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.ResponsiblePerson.Id == x.Id && x.Role == "Employee" && !x.IsAdminCenter);
-
+            var patient2Questionnaire = _appDbContext.Patient2Questionnaires.Where(x => x.Patient_RefId == dbPatient.Id).ToList();
+            var questionnaires = _appDbContext.Questionnaire.Where(x => patient2Questionnaire.Any(s => s.Id == x.Id)).ToList();
+           
             if (dbClinic == null)
             {
                 throw new KeyNotFoundException("Clinic does not exist");
+            }
+            if (dbResponsiblePerson == null)
+            {
+                throw new Exception("Employee does not exist");
+            }
+            if(questionnaires.Any(x => x.ExpireDate > DateTime.Now))
+            {
+                throw new Exception("Patient have had given blood in last six months");
+            }
+            if (patient2Questionnaire.Any())
+            {
+                foreach(var item in questionnaires)
+                {
+                    if (!item.IsQuestionireSigned())
+                    {
+                        throw new Exception("Questionnaire is not filled");
+                    }
+                }
             }
             foreach (var item in dbClinicWorkingHours)
             {
@@ -50,7 +71,16 @@ namespace MedicApp.Integrations
                     if (dbAppointmentsInDay.Any(x => x.StartTime.TimeOfDay.Hours == item.Start.Hours && x.StartTime.TimeOfDay.Minutes == item.Start.Minutes))
                     {
                         throw new Exception("Time of appointment is taken");
+                    }                    
+              
+                    dbAppointment.ResponsiblePerson_RefID = dbResponsiblePerson.Id;
+
+                    if (dbPatient == null)
+                    {
+                        throw new Exception("Patient does not exist");
                     }
+                    dbAppointment.Patient_RefID = dbPatient.Id;
+
                     if (dbAppointment == null)
                     {
                         dbAppointment = new Appointment();
@@ -61,19 +91,6 @@ namespace MedicApp.Integrations
                     dbAppointment.ResponsiblePerson_RefID = appointmentSave.ResponsiblePerson.Id;
                     dbAppointment.IsCanceled = appointmentSave.IsCanceled;
                     dbAppointment.IsFinished = appointmentSave.IsFinished;
-
-                    if (dbResponsiblePerson == null)
-                    {
-                        throw new Exception("Employee does not exist");
-                    }
-                    dbAppointment.ResponsiblePerson_RefID = dbResponsiblePerson.Id;
-                    if (dbPatient == null)
-                    {
-                        throw new Exception("Patient does not exist");
-                    }
-                    dbAppointment.Patient_RefID = dbPatient.Id;
-
-
                 }
                 else
                 {
@@ -104,28 +121,5 @@ namespace MedicApp.Integrations
         }
 
     }
-
-    public class AppointmentSaveModel
-    {
-        public Guid Id { get; set; }
-        public string Title { get; set; }
-        public DateTime StartTime { get; set; }
-        public UserLoadModel ResponsiblePerson { get; set; }
-        public UserLoadModel Patient { get; set; }
-        public Clinic Clinic { get; set; } // maybe only send gid?
-        public bool IsCanceled { get; set; }
-        public bool IsFinished { get; set; }
-    }
-
-    public class AppointmentLoadModel
-    {
-        public Guid Id { get; set; }
-        public string Title { get; set; }
-        public DateTime StartTime { get; set; }
-        public UserLoadModel ResponsiblePerson { get; set; }
-        public UserLoadModel Patient { get; set; }
-        public ClinicLoadModel Clinic { get; set; }
-
-
-    }
+ 
 }

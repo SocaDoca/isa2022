@@ -7,7 +7,7 @@ namespace MedicApp.Integrations
     {
         WorkingHours SaveWorkingHours(SaveWorkingHoursModel wokringHoursModel);
         WorkingHours LoadDBWorkingHourById(Guid Id);
-        LoadWorkingHoursModel LoadWorkingHourById(Guid Id)
+        LoadWorkingHoursModel LoadWorkingHourById(Guid Id);
     }
 
     public class WorkingHoursIntegration : IWorkingHoursIntegration

@@ -25,39 +25,26 @@ namespace MedicApp.Models
 
         
     }
-
-    public class AppointmentByPatientSaveModel
+    public class AppointmentSaveModel
     {
-        // We use this model only when Patient is logged on
-        public Guid? Id { get; set; }
-        public Guid Clinic_RefID { get; set; }
-        public string? Title { get; set; } 
-        public DateTime PlannedDate { get; set; }
+        public Guid Id { get; set; }
+        public string Title { get; set; }
         public DateTime StartTime { get; set; }
-        public Guid? Patient_RefID{ get; set; } 
-        public User? Doctor{ get; set; }
-        
-    }
-    public class PredefinedAppointmentByAdmin
-    {
-        public Guid? Id { get; set; }
-        public Guid Clinic_RefID { get; set; }
-        public string? Title { get; set; }
-        public int Duration { get;set; }
-        public DateTime PlannedDate { get; set; }
-        public DateTime StartTime { get; set; }
-        public int NumberOfWantedAppointments { get; set; }
-        
+        public UserLoadModel ResponsiblePerson { get; set; }
+        public UserLoadModel Patient { get; set; }
+        public Clinic Clinic { get; set; } // maybe only send gid?
+        public bool IsCanceled { get; set; }
+        public bool IsFinished { get; set; }
     }
 
     public class AppointmentLoadModel
     {
-        public Guid? Id { get; set; }
-        public string? Title { get; set; }
-        public DateTime PlannedDate { get; set; }
+        public Guid Id { get; set; }
+        public string Title { get; set; }
         public DateTime StartTime { get; set; }
-        public int Duration { get; set; }
-        public User? Patient { get; set; }
-        public User? Doctor { get; set; }
+        public UserLoadModel ResponsiblePerson { get; set; }
+        public UserLoadModel Patient { get; set; }
+        public ClinicLoadModel Clinic { get; set; }
+
     }
 }

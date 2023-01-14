@@ -12,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
+using MedicApp.RelationshipTables;
 
 namespace MedicApp.Integrations
 {
@@ -78,7 +79,7 @@ namespace MedicApp.Integrations
         public User SaveUser(SaveUserModel createUser)
         {
             var dbUser = _appDbContext.Users.Where(x => !x.IsDeleted && x.Id == createUser.Id).FirstOrDefault();
-            if(dbUser == null)
+            if (dbUser == null)
             {
                 dbUser = new User()
                 {
@@ -96,7 +97,7 @@ namespace MedicApp.Integrations
             dbUser.Job = createUser.Job;
             dbUser.IsAdminCenter = createUser.IsAdminCenter;
 
-            if(createUser.Password == createUser.ConfirmPassword)
+            if (createUser.Password == createUser.ConfirmPassword)
             {
                 using (HMACSHA512? hmac = new HMACSHA512())
                 {
@@ -150,11 +151,46 @@ namespace MedicApp.Integrations
             return newUser;
         }
 
+        public Questionnaire CreateQuestionnaireForPatientById(Questionnaire questionnaire, Guid PatientId)
+        {
+            var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == PatientId && !x.IsDeleted && x.Role == "Patient");
+            if (dbPatient == null)
+            {
+                throw new Exception("Patient does not exist");
+            }
+            var dbQuestionnaire = new Questionnaire
+            {
+                ExpireDate = DateTime.Now.AddMonths(6),
+                question1 = questionnaire.question1,
+                question2 = questionnaire.question2,
+                question3 = questionnaire.question3,
+                question4 = questionnaire.question4,
+                question5 = questionnaire.question5,
+                question6 = questionnaire.question6,
+                question7 = questionnaire.question7,
+                question8 = questionnaire.question8,
+                question9 = questionnaire.question9,
+                question10 = questionnaire.question10,
+                question11 = questionnaire.question11,
+                question12 = questionnaire.question12,
+            };
+            _appDbContext.Questionnaire.Add(dbQuestionnaire);
+            
+            var patient2questinnaire = new Patient2Questionnaire
+            {
+                Patient_RefId = dbPatient.Id,
+                Questionnaire_RefId = dbQuestionnaire.Id
+            };
+            _appDbContext.Patient2Questionnaires.Add(patient2questinnaire);
+            _appDbContext.SaveChanges();
+            return dbQuestionnaire;
+        }
+
         #region Delete
         public bool Delete(Guid id)
         {
             var user = _appDbContext.Users.FirstOrDefault(x => x.Id == id);
-            if(user  == null)
+            if (user == null)
             {
                 throw new KeyNotFoundException("User does not exist");
             }
@@ -238,7 +274,7 @@ namespace MedicApp.Integrations
                 Mobile = dbUser.Mobile ?? String.Empty,
                 JMBG = dbUser.JMBG ?? String.Empty,
                 IsAdminCenter = dbUser.IsAdminCenter
-                
+
             };
 
             return resultUser;
