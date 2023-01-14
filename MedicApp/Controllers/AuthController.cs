@@ -27,9 +27,9 @@ namespace MedicApp.Controllers
 
         [HttpPost]
         [Route("register")]
-        public IActionResult Register([FromBody] RegisterRequest model)
+        public IActionResult Register([FromBody] SaveUserModel model)
         {
-            return Ok(_userIntegration.Register(model));
+            return Ok(_userIntegration.SaveUser(model));
         }
 
         [HttpPost]
