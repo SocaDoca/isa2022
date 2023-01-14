@@ -41,6 +41,10 @@ export class UserPersonalProfileUpdateComponent {
       })
   }
 
+  changePass() {
+
+  }
+
 
   showDashboard() {
     console.log(this.id)
