@@ -23,6 +23,7 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit{
   id!: string;
   user: UserLoadModel;
 
+
   constructor(private modalService: NgbModal, private userService: UserService, private route: ActivatedRoute) {
     this.user = new UserLoadModel({
       role: '',
@@ -41,6 +42,7 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit{
   }
   ngOnInit(): void {
     this.loadProfile();
+
   }
 
   loadProfile() {

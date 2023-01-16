@@ -22,7 +22,9 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<User> {
-    return this.http.patch<User>(`${this.urlUpdate}`, user);
+    var id!: string;
+    id = this.route.snapshot.params['id'];
+    return this.http.put<User>(`${this.urlUpdate}?id=${id}`, user);
   }
 
  /* updatePassword(id:string, password:string): Observable<UserLoadModel> {

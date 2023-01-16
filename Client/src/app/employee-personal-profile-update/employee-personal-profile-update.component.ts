@@ -1,4 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, ContentChild} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '../../service/user.service';
+import { User } from '../model/User';
 
 
 @Component({
@@ -7,14 +11,76 @@ import { Component, ContentChild} from '@angular/core';
   styleUrls: ['./employee-personal-profile-update.component.css']
 })
 export class EmployeePersonalProfileUpdateComponent {
-show: boolean = false;
+  show: boolean = false;
+  user: User;
+  id: any;
+  role: any;
+  addressList: string = '';
 
-constructor() {
-}
 
-// click event function toggle
-password() {
+  constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient, private userService: UserService) {
+    this.user = new User({
+      email: "",
+      mobile: "",
+      job: "",
+      fullAddress: "",
+      password: "",
+      city: "",
+      address: "",
+      country: ""
+    })
+  }
+
+  ngOnInit(): void {
+    this.loadProfile();
+  }
+  loadProfile() {
+    this.id = this.route.snapshot.params['id'];
+    this.userService.getUser(this.id)
+      .subscribe(res => {
+        this.user = res;
+        this.loadAddress(res);
+      })
+  }
+
+  loadAddress(user: User) {
+    this.addressList = this.user.fullAddress!;
+    var splitted = this.addressList.split(",");
+    var splittedAddress = splitted[0];
+    var splittedCity = splitted[1];
+    var splittedCountry = splitted[2];
+    console.log(splittedAddress + splittedCity + splittedCountry);
+    this.user.address = splittedAddress;
+    this.user.city = splittedCity;
+    this.user.country = splittedCountry;
+  }
+
+  changePass() {
+
+  }
+
+
+  showDashboard() {
+
+
+    console.log(this.id)
+    this.id = sessionStorage.getItem('id');
+    this.role = sessionStorage.getItem('role');
+    if (this.role == 'User') {
+      this.userService.updateUser(this.user)
+        .subscribe(res => this.router.navigate(['/profile', res.id]));
+
+    } else if (this.role == 'Admin' || this.role == 'SysAdmin') {
+
+      this.userService.updateUser(this.user)
+        .subscribe(res => this.router.navigate(['/profileEmployee', res.id]));
+    }
+
+  }
+
+
+  // click event function toggle
+  password() {
     this.show = !this.show;
-}
-
+  }
 }
