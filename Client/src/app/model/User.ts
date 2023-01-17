@@ -18,6 +18,7 @@ export interface UserInterface {
   jmbg?: string;
   mobile?: string;
   fullAddress?: string;
+  isAdminCenter?: any;
 
 }
 
@@ -38,6 +39,7 @@ export class User implements UserInterface {
   jmbg?: string;
   mobile?: string;
   fullAddress?: string;
+  isAdminCenter?: any;
 
   constructor(obj: UserInterface) {
     this.id = obj.id;
@@ -56,6 +58,7 @@ export class User implements UserInterface {
     this.jmbg = obj.jmbg;
     this.mobile = obj.mobile;
     this.fullAddress = obj.fullAddress;
+    this.isAdminCenter = obj.isAdminCenter;
 
   }
 }

@@ -16,6 +16,7 @@ export class UserPersonalProfileUpdateComponent {
   user: User;
   id: any;
   role: any;
+  addressList: string= '';
 
   constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient, private userService: UserService) {
     this.user = new User({
@@ -24,7 +25,7 @@ export class UserPersonalProfileUpdateComponent {
       job: "",
       fullAddress: "",
       password: "",
-      city: "",
+      city:"",
       address: "",
       country:""
     })
@@ -34,15 +35,34 @@ export class UserPersonalProfileUpdateComponent {
     this.loadProfile();
   }
   loadProfile() {
-    this.id = this.route.snapshot.params['id'];
+    this.id = this.route.snapshot.params['id'];    
     this.userService.getUser(this.id)
       .subscribe(res => {
         this.user = res;
+        this.loadAddress(res);
       })
+  }
+
+  loadAddress(user:User) {
+    this.addressList = this.user.fullAddress!;
+    var splitted = this.addressList.split(",");
+    var splittedAddress = splitted[0];
+    var splittedCity = splitted[1];
+    var splittedCountry = splitted[2];
+    console.log(splittedAddress + splittedCity + splittedCountry);
+    this.user.address = splittedAddress;
+    this.user.city = splittedCity;
+    this.user.country = splittedCountry;
+  }
+
+  changePass() {
+
   }
 
 
   showDashboard() {
+
+
     console.log(this.id)
     this.id = sessionStorage.getItem('id');
     this.role = sessionStorage.getItem('role');

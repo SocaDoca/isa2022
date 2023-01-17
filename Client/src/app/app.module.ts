@@ -31,6 +31,7 @@ import { SearchUserComponent } from './search-user/search-user.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from "@angular/forms";
+import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -74,7 +75,10 @@ import listPlugin from '@fullcalendar/list';
     MatSnackBarModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    FullCalendarModule
+    FullCalendarModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    NgbRatingModule,
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

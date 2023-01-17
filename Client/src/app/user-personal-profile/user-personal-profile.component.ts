@@ -23,6 +23,7 @@ export class UserPersonalProfileComponent implements OnInit, AfterViewInit{
   closeResult = '';
   id!: string;
   user: UserLoadModel;
+  addressList: string = '';
 
   constructor(private modalService: NgbModal, private userService: UserService, private route: ActivatedRoute) {
     this.user = new UserLoadModel({
