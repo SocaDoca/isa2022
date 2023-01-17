@@ -39,12 +39,6 @@ namespace MedicApp.Controllers
             return _userIntegration.Delete(id);
         }
 
-        [HttpPut("update/{id:guid}")]
-        public bool UpdateUser(UpdateUser updateUser)
-        {
-            return _userIntegration.UpdateUser(updateUser);
-        }
-
         [HttpPut("{id:guid}/update-password")]
         public bool UpdatePassword(Guid id, string password)
         {

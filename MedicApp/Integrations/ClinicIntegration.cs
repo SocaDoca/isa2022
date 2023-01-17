@@ -42,33 +42,37 @@ namespace MedicApp.Integrations
             dbClinic.Rating = clinicSave.Rating;
 
             var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id).ToList();
-            var dbWorkingHoursIds = clinic2WorkingHours.Select(x => x.WorkingHours_RefID).ToList();            
+            var dbWorkingHoursIds = clinic2WorkingHours.Select(x => x.WorkingHours_RefID).ToList();
 
             foreach (var item in clinicSave.WorkHours)
             {
-                if(!dbWorkingHoursIds.Contains(item.Id))
+                var workingHours = new WorkingHours();
+                if (!dbWorkingHoursIds.Contains(item.Id))
                 {
-                    var workHours = _workingHoursIntegration.SaveWorkingHours(item);
+                    workingHours = _workingHoursIntegration.SaveWorkingHours(item);
                     var dbClinic2WorkingHours = new Clinic2WorkingHours
                     {
                         Clinic_RefID = dbClinic.Id,
-                        WorkingHours_RefID = workHours.Id
+                        WorkingHours_RefID = workingHours.Id
                     };
 
                     _appDbContext.Clinic2WorkingHours.Add(dbClinic2WorkingHours);
+                    _appDbContext.SaveChanges();
                 }
-                var workingHour = _workingHoursIntegration.LoadDBWorkingHourById(item.Id);
-                var dbWorkingHour = new WorkingHours();
-                workingHour.Start = item.Start.TimeOfDay;
-                workingHour.End = item.End.TimeOfDay;
-                workingHour.IsMonday = item.IsMonday;
-                workingHour.IsTuesday = item.IsTuesday;
-                workingHour.IsWednesday = item.IsWednesday;
-                workingHour.IsThursday = item.IsThursday;
-                workingHour.IsFriday = item.IsFriday;
-                workingHour.IsSaturday = item.IsSaturday;
+                else
+                {
+                    workingHours = _workingHoursIntegration.LoadDBWorkingHourById(item.Id);
+                    workingHours.Start = item.Start.TimeOfDay;
+                    workingHours.End = item.End.TimeOfDay;
+                    workingHours.IsMonday = item.IsMonday;
+                    workingHours.IsTuesday = item.IsTuesday;
+                    workingHours.IsWednesday = item.IsWednesday;
+                    workingHours.IsThursday = item.IsThursday;
+                    workingHours.IsFriday = item.IsFriday;
+                    workingHours.IsSaturday = item.IsSaturday;
 
-                _appDbContext.WorkingHours.Update(workingHour);        
+                    _appDbContext.WorkingHours.Update(workingHours);
+                }
             }
 
             _appDbContext.SaveChanges();

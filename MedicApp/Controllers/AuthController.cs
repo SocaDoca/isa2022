@@ -15,7 +15,7 @@ using System.Security.Cryptography;
 namespace MedicApp.Controllers
 {
     [ApiController]
-    [Route("/[controller]")]
+    [Route("[controller]")]
     public class AuthController : ControllerBase
     {
         public readonly IUserIntegration _userIntegration;

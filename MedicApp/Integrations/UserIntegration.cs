@@ -96,6 +96,8 @@ namespace MedicApp.Integrations
             dbUser.Gender = createUser.Gender;
             dbUser.Job = createUser.Job;
             dbUser.IsAdminCenter = createUser.IsAdminCenter;
+            dbUser.Role = createUser.Roles;
+            dbUser.Mobile = createUser.Moblie;
 
             if (createUser.Password == createUser.ConfirmPassword)
             {

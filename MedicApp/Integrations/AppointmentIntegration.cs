@@ -120,6 +120,12 @@ namespace MedicApp.Integrations
             return result;
         }
 
+        //public List<Appointment> SavePredefinedAppointmets(List<AppointmentSaveModel> appointments)
+        //{
+        //    var dbAppointments = _appDbContext.Appointments.Where(x => appointments.Any(s => s.Id == x.Id)).ToList();
+        //    if(dbAppointments.)
+        //}
+
     }
  
 }
