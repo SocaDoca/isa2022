@@ -16,9 +16,10 @@ export interface UserInterface {
   password?: string;
   confirmPassword?: string;
   jmbg?: string;
-  mobile?: string;
+  moblie?: string;
   fullAddress?: string;
   isAdminCenter?: any;
+  name?: string;
 
 }
 
@@ -37,9 +38,10 @@ export class User implements UserInterface {
   password?: string;
   confirmPassword?: string;
   jmbg?: string;
-  mobile?: string;
+  moblie?: string;
   fullAddress?: string;
   isAdminCenter?: any;
+  name?: string;
 
   constructor(obj: UserInterface) {
     this.id = obj.id;
@@ -56,9 +58,10 @@ export class User implements UserInterface {
     this.password = obj.password;
     this.confirmPassword = obj.confirmPassword;
     this.jmbg = obj.jmbg;
-    this.mobile = obj.mobile;
+    this.moblie = obj.moblie;
     this.fullAddress = obj.fullAddress;
     this.isAdminCenter = obj.isAdminCenter;
+    this.name = obj.name;
 
   }
 }

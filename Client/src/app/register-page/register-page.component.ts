@@ -29,7 +29,7 @@ export class RegisterPageComponent implements OnInit {
     password: new FormControl(''),
     confirmPassword: new FormControl(''),
     roles: new FormControl(''),
-    mobile: new FormControl(''),
+    moblie: new FormControl(''),
     lastName: new FormControl(''),
     country: new FormControl(''),
     city: new FormControl(''),
@@ -56,7 +56,7 @@ export class RegisterPageComponent implements OnInit {
         city: ['', Validators.required],
         address: ['', Validators.required],
         job: ['', Validators.required],
-        mobile: ['', Validators.required],
+        moblie: ['', Validators.required],
         jmbg: ['', [Validators.required, Validators.maxLength(13), Validators.minLength(13)]],
         roles: ['', [Validators.required, Validators.pattern(/^(User|Admin)$/)]],
         username: ['', Validators.required],
@@ -117,7 +117,7 @@ export class RegisterPageComponent implements OnInit {
     country: '',
     city: '',
     jmbg: '',
-    mobile: '',
+    moblie: '',
     isAdminCenter: undefined
 
   });
@@ -137,7 +137,7 @@ export class RegisterPageComponent implements OnInit {
     confirmPassword: this.newUser.confirmPassword,
     roles: this.newUser.roles,
     gender: this.newUser.gender,
-    mobile: this.newUser.mobile,
+    moblie: this.newUser.moblie,
     country: this.newUser.country,
     city: this.newUser.city,
     isAdminCenter: this.newUser.isAdminCenter
@@ -171,7 +171,7 @@ export class RegisterPageComponent implements OnInit {
       this.registrationRequest.job = this.newUser.job;
       this.registrationRequest.jmbg = this.newUser.jmbg;
       this.registrationRequest.roles = this.newUser.roles;
-      this.registrationRequest.mobile = this.newUser.mobile;
+    this.registrationRequest.moblie = this.newUser.moblie;
       this.registrationRequest.country = this.newUser.country;
       this.registrationRequest.city = this.newUser.city;
       this.registrationRequest.isAdminCenter = this.newUser.isAdminCenter;

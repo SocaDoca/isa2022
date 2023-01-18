@@ -71,11 +71,11 @@
 
         <label style="font-weight: bold;">Mobile</label>
         <div class="form-group">
-          <input id="mobile" type="text" class="form-control" formControlName="mobile" [ngClass]="{ 'is-invalid': submitted && f['mobile'].errors }" [(ngModel)]="newUser.mobile">
+          <input id="moblie" type="text" class="form-control" formControlName="moblie" [ngClass]="{ 'is-invalid': submitted && f['moblie'].errors }" [(ngModel)]="newUser.moblie">
 
 
-          <div *ngIf="submitted && f['mobile'].errors" class="invalid-feedback">
-            <div *ngIf="f['mobile'].errors['required']" style="text-align:center">Mobile is required</div>
+          <div *ngIf="submitted && f['moblie'].errors" class="invalid-feedback">
+            <div *ngIf="f['moblie'].errors['required']" style="text-align:center">Mobile is required</div>
 
           </div>
         </div>
