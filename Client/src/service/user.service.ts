@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UserService {
   url = "http://localhost:5017/User/get-by-id";
-  urlUpdate = "http://localhost:5017/User/update";
+  urlUpdate = "http://localhost:5017/User/update-user";
   constructor(private http: HttpClient, private route: ActivatedRoute) {
 
   }
@@ -22,9 +22,7 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<User> {
-    var id!: string;
-    id = this.route.snapshot.params['id'];
-    return this.http.put<User>(`${this.urlUpdate}?id=${id}`, user);
+    return this.http.post<User>(`${this.urlUpdate}`, user);
   }
 
  /* updatePassword(id:string, password:string): Observable<UserLoadModel> {

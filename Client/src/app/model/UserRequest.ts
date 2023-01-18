@@ -17,8 +17,9 @@ export interface UserRequestInterface {
   fullAddress?: string;
   confirmPassword?: string;
   jmbg?: string; 
-  mobile?: string;
+  moblie?: string;
   isAdminCenter?: any;
+  name?: string;
 }
 
 export class UserRequest implements UserRequestInterface {
@@ -36,9 +37,10 @@ export class UserRequest implements UserRequestInterface {
   password?: string;
   confirmPassword?: string;
   jmbg?: string;
-  mobile?: string;
+  moblie?: string;
   fullAddress?: string;
   isAdminCenter?: any;
+  name?: string;
 
   constructor(obj: UserRequestInterface) {
     this.id = obj.id;
@@ -55,8 +57,9 @@ export class UserRequest implements UserRequestInterface {
     this.password = obj.password;
     this.confirmPassword = obj.confirmPassword;
     this.jmbg = obj.jmbg;
-    this.mobile = obj.mobile;
+    this.moblie = obj.moblie;
     this.fullAddress = obj.fullAddress;
     this.isAdminCenter = obj.isAdminCenter;
+    this.name = obj.name;
   }
 }

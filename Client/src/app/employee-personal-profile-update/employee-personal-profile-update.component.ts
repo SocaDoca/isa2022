@@ -16,12 +16,13 @@ export class EmployeePersonalProfileUpdateComponent {
   id: any;
   role: any;
   addressList: string = '';
+  nameList: string = '';
 
 
   constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient, private userService: UserService) {
     this.user = new User({
       email: "",
-      mobile: "",
+      moblie: "",
       job: "",
       fullAddress: "",
       password: "",
@@ -40,6 +41,7 @@ export class EmployeePersonalProfileUpdateComponent {
       .subscribe(res => {
         this.user = res;
         this.loadAddress(res);
+        this.loadName(res);
       })
   }
 
@@ -55,25 +57,30 @@ export class EmployeePersonalProfileUpdateComponent {
     this.user.country = splittedCountry;
   }
 
-  changePass() {
+  loadName(user: User) {
+    this.nameList = this.user.name!;
+    var splitName = this.nameList.split(" ");
+    var splFirstname = splitName[0];
+    var splLastname = splitName[1];
+    console.log(splFirstname + splLastname);
+    this.user.firstName = splFirstname;
+    this.user.lastName = splLastname;
 
   }
 
 
   showDashboard() {
-
-
     console.log(this.id)
     this.id = sessionStorage.getItem('id');
     this.role = sessionStorage.getItem('role');
     if (this.role == 'User') {
       this.userService.updateUser(this.user)
-        .subscribe(res => this.router.navigate(['/profile', res.id]));
+        .subscribe(res => this.router.navigate(['/profile', this.id]));
 
     } else if (this.role == 'Admin' || this.role == 'SysAdmin') {
 
       this.userService.updateUser(this.user)
-        .subscribe(res => this.router.navigate(['/profileEmployee', res.id]));
+        .subscribe(res => this.router.navigate(['/profileEmployee', this.id]));
     }
 
   }
