@@ -31,33 +31,50 @@ namespace MedicApp.Integrations
     {
         private readonly AppDbContext _appDbContext;
         private readonly IOptions<SecretSettings> _secretSettings;
+        private readonly IEmailUtils _emailUtils;
 
 
-        public UserIntegration(AppDbContext context, IConfiguration config, IOptions<SecretSettings> secretSettings)
+        public UserIntegration(AppDbContext context, IConfiguration config, IOptions<SecretSettings> secretSettings, IEmailUtils emailUtils)
         {
             _appDbContext = context;
             _secretSettings = secretSettings;
+            _emailUtils = emailUtils;
+        }
+
+        public bool VerifyUser(Guid Id)
+        {
+            var dbUser = _appDbContext.Users.FirstOrDefault(x => x.Id == Id);
+            if(dbUser == null)
+            {
+                throw new KeyNotFoundException("User does not exist");
+            }
+            dbUser.IsVerified = true;
+            _appDbContext.Users.Update(dbUser);
+            _appDbContext.SaveChanges();
+            return true;
         }
 
         public LoginResponse LogIn(LoginModel model)
         {
-
-            var findUser = _appDbContext.Users.FirstOrDefault(x => x.Username == model.Username);
+            var findUser = _appDbContext.Users.FirstOrDefault(x => x.Email == model.Email);
             if (findUser == null)
             {
-                throw new Exception();
+                throw new KeyNotFoundException("User dos not exist");
             }
             var matchPassword = CheckPassword(model.Password, findUser);
             if (!matchPassword)
             {
-                throw new Exception();
+                throw new Exception("Password does not match");
             }
-            //var role = _appDbContext.Roles.FirstOrDefault(x => x.Name == findUser.Role);
+            if (!findUser.IsVerified)
+            {
+                throw new Exception("User is not verifed");
+            }
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_secretSettings.Value.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", findUser.Username), new Claim(ClaimTypes.Role, findUser.Role) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("Id", findUser.Id.ToString()), new Claim(ClaimTypes.Role, findUser.Role) }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
@@ -118,7 +135,6 @@ namespace MedicApp.Integrations
                 JMBG = model.JMBG,
                 Mobile = model.Moblie,
                 Job = model.Job,
-
             };
 
             if (model.Password == model.ConfirmPassword)
@@ -131,8 +147,12 @@ namespace MedicApp.Integrations
             }
             else
             {
-                return null;
+                throw new Exception("Password does not match");
             }
+
+            var body = @"";
+            var subject = "Password verification";
+            //_emailUtils.SendMail();
             // save user
             _appDbContext.Users.Add(newUser);
             _appDbContext.SaveChanges();
