@@ -56,19 +56,16 @@ namespace MedicApp.Models
     public class SaveUserModel
     {
         public Guid Id { get; set; }
-        [Required]
         public string FirstName { get; set; }
-        [Required]
         public string LastName { get; set; }
-        [Required]
         public string Username { get; set; }
-        [Required]
+        
         public string Password { get; set; }
-        [Required]
+        
         public string ConfirmPassword { get; set; }
-        [Required]
+        
         public string Email { get; set; }
-        [Required]
+        
         public string JMBG { get; set; }
         public string? Moblie { get; set; }
         public string? Address { get; set; }
@@ -80,21 +77,16 @@ namespace MedicApp.Models
         public bool IsAdminCenter { get; set; }
     }
     public class RegisterRequest
-    {
-        
-        [Required]
+    {        
         public string FirstName { get; set; }
-        [Required]
+        
         public string LastName { get; set; }
-        [Required]
+        
         public string Username { get; set; }
-        [Required]
+        
         public string Password { get; set; } 
-        [Required]
         public string ConfirmPassword { get; set; }
-        [Required]
         public string Email { get; set; }
-        [Required]
         public string JMBG { get; set; }
         public string? Moblie { get; set; }
         public string? Address { get; set; }
@@ -109,12 +101,14 @@ namespace MedicApp.Models
     public class UpdateUser
     {
         public Guid Id {get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Username { get; set; }
         public string Email { get; set; }
         public string Mobile { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
-        public string Role { get; set; }
         public string Job { get; set; }
     }
 

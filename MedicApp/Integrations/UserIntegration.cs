@@ -25,7 +25,6 @@ namespace MedicApp.Integrations
         bool UpdateUser(UpdateUser updateUser);
         bool UpdatePassword(Guid Id, string password);
         bool Delete(Guid id);
-        User SaveUser(SaveUserModel createUser);
     }
 
     public class UserIntegration : IUserIntegration
@@ -76,15 +75,12 @@ namespace MedicApp.Integrations
             };
         }
 
-        public User SaveUser(SaveUserModel createUser)
+        public User UpdateUser(SaveUserModel createUser)
         {
             var dbUser = _appDbContext.Users.Where(x => !x.IsDeleted && x.Id == createUser.Id).FirstOrDefault();
             if (dbUser == null)
             {
-                dbUser = new User()
-                {
-                    JMBG = createUser.JMBG,
-                };
+                throw new KeyNotFoundException("User does not exist");
             }
             dbUser.FirstName = createUser.FirstName;
             dbUser.LastName = createUser.LastName;
@@ -95,23 +91,13 @@ namespace MedicApp.Integrations
             dbUser.Country = createUser.Country;
             dbUser.Gender = createUser.Gender;
             dbUser.Job = createUser.Job;
-            dbUser.IsAdminCenter = createUser.IsAdminCenter;
-            dbUser.Role = createUser.Roles;
             dbUser.Mobile = createUser.Moblie;
 
-            if (createUser.Password == createUser.ConfirmPassword)
-            {
-                using (HMACSHA512? hmac = new HMACSHA512())
-                {
-                    dbUser.PasswordSalt = hmac.Key;
-                    dbUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(createUser.Password));
-                }
-            }
-
-            _appDbContext.Users.Add(dbUser);
+            _appDbContext.Users.Update(dbUser);
             _appDbContext.SaveChanges();
             return dbUser;
         }
+
         public User? Register(RegisterRequest model)
         {
             if (_appDbContext.Users.Any(x => x.Username == model.Username))
@@ -212,9 +198,12 @@ namespace MedicApp.Integrations
             {
                 return false;
             }
+            getUser.Username = updateUser.Username;
+            getUser.FirstName = updateUser.FirstName;
+            getUser.LastName = updateUser.LastName;
             getUser.Address = updateUser.Address;
             getUser.Email = updateUser.Email;
-            getUser.Role = updateUser.Role;
+           
             getUser.City = updateUser.City;
             getUser.Country = updateUser.Country;
 

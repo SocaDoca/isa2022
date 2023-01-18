@@ -27,7 +27,7 @@ namespace MedicApp.Controllers
             return _userIntegration.GetUserById(Id);
         }
 
-        [HttpGet]
+        [HttpGet("get-all")]
         public List<UserLoadModel> GetAll()
         {
             return _userIntegration.GetAll();
@@ -45,10 +45,10 @@ namespace MedicApp.Controllers
             return _userIntegration.UpdatePassword(id, password);
         }
 
-        [HttpPost]
-        public User SaveUser(SaveUserModel user)
+        [HttpPost("update-user")]
+        public bool UpdateUser([FromBody]UpdateUser updateUser)
         {
-            return _userIntegration.SaveUser(user);
+            return _userIntegration.UpdateUser(updateUser);
         }
 
     }
