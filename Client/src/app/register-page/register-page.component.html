@@ -52,6 +52,9 @@
 
 
         </div>
+        <div>
+        <input id="isAdminCenter" name="isAdminCenter" type="checkbox" style="align-content:center; margin-left:50px;" value=1 [(ngModel)]="newUser.isAdminCenter" >Is Admin Center?
+          </div>
 
         <label style="font-weight: bold;">JMBG</label>
         <div class="form-group">
@@ -92,16 +95,29 @@
         <h2 class="text-center">Become our member !</h2>
 
 
+        <label style="font-weight: bold;">Gender</label>
+        <form #myForm="ngForm" (submit)="submitForm(myForm)" novalidate>
+          <!-- Gender -->
+          <div>
+            <input id="gender" type="radio" style="margin-left:130px;" class="custom-control-input" value=0 name="gender" [(ngModel)]="newUser.gender">
+            &nbsp;<a style="font-size:23px; font-style:normal;">Male</a>
 
 
-        <div id="which_gender" *ngFor="let choice of choices_for_gender" class="form-search">
-          <label style="font-weight: bold;">Gender</label>
-          <input class="form-check-input" type="radio" name="inlineRadioOptions4" id="inlineRadio4" value="{{choice}}">
-          <label class="form-check-label" for="inlineRadio4">{{choice}}</label>
+          </div>
+          <div>
+            <input id="gender" type="radio" style="margin-left: 130px;" class="custom-control-input" value=1 name="gender" [(ngModel)]="newUser.gender">
+            &nbsp;<a style="font-size:23px; font-style:normal;">Female</a>
+          </div>
+          <div>
+            <input id="gender" type="radio" style="margin-left: 130px;" class="custom-control-input" value=2 name="gender" [(ngModel)]="newUser.gender">
+            &nbsp;<a style="font-size:23px; font-style:normal;">Other</a>
+          </div>
+        </form>
 
 
-        </div>
 
+
+        <br>
         <label style="font-weight: bold;">Address</label>
         <div class="form-group">
           <input id="address" name="address" type="text" class="form-control" formControlName="address" [ngClass]="{ 'is-invalid': submitted && f['address'].errors }" [(ngModel)]="newUser.address">
@@ -131,12 +147,12 @@
         </div>
 
 
-        <br>
+        <br><br><br>
         <div class="form-group">
           <button class="btn1" type="submit" (click)="onSubmit()" style="color:white;">Register </button>
         </div>
       </form>
-    </div>
+</div>
 
 
 

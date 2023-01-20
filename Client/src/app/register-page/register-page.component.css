@@ -68,6 +68,11 @@ label {
   width: 300px;
 }
 
+.ngForm input{
+    margin-left: 100px;
+}
+
+
 .form-group input {
   margin-left: 50px;
   margin-top: 10px;

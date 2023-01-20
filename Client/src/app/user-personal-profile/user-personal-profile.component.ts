@@ -33,7 +33,7 @@ export class UserPersonalProfileComponent implements OnInit, AfterViewInit{
       fullAddress: '',
       mobile: '',
       job: '',
-      gender: 0,
+      gender: undefined,
       jmbg:''
 
     })
@@ -45,11 +45,22 @@ export class UserPersonalProfileComponent implements OnInit, AfterViewInit{
     this.loadProfile();
   }
 
+  showGender(user: UserLoadModel) {
+    if (user.gender == 0) {
+      user.gender = 'Male';
+    } else if (user.gender == 1) {
+      user.gender = 'Female';
+    } else
+      user.gender = 'Other';
+  }
+
   loadProfile() {
     this.id = this.route.snapshot.params['id'];
     this.userService.getUser(this.id)
       .subscribe(res => {
         this.user = res;
+        this.showGender(res);
+
 
       })
   }

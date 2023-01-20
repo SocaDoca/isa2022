@@ -12,7 +12,7 @@ export interface UserLoadModelInterface {
   job?: string;
   jmbg?: string;
   role?: string;
-  gender?: Genders;
+  gender?: any;
   fullAddress?: string;
   mobile?: string;
   password?: string;
@@ -31,7 +31,7 @@ export class UserLoadModel implements UserLoadModelInterface {
   job?: string;
   jmbg?: string;
   role?: string;
-  gender?: Genders;
+  gender?: any;
   fullAddress?: string;
   mobile?: string;
   password?: string;

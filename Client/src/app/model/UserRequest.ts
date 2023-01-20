@@ -12,7 +12,7 @@ export interface UserRequestInterface {
   city?: string;
   job?: string;
   roles?: string;
-  gender?: Genders;
+  gender?: any;
   password?: string;
   fullAddress?: string;
   confirmPassword?: string;
@@ -33,7 +33,7 @@ export class UserRequest implements UserRequestInterface {
   city?: string;
   job?: string;
   roles?: string;
-  gender?: Genders;
+  gender?: any;
   password?: string;
   confirmPassword?: string;
   jmbg?: string;
