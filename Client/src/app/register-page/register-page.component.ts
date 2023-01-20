@@ -7,7 +7,7 @@ import { Genders } from './../model/Genders';
 import { Roles } from './../model/Roles';
 import { UserRequest } from './../model/UserRequest';
 import { UserService } from "../../service/user.service";
-import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl, NgForm } from '@angular/forms';
 import { ReactiveFormsModule } from "@angular/forms";
 import Validation from './../utils/validation';
 
@@ -41,7 +41,8 @@ export class RegisterPageComponent implements OnInit {
   submitted: boolean = false;
   show: boolean = false;
   which_gender = Genders;
-  private genders = Genders;
+
+
 
 
   constructor(private registrationService: RegistrationService, private router: Router, private http: HttpClient, private userService: UserService, private formBuilder: FormBuilder) {
@@ -90,7 +91,7 @@ export class RegisterPageComponent implements OnInit {
       return;
     } else {
       this.addNewUser();
-      //console.log(JSON.stringify(this.form.value, null, 2));
+      console.log(JSON.stringify(this.form.value, null, 2));
     }
   }
 
@@ -102,6 +103,17 @@ export class RegisterPageComponent implements OnInit {
 
 
 
+  isSubmitted = false;
+  submitForm(form: NgForm) {
+    this.isSubmitted = true;
+    if (!form.valid) {
+      return false;
+    } else {
+     return alert(JSON.stringify(form.value))
+    }
+  }
+
+
   newUser: User = new User({
 
     firstName: '',
@@ -109,7 +121,7 @@ export class RegisterPageComponent implements OnInit {
     username: '',
     email: '',
     address: '',
-    gender: 0,
+    gender: undefined,
     roles: '',
     job: '',
     password: '',
@@ -159,26 +171,27 @@ export class RegisterPageComponent implements OnInit {
     */
     
 
-
       this.registrationRequest.username = this.newUser.username;
       this.registrationRequest.password = this.newUser.password;
       this.registrationRequest.confirmPassword = this.newUser.confirmPassword;
       this.registrationRequest.firstName = this.newUser.firstName;
       this.registrationRequest.lastName = this.newUser.lastName;
-      this.registrationRequest.gender = this.newUser.gender;
+      this.registrationRequest.gender = parseInt(this.newUser.gender);
       this.registrationRequest.email = this.newUser.email;
       this.registrationRequest.address = this.newUser.address;
       this.registrationRequest.job = this.newUser.job;
       this.registrationRequest.jmbg = this.newUser.jmbg;
       this.registrationRequest.roles = this.newUser.roles;
-    this.registrationRequest.moblie = this.newUser.moblie;
+      this.registrationRequest.moblie = this.newUser.moblie;
       this.registrationRequest.country = this.newUser.country;
       this.registrationRequest.city = this.newUser.city;
       this.registrationRequest.isAdminCenter = this.newUser.isAdminCenter;
 
-
+      console.log(this.registrationRequest);
+      
       this.registrationService.registerUser(this.registrationRequest).subscribe(res => {
         this.newUser = res
+       
         //this.userService.saveUser(res).subscribe(
         //);
 
