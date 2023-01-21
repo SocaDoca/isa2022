@@ -73,7 +73,7 @@ namespace MedicApp.Controllers
                     userId = newUser.Id,
                 },
                 Protocol = "http",
-                Host = "https://localhost:7017"
+                Host = "https://localhost:3200"
             });
             
 

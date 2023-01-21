@@ -40,7 +40,7 @@ namespace MedicApp.Integrations
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.Patient.Id == x.Id && x.Role == "User");
             var dbResponsiblePerson = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.ResponsiblePerson.Id == x.Id && x.Role == "Employee" && !x.IsAdminCenter);
             var patient2Questionnaire = _appDbContext.Patient2Questionnaires.Where(x => x.Patient_RefId == dbPatient.Id).ToList();
-            var questionnaires = _appDbContext.Questionnaire.Where(x => patient2Questionnaire.Any(s => s.Id == x.Id)).ToList();
+            var questionnaires = _appDbContext.Questionnaire.Where(x => patient2Questionnaire.Any(s => s.Questionnaire_RefId == x.Id)).ToList();
            
             if (dbClinic == null)
             {
@@ -80,7 +80,7 @@ namespace MedicApp.Integrations
                         throw new Exception("Patient does not exist");
                     }
                     dbAppointment.Patient_RefID = dbPatient.Id;
-
+                    if(patient2Questionnaire.Any() && )
                     if (dbAppointment == null)
                     {
                         dbAppointment = new Appointment();
