@@ -51,5 +51,6 @@ namespace MedicApp.Controllers
             return _userIntegration.UpdateUser(updateUser);
         }
 
+       
     }
 }

@@ -75,7 +75,7 @@ namespace MedicApp.Models
         public Genders Gender { get; set; }
         public string Roles { get; set; }
         public string Job { get; set; }
-        public bool IsAdminCenter { get; set; }
+        public bool IsAdminCenter { get; set; } = false;
     }
     public class RegisterRequest
     {        

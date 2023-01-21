@@ -91,6 +91,8 @@ namespace MedicApp.Integrations
                     dbAppointment.ResponsiblePerson_RefID = appointmentSave.ResponsiblePerson.Id;
                     dbAppointment.IsCanceled = appointmentSave.IsCanceled;
                     dbAppointment.IsFinished = appointmentSave.IsFinished;
+
+                    var qrCode = IronBarCode.QRCodeWriter.CreateQrCode("appointment", 500);
                 }
                 else
                 {
@@ -102,6 +104,24 @@ namespace MedicApp.Integrations
             return dbAppointment;
         }
 
+        public bool CancelAppointment(Guid appointmenetId)
+        {
+            var appointment = _appDbContext.Appointments.FirstOrDefault(x => !x.IsDeleted && x.Id == appointmenetId && !x.IsFinished);
+            if(appointment == null)
+            {
+                throw new Exception("Appointment does not exist");
+            }
+
+            if (appointment.IsCanceled)
+            {
+                return false;
+            }
+            appointment.IsCanceled = true;
+            _appDbContext.Appointments.Update(appointment);
+            _appDbContext.SaveChanges();
+            return true;            
+            
+        }
         public AppointmentLoadModel LoadAppointmentById(Guid Id)
         {
             var dbAppointment = _appDbContext.Appointments.FirstOrDefault(x => !x.IsDeleted && x.Id == Id);

@@ -13,6 +13,9 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
 using MedicApp.RelationshipTables;
+using System.Security.Policy;
+using MedicApp.Utils.AppSettings;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace MedicApp.Integrations
 {
@@ -22,6 +25,7 @@ namespace MedicApp.Integrations
         LoginResponse LogIn(LoginModel model);
         List<UserLoadModel> GetAll();
         UserLoadModel GetUserById(Guid id);
+        bool VerifyUser(VerifyParams verifyParams);
         bool UpdateUser(UpdateUser updateUser);
         bool UpdatePassword(Guid Id, string password);
         bool Delete(Guid id);
@@ -31,19 +35,19 @@ namespace MedicApp.Integrations
     {
         private readonly AppDbContext _appDbContext;
         private readonly IOptions<SecretSettings> _secretSettings;
-        private readonly IEmailUtils _emailUtils;
 
-
-        public UserIntegration(AppDbContext context, IConfiguration config, IOptions<SecretSettings> secretSettings, IEmailUtils emailUtils)
+        public UserIntegration(AppDbContext context, IConfiguration config, IOptions<SecretSettings> secretSettings)
         {
             _appDbContext = context;
             _secretSettings = secretSettings;
-            _emailUtils = emailUtils;
+            
         }
 
-        public bool VerifyUser(Guid Id)
+
+        #region Registration and Validation
+        public bool VerifyUser(VerifyParams verifyParams)
         {
-            var dbUser = _appDbContext.Users.FirstOrDefault(x => x.Id == Id);
+            var dbUser = _appDbContext.Users.FirstOrDefault(x => x.Id == verifyParams.UserId && x.Email == verifyParams.UserEmail);
             if(dbUser == null)
             {
                 throw new KeyNotFoundException("User does not exist");
@@ -90,35 +94,12 @@ namespace MedicApp.Integrations
                 Token = encrypterToken,
                 Role = findUser.Role,
             };
-        }
-
-        public User UpdateUser(SaveUserModel createUser)
-        {
-            var dbUser = _appDbContext.Users.Where(x => !x.IsDeleted && x.Id == createUser.Id).FirstOrDefault();
-            if (dbUser == null)
-            {
-                throw new KeyNotFoundException("User does not exist");
-            }
-            dbUser.FirstName = createUser.FirstName;
-            dbUser.LastName = createUser.LastName;
-            dbUser.Email = createUser.Email;
-            dbUser.Address = createUser.Address;
-            dbUser.Username = createUser.Username;
-            dbUser.City = createUser.City;
-            dbUser.Country = createUser.Country;
-            dbUser.Gender = createUser.Gender;
-            dbUser.Job = createUser.Job;
-            dbUser.Mobile = createUser.Moblie;
-
-            _appDbContext.Users.Update(dbUser);
-            _appDbContext.SaveChanges();
-            return dbUser;
-        }
+        }        
 
         public User? Register(RegisterRequest model)
         {
-            if (_appDbContext.Users.Any(x => x.Username == model.Username))
-                throw new AppException("Username '" + model.Username + "' is already taken");
+            if (_appDbContext.Users.Any(x => x.Email == model.Email))
+                throw new AppException("Email '" + model.Email + "' is already taken");
 
             // map model to new user object
             var newUser = new User()
@@ -148,16 +129,15 @@ namespace MedicApp.Integrations
             else
             {
                 throw new Exception("Password does not match");
-            }
+            }          
 
-            var body = @"";
-            var subject = "Password verification";
-            //_emailUtils.SendMail();
+
             // save user
             _appDbContext.Users.Add(newUser);
             _appDbContext.SaveChanges();
             return newUser;
         }
+        #endregion
 
         public Questionnaire CreateQuestionnaireForPatientById(Questionnaire questionnaire, Guid PatientId)
         {
@@ -222,7 +202,6 @@ namespace MedicApp.Integrations
             getUser.FirstName = updateUser.FirstName;
             getUser.LastName = updateUser.LastName;
             getUser.Address = updateUser.Address;
-            getUser.Email = updateUser.Email;
            
             getUser.City = updateUser.City;
             getUser.Country = updateUser.Country;
@@ -308,6 +287,13 @@ namespace MedicApp.Integrations
         #endregion
     }
 
+
+    public class VerifyParams
+    {
+        public Guid UserId { get; set; }
+        public string Token { get; set; }
+        public string UserEmail { get; set; }   
+    }
 
 
 }

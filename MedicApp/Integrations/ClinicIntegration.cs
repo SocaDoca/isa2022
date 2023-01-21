@@ -23,7 +23,6 @@ namespace MedicApp.Integrations
             _workingHoursIntegration = workingHoursIntegration;
         }
 
-
         public async Task<Clinic> SaveClinic(ClinicSaveModel clinicSave)
         {
             var dbClinic = await _appDbContext.Clinics.FirstOrDefaultAsync(x => x.Id == clinicSave.Id && !x.IsDeleted);

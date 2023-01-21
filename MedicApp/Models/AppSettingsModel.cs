@@ -1,4 +1,5 @@
-﻿namespace MedicApp.Models
+﻿
+namespace MedicApp.Models
 {
     public class AppSettingsModel
     {

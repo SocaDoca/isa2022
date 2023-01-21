@@ -7,9 +7,9 @@ namespace MedicApp.Utils
     {
         void SendMail(string sBody, string sSub, string sTo, string sFrom);
     }
-    public class EmailUtils
+    public class EmailUtils : IEmailUtils
     {
-        private void SendMail(string sBody, string sSub, string sTo, string sFrom)
+        public void SendMail(string sBody, string sSub, string sTo, string sFrom)
         {
             //Send email via SMTP.
             SmtpClient Client = new SmtpClient()
@@ -22,8 +22,8 @@ namespace MedicApp.Utils
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential()
                 {
-                    UserName = "rankovic.milos0804@gmail.com", //Returns valid Gmail address.
-                    Password = "lcyjttcktcjaxpqv" //Password to access email above. 
+                    UserName = "isa22.test@gmail.com", //Returns valid Gmail address.
+                    Password = "icazpzvhbvmtiunh" //Password to access email above. 
                 }
             };
 

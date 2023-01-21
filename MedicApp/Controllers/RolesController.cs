@@ -30,14 +30,9 @@ namespace MedicApp.Controllers
         }
 
         [HttpPost("load-all-roles")]
-        public async Task<StandardIntegrationResponse> GetAllRoles()
+        public List<LoadRole> GetAllRoles()
         {
-            return new StandardIntegrationResponse
-            {
-                IsSuccess = true,
-                Payload = await _rolesIntegration.GetAllRoles()
-            };
-
+            return _rolesIntegration.GetAllRoles();
         }
     }
 }

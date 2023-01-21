@@ -8,10 +8,10 @@ namespace MedicApp.Integrations
 {
     public interface IRolesIntegration
     {
-        Task<Roles> CreateRole([FromBody] SaveRole role);
-        Task<bool> Delete(Guid Id);
-        Task<LoadRole> GetRoleById(Guid Id);
-        Task<List<LoadRole>> GetAllRoles();
+        Roles CreateRole([FromBody] SaveRole role);
+        bool Delete(Guid Id);
+        LoadRole GetRoleById(Guid Id);
+        List<LoadRole> GetAllRoles();
     }
     public class RolesIntegration : IRolesIntegration
     {
@@ -22,9 +22,9 @@ namespace MedicApp.Integrations
             _appDbContext = appDbContext;
         }
 
-        public async Task<Roles> CreateRole([FromBody] SaveRole role)
+        public Roles CreateRole(SaveRole role)
         {
-            var findRole = await _appDbContext.Roles.FirstOrDefaultAsync(x => x.Id == role.Id && !x.IsDeleted);
+            var findRole = _appDbContext.Roles.FirstOrDefault(x => x.Id == role.Id && !x.IsDeleted);
             if (findRole == null)
             {
                 findRole = new Roles
@@ -39,9 +39,9 @@ namespace MedicApp.Integrations
 
             return findRole;
         }
-        public async Task<bool> Delete(Guid Id)
+        public bool Delete(Guid Id)
         {
-            var findRole = await _appDbContext.Roles.FirstOrDefaultAsync(x => x.Id == Id && !x.IsDeleted);
+            var findRole = _appDbContext.Roles.FirstOrDefault(x => x.Id == Id && !x.IsDeleted);
             if (findRole == null)
             {
                 return false;
@@ -52,9 +52,9 @@ namespace MedicApp.Integrations
 
             return true;
         }
-        public async Task<List<LoadRole>> GetAllRoles()
+        public List<LoadRole> GetAllRoles()
         {
-            var dbRoles =  _appDbContext.Roles.Where(x => !x.IsDeleted).ToList();
+            var dbRoles = _appDbContext.Roles.Where(x => !x.IsDeleted).ToList();
 
             var result = new List<LoadRole>();
             if(dbRoles.Any())
@@ -68,9 +68,9 @@ namespace MedicApp.Integrations
 
             return result;
         }
-        public async Task<LoadRole> GetRoleById(Guid Id)
+        public LoadRole GetRoleById(Guid Id)
         {
-            var findRole = await _appDbContext.Roles.FirstOrDefaultAsync(x => x.Id == Id && !x.IsDeleted);
+            var findRole = _appDbContext.Roles.FirstOrDefault(x => x.Id == Id && !x.IsDeleted);
             if (findRole == null)
             {
                 throw new KeyNotFoundException();

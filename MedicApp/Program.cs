@@ -1,9 +1,14 @@
 using MedicApp.Database;
 using MedicApp.Integrations;
 using MedicApp.Middlewares;
+using MedicApp.Models;
 using MedicApp.Utils;
+using MedicApp.Utils.AppSettings;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
@@ -27,12 +32,20 @@ builder.Services.AddDbContext<AppDbContext>(options =>
                                             options.UseMySQL(connectionString));
 
 builder.Services.Configure<SecretSettings>(builder.Configuration.GetSection("SecretSettings"));
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 //builder.Services.AddTransient<IJwtUtils, JwtUtils>();
+builder.Services.AddTransient<IEmailUtils, EmailUtils>();
+builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 builder.Services.AddTransient<IUserIntegration, UserIntegration>();
 builder.Services.AddTransient<IClinicIntegration, ClinicIntegration>();
 builder.Services.AddTransient<IRolesIntegration, RolesIntegration>();
 builder.Services.AddTransient<IWorkingHoursIntegration, WorkingHoursIntegration>();
 builder.Services.AddTransient<IAppointmentIntegration, AppointmentIntegration>();
+builder.Services.AddScoped<IUrlHelper>(x => {
+    var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
+    var factory = x.GetRequiredService<IUrlHelperFactory>();
+    return factory.GetUrlHelper(actionContext);
+});
 
 
 builder.Services.AddAuthentication(options =>
