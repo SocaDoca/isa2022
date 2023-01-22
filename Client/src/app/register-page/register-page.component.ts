@@ -196,7 +196,7 @@ export class RegisterPageComponent implements OnInit {
         //);
 
       });
-      this.router.navigate(['sign-in'])
+    //this.router.navigate(['verify/:token/:email/:userId'])
       /*} else {
         this.error = "passwords are not equal";
       }*/

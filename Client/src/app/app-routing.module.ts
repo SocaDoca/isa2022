@@ -19,6 +19,7 @@ import { UserComplaintComponent } from './user-complaint/user-complaint.componen
 import { UserScheduledAppointmentsComponent } from './user-scheduled-appointments/user-scheduled-appointments.component';
 import { SearchUserComponent } from './search-user/search-user.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { VerifyUserComponent } from './verify-user/verify-user.component';
 
 
 const routes: Routes = [
@@ -39,6 +40,7 @@ const routes: Routes = [
   { path: 'profileEmployee/:id/searchUser', component: SearchUserComponent },
   { path: 'search', component: SearchClinicComponent },
   { path: 'profileEmployee/:id/calendar', component: CalendarComponent },
+  { path: 'verify/:token/:email/:userId', component: VerifyUserComponent }
 ];
 
 @NgModule({

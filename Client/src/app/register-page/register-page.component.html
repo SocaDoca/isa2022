@@ -53,7 +53,7 @@
 
         </div>
         <div>
-        <input id="isAdminCenter" name="isAdminCenter" type="checkbox" style="align-content:center; margin-left:50px;" value=1 [(ngModel)]="newUser.isAdminCenter" >Is Admin Center?
+        <input id="isAdminCenter" name="isAdminCenter" type="checkbox" style="align-content:center; margin-left:50px;" value=1 ng-true-value="true" [(ngModel)]="newUser.isAdminCenter" >Is Admin Center?
           </div>
 
         <label style="font-weight: bold;">JMBG</label>
@@ -101,7 +101,6 @@
           <div>
             <input id="gender" type="radio" style="margin-left:130px;" class="custom-control-input" value=0 name="gender" [(ngModel)]="newUser.gender">
             &nbsp;<a style="font-size:23px; font-style:normal;">Male</a>
-
 
           </div>
           <div>
