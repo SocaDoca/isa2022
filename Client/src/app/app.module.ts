@@ -36,6 +36,7 @@ import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { FullCalendarModule } from '@fullcalendar/angular';
 import listPlugin from '@fullcalendar/list';
+import { VerifyUserComponent } from './verify-user/verify-user.component';
 
 
 
@@ -61,6 +62,7 @@ import listPlugin from '@fullcalendar/list';
     CalendarComponent,
     UserScheduledAppointmentsComponent,
     SearchUserComponent,
+    VerifyUserComponent,
 
   ],
   imports: [

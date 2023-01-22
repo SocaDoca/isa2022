@@ -22,7 +22,7 @@ export class EmployeePersonalProfileUpdateComponent {
   constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient, private userService: UserService) {
     this.user = new User({
       email: "",
-      moblie: "",
+      mobile: "",
       job: "",
       fullAddress: "",
       password: "",
@@ -42,6 +42,7 @@ export class EmployeePersonalProfileUpdateComponent {
         this.user = res;
         this.loadAddress(res);
         this.loadName(res);
+        console.log(res);
       })
   }
 

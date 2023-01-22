@@ -15,12 +15,13 @@ export class SignInPageComponent implements OnInit {
   form: FormGroup = new FormGroup({
     firstName: new FormControl(''),
     username: new FormControl(''),
-    //email: new FormControl(''),
+    email: new FormControl(''),
     password: new FormControl(''),
     //confirmPassword: new FormControl(''),
     //acceptTerms: new FormControl(false),
   });
-  username: any
+  username: any;
+  email: any;
   password: any;
   role: any;
   id: any;
@@ -39,7 +40,7 @@ export class SignInPageComponent implements OnInit {
     this.form = this.formBuilder.group(
       {
 
-        username: ['', Validators.required],
+        email: ['', Validators.required],
         password: [
           '',
           [
@@ -74,10 +75,10 @@ export class SignInPageComponent implements OnInit {
   }
   
   login() {
-    if (this.username == '' || this.password == '')
+    if (this.email == '' || this.password == '')
       this.error = "Username and password must be filled out";
     else {
-      this.loginservice.authenticate(this.username, this.password).subscribe(
+      this.loginservice.authenticate(this.email, this.password).subscribe(
         (data: any) => {
           console.log(data)
           this.LogIn.next();

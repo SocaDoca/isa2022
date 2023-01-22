@@ -43,7 +43,7 @@ export class UserPersonalProfileUpdateComponent {
         this.user = res;
         this.loadAddress(res);
         this.loadName(res);
-
+        
       })
   }
 
@@ -72,11 +72,10 @@ export class UserPersonalProfileUpdateComponent {
 
 
   showDashboard() {
-
-
-    console.log(this.id)
+    console.log(this.user)
     this.id = sessionStorage.getItem('id');
     this.role = sessionStorage.getItem('role');
+    console.log(this.role);
     if (this.role == 'User') {
       this.userService.updateUser(this.user)
         .subscribe(res => this.router.navigate(['/profile', this.id]));
