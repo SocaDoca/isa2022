@@ -19,9 +19,8 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
   templateUrl: './user-personal-profile.component.html',
   styleUrls: ['./user-personal-profile.component.css']
 })
-export class UserPersonalProfileComponent implements OnInit, AfterViewInit{
+export class UserPersonalProfileComponent implements OnInit{
   title = 'appBootstrap';
-  @ViewChild('mymodal') public mymodal: ModalDirective | undefined;
   closeResult = '';
   id: any;
   user: UserLoadModel;
@@ -42,22 +41,8 @@ export class UserPersonalProfileComponent implements OnInit, AfterViewInit{
 
     })
   }
-  ngAfterViewInit(): void {
-    this.modalService.open(this.mymodal).result.then((result) => {
-      this.closeResult = `Closed with: ${this.changePass()}`;
-    });
 
-  }
 
-  changePass() {
-    this.id = sessionStorage.getItem('id');
-    this.userService.updatePassword(this.id, this.password).subscribe(
-      (data: any) => {
-
-        console.log(data)
-        this.mymodal!.hide();
-      });
-  }
 
 
 
@@ -86,30 +71,6 @@ export class UserPersonalProfileComponent implements OnInit, AfterViewInit{
   }
 
 
-  /*open() {
-    this.modalService
-      .open(this.mymodal)
-      .result.then(
-        (result) => {
-          this.id = this.route.snapshot.params['id'];
-          this.userService.updatePassword(this.id, this.user.password!);
-          console.log(result);
-          //this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-       // }
-      );
-  }*/
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
 
 }

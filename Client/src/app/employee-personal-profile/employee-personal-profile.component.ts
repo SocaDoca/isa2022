@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../service/user.service';
 import { UserLoadModel } from '../../app/model/UserLoadModel';
 import { Genders } from '../model/Genders';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-employee-personal-profile',
@@ -18,9 +19,10 @@ import { Genders } from '../model/Genders';
 })
 export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit{
   title = 'appBootstrap';
-  @ViewChild('mymodal') mymodal: ElementRef | undefined;
+  @ViewChild('mymodal') public mymodal: ModalDirective | undefined;
   closeResult = '';
-  id!: string;
+  id: any;
+  password: any;
   user: UserLoadModel;
 
 
@@ -38,7 +40,20 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit{
     })
   }
   ngAfterViewInit(): void {
-    this.open(this.mymodal);
+    this.modalService.open(this.mymodal).result.then((result) => {
+      this.closeResult = `Closed with: ${this.changePass()}`;
+    });
+
+  }
+
+  changePass() {
+    this.id = sessionStorage.getItem('id');
+    this.userService.updatePassword(this.id, this.password).subscribe(
+      (data: any) => {
+
+        console.log(data)
+        this.mymodal!.hide();
+      });
   }
   ngOnInit(): void {
     this.loadProfile();

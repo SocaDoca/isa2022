@@ -40,22 +40,6 @@
         </div>
 
 
-
-        <div class="form-group">
-          <label style="font-weight: bold;">Role</label>
-          <input id="roles" name="roles" type="text" placeholder="Admin/Staff or User" formControlName="roles" [ngClass]="{ 'is-invalid': submitted && f['roles'].errors }" [(ngModel)]="newUser.roles">
-
-          <div *ngIf="submitted && f['roles'].errors" class="invalid-feedback">
-            <div *ngIf="f['roles'].errors['required']" style="text-align:center">Role is required</div>
-            <div *ngIf="f['roles'].errors['pattern']" style="text-align:center"> Invalid role. Enter User or Admin!</div>
-          </div>
-
-
-        </div>
-        <div>
-        <input id="isAdminCenter" name="isAdminCenter" type="checkbox" style="align-content:center; margin-left:50px;" value=1 ng-true-value="true" [(ngModel)]="newUser.isAdminCenter" >Is Admin Center?
-          </div>
-
         <label style="font-weight: bold;">JMBG</label>
         <div class="form-group">
           <input id="jmbg" type="text" class="form-control" formControlName="jmbg" [ngClass]="{ 'is-invalid': submitted && f['jmbg'].errors }" [(ngModel)]="newUser.jmbg">
@@ -83,11 +67,20 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label style="font-weight: bold;">Role</label>
+          <input id="roles" name="roles" type="text" placeholder="Admin/Staff or User" formControlName="roles" [ngClass]="{ 'is-invalid': submitted && f['roles'].errors }" [(ngModel)]="newUser.roles">
+
+          <div *ngIf="submitted && f['roles'].errors" class="invalid-feedback">
+            <div *ngIf="f['roles'].errors['required']" style="text-align:center">Role is required</div>
+            <div *ngIf="f['roles'].errors['pattern']" style="text-align:center"> Invalid role. Enter User or Admin!</div>
+          </div>
 
 
+        </div>
 
       </form>
-
+      <input type="checkbox" style="align-content:center; margin-left:50px;" (change)="checkCheckBoxvalue($event)" [(ngModel)]="newUser.isAdminCenter">Is Admin Center?
 
     </div><br>
     <div class="center" id="comp2">
@@ -149,74 +142,80 @@
         <br><br><br>
         <div class="form-group">
           <button class="btn1" type="submit" (click)="onSubmit()" style="color:white;">Register </button>
+          <br>
+          <a>When register, please check your email for verification!</a>
         </div>
       </form>
-</div>
+    </div>
 
 
 
     <div class="center" id="comp3">
       <br><br>
-          <form [formGroup]="form" (ngSubmit)="onSubmit()">
-            <label style="font-weight: bold;">Profession</label>
-            <div class="form-group">
-              <input id="job" name="job" type="text" class="form-control" formControlName="job" [ngClass]="{ 'is-invalid': submitted && f['job'].errors }" [(ngModel)]="newUser.job">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <label style="font-weight: bold;">Profession</label>
+        <div class="form-group">
+          <input id="job" name="job" type="text" class="form-control" formControlName="job" [ngClass]="{ 'is-invalid': submitted && f['job'].errors }" [(ngModel)]="newUser.job">
 
-              <div *ngIf="submitted && f['job'].errors" class="invalid-feedback">
-                <div *ngIf="f['job'].errors['required']" style="text-align:center">Job is required</div>
-              </div>
+          <div *ngIf="submitted && f['job'].errors" class="invalid-feedback">
+            <div *ngIf="f['job'].errors['required']" style="text-align:center">Job is required</div>
+          </div>
+        </div>
+
+        <label style="font-weight: bold;">Username</label>
+        <div class="form-group">
+          <input id="username" type="text" class="form-control" formControlName="username" [ngClass]="{ 'is-invalid': submitted && f['username'].errors }" [(ngModel)]="newUser.username">
+
+          <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+            <div *ngIf="f['username'].errors['required']" style="text-align:center">Username is required</div>
+          </div>
+        </div>
+
+        <label style="font-weight: bold;">Email</label>
+        <div class="form-group">
+          <input id="email" type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" [(ngModel)]="newUser.email">
+
+          <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+            <div *ngIf="f['email'].errors['required']" style="text-align:center">Username is required</div>
+            <div *ngIf="f['email'].errors['email']" style="text-align:center">Email is invalid</div>
+          </div>
+        </div>
+
+        <label style="font-weight: bold;">Password</label>
+        <div class="form-group">
+          <input id="password" type="password" class="form-control" [type]="show ? 'text' : 'password'" placeholder="password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" [(ngModel)]="newUser.password" />
+          &nbsp;
+          <mat-icon (click)="password()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+            <div *ngIf="f['password'].errors['required']" style="text-align:center">Password is required</div>
+            <div *ngIf="f['password'].errors['minlength']" style="text-align:center">
+              Password must be at least 6 characters
             </div>
-
-            <label style="font-weight: bold;">Username</label>
-            <div class="form-group">
-              <input id="username" type="text" class="form-control" formControlName="username" [ngClass]="{ 'is-invalid': submitted && f['username'].errors }" [(ngModel)]="newUser.username">
-
-              <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
-                <div *ngIf="f['username'].errors['required']" style="text-align:center">Username is required</div>
-              </div>
+            <div *ngIf="f['password'].errors['maxlength']" style="text-align:center">
+              Username must not exceed 40 characters
             </div>
+          </div>
 
-            <label style="font-weight: bold;">Email</label>
-            <div class="form-group">
-              <input id="email" type="text" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" [(ngModel)]="newUser.email">
-
-              <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-                <div *ngIf="f['email'].errors['required']" style="text-align:center">Username is required</div>
-                <div *ngIf="f['email'].errors['email']" style="text-align:center">Email is invalid</div>
-              </div>
+        </div>
+        <div class="form-group">
+          <input id="confirmPassword" name="confirmPassword" class="form-control" type="password" placeholder="confirm password" formControlName="confirmPassword" [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }" [(ngModel)]="newUser.confirmPassword">
+          <div *ngIf="submitted && f['confirmPassword'].errors"
+               class="invalid-feedback">
+            <div *ngIf="f['confirmPassword'].errors['required']" style="text-align:center">
+              Confirm Password is required
             </div>
-
-            <label style="font-weight: bold;">Password</label>
-            <div class="form-group">
-              <input id="password" type="password" class="form-control" [type]="show ? 'text' : 'password'" placeholder="password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" [(ngModel)]="newUser.password" />
-              &nbsp;
-              <mat-icon (click)="password()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
-              <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-                <div *ngIf="f['password'].errors['required']" style="text-align:center">Password is required</div>
-                <div *ngIf="f['password'].errors['minlength']" style="text-align:center">
-                  Password must be at least 6 characters
-                </div>
-                <div *ngIf="f['password'].errors['maxlength']" style="text-align:center">
-                  Username must not exceed 40 characters
-                </div>
-              </div>
-
+            <div *ngIf="f['confirmPassword'].errors['matching']" style="text-align:center">
+              Confirm Password does not match
             </div>
-            <div class="form-group">
-              <input id="confirmPassword" name="confirmPassword" class="form-control" type="password" placeholder="confirm password" formControlName="confirmPassword" [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }" [(ngModel)]="newUser.confirmPassword">
-              <div *ngIf="submitted && f['confirmPassword'].errors"
-                   class="invalid-feedback">
-                <div *ngIf="f['confirmPassword'].errors['required']" style="text-align:center">
-                  Confirm Password is required
-                </div>
-                <div *ngIf="f['confirmPassword'].errors['matching']" style="text-align:center">
-                  Confirm Password does not match
-                </div>
-              </div>
-            </div>
-            <br><br>
+          </div>
+        </div>
+        <br><br>
 
-          </form>
+
+
+
+      </form>
+
     </div>
 
 

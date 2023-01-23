@@ -116,6 +116,7 @@ namespace MedicApp.Integrations
                 JMBG = model.JMBG,
                 Mobile = model.Moblie,
                 Job = model.Job,
+                IsAdminCenter = model.IsAdminCenter
             };
 
             if (model.Password == model.ConfirmPassword)
@@ -241,6 +242,7 @@ namespace MedicApp.Integrations
             };
 
             return resultList;
+ 
         }
 
         public UserLoadModel GetUserById(Guid id)

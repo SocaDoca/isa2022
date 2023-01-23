@@ -18,16 +18,20 @@ export class VerifyUserComponent {
 
 
   constructor(private authenticationService: AuthenticationService, private router: Router, private formBuilder: FormBuilder, private route: ActivatedRoute) {
-}
+  }
 
+  ngOnInit() {
+    this.route.queryParams
+      .subscribe(params => {
+        console.log(params); // { orderby: "price" }
+        this.token = params['token'];
+        this.email = params['email'];
+        this.userId = params['userId'];
+        console.log(this.token);
+      });
+  }
 
   verifyAcc() {
-   // this.token = sessionStorage.getItem('token');
-   // this.userId = sessionStorage.getItem('id');
-   // this.email = sessionStorage.getItem('email');
-    this.userId = this.route.snapshot.paramMap.get('userId');
-    this.email = this.route.snapshot.paramMap.get('email')!;
-    this.token = this.route.snapshot.paramMap.get('token');
     this.authenticationService.verify(this.token, this.email, this.userId).subscribe(
       (data: any) => {
         // let token = data['token'];

@@ -15,7 +15,7 @@
     <div class="modal-body" style="background-color:darkolivegreen; color:white">
       
       <div class="form-group">
-        <input id="name" name="name" type="text" class="from-control" placeholder="password">
+        <input id="name" name="name" type="password" class="from-control" placeholder="password" [(ngModel)]="password">
       </div>
       &nbsp;
       <div class="form-group">
@@ -24,7 +24,7 @@
       </div>
 
       <br />
-      <button  type="button" class="btn btn-primary" style="width:160px; margin-left:10px" (click)="modal.close('Save click')">Confirm</button>
+      <button  type="button" class="btn btn-primary" style="width:160px; margin-left:10px" (click)="modal.close(changePass())">Confirm</button>
 
     </div>
 
@@ -39,7 +39,7 @@
 
       <label> {{user.role}} </label>
 
-      <label [routerLink]="['view-connections']" id="conn"> category </label>
+
 
       <br><button class="btn btn-primary" [routerLink]="['calendar']">Calendar</button>
       <br><button class="btn btn-primary" [routerLink]="['updateEmployeeProfile']">Update profile</button>

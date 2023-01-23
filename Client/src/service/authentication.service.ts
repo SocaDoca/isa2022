@@ -42,6 +42,7 @@ export class AuthenticationService {
       );
   }
 
+
   tokenIsPresent() {
     return this.access_token != undefined && this.access_token != null;
   }

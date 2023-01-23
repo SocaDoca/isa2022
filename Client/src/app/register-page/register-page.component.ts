@@ -134,7 +134,17 @@ export class RegisterPageComponent implements OnInit {
 
   });
 
-
+  checkCheckBoxvalue(event: any) {
+    console.log(event.target.checked);
+    if (event.target.checked == true) {
+      this.newUser.isAdminCenter == true;
+      this.registrationRequest.isAdminCenter = this.newUser.isAdminCenter;
+    }
+    else {
+      this.newUser.isAdminCenter == false;
+      this.registrationRequest.isAdminCenter = this.newUser.isAdminCenter;
+    }
+  }
 
 
   registrationRequest: UserRequest = new UserRequest({
@@ -170,7 +180,7 @@ export class RegisterPageComponent implements OnInit {
       this.registrationRequest.isAdminCenter = this.newUser.isAdminCenter == false;
     */
     
-
+    this.checkCheckBoxvalue(event);
       this.registrationRequest.username = this.newUser.username;
       this.registrationRequest.password = this.newUser.password;
       this.registrationRequest.confirmPassword = this.newUser.confirmPassword;
@@ -192,15 +202,10 @@ export class RegisterPageComponent implements OnInit {
       this.registrationService.registerUser(this.registrationRequest).subscribe(res => {
         this.newUser = res
        
-        //this.userService.saveUser(res).subscribe(
-        //);
 
       });
-    //this.router.navigate(['verify/:token/:email/:userId'])
-      /*} else {
-        this.error = "passwords are not equal";
-      }*/
-      //  }
+      this.onReset();
+
 
     }
 
