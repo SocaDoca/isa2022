@@ -80,7 +80,10 @@ namespace MedicApp.Integrations
                         throw new Exception("Patient does not exist");
                     }
                     dbAppointment.Patient_RefID = dbPatient.Id;
-
+                    if(!patient2Questionnaire.Any() && !questionnaires.Any(x => x.ExpireDate < DateTime.UtcNow))
+                    {
+                        throw new Exception("Patient does not have any valid questionnaires");
+                    }
                     if (dbAppointment == null)
                     {
                         dbAppointment = new Appointment();

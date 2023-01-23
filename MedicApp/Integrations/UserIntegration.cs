@@ -235,10 +235,24 @@ namespace MedicApp.Integrations
         public List<UserLoadModel> GetAll()
         {
             var resultList = new List<UserLoadModel>();
-
-            foreach (var user in _appDbContext.Users)
+            var dbUsers = _appDbContext.Users.ToList();
+            foreach (var user in dbUsers)
             {
-                resultList.Add(GetUserById(user.Id));
+
+                resultList.Add(new UserLoadModel
+                {
+                    Name = String.Format("{0} {1}", user.FirstName,user.LastName),
+                    Email = user.Email,
+                    Gender = user.Gender,   
+                    Id = user.Id,
+                    IsAdminCenter = user.IsAdminCenter,
+                    JMBG = user.JMBG,
+                    Job = user.Job,
+                    Mobile = user.Mobile,
+                    Username = user.Username,
+                    FullAddress = String.Format("{0} {1} {2}", user.Address, user.City, user.Country),
+                    Role = user.Role
+                });
             };
 
             return resultList;

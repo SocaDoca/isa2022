@@ -63,12 +63,7 @@ namespace MedicApp.Integrations
                     workingHours = _workingHoursIntegration.LoadDBWorkingHourById(item.Id);
                     workingHours.Start = item.Start.TimeOfDay;
                     workingHours.End = item.End.TimeOfDay;
-                    workingHours.IsMonday = item.IsMonday;
-                    workingHours.IsTuesday = item.IsTuesday;
-                    workingHours.IsWednesday = item.IsWednesday;
-                    workingHours.IsThursday = item.IsThursday;
-                    workingHours.IsFriday = item.IsFriday;
-                    workingHours.IsSaturday = item.IsSaturday;
+                    workingHours.DayOfWeek = item.Day;
 
                     _appDbContext.WorkingHours.Update(workingHours);
                 }

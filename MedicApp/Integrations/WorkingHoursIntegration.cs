@@ -29,12 +29,7 @@ namespace MedicApp.Integrations
 
             dbWorkingHour.Start = wokringHoursModel.Start.TimeOfDay;
             dbWorkingHour.End = wokringHoursModel.End.TimeOfDay;
-            dbWorkingHour.IsMonday = wokringHoursModel.IsMonday;
-            dbWorkingHour.IsTuesday = wokringHoursModel.IsTuesday;
-            dbWorkingHour.IsWednesday = wokringHoursModel.IsWednesday;
-            dbWorkingHour.IsThursday = wokringHoursModel.IsThursday;
-            dbWorkingHour.IsFriday = wokringHoursModel.IsFriday;
-            dbWorkingHour.IsSaturday = wokringHoursModel.IsSaturday;
+            dbWorkingHour.DayOfWeek = wokringHoursModel.Day;
 
             _appDbContext.WorkingHours.Add(dbWorkingHour);
             _appDbContext.SaveChanges();
@@ -63,12 +58,7 @@ namespace MedicApp.Integrations
                 Id = dbWorkingHour.Id,
                 Start = dbWorkingHour.Start,
                 End = dbWorkingHour.End,
-                IsMonday = dbWorkingHour.IsMonday,
-                IsTuesday = dbWorkingHour.IsTuesday,
-                IsWednesday = dbWorkingHour.IsWednesday,
-                IsThursday = dbWorkingHour.IsThursday,
-                IsFriday = dbWorkingHour.IsFriday,
-                IsSaturday = dbWorkingHour.IsSaturday,
+                Day = dbWorkingHour.DayOfWeek,
             };
             return result;
         }

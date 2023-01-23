@@ -41,6 +41,7 @@ namespace MedicApp.Controllers
 
         [HttpPost]
         [Route("register")]
+        [AllowAnonymous]
         public IActionResult Register([FromBody] RegisterRequest model)
         {
             var newUser = _userIntegration.Register(model);
