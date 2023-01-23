@@ -202,7 +202,7 @@ namespace MedicApp.Integrations
             getUser.FirstName = updateUser.FirstName;
             getUser.LastName = updateUser.LastName;
             getUser.Address = updateUser.Address;
-           
+            getUser.Mobile = updateUser.Mobile;
             getUser.City = updateUser.City;
             getUser.Country = updateUser.Country;
 
@@ -265,7 +265,9 @@ namespace MedicApp.Integrations
                 JMBG = dbUser.JMBG ?? String.Empty,
                 IsAdminCenter = dbUser.IsAdminCenter
 
-            };
+        
+
+        };
 
             return resultUser;
 

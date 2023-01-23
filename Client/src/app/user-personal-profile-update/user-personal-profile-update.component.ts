@@ -18,18 +18,20 @@ export class UserPersonalProfileUpdateComponent {
   role: any;
   addressList: string = '';
   nameList: string = '';
+  password:any;
+
 
   constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient, private userService: UserService) {
     this.user = new User({
-      email: "",
-      moblie: "",
-      job: "",
-      fullAddress: "",
-      password: "",
-      city:"",
-      address: "",
-      country: "",
-      name:""
+      email: '',
+      mobile: '',
+      job: '',
+      fullAddress: '',
+      password: '',
+      city: '',
+      address: '',
+      country: '',
+      name: ''
     })
   }
 
@@ -43,7 +45,7 @@ export class UserPersonalProfileUpdateComponent {
         this.user = res;
         this.loadAddress(res);
         this.loadName(res);
-        
+        console.log(this.user);
       })
   }
 
@@ -77,8 +79,11 @@ export class UserPersonalProfileUpdateComponent {
     this.role = sessionStorage.getItem('role');
     console.log(this.role);
     if (this.role == 'User') {
+      console.log(this.user.password);
       this.userService.updateUser(this.user)
-        .subscribe(res => this.router.navigate(['/profile', this.id]));
+        .subscribe(res => {
+          this.router.navigate(['/profile', this.id])
+        });
 
     } else if (this.role == 'Admin' || this.role == 'SysAdmin') {
 
@@ -90,7 +95,7 @@ export class UserPersonalProfileUpdateComponent {
 
 
 // click event function toggle
-password() {
+pass() {
     this.show = !this.show;
 }
 }

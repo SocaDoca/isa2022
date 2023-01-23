@@ -10,6 +10,8 @@ import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../service/user.service';
 import { UserLoadModel } from '../../app/model/UserLoadModel';
 import { Genders } from '../model/Genders';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+
 
 
 @Component({
@@ -19,11 +21,12 @@ import { Genders } from '../model/Genders';
 })
 export class UserPersonalProfileComponent implements OnInit, AfterViewInit{
   title = 'appBootstrap';
-  @ViewChild('mymodal') mymodal: ElementRef | undefined;
+  @ViewChild('mymodal') public mymodal: ModalDirective | undefined;
   closeResult = '';
-  id!: string;
+  id: any;
   user: UserLoadModel;
   addressList: string = '';
+  password: any;
 
   constructor(private modalService: NgbModal, private userService: UserService, private route: ActivatedRoute) {
     this.user = new UserLoadModel({
@@ -34,13 +37,30 @@ export class UserPersonalProfileComponent implements OnInit, AfterViewInit{
       mobile: '',
       job: '',
       gender: undefined,
-      jmbg:''
+      jmbg: '',
+      password:''
 
     })
   }
   ngAfterViewInit(): void {
-    this.open(this.mymodal);
+    this.modalService.open(this.mymodal).result.then((result) => {
+      this.closeResult = `Closed with: ${this.changePass()}`;
+    });
+
   }
+
+  changePass() {
+    this.id = sessionStorage.getItem('id');
+    this.userService.updatePassword(this.id, this.password).subscribe(
+      (data: any) => {
+
+        console.log(data)
+        this.mymodal!.hide();
+      });
+  }
+
+
+
   ngOnInit(): void {
     this.loadProfile();
   }
@@ -60,24 +80,27 @@ export class UserPersonalProfileComponent implements OnInit, AfterViewInit{
       .subscribe(res => {
         this.user = res;
         this.showGender(res);
-
+ 
 
       })
   }
 
 
-  open(content: any) {
+  /*open() {
     this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .open(this.mymodal)
       .result.then(
         (result) => {
-          this.closeResult = `Closed with: ${result}`;
+          this.id = this.route.snapshot.params['id'];
+          this.userService.updatePassword(this.id, this.user.password!);
+          console.log(result);
+          //this.closeResult = `Closed with: ${result}`;
         },
         (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
+          //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+       // }
       );
-  }
+  }*/
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {

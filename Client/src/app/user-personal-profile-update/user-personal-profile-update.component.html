@@ -34,7 +34,7 @@
       <br><br>
       <label style="font-weight: bold;">Mobile</label>
       <div class="form-group">
-        <input id="moblie" name="moblie" type="text" class="from-control" [(ngModel)]="user.moblie">
+        <input id="mobile" name="mobile" type="text" class="from-control" [(ngModel)]="user.mobile">
       </div>
 
       <label style="font-weight: bold;">Address</label>
@@ -69,7 +69,7 @@
       <div class="form-group">
         <input class="from-control" [type]="show ? 'text' : 'password'" [(ngModel)]="user.password" />
         &nbsp;
-        <mat-icon (click)="password()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
+        <mat-icon (click)="pass()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
       </div>
 
       <label style="font-weight: bold;">Confirm Password</label>
