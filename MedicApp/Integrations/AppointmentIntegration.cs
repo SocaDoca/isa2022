@@ -80,7 +80,7 @@ namespace MedicApp.Integrations
                         throw new Exception("Patient does not exist");
                     }
                     dbAppointment.Patient_RefID = dbPatient.Id;
-                    if(patient2Questionnaire.Any() && )
+
                     if (dbAppointment == null)
                     {
                         dbAppointment = new Appointment();

@@ -133,7 +133,7 @@ export class RegisterPageComponent implements OnInit {
     isAdminCenter: undefined
 
   });
-  choices_for_gender = ['Female', 'Male', 'Other'];
+
 
 
 

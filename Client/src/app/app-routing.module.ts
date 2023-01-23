@@ -20,6 +20,7 @@ import { UserScheduledAppointmentsComponent } from './user-scheduled-appointment
 import { SearchUserComponent } from './search-user/search-user.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { VerifyUserComponent } from './verify-user/verify-user.component';
+import { ChangePassComponent } from './change-pass/change-pass.component';
 
 
 const routes: Routes = [
@@ -39,6 +40,7 @@ const routes: Routes = [
   { path: 'profile/:id/updateProfile', component: UserPersonalProfileUpdateComponent },
   { path: 'profileEmployee/:id/searchUser', component: SearchUserComponent },
   { path: 'search', component: SearchClinicComponent },
+  { path: 'change-pass', component: ChangePassComponent },
   { path: 'profileEmployee/:id/calendar', component: CalendarComponent },
   { path: 'verify/:token/:email/:userId', component: VerifyUserComponent }
 ];

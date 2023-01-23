@@ -1,0 +1,46 @@
+.forma {
+  text-align: center;
+  margin-top: 100px;
+  margin-bottom: 500px;
+  margin-left: 500px;
+  background-color: darkolivegreen;
+  width: 500px;
+}
+
+.form-search {
+  text-align: center;
+  margin: 5px;
+}
+
+  .form-search input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid rgb(116, 116, 116);
+    font-size: 19px;
+    margin-left: 10px;
+  }
+
+h3 {
+  color: white;
+}
+
+label {
+  color: white;
+}
+
+.btn {
+  text-align: center;
+  margin-top: 10px;
+  width: 260px;
+}
+
+input {
+  text-align: center;
+  margin-bottom: 10px;
+  margin-left: 100px;
+}
+
+h3 {
+  text-align: center;
+}
