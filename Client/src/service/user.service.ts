@@ -34,7 +34,7 @@ export class UserService {
   }
 
 
-  //ne radi
+
   updatePassword(id: string, password: string) {
     return this.http.put<boolean>(`${this.urlUpdatePass}/${id}/update-password?password=${password}`, null).pipe(
       map((userData) => {

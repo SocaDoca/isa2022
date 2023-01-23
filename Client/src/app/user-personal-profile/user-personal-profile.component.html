@@ -8,28 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-  <ng-template #mymodal let-modal>
-    <div class="modal-header" style="background-color:darkolivegreen;">
-      <h4 class="modal-title" id="modal-basic-title" style="color:white">Change password</h4>
-    </div>
-    <div class="modal-body" style="background-color:darkolivegreen; color:white">
-
-      <div class="form-group">
-        <input id="password" name="password" type="password" class="from-control" placeholder="password" [(ngModel)]="password">
-      </div>
-      &nbsp;
-      <div class="form-group">
-        <input id="confirmPass" name="confirmPass" type="text" class="from-control" placeholder="confirm password">
-
-      </div>
-
-      <br />
-      <button #closemodal type="button" class="btn btn-primary" style="width:160px; margin-left:10px" (click)="changePass()">Confirm</button>
-
-    </div>
-
-  </ng-template>
-
+ 
   <div class="row" class="container">
     <div class="center" id="comp1">
 

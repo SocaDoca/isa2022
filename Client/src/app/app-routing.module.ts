@@ -42,7 +42,7 @@ const routes: Routes = [
   { path: 'search', component: SearchClinicComponent },
   { path: 'change-pass', component: ChangePassComponent },
   { path: 'profileEmployee/:id/calendar', component: CalendarComponent },
-  { path: 'verify/:token/:email/:userId', component: VerifyUserComponent }
+  { path: 'Auth/verify-user', component: VerifyUserComponent}
 ];
 
 @NgModule({
