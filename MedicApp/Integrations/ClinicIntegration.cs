@@ -8,7 +8,7 @@ namespace MedicApp.Integrations
 {
     public interface IClinicIntegration
     {
-        Task<Clinic> SaveClinic(ClinicSaveModel clinicSave);
+        Clinic SaveClinic(ClinicSaveModel clinicSave);
         List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters);
         ClinicLoadModel GetClinicById(Guid Id);
     }
@@ -23,9 +23,9 @@ namespace MedicApp.Integrations
             _workingHoursIntegration = workingHoursIntegration;
         }
 
-        public async Task<Clinic> SaveClinic(ClinicSaveModel clinicSave)
+        public Clinic SaveClinic(ClinicSaveModel clinicSave)
         {
-            var dbClinic = await _appDbContext.Clinics.FirstOrDefaultAsync(x => x.Id == clinicSave.Id && !x.IsDeleted);
+            var dbClinic =  _appDbContext.Clinics.FirstOrDefault(x => x.Id == clinicSave.Id && !x.IsDeleted);
             if (dbClinic == null)
             {
                 dbClinic = new Clinic();

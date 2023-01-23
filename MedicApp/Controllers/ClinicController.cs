@@ -7,7 +7,7 @@ namespace MedicApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class ClinicController : ControllerBase
     {  private readonly IClinicIntegration _clinicIntegration;
 
@@ -17,9 +17,9 @@ namespace MedicApp.Controllers
         }
 
         [HttpPost("save-clinic")]
-        public async Task<IActionResult> SaveClinic([FromBody] ClinicSaveModel clinic)
+        public Clinic SaveClinic([FromBody] ClinicSaveModel clinic)
         {
-            return Ok(_clinicIntegration.SaveClinic(clinic));
+            return _clinicIntegration.SaveClinic(clinic);
         }
 
         [HttpPost("load-all-clinics")]
