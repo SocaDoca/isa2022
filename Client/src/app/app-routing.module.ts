@@ -21,7 +21,7 @@ import { SearchUserComponent } from './search-user/search-user.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { VerifyUserComponent } from './verify-user/verify-user.component';
 import { ChangePassComponent } from './change-pass/change-pass.component';
-
+import { AddClinicComponent } from './add-clinic/add-clinic.component';
 
 const routes: Routes = [
   { path: '', component: MainPageComponent },
@@ -37,6 +37,7 @@ const routes: Routes = [
   { path: 'profileEmployee/:id/viewClinic', component: ViewClinicComponent },
   { path: 'profileEmployee/:id/addTerm', component: AdminAddTermComponent },
   { path: 'profileEmployee/:id/updateEmployeeProfile', component: EmployeePersonalProfileUpdateComponent },
+  { path: 'profileEmployee/:id/add-clinic', component: AddClinicComponent },
   { path: 'profile/:id/updateProfile', component: UserPersonalProfileUpdateComponent },
   { path: 'profileEmployee/:id/searchUser', component: SearchUserComponent },
   { path: 'search', component: SearchClinicComponent },
