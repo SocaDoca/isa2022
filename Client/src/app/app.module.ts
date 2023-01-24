@@ -38,6 +38,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 
 import { VerifyUserComponent } from './verify-user/verify-user.component';
 import { ChangePassComponent } from './change-pass/change-pass.component';
+import { AddClinicComponent } from './add-clinic/add-clinic.component';
 
 
 
@@ -65,6 +66,7 @@ import { ChangePassComponent } from './change-pass/change-pass.component';
     SearchUserComponent,
     VerifyUserComponent,
     ChangePassComponent,
+    AddClinicComponent,
 
   ],
   imports: [

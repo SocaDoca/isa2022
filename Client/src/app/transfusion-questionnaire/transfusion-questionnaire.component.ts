@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-transfusion-questionnaire',
@@ -6,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./transfusion-questionnaire.component.css']
 })
 export class TransfusionQuestionnaireComponent {
+  form: FormGroup = new FormGroup({
 
+
+  });
 }

@@ -20,20 +20,26 @@
     <div class="modal-content">
       <table class="table table-striped" border="1" width="200" style="background-color:darkolivegreen; color:white">
         <thead>
-          <tr>
-            <th></th>
-            <th>First name</th>
-            <th>Last name</th>
+          <tr width="5%">
+            <th>Name</th>
             <th>JMBG</th>
             <th>Email</th>
             <th>Mobile</th>
             <th>Address</th>
             <th>Profession</th>
+            <th>Role</th>
 
           </tr>
         </thead>
-        <tbody>
-          <tr app-search-user *ngFor="let user of users">
+        <tbody style="color:white;">
+          <tr *ngFor="let f of user">
+            <td style="color:white">{{f.name}}</td>
+            <td style="color:white">{{f.jmbg}}</td>
+            <td style="color:white">{{f.email}}</td>
+            <td style="color:white">{{f.mobile}}</td>
+            <td style="color:white">{{f.fullAddress}}</td>
+            <td style="color:white">{{f.job}}</td>
+            <td style="color:white">{{f.role}}</td>
           </tr>
         </tbody>
       </table>
