@@ -1,7 +1,7 @@
 //proveriti da li treba da se dodaju liste
 import { WorkingHours } from './WorkingHours';
 
-export interface DbClinicInterface {
+export interface ClinicSaveModelInterface {
   id?: string;
   name?: string;
   address?: string;
@@ -13,7 +13,7 @@ export interface DbClinicInterface {
   workHours?: WorkingHours[];
 }
 
-export class DbClinic implements DbClinicInterface {
+export class ClinicSaveModel implements ClinicSaveModelInterface {
   id?: string;
   name?: string;
   address?: string;
@@ -24,7 +24,7 @@ export class DbClinic implements DbClinicInterface {
   rating?: number;
   workHours?: WorkingHours[];
 
-  constructor(obj: DbClinicInterface) {
+  constructor(obj: ClinicSaveModelInterface) {
     this.id = obj.id;
     this.name = obj.name;
     this.address = obj.address;
