@@ -75,7 +75,7 @@
         public string Country { get; set; }
         public string Phone { get; set; }
         public float Rating { get; set; }
-        public List<WorkingHours>WorkingHours { get; set; } = new List<WorkingHours>();
+        public List<LoadWorkingHoursModel> WorkingHours { get; set; } = new List<LoadWorkingHoursModel>();
     }
 
 }

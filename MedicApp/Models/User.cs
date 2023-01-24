@@ -24,6 +24,7 @@ namespace MedicApp.Models
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public bool IsVerified { get; set; }
+        public bool IsFirstTime { get; set; }
         public bool IsDeleted { get; set; }  
         
         
@@ -32,6 +33,7 @@ namespace MedicApp.Models
             Id = Guid.NewGuid();
             IsDeleted = false;
             LoyaltyPoints = 1000;
+            IsFirstTime = true;
         }
     }
 

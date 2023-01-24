@@ -223,6 +223,7 @@ namespace MedicApp.Integrations
                 findUser.PasswordSalt = hmac.Key;
                 findUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
+            findUser.IsFirstTime = true;
             _appDbContext.Users.Update(findUser);
             _appDbContext.SaveChanges();
             return true;

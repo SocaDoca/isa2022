@@ -17,7 +17,7 @@ namespace MedicApp.Integrations
         public readonly AppDbContext _appDbContext;
         public readonly IWorkingHoursIntegration _workingHoursIntegration;
 
-        public ClinicIntegration(AppDbContext appDbContext , IWorkingHoursIntegration workingHoursIntegration)
+        public ClinicIntegration(AppDbContext appDbContext, IWorkingHoursIntegration workingHoursIntegration)
         {
             _appDbContext = appDbContext;
             _workingHoursIntegration = workingHoursIntegration;
@@ -25,7 +25,7 @@ namespace MedicApp.Integrations
 
         public Clinic SaveClinic(ClinicSaveModel clinicSave)
         {
-            var dbClinic =  _appDbContext.Clinics.FirstOrDefault(x => x.Id == clinicSave.Id && !x.IsDeleted);
+            var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => x.Id == clinicSave.Id && !x.IsDeleted);
             if (dbClinic == null)
             {
                 dbClinic = new Clinic();
@@ -78,8 +78,9 @@ namespace MedicApp.Integrations
         {
             List<Clinic> dbClinics = _appDbContext.Clinics.ToList();
             List<ClinicList> resultList = new List<ClinicList>();
+            var workHoursList = new List<LoadWorkingHoursModel>();
             var dbWorkingHours = _appDbContext.WorkingHours.ToList();
-            var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.Where(x => x.IsDeleted == false)
+            var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.ToList().Where(x => !x.IsDeleted)
                 .GroupBy(x => x.Clinic_RefID)
                 .ToDictionary(x => x.Key, x => x.Select(x => x.WorkingHours_RefID).ToList());
             foreach (var clinic in dbClinics)
@@ -95,15 +96,25 @@ namespace MedicApp.Integrations
                 };
                 if (clinic2WorkingHours.ContainsKey(clinicModel.Id))
                 {
-                   if(clinic2WorkingHours.TryGetValue(clinic.Id , out var workHoursList))
+                    if (clinic2WorkingHours.TryGetValue(clinic.Id, out var workHoursListIds))
                     {
-                        if (workHoursList.Any() && dbWorkingHours.Any() && dbWorkingHours != null)
+                        if (workHoursListIds.Any() && dbWorkingHours.Any() && dbWorkingHours != null)
                         {
-                            foreach (var workDay in workHoursList)
+                            foreach (var workDayId in workHoursListIds)
                             {
-                                clinicModel.WorkingHours.Add(dbWorkingHours?.FirstOrDefault(x => x.Id == workDay));
+                                var dbWorkHour = dbWorkingHours.FirstOrDefault(x => x.Id == workDayId);
+                                var model = new LoadWorkingHoursModel
+                                {
+                                    Id = workDayId,
+                                    Start = dbWorkHour.Start,
+                                    Day = dbWorkHour.DayOfWeek,
+                                    End = dbWorkHour.End,
+                                };
+                                workHoursList.Add(model);
                             }
+                            clinicModel.WorkingHours = workHoursList;
                         }
+
                     }
                 }
 
@@ -167,7 +178,7 @@ namespace MedicApp.Integrations
         public ClinicLoadModel GetClinicById(Guid Id)
         {
             var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => x.Id == Id && !x.IsDeleted);
-            if(dbClinic == null)
+            if (dbClinic == null)
             {
                 throw new KeyNotFoundException("Clinic does not exist");
             }
@@ -186,7 +197,7 @@ namespace MedicApp.Integrations
 
             var clinic2WorkingHoursIds = _appDbContext.Clinic2WorkingHours.Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id).Select(x => x.WorkingHours_RefID).ToList();
             var workingHoursList = new List<LoadWorkingHoursModel>();
-            foreach(var id in clinic2WorkingHoursIds)
+            foreach (var id in clinic2WorkingHoursIds)
             {
                 workingHoursList.Add(_workingHoursIntegration.LoadWorkingHourById(Id));
             }
@@ -194,13 +205,13 @@ namespace MedicApp.Integrations
             result.WorkHours = workingHoursList;
 
             return result;
-        } 
+        }
 
-        
+
     }
 
 
- 
+
 
 
 
