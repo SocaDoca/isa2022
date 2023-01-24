@@ -41,7 +41,7 @@ export class UserService {
 
         return userData;
       })
-    );;
+    );
 
   }
 
