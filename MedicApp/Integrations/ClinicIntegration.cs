@@ -61,8 +61,8 @@ namespace MedicApp.Integrations
                 else
                 {
                     workingHours = _workingHoursIntegration.LoadDBWorkingHourById(item.Id);
-                    workingHours.Start = item.Start.TimeOfDay;
-                    workingHours.End = item.End.TimeOfDay;
+                    workingHours.Start = item.Start;
+                    workingHours.End = item.End;
                     workingHours.DayOfWeek = item.Day;
 
                     _appDbContext.WorkingHours.Update(workingHours);

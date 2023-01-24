@@ -27,8 +27,8 @@ namespace MedicApp.Integrations
                 dbWorkingHour = new WorkingHours();
             }
 
-            dbWorkingHour.Start = wokringHoursModel.Start.TimeOfDay;
-            dbWorkingHour.End = wokringHoursModel.End.TimeOfDay;
+            dbWorkingHour.Start = wokringHoursModel.Start;
+            dbWorkingHour.End = wokringHoursModel.End;
             dbWorkingHour.DayOfWeek = wokringHoursModel.Day;
 
             _appDbContext.WorkingHours.Add(dbWorkingHour);
