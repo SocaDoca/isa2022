@@ -21,7 +21,7 @@ namespace MedicApp.Integrations
 
         public WorkingHours SaveWorkingHours(SaveWorkingHoursModel wokringHoursModel)
         {
-            var dbWorkingHour = _appDbContext.WorkingHours.Where(x => !x.IsDeleted && x.Id == wokringHoursModel.Id).FirstOrDefault();
+            var dbWorkingHour = _appDbContext.WorkingHours.FirstOrDefault(x => !x.IsDeleted && x.Id == wokringHoursModel.Id);
             if(dbWorkingHour == null)
             {
                 dbWorkingHour = new WorkingHours();
