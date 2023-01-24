@@ -79,8 +79,7 @@ namespace MedicApp.Integrations
             List<Clinic> dbClinics = _appDbContext.Clinics.ToList();
             List<ClinicList> resultList = new List<ClinicList>();
             var dbWorkingHours = _appDbContext.WorkingHours.ToList();
-            var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours
-                .Where(x => !x.IsDeleted)
+            var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.Where(x => x.IsDeleted == false)
                 .GroupBy(x => x.Clinic_RefID)
                 .ToDictionary(x => x.Key, x => x.Select(x => x.WorkingHours_RefID).ToList());
             foreach (var clinic in dbClinics)

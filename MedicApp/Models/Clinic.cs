@@ -48,8 +48,8 @@
 
     public class ClinicLoadParameters
     {
-        public string SearchCriteria { get; set; }
-        public ClinicFilterData ClinicFilterData { get; set; }
+        public string? SearchCriteria { get; set; }
+        public ClinicFilterData? ClinicFilterData { get; set; }
         public int Offset { get; set; }
         public int Limit { get; set; }
         public string SortBy { get; set; }
