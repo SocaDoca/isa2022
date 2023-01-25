@@ -100,9 +100,6 @@ export class RegisterPageComponent implements OnInit {
     this.form.reset();
   }
 
-
-
-
   isSubmitted = false;
   submitForm(form: NgForm) {
     this.isSubmitted = true;

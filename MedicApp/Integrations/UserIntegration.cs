@@ -29,6 +29,7 @@ namespace MedicApp.Integrations
         bool UpdateUser(UpdateUser updateUser);
         bool UpdatePassword(Guid Id, string password);
         bool Delete(Guid id);
+        Questionnaire CreateQuestionnaireForPatientById(Questionnaire questionnaire, Guid PatientId);
     }
 
     public class UserIntegration : IUserIntegration
@@ -142,8 +143,8 @@ namespace MedicApp.Integrations
         #endregion
 
         public Questionnaire CreateQuestionnaireForPatientById(Questionnaire questionnaire, Guid PatientId)
-        {
-            var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == PatientId && !x.IsDeleted && x.Role == "Patient");
+        {   //nemamo rolu Patient, ispravila na User
+            var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == PatientId && !x.IsDeleted && x.Role == "User");
             if (dbPatient == null)
             {
                 throw new Exception("Patient does not exist");
