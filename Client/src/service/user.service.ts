@@ -6,6 +6,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { UserRequest } from '../app/model/UserRequest';
 import { ActivatedRoute } from '@angular/router';
 import { map } from "rxjs/operators";
+import { Questionnaire } from '../app/model/Questionnaire';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class UserService {
   urlUsers = "http://localhost:5017/User/get-all";
   urlUpdate = "http://localhost:5017/User/update-user";
   urlUpdatePass = "http://localhost:5017/User";
+  urlSaveQuestionnaire = "http://localhost:5017/User/questionnaire";
   constructor(private http: HttpClient, private route: ActivatedRoute) {
 
   }
@@ -31,6 +33,10 @@ export class UserService {
 
   updateUser(user: User): Observable<User> {
     return this.http.post<User>(`${this.urlUpdate}`, user);
+  }
+
+  saveQuestionnaire(questionnaire: Questionnaire, patientId: string): Observable<Questionnaire> {
+    return this.http.post<Questionnaire>(`${this.urlSaveQuestionnaire}?patientId=${patientId}`, questionnaire);
   }
 
 

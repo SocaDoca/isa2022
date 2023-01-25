@@ -55,7 +55,7 @@ export class AuthenticationService {
   isUserLoggedIn() {
     let username = sessionStorage.getItem("email");
 
-    console.log(!(username === null));
+   // console.log(!(username === null));
     return !(username === null);
   }
 

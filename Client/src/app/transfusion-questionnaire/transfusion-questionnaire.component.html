@@ -14,221 +14,219 @@
   <div class="row" class="container">
     <div class="center" id="comp1">
       <br><br>
-      <form [formGroup]="form">
-        <div>
-          <label>1. Did you ever donate blood?</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-left:120px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio1" [value]="true" />
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-right:50px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio2" [value]="false" />
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
-        <div>
-          <br>
-          <label>2. Did you ever donate blood?</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-left:120px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio1" [value]="true" />
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-right:50px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio2" [value]="false" />
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
-        <div>
-          <br>
-          <label>3. Did you ever donate blood?</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-left:120px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio1" [value]="true" />
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-right:50px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio2" [value]="false" />
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
-        <div>
-          <br>
-          <label>4. Did you ever donate blood?</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-left:120px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio1" [value]="true" />
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-right:50px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio2" [value]="false" />
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
-        <div>
-          <br>
-          <label>5. Did you ever donate blood?</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-left:120px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio1" [value]="true" />
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-right:50px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio2" [value]="false" />
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
+          <form [formGroup]="form">
+            <form #myForm="ngForm" (submit)="submitForm(myForm)">
+              <div>
+                <label>1. Do you have under 50kilos?</label>
+              </div>
+              <div class="form-check form-check-inline" style="margin-left:120px">
+                <input class="form-check-input" type="radio" name="question1"
+                        id="inlineRadio1" [value]=true [(ngModel)]="questionnaire.question1" />
+                <label class="form-check-label" for="inlineRadio1">Yes</label>
+              </div>
+              <div class="form-check form-check-inline" style="margin-right:50px">
+                <input class="form-check-input" type="radio" name="question1"
+                        id="inlineRadio2" [value]=false [(ngModel)]="questionnaire.question1" />
+                <label class="form-check-label" for="inlineRadio2">No</label>
+              </div>
+            </form>
+            <form #myForm="ngForm" (submit)="submitForm(myForm)">
+              <div>
+                <br>
+                <label>2. Do you have any symptoms of a cold?</label>
+              </div>
+              <div class="form-check form-check-inline" style="margin-left:120px">
+                <input class="form-check-input" type="radio" name="question2"
+                        id="inlineRadio1" [value]=true [(ngModel)]="questionnaire.question2" />
+                <label class="form-check-label" for="inlineRadio1">Yes</label>
+              </div>
+              <div class="form-check form-check-inline" style="margin-right:50px">
+                <input class="form-check-input" type="radio" name="question2"
+                        id="inlineRadio2" [value]=false [(ngModel)]="questionnaire.question2" />
+                <label class="form-check-label" for="inlineRadio2">No</label>
+              </div>
+            </form>
+            <form #myForm="ngForm" (submit)="submitForm(myForm)">
+              <div>
+                <br>
+                <label>3. Do you feel ill?</label>
+              </div>
+              <div class="form-check form-check-inline" style="margin-left:120px">
+                <input class="form-check-input" type="radio" name="question3"
+                        id="inlineRadio1" [value]=true [(ngModel)]="questionnaire.question3" />
+                <label class="form-check-label" for="inlineRadio1">Yes</label>
+              </div>
+              <div class="form-check form-check-inline" style="margin-right:50px">
+                <input class="form-check-input" type="radio" name="question3"
+                        id="inlineRadio2" [value]=false [(ngModel)]="questionnaire.question3" />
+                <label class="form-check-label" for="inlineRadio2">No</label>
+              </div>
+            </form>
+            <form #myForm="ngForm" (submit)="submitForm(myForm)">
+              <div>
+                <br>
+                <label>4. Do you have any changes on your skin (infection, rash)?</label>
+              </div>
+              <div class="form-check form-check-inline" style="margin-left:120px">
+                <input class="form-check-input" type="radio" name="question4"
+                        id="inlineRadio1" [value]=true [(ngModel)]="questionnaire.question4" />
+                <label class="form-check-label" for="inlineRadio1">Yes</label>
+              </div>
+              <div class="form-check form-check-inline" style="margin-right:50px">
+                <input class="form-check-input" type="radio" name="question4"
+                        id="inlineRadio2" [value]=false [(ngModel)]="questionnaire.question4" />
+                <label class="form-check-label" for="inlineRadio2">No</label>
+              </div>
 
+              </form>
 
-      </form>
-      <br><br>
-    </div>
+            </form>
+            <br><br>
+</div>
 
     <div class="center" id="comp2">
       <h2 class="text-center">Blood transfusion questionnaire !</h2>
       <form [formGroup]="form">
-        <div>
-          <br>
-          <label>6. Did you ever donate blood?</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-left:120px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio1" [value]="true" />
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-right:50px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio2" [value]="false" />
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
-        <div>
-          <label>7. Did you ever donate blood?</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-left:120px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio1" [value]="true" />
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-right:50px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio2" [value]="false" />
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
-        <div>
-          <br>
-          <label>8. Did you ever donate blood?</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-left:120px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio1" [value]="true" />
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-right:50px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio2" [value]="false" />
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
-        <div>
-          <br>
-          <label>9. Did you ever donate blood?</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-left:120px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio1" [value]="true" />
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-right:50px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio2" [value]="false" />
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
-        <br><br><br>
+        <form #myForm="ngForm" (submit)="submitForm(myForm)">
+          <div>
+            <br>
+            <label>5. Do you have too high ot too low blood pressure?</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-left:120px">
+            <input class="form-check-input" type="radio" name="question5"
+                   id="inlineRadio1" [value]=true [(ngModel)]="questionnaire.question5" />
+            <label class="form-check-label" for="inlineRadio1">Yes</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-right:50px">
+            <input class="form-check-input" type="radio" name="question5"
+                    id="inlineRadio2" [value]=false [(ngModel)]="questionnaire.question5" />
+            <label class="form-check-label" for="inlineRadio2">No</label>
+          </div>
+        </form>
+        <form #myForm="ngForm" (submit)="submitForm(myForm)">
+          <div>
+            <br>
+            <label>6. Did you have antibiotic treatment in the last 7 days?</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-left:120px">
+            <input class="form-check-input" type="radio" name="question6"
+                    id="inlineRadio1" [value]=true [(ngModel)]="questionnaire.question6" />
+            <label class="form-check-label" for="inlineRadio1">Yes</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-right:50px">
+            <input class="form-check-input" type="radio" name="question6"
+                   formControlName="question6" id="inlineRadio2" [value]=false [(ngModel)]="questionnaire.question6" />
+            <label class="form-check-label" for="inlineRadio2">No</label>
+          </div>
+        </form>
+        <form #myForm="ngForm" (submit)="submitForm(myForm)">
+          <div>
+            <label>7. Are you on your menstrual cycle?</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-left:120px">
+            <input class="form-check-input" type="radio" name="question7"
+                    id="inlineRadio1" [value]=true [(ngModel)]="questionnaire.question7" />
+            <label class="form-check-label" for="inlineRadio1">Yes</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-right:50px">
+            <input class="form-check-input" type="radio" name="question7"
+                    id="inlineRadio2" [value]=false [(ngModel)]="questionnaire.question7" />
+            <label class="form-check-label" for="inlineRadio2">No</label>
+          </div>
+        </form>
+        <form #myForm="ngForm" (submit)="submitForm(myForm)">
+          <div>
+            <br>
+            <label>8. Did you have any dentist work in the last 7 days?</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-left:120px">
+            <input class="form-check-input" type="radio" name="question8"
+                   id="inlineRadio1" [value]=true [(ngModel)]="questionnaire.question8" />
+            <label class="form-check-label" for="inlineRadio1">Yes</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-right:50px">
+            <input class="form-check-input" type="radio" name="question8"
+                    id="inlineRadio2" [value]=false [(ngModel)]="questionnaire.question8" />
+            <label class="form-check-label" for="inlineRadio2">No</label>
+          </div>
+        </form>
+        <br>
         <div class="form-group">
-          <button type="submit" class="btn1" style=" background-color: deepskyblue; color:white">Add appointment</button><br>
+          <button type="submit" class="btn1" style=" background-color: deepskyblue; color:white" (click)="onSubmit()">Submit questionnaire</button><br>
         </div>
-      </form>
-  </div>
-    <div class="center" id="comp3">
-      <form [formGroup]="form">
-        <br><br>
-        <div>
-          <label>11. Did you ever donate blood?</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-left:120px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio1" [value]="true" />
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-right:50px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio2" [value]="false" />
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
-        <div>
-          <br>
-          <label>12. Did you ever donate blood?</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-left:120px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio1" [value]="true" />
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-right:50px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio2" [value]="false" />
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
-        <div>
-          <br>
-          <label>13. Did you ever donate blood?</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-left:120px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio1" [value]="true" />
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-right:50px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio2" [value]="false" />
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
-        <div>
-          <br>
-          <label>14. Did you ever donate blood?</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-left:120px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio1" [value]="true" />
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-right:50px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio2" [value]="false" />
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
-        <div>
-          <br>
-          <label>15. Did you ever donate blood?</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-left:120px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio1" [value]="true" />
-          <label class="form-check-label" for="inlineRadio1">Yes</label>
-        </div>
-        <div class="form-check form-check-inline" style="margin-right:50px">
-          <input class="form-check-input" type="radio" name="question1"
-                 formControlName="question1" id="inlineRadio2" [value]="false" />
-          <label class="form-check-label" for="inlineRadio2">No</label>
-        </div>
-
       </form>
     </div>
+    <div class="center" id="comp3">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <br><br>
+        <form #myForm="ngForm" (submit)="submitForm(myForm)">
+          <div>
+            <label>9.Was the last time you had your tattoo less than 6 months?</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-left:120px">
+            <input class="form-check-input" type="radio" name="question9"
+                    id="inlineRadio1" [value]=true [(ngModel)]="questionnaire.question9" />
+            <label class="form-check-label" for="inlineRadio1">Yes</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-right:50px">
+            <input class="form-check-input" type="radio" name="question9"
+                    id="inlineRadio2" [value]=false [(ngModel)]="questionnaire.question9" />
+            <label class="form-check-label" for="inlineRadio2">No</label>
+          </div>
+        </form>
+        <form #myForm="ngForm" (submit)="submitForm(myForm)">
+          <div>
+            <br>
+            <label>10. Was the last time you had any surgery less than 6 months?</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-left:120px">
+            <input class="form-check-input" type="radio" name="question10"
+                   id="inlineRadio1" [value]=true [(ngModel)]="questionnaire.question10" />
+            <label class="form-check-label" for="inlineRadio1">Yes</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-right:50px">
+            <input class="form-check-input" type="radio" name="question10"
+                    id="inlineRadio2" [value]=false [(ngModel)]="questionnaire.question10" />
+            <label class="form-check-label" for="inlineRadio2">No</label>
+          </div>
+        </form>
+        <form #myForm="ngForm" (submit)="submitForm(myForm)">
+          <div>
+            <br>
+            <label>11.Was the last time you had your piercing less than 6 months?</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-left:120px">
+            <input class="form-check-input" type="radio" name="question11"
+                   id="inlineRadio1" [value]=true [(ngModel)]="questionnaire.question11" />
+            <label class="form-check-label" for="inlineRadio1">Yes</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-right:50px">
+            <input class="form-check-input" type="radio" name="question11"
+                    id="inlineRadio2" [value]=false [(ngModel)]="questionnaire.question11" />
+            <label class="form-check-label" for="inlineRadio2">No</label>
+          </div>
+        </form>
+        <form #myForm="ngForm" (submit)="submitForm(myForm)">
+          <div>
+            <br>
+            <label>12.Was the last time you donate blood less than 6 months?</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-left:120px">
+            <input class="form-check-input" type="radio" name="questquestion12ion1"
+               id="inlineRadio1" [value]=true [(ngModel)]="questionnaire.question12" />
+            <label class="form-check-label" for="inlineRadio1">Yes</label>
+          </div>
+          <div class="form-check form-check-inline" style="margin-right:50px">
+            <input class="form-check-input" type="radio" name="question12"
+                  id="inlineRadio2" [value]=false [(ngModel)]="questionnaire.question12" />
+            <label class="form-check-label" for="inlineRadio2">No</label>
+          </div>
+
+          </form>
+
+
+        </form>
+</div>
 
 
 

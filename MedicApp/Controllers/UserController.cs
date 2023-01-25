@@ -51,6 +51,12 @@ namespace MedicApp.Controllers
             return _userIntegration.UpdateUser(updateUser);
         }
 
+        [HttpPost("questionnaire")]
+        public Questionnaire SaveQuestionnaire(Questionnaire questionnaire, Guid patientId)
+        {
+            return _userIntegration.CreateQuestionnaireForPatientById(questionnaire, patientId);
+        }
+
        
     }
 }
