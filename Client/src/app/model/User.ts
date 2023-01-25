@@ -21,6 +21,7 @@ export interface UserInterface {
   fullAddress?: string;
   isAdminCenter?: any;
   name?: string;
+  isFirstTime?: boolean;
 
 }
 
@@ -44,6 +45,7 @@ export class User implements UserInterface {
   isAdminCenter?: any;
   name?: string;
   mobile?: string;
+  isFirstTime?: boolean;
 
   constructor(obj: UserInterface) {
     this.id = obj.id;
@@ -65,6 +67,6 @@ export class User implements UserInterface {
     this.fullAddress = obj.fullAddress;
     this.isAdminCenter = obj.isAdminCenter;
     this.name = obj.name;
-
+    this.isFirstTime = obj.isFirstTime;
   }
 }

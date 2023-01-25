@@ -16,6 +16,7 @@ export interface UserLoadModelInterface {
   fullAddress?: string;
   mobile?: string;
   password?: string;
+  isFirstTime?: boolean;
 
 
 }
@@ -35,6 +36,7 @@ export class UserLoadModel implements UserLoadModelInterface {
   fullAddress?: string;
   mobile?: string;
   password?: string;
+  isFirstTime?: boolean;
 
 
   constructor(obj: UserLoadModelInterface) {
@@ -52,7 +54,7 @@ export class UserLoadModel implements UserLoadModelInterface {
     this.fullAddress = obj.fullAddress;
     this.mobile = obj.mobile;
     this.password = obj.password;
-
+    this.isFirstTime = obj.isFirstTime;
 
   }
 }

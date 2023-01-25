@@ -225,6 +225,9 @@ namespace MedicApp.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<bool>("IsFirstTime")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<bool>("IsVerified")
                         .HasColumnType("tinyint(1)");
 

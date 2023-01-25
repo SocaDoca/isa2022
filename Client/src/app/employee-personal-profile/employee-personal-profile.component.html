@@ -12,19 +12,25 @@
     <div class="modal-header" style="background-color:darkolivegreen;">
       <h4 class="modal-title" id="modal-basic-title" style="color:white">Change password</h4>
     </div>
-    <div class="modal-body" style="background-color:darkolivegreen; color:white">
-      
+    <div [formGroup]="form" class="modal-body" style="background-color:darkolivegreen; color:white">
+
       <div class="form-group">
-        <input id="name" name="name" type="password" class="from-control" placeholder="password" [(ngModel)]="password">
+        <input id="name" name="name" type="password" class="form-control" [type]="show ? 'text' : 'password'" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" placeholder="password" [(ngModel)]="password">
+        &nbsp;
+        <mat-icon (click)="pass()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
+        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+          <div *ngIf="f['password'].errors['required']" style="text-align:center">Change password is required</div>
+        </div>
       </div>
       &nbsp;
+
       <div class="form-group">
-        <input id="surname" name="surname" type="text" class="from-control" placeholder="confirm password">
+        <input id="confirmPassword" name="confirmPassword" type="password" class="form-control"   placeholder="confirm password" >
 
       </div>
 
       <br />
-      <button  type="button" class="btn btn-primary" style="width:160px; margin-left:10px" (click)="modal.close(changePass())">Confirm</button>
+      <button type="button" class="btn btn-primary" style="width:160px; margin-left:10px" (click)="modal.close(changePass())">Confirm</button>
 
     </div>
 

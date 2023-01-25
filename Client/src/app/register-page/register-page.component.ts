@@ -40,7 +40,7 @@ export class RegisterPageComponent implements OnInit {
   });
   submitted: boolean = false;
   show: boolean = false;
-  which_gender = Genders;
+
 
 
 
