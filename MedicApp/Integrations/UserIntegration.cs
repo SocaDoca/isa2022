@@ -93,6 +93,7 @@ namespace MedicApp.Integrations
                 LastName = findUser.LastName,
                 Token = encrypterToken,
                 Role = findUser.Role,
+                isFirstTime = findUser.IsFirstTime
             };
         }        
 
@@ -223,7 +224,7 @@ namespace MedicApp.Integrations
                 findUser.PasswordSalt = hmac.Key;
                 findUser.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
-            findUser.IsFirstTime = true;
+            findUser.IsFirstTime = false;
             _appDbContext.Users.Update(findUser);
             _appDbContext.SaveChanges();
             return true;
@@ -280,8 +281,8 @@ namespace MedicApp.Integrations
                 Email = dbUser.Email ?? String.Empty,
                 Mobile = dbUser.Mobile ?? String.Empty,
                 JMBG = dbUser.JMBG ?? String.Empty,
-                IsAdminCenter = dbUser.IsAdminCenter
-
+                IsAdminCenter = dbUser.IsAdminCenter,
+                IsFirstTime = dbUser.IsFirstTime
         
 
         };

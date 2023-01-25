@@ -54,6 +54,8 @@ namespace MedicApp.Models
         public string Token { get; set; }
 
         public String Role { get; set; }
+
+        public Boolean isFirstTime { get; set; }
     }
 
     public class SaveUserModel
@@ -130,5 +132,7 @@ namespace MedicApp.Models
         public int LoyaltyPoints { get; set; }
         public Genders Gender { get; set; }
         public bool IsAdminCenter { get; set; }
+
+        public bool IsFirstTime { get; set; }
     }
 }

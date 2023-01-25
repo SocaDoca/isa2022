@@ -11,22 +11,34 @@ import { UserService } from '../../service/user.service';
 import { UserLoadModel } from '../../app/model/UserLoadModel';
 import { Genders } from '../model/Genders';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import Validation from '../utils/validation';
 
 @Component({
   selector: 'app-employee-personal-profile',
   templateUrl: './employee-personal-profile.component.html',
   styleUrls: ['./employee-personal-profile.component.css']
 })
-export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit{
+export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit {
   title = 'appBootstrap';
-  @ViewChild('mymodal') public mymodal: ModalDirective | undefined;
+  @ViewChild('mymodal')
+  public mymodal: ModalDirective | undefined;
   closeResult = '';
   id: any;
+  isFirstTime: any;
   password: any;
   user: UserLoadModel;
+  confirmPassword:string = '';
 
+  form: FormGroup = new FormGroup({
+    password: new FormControl(''),
+    confirmPassword: new FormControl(''),
+  });
 
-  constructor(private modalService: NgbModal, private userService: UserService, private route: ActivatedRoute) {
+  submitted: boolean = false;
+  show: boolean = false;
+
+  constructor(private modalService: NgbModal, private userService: UserService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
     this.user = new UserLoadModel({
       role: '',
       username: '',
@@ -40,9 +52,42 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit{
     })
   }
   ngAfterViewInit(): void {
-    this.modalService.open(this.mymodal).result.then((result) => {
-      this.closeResult = `Closed with: ${this.changePass()}`;
-    });
+    this.id = this.route.snapshot.params['id'];
+    this.isFirstTime = this.route.snapshot.params['isFirstTime'];
+    this.userService.getUser(this.id)
+      .subscribe(res => {
+        this.user = res;
+        this.showGender(res);
+        console.log(res.isFirstTime);
+        //console.log(res);
+        if (res.isFirstTime == false) {
+          //this.mymodal!.hide();
+          this.modalService.dismissAll(this.mymodal);
+        }
+        else {
+          this.modalService.open(this.mymodal).result.then((result) => {
+            this.user.isFirstTime = false;
+            console.log(this.user.isFirstTime);
+            this.form = this.formBuilder.group(
+              {
+                password: [
+                  '',
+                  [
+                    Validators.required,
+                  ]
+                ],
+                confirmPassword: ['', Validators.required]
+              },
+              {
+                validators: [Validation.match('password', 'confirmPassword')]
+              }
+            );
+            this.changePass();
+
+          });
+        }
+      });
+
 
   }
 
@@ -52,11 +97,12 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit{
       (data: any) => {
 
         console.log(data)
-        this.mymodal!.hide();
       });
+    this.user.isFirstTime = false;
   }
   ngOnInit(): void {
-    this.loadProfile();
+
+
 
   }
 
@@ -71,10 +117,13 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit{
 
   loadProfile() {
     this.id = this.route.snapshot.params['id'];
+    this.isFirstTime = this.route.snapshot.params['isFirstTime'];
     this.userService.getUser(this.id)
       .subscribe(res => {
         this.user = res;
         this.showGender(res);
+        console.log(res.isFirstTime);
+        console.log(res);
       })
   }
 
@@ -100,5 +149,16 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit{
     } else {
       return `with: ${reason}`;
     }
+  }
+
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.form.controls;
+  }
+
+
+  // click event function toggle
+  pass() {
+    this.show = !this.show;
   }
 }
