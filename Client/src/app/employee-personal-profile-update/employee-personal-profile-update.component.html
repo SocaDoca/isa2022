@@ -10,76 +10,57 @@
 <body>
 
   <div class="center" class="container">
-    <div class="center" id="comp1">
+    <div class="center" id="comp1" style="text-align:center">
 
       <h3> PROFILE</h3>
-      <br><br>
+      <br>
 
       <label style="font-weight: bold;">First Name</label>
-      <div class="form-group">
+      <div class="form-group" style="margin-right:40px;">
         <input id="firstName" name="firstName" type="text" class="from-control" [(ngModel)]="user.firstName">
       </div>
       <label style="font-weight: bold;">Last Name</label>
-      <div class="form-group">
+      <div class="form-group" style="margin-right:40px;">
         <input id="lastName" name="lastName" type="text" class="from-control" [(ngModel)]="user.lastName">
       </div>
       <label style="font-weight: bold;">Username</label>
-      <div class="form-group">
+      <div class="form-group" style="margin-right:40px;">
         <input id="username" name="username" type="text" class="from-control" [(ngModel)]="user.username">
+      </div>
+      <label style="font-weight: bold;">Mobile</label>
+      <div class="form-group" style="text-align:center; margin-right:40px;">
+        <input id="mobile" name="mobile" type="text" class="from-control" [(ngModel)]="user.mobile">
       </div>
       <br><br>
 
     </div><br>
-          <div class="center" id="comp2">
-            <br><br>
-            <label style="font-weight: bold;">Mobile</label>
-            <div class="form-group">
-              <input id="mobile" name="mobile" type="text" class="from-control" [(ngModel)]="user.mobile">
-            </div>
+    <div class="center" id="comp2" style="text-align:center">
+      <br><br>
+      <label style="font-weight: bold;">Profession</label>
+      <div class="form-group" style="text-align:center; margin-right:40px;">
+        <input id="job" name="job" type="text" class="from-control" [(ngModel)]="user.job">
+      </div>
 
-            <label style="font-weight: bold;">Address</label>
-            <div class="form-group">
-              <input id="address" name="address" type="text" class="from-control" [(ngModel)]="user.address">
-            </div>
+      <label style="font-weight: bold;">Address</label>
+      <div class="form-group" style="margin-right:40px;">
+        <input id="address" name="address" type="text" class="from-control" [(ngModel)]="user.address">
+      </div>
 
-            <label style="font-weight: bold;">City</label>
-            <div class="form-group">
-              <input id="city" name="city" type="text" class="from-control" [(ngModel)]="user.city">
-            </div>
-
-
-            <label style="font-weight: bold;">Country</label>
-            <div class="form-group">
-              <input id="country" name="country" type="text" class="from-control" [(ngModel)]="user.country">
-            </div>
+      <label style="font-weight: bold;">City</label>
+      <div class="form-group" style="margin-right:40px;">
+        <input id="city" name="city" type="text" class="from-control" [(ngModel)]="user.city">
+      </div>
 
 
-            <br><br><br><button class="btn1" style="color:white;" (click)="showDashboard()"> Save changes</button>
-          </div>
-          <div class="center" id="comp3">
-            <br><br>
-
-            <label style="font-weight: bold;">Profession</label>
-            <div class="form-group">
-              <input id="job" name="job" type="text" class="from-control" [(ngModel)]="user.job">
-            </div>
+      <label style="font-weight: bold;">Country</label>
+      <div class="form-group" style="margin-right:40px;">
+        <input id="country" name="country" type="text" class="from-control" [(ngModel)]="user.country">
+      </div>
 
 
-            <label style="font-weight: bold;">Password</label>
-            <div class="form-group">
-              <input class="from-control" [type]="show ? 'text' : 'password'" [(ngModel)]="user.password" />
-              &nbsp;
-              <mat-icon (click)="password()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
-            </div>
+      <br><br><button class="btn1" style="color:white;" (click)="showDashboard()"> Save changes</button>
+    </div>
 
-            <label style="font-weight: bold;">Confirm Password</label>
-            <div class="form-group">
-              <input id="confirmPassword" name="confirmPassword" type="text" class="from-control" >
-            </div>
-
-
-
-          </div>
   </div>
 
 
