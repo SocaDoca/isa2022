@@ -13,6 +13,7 @@ import { Questionnaire } from '../app/model/Questionnaire';
 })
 export class UserService {
   url = "http://localhost:5017/User/get-by-id";
+  urlRemoveUser = "http://localhost:5017/User/remove";
   urlUsers = "http://localhost:5017/User/get-all";
   urlUpdate = "http://localhost:5017/User/update-user";
   urlUpdatePass = "http://localhost:5017/User";
@@ -26,6 +27,9 @@ export class UserService {
     return this.http.get<User>(`${this.url}?id=${id}`);
   }
 
+  removeUser(id: string) {
+    return this.http.delete<any>(`${this.urlRemoveUser}?id=${id}`);
+  }
 
   getAll(): Observable<UserLoadModel> {
     return this.http.get<UserLoadModel>(`${this.urlUsers}`);
