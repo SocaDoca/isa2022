@@ -270,7 +270,7 @@ namespace MedicApp.Integrations
             #endregion
 
             #region FILTER
-            if (!parameters.UserFilterParams.Equals(null))
+            if (parameters.UserFilterParams is not null)
             {
                 if (parameters.UserFilterParams.LastName != null)
                     resultList = resultList.Where(x => x.LastName.ToLower().Contains(parameters.UserFilterParams.LastName.ToLower())).ToList();
