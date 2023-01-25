@@ -28,7 +28,7 @@
         
         public bool IsQuestionireSigned()
         {
-            if (!this.IsDeleted)
+            if (this.IsDeleted)
             {
                 if (this.question1)
                 {

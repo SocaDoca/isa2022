@@ -40,7 +40,7 @@ namespace MedicApp.Integrations
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.Patient_RefID == x.Id && x.Role == "User");
             var dbResponsiblePerson = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.ResponsiblePerson_RefID == x.Id && x.Role == "Employee" && !x.IsAdminCenter);
             var patient2Questionnaire = _appDbContext.Patient2Questionnaires.Where(x => x.Patient_RefId == dbPatient.Id).ToList();
-            var questionnaires = _appDbContext.Questionnaire.Where(x => patient2Questionnaire.Any(s => s.Questionnaire_RefId == x.Id)).ToList();
+            //var questionnaires = _appDbContext.Questionnaire.Where(x => patient2Questionnaire.Any(s => s.Questionnaire_RefId == x.Id)).ToList();
 
             if (dbClinic == null)
             {
@@ -50,20 +50,20 @@ namespace MedicApp.Integrations
             {
                 throw new Exception("Employee does not exist");
             }
-            if (questionnaires.Any(x => x.ExpireDate > DateTime.Now))
-            {
-                throw new Exception("Patient have had given blood in last six months");
-            }
-            if (patient2Questionnaire.Any())
-            {
-                foreach (var item in questionnaires)
-                {
-                    if (!item.IsQuestionireSigned())
-                    {
-                        throw new Exception("Questionnaire is not filled");
-                    }
-                }
-            }
+            //if (questionnaires.Any(x => x.ExpireDate > DateTime.Now))
+            //{
+            //    throw new Exception("Patient have had given blood in last six months");
+            //}
+            //if (patient2Questionnaire.Any())
+            //{
+            //    foreach (var item in questionnaires)
+            //    {
+            //        if (!item.IsQuestionireSigned())
+            //        {
+            //            throw new Exception("Questionnaire is not filled");
+            //        }
+            //    }
+            //}
             foreach (var item in dbClinicWorkingHours)
             {
 
