@@ -94,14 +94,14 @@ namespace MedicApp.Integrations
                 LastName = findUser.LastName,
                 Token = encrypterToken,
                 Role = findUser.Role,
-                isFirstTime = findUser.IsFirstTime
+                IsFirstTime = findUser.IsFirstTime
             };
         }
 
         public User? Register(RegisterRequest model)
         {
-            if (_appDbContext.Users.Any(x => x.Email == model.Email))
-                throw new AppException("Email '" + model.Email + "' is already taken");
+            if (_appDbContext.Users.Any(x => x.Username == model.Username))
+                throw new AppException("Username '" + model.Username + "' is already taken");
 
             // map model to new user object
             var newUser = new User()
@@ -270,7 +270,7 @@ namespace MedicApp.Integrations
             #endregion
 
             #region FILTER
-            if (!parameters.UserFilterParams.Equals(null))
+            if (parameters.UserFilterParams is not null)
             {
                 if (parameters.UserFilterParams.LastName != null)
                     resultList = resultList.Where(x => x.LastName.ToLower().Contains(parameters.UserFilterParams.LastName.ToLower())).ToList();

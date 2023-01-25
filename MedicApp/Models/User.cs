@@ -52,10 +52,8 @@ namespace MedicApp.Models
         public string LastName { get; set; }
         public string Username { get; set; }
         public string Token { get; set; }
-
         public String Role { get; set; }
-
-        public Boolean isFirstTime { get; set; }
+        public bool IsFirstTime { get; set; }
     }
 
     public class SaveUserModel
