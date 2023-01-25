@@ -16,65 +16,65 @@
         public bool question10 { get; set; }
         public bool question11 { get; set; }
         public bool question12 { get; set; }
-
+        public bool IsValid { get; set; }
         public bool IsDeleted { get; set; }
 
         public Questionnaire()
         {
             Id = Guid.NewGuid();
             IsDeleted = false;
-
+            IsValid = false;
         }        
         
         public bool IsQuestionireSigned()
         {
             if (!this.IsDeleted)
             {
-                if (!this.question1)
+                if (this.question1)
                 {
                     return false;
                 }
-                if (!this.question2)
+                if (this.question2)
                 {
                     return false;
                 }
-                if (!this.question3)
+                if (this.question3)
                 {
                     return false;
                 }
-                if (!this.question4)
+                if (this.question4)
                 {
                     return false;
                 }
-                if (!this.question5)
+                if (this.question5)
                 {
                     return false;
                 }
-                if (!this.question6)
+                if (this.question6)
                 {
                     return false;
                 }
-                if (!this.question7)
+                if (this.question7)
                 {
                     return false;
                 }
-                if (!this.question8)
+                if (this.question8)
                 {
                     return false;
                 }
-                if (!this.question9)
+                if (this.question9)
                 {
                     return false;
                 }
-                if (!this.question10)
+                if (this.question10)
                 {
                     return false;
                 }
-                if (!this.question11)
+                if (this.question11)
                 {
                     return false;
                 }
-                if (!this.question12)
+                if (this.question12)
                 {
                     return false;
                 }

@@ -3,6 +3,7 @@ using System;
 using MedicApp.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedicApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230125202254_predefApp")]
+    partial class predefApp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,6 +53,10 @@ namespace MedicApp.Migrations
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("StartTime")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Title")
                         .HasColumnType("longtext");
@@ -137,9 +143,6 @@ namespace MedicApp.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("IsValid")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("question1")
@@ -259,9 +262,6 @@ namespace MedicApp.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
                         .HasColumnType("longblob");
-
-                    b.Property<int>("Penalty")
-                        .HasColumnType("int");
 
                     b.Property<string>("Role")
                         .HasColumnType("longtext");
@@ -397,26 +397,6 @@ namespace MedicApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Appointment2Patients");
-                });
-
-            modelBuilder.Entity("MedicApp.RelationshipTables.Appointment2Report", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("Appointment_RefID")
-                        .HasColumnType("char(36)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<Guid>("ReportId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Appointment2Reports");
                 });
 
             modelBuilder.Entity("MedicApp.RelationshipTables.Clinic2Address", b =>

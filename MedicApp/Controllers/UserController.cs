@@ -27,10 +27,10 @@ namespace MedicApp.Controllers
             return _userIntegration.GetUserById(Id);
         }
 
-        [HttpGet("get-all")]
-        public List<UserLoadModel> GetAll()
+        [HttpPost("get-all")]
+        public List<UserLoadModel> GetAll([FromBody]LoadAllUsersParameters parameters)
         {
-            return _userIntegration.GetAll();
+            return _userIntegration.GetAll(parameters);
         }
 
         [HttpDelete("remove")]

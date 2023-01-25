@@ -23,7 +23,7 @@ namespace MedicApp.Integrations
     {
         User? Register(RegisterRequest model);
         LoginResponse LogIn(LoginModel model);
-        List<UserLoadModel> GetAll();
+        List<UserLoadModel> GetAll(LoadAllUsersParameters parameters);
         UserLoadModel GetUserById(Guid id);
         bool VerifyUser(VerifyParams verifyParams);
         bool UpdateUser(UpdateUser updateUser);
@@ -41,7 +41,7 @@ namespace MedicApp.Integrations
         {
             _appDbContext = context;
             _secretSettings = secretSettings;
-            
+
         }
 
 
@@ -49,7 +49,7 @@ namespace MedicApp.Integrations
         public bool VerifyUser(VerifyParams verifyParams)
         {
             var dbUser = _appDbContext.Users.FirstOrDefault(x => x.Id == verifyParams.UserId && x.Email == verifyParams.UserEmail);
-            if(dbUser == null)
+            if (dbUser == null)
             {
                 throw new KeyNotFoundException("User does not exist");
             }
@@ -96,7 +96,7 @@ namespace MedicApp.Integrations
                 Role = findUser.Role,
                 isFirstTime = findUser.IsFirstTime
             };
-        }        
+        }
 
         public User? Register(RegisterRequest model)
         {
@@ -132,7 +132,7 @@ namespace MedicApp.Integrations
             else
             {
                 throw new Exception("Password does not match");
-            }          
+            }
 
 
             // save user
@@ -166,7 +166,7 @@ namespace MedicApp.Integrations
                 question12 = questionnaire.question12,
             };
             _appDbContext.Questionnaire.Add(dbQuestionnaire);
-            
+
             var patient2questinnaire = new Patient2Questionnaire
             {
                 Patient_RefId = dbPatient.Id,
@@ -235,7 +235,7 @@ namespace MedicApp.Integrations
         #endregion
 
         #region Get Methods
-        public List<UserLoadModel> GetAll()
+        public List<UserLoadModel> GetAll(LoadAllUsersParameters parameters)
         {
             var resultList = new List<UserLoadModel>();
             var dbUsers = _appDbContext.Users.ToList();
@@ -244,9 +244,10 @@ namespace MedicApp.Integrations
 
                 resultList.Add(new UserLoadModel
                 {
-                    Name = String.Format("{0} {1}", user.FirstName,user.LastName),
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
                     Email = user.Email,
-                    Gender = user.Gender,   
+                    Gender = user.Gender,
                     Id = user.Id,
                     IsAdminCenter = user.IsAdminCenter,
                     JMBG = user.JMBG,
@@ -258,8 +259,52 @@ namespace MedicApp.Integrations
                 });
             };
 
-            return resultList;
- 
+            #region SEARCH
+            if (!String.IsNullOrEmpty(parameters.SearchCriteria))
+            {
+                resultList = resultList.Where(
+                    x => x.FirstName.ToLower().Contains(parameters.SearchCriteria) ||
+                         x.LastName.ToLower().Contains(parameters.SearchCriteria) ||
+                         x.Email.ToLower().Contains(parameters.SearchCriteria)).ToList();
+            }
+            #endregion
+
+            #region FILTER
+            if (!parameters.UserFilterParams.Equals(null))
+            {
+                if (parameters.UserFilterParams.LastName != null)
+                    resultList = resultList.Where(x => x.LastName.ToLower().Contains(parameters.UserFilterParams.LastName.ToLower())).ToList();
+
+                if (parameters.UserFilterParams.FirstName != null)
+                    resultList = resultList.Where(x => x.FirstName.ToLower().Contains(parameters.UserFilterParams.FirstName.ToLower())).ToList();
+            }
+            #endregion
+
+            #region SORT
+
+            switch (parameters.SortBy)
+            {
+                case "firstname":
+                    resultList = parameters.OrderAsc ?
+                        resultList.OrderBy(x => x.FirstName).ToList() : resultList.OrderByDescending(x => x.FirstName).ToList();
+                    break;
+                case "lastname":
+                    resultList = parameters.OrderAsc ?
+                        resultList.OrderBy(x => x.FirstName).ToList() : resultList.OrderByDescending(x => x.FirstName).ToList();
+                    break;
+                case "address":
+                    resultList = parameters.OrderAsc ?
+                        resultList.OrderBy(x => x.FirstName).ToList() : resultList.OrderByDescending(x => x.FirstName).ToList();
+                    break;
+                case "email":
+                    resultList = parameters.OrderAsc ?
+                        resultList.OrderBy(x => x.FirstName).ToList() : resultList.OrderByDescending(x => x.FirstName).ToList();
+                    break;
+            }
+            #endregion 
+
+            return resultList.Skip(parameters.Offset).Take(parameters.Limit).ToList();
+
         }
 
         public UserLoadModel GetUserById(Guid id)
@@ -277,16 +322,15 @@ namespace MedicApp.Integrations
                 Job = dbUser.Job ?? String.Empty,
                 Role = dbUser.Role,
                 LoyaltyPoints = dbUser.LoyaltyPoints,
-                Name = String.Format("{0} {1}", dbUser.FirstName, dbUser.LastName) ?? String.Empty,
-                Username = dbUser.Username,
+                FirstName = dbUser.FirstName ?? String.Empty,
+                LastName = dbUser.LastName ?? String.Empty,
+                Username = dbUser.Username ?? String.Empty,
                 Email = dbUser.Email ?? String.Empty,
                 Mobile = dbUser.Mobile ?? String.Empty,
                 JMBG = dbUser.JMBG ?? String.Empty,
                 IsAdminCenter = dbUser.IsAdminCenter,
                 IsFirstTime = dbUser.IsFirstTime
-        
-
-        };
+            };
 
             return resultUser;
 
@@ -313,7 +357,7 @@ namespace MedicApp.Integrations
     {
         public Guid UserId { get; set; }
         public string Token { get; set; }
-        public string UserEmail { get; set; }   
+        public string UserEmail { get; set; }
     }
 
 

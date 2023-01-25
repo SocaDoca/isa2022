@@ -42,6 +42,7 @@ namespace MedicApp.Database
         public DbSet<Clinic2WorkingHours> Clinic2WorkingHours { get; set; }
         public DbSet<Clinic2Address> Clinic2Addresses { get; set; }
         public DbSet<Clinic2Employee> Clinic2Employees { get; set; }
+        public DbSet<Appointment2Report> Appointment2Reports { get; set; }
 
 
         public DbSet<Appointment2Patient> Appointment2Patients { get; set; }

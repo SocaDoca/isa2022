@@ -28,20 +28,20 @@ namespace MedicApp.Integrations
             var dbAppointment = _appDbContext.Appointments.Where(x => !x.IsDeleted && x.Id == appointmentSave.Id).FirstOrDefault();
             var dbAppointmentsInDay = _appDbContext.Appointments
                 .Where(x => !x.IsDeleted &&
-                             x.StartTime.Day == appointmentSave.StartTime.Day &&
-                             x.ResponsiblePerson_RefID == appointmentSave.ResponsiblePerson.Id)
+                             x.StartDate == appointmentSave.StartDate &&
+                             x.ResponsiblePerson_RefID == appointmentSave.ResponsiblePerson_RefID)
                 .ToList();
-            var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => !x.IsDeleted && x.Id == appointmentSave.Clinic.Id);
+            var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => !x.IsDeleted && x.Id == appointmentSave.Clinic_RefID);
             var allDbWorkingHours = _appDbContext.WorkingHours.ToList();
             var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.Where(x => x.Clinic_RefID == dbClinic.Id).ToList();
             var dbWorkingHoursId = clinic2WorkingHours.Select(x => x.WorkingHours_RefID).ToList();
             var dbClinicWorkingHours = allDbWorkingHours.Where(x => dbWorkingHoursId.Any(s => s == x.Id)).ToList();
 
-            var dbPatient = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.Patient.Id == x.Id && x.Role == "User");
-            var dbResponsiblePerson = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.ResponsiblePerson.Id == x.Id && x.Role == "Employee" && !x.IsAdminCenter);
+            var dbPatient = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.Patient_RefID == x.Id && x.Role == "User");
+            var dbResponsiblePerson = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.ResponsiblePerson_RefID == x.Id && x.Role == "Employee" && !x.IsAdminCenter);
             var patient2Questionnaire = _appDbContext.Patient2Questionnaires.Where(x => x.Patient_RefId == dbPatient.Id).ToList();
             var questionnaires = _appDbContext.Questionnaire.Where(x => patient2Questionnaire.Any(s => s.Questionnaire_RefId == x.Id)).ToList();
-           
+
             if (dbClinic == null)
             {
                 throw new KeyNotFoundException("Clinic does not exist");
@@ -50,13 +50,13 @@ namespace MedicApp.Integrations
             {
                 throw new Exception("Employee does not exist");
             }
-            if(questionnaires.Any(x => x.ExpireDate > DateTime.Now))
+            if (questionnaires.Any(x => x.ExpireDate > DateTime.Now))
             {
                 throw new Exception("Patient have had given blood in last six months");
             }
             if (patient2Questionnaire.Any())
             {
-                foreach(var item in questionnaires)
+                foreach (var item in questionnaires)
                 {
                     if (!item.IsQuestionireSigned())
                     {
@@ -66,13 +66,15 @@ namespace MedicApp.Integrations
             }
             foreach (var item in dbClinicWorkingHours)
             {
-                if (appointmentSave.StartTime.TimeOfDay >= item.Start && appointmentSave.StartTime.TimeOfDay <= item.End)
+
+                if (DateTime.Parse(appointmentSave.StartTime).Hour >= DateTime.Parse(item.Start).Hour && DateTime.Parse(appointmentSave.StartTime).Hour <= DateTime.Parse(item.End).Hour)
                 {
-                    if (dbAppointmentsInDay.Any(x => x.StartTime.TimeOfDay.Hours == item.Start.Hours && x.StartTime.TimeOfDay.Minutes == item.Start.Minutes))
+                    if (dbAppointmentsInDay.Any(x => x.StartDate.Hour == DateTime.Parse(item.Start).Hour &&
+                                                     x.StartDate.Minute == DateTime.Parse(item.Start).Minute))
                     {
                         throw new Exception("Time of appointment is taken");
-                    }                    
-              
+                    }
+
                     dbAppointment.ResponsiblePerson_RefID = dbResponsiblePerson.Id;
 
                     if (dbPatient == null)
@@ -80,7 +82,7 @@ namespace MedicApp.Integrations
                         throw new Exception("Patient does not exist");
                     }
                     dbAppointment.Patient_RefID = dbPatient.Id;
-                    if(!patient2Questionnaire.Any() && !questionnaires.Any(x => x.ExpireDate < DateTime.UtcNow))
+                    if (!patient2Questionnaire.Any() && !questionnaires.Any(x => x.ExpireDate < DateTime.UtcNow))
                     {
                         throw new Exception("Patient does not have any valid questionnaires");
                     }
@@ -88,10 +90,10 @@ namespace MedicApp.Integrations
                     {
                         dbAppointment = new Appointment();
                     }
-                    dbAppointment.StartTime = appointmentSave.StartTime;
-                    dbAppointment.Patient_RefID = appointmentSave.Patient.Id;
-                    dbAppointment.Clinic_RefID = appointmentSave.Clinic.Id;
-                    dbAppointment.ResponsiblePerson_RefID = appointmentSave.ResponsiblePerson.Id;
+                    dbAppointment.StartDate = DateTime.Parse(appointmentSave.StartTime).Add(TimeSpan.Parse(appointmentSave.StartTime));
+                    dbAppointment.Patient_RefID = appointmentSave.Patient_RefID;
+                    dbAppointment.Clinic_RefID = appointmentSave.Clinic_RefID;
+                    dbAppointment.ResponsiblePerson_RefID = appointmentSave.ResponsiblePerson_RefID;
                     dbAppointment.IsCanceled = appointmentSave.IsCanceled;
                     dbAppointment.IsFinished = appointmentSave.IsFinished;
 
@@ -101,7 +103,6 @@ namespace MedicApp.Integrations
                 {
                     throw new Exception("Appointment is set to non-working hours");
                 }
-
             }
 
             return dbAppointment;
@@ -110,7 +111,13 @@ namespace MedicApp.Integrations
         public bool CancelAppointment(Guid appointmenetId)
         {
             var appointment = _appDbContext.Appointments.FirstOrDefault(x => !x.IsDeleted && x.Id == appointmenetId && !x.IsFinished);
-            if(appointment == null)
+            var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == appointment.Patient_RefID);
+            if (dbPatient == null)
+            {
+                throw new Exception("Patient does not exist");
+            }
+            dbPatient.Penalty++;
+            if (appointment == null)
             {
                 throw new Exception("Appointment does not exist");
             }
@@ -119,11 +126,12 @@ namespace MedicApp.Integrations
             {
                 return false;
             }
+
             appointment.IsCanceled = true;
             _appDbContext.Appointments.Update(appointment);
             _appDbContext.SaveChanges();
-            return true;            
-            
+            return true;
+
         }
         public AppointmentLoadModel LoadAppointmentById(Guid Id)
         {
@@ -135,7 +143,7 @@ namespace MedicApp.Integrations
             var result = new AppointmentLoadModel();
             result.Id = Id;
             result.Title = dbAppointment.Title;
-            result.StartTime = dbAppointment.StartTime;
+            result.StartDate = dbAppointment.StartDate;
             result.Clinic = _clinicIntegration.GetClinicById(Id);
             result.ResponsiblePerson = _userIntegration.GetUserById(dbAppointment.ResponsiblePerson_RefID.Value);
             result.Patient = _userIntegration.GetUserById(dbAppointment.Patient_RefID.Value);
@@ -149,6 +157,34 @@ namespace MedicApp.Integrations
         //    if(dbAppointments.)
         //}
 
+        public List<Appointment> CreatePredefiendAppointments(SavePredefiendAppointment predefiendAppointment)
+        {
+            var dbAppointments = _appDbContext.Appointments.Where(x => !x.IsDeleted && x.IsPredefiend && predefiendAppointment.Date == x.StartDate).ToList();
+            var result = new List<Appointment>();
+            if (dbAppointments != null && dbAppointments.Any())
+            {
+                throw new Exception("Predefiend appointments are already made");
+            }
+            else
+            {
+                for (int i = 0; i < predefiendAppointment.NumberOfAppointmentsInDay; i++)
+                {
+                    var predefAppointmnet = new Appointment
+                    {
+                        Duration = predefiendAppointment.Duration,
+                        IsPredefiend = true,
+                        StartDate = predefiendAppointment.Date.Value.Add(TimeSpan.Parse(predefiendAppointment.Time) * i)                       
+
+                    };
+                    result.Add(predefAppointmnet);
+                    _appDbContext.Appointments.Add(predefAppointmnet);
+                }
+                _appDbContext.SaveChanges();
+            }
+            return result;
+
+        }
+
     }
- 
+
 }
