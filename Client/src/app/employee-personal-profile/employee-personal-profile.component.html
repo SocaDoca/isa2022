@@ -14,17 +14,15 @@
     </div>
     <div [formGroup]="form" class="modal-body" style="background-color:darkolivegreen; color:white">
 
-      <div class="form-group">
+      <div class="form-group" style="width:200px;">
         <input id="name" name="name" type="password" class="form-control" [type]="show ? 'text' : 'password'" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" placeholder="password" [(ngModel)]="password">
-        &nbsp;
+        <br>
         <mat-icon (click)="pass()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
-        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-          <div *ngIf="f['password'].errors['required']" style="text-align:center">Change password is required</div>
-        </div>
+
       </div>
       &nbsp;
 
-      <div class="form-group">
+      <div class="form-group" style="width:200px;">
         <input id="confirmPassword" name="confirmPassword" type="password" class="form-control"   placeholder="confirm password" >
 
       </div>
