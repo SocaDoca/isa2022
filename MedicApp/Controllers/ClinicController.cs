@@ -7,7 +7,7 @@ namespace MedicApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    //Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class ClinicController : ControllerBase
     {  private readonly IClinicIntegration _clinicIntegration;
 
@@ -26,6 +26,9 @@ namespace MedicApp.Controllers
         public async Task<IActionResult> LoadAllClinics([FromBody] ClinicLoadParameters parameters)
         {
             return Ok(_clinicIntegration.LoadAllClinics(parameters));
-        }      
+        }
+
+
+      
     }
 }
