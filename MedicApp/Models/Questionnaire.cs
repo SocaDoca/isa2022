@@ -24,63 +24,61 @@
             Id = Guid.NewGuid();
             IsDeleted = false;
             IsValid = false;
-        }        
-        
+        }
+
         public bool IsQuestionireSigned()
         {
-            if (this.IsDeleted)
+
+            if (this.question1)
             {
-                if (this.question1)
-                {
-                    return false;
-                }
-                if (this.question2)
-                {
-                    return false;
-                }
-                if (this.question3)
-                {
-                    return false;
-                }
-                if (this.question4)
-                {
-                    return false;
-                }
-                if (this.question5)
-                {
-                    return false;
-                }
-                if (this.question6)
-                {
-                    return false;
-                }
-                if (this.question7)
-                {
-                    return false;
-                }
-                if (this.question8)
-                {
-                    return false;
-                }
-                if (this.question9)
-                {
-                    return false;
-                }
-                if (this.question10)
-                {
-                    return false;
-                }
-                if (this.question11)
-                {
-                    return false;
-                }
-                if (this.question12)
-                {
-                    return false;
-                }
-                return true;
+                return false;
             }
-            return false;
+            if (this.question2)
+            {
+                return false;
+            }
+            if (this.question3)
+            {
+                return false;
+            }
+            if (this.question4)
+            {
+                return false;
+            }
+            if (this.question5)
+            {
+                return false;
+            }
+            if (this.question6)
+            {
+                return false;
+            }
+            if (this.question7)
+            {
+                return false;
+            }
+            if (this.question8)
+            {
+                return false;
+            }
+            if (this.question9)
+            {
+                return false;
+            }
+            if (this.question10)
+            {
+                return false;
+            }
+            if (this.question11)
+            {
+                return false;
+            }
+            if (this.question12)
+            {
+                return false;
+            }
+            return true;
+
         }
-    } 
+    }
 }
