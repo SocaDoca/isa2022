@@ -11,6 +11,8 @@ namespace MedicApp.Integrations
         Clinic SaveClinic(ClinicSaveModel clinicSave);
         List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters);
         ClinicLoadModel GetClinicById(Guid Id);
+
+        bool UpdateClinic(ClinicSaveModel updateClinic);
     }
     public class ClinicIntegration : IClinicIntegration
     {
@@ -207,9 +209,31 @@ namespace MedicApp.Integrations
             return result;
         }
 
+        #region Update 
+        public bool UpdateClinic(ClinicSaveModel updateClinic)
+        {
+            var getClinic = _appDbContext.Clinics.First(x => x.Id == updateClinic.Id);
+
+            if (getClinic == null)
+            {
+                return false;
+            }
+            getClinic.Name = updateClinic.Name;
+            getClinic.Description = updateClinic.Description;
+            getClinic.Address = updateClinic.Address;
+            getClinic.City = updateClinic.City;
+            getClinic.Country = updateClinic.Country;
+            getClinic.Phone = updateClinic.Phone;
+            getClinic.Rating = updateClinic.Rating;
+
+            _appDbContext.Clinics.Update(getClinic);
+            _appDbContext.SaveChanges();
+            return true;
+        }
+
 
     }
-
+    #endregion
 
 
 

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../service/user.service';
 import { LoadAllUsersParameters } from '../model/LoadAllUsersParameters';
+import { Questionnaire } from '../model/Questionnaire';
 import { User } from '../model/User';
 import { UserLoadModel } from '../model/UserLoadModel';
 
@@ -13,6 +14,7 @@ import { UserLoadModel } from '../model/UserLoadModel';
 export class SearchUserComponent {
   @Input()
   id: any;
+  questionnaire: any;
   res: LoadAllUsersParameters;
   loggedUser: UserLoadModel[] =[];
 
@@ -25,7 +27,10 @@ export class SearchUserComponent {
       limit: 10,
       sortBy: '',
       orderAsc:true
-    })
+    }),
+      this.questionnaire = new Questionnaire({
+        isValid: undefined
+      })
   }
 
   ngOnInit(): void {
@@ -40,7 +45,12 @@ export class SearchUserComponent {
         console.log(this.res);
       }
 
-      )
+    );
+    this.userService.getQuestionnaire(this.questionnaire).subscribe(res => {
+      this.questionnaire.isValid = res;
+    })
+    //this.isValid = this.route.snapshot.params['isValid'];
+    console.log(this.questionnaire.isValid);
   }
 
   removeUser() {

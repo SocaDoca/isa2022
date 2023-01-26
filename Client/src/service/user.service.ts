@@ -14,6 +14,7 @@ import { LoadAllUsersParameters } from '../app/model/LoadAllUsersParameters';
 })
 export class UserService {
   url = "http://localhost:5017/User/get-by-id";
+  urlQuestionnaire = "http://localhost:5017/User/get-questionnaire-by-id";
   urlRemoveUser = "http://localhost:5017/User/remove";
   urlUsers = "http://localhost:5017/User/get-all";
   urlUpdate = "http://localhost:5017/User/update-user";
@@ -26,6 +27,10 @@ export class UserService {
 
   getUser(id:string): Observable<User> {
     return this.http.get<User>(`${this.url}?id=${id}`);
+  }
+
+  getQuestionnaire(id: string): Observable<Questionnaire> {
+    return this.http.get<Questionnaire>(`${this.urlQuestionnaire}?id=${id}`);
   }
 
   removeUser(id: string) {

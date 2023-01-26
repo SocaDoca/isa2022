@@ -44,8 +44,8 @@ export class AddClinicComponent {
       rating: 0,
       workHours: [
         this.hours = new WorkingHours({
-          start: new Date,
-          end: new Date(),
+          start: '',
+          end: '',
           dayOfWeek: undefined
 
         })      ]
@@ -68,13 +68,14 @@ export class AddClinicComponent {
 
   saveClinic() {
      this.checkBoxValue1(event);
-    //this.checkBoxValue2(event);
-    //this.checkBoxValue3(event);
-    //this.checkBoxValue4(event);
-    //this.checkBoxValue5(event);
-    //this.checkBoxValue6(event);
-    //this.checkBoxValue7(event);
+    this.checkBoxValue2(event);
+    this.checkBoxValue3(event);
+    this.checkBoxValue4(event);
+    this.checkBoxValue5(event);
+    this.checkBoxValue6(event);
+    this.checkBoxValue7(event);
     this.clinicService.saveClinic(this.clinic).subscribe(res => {
+      //this.clinic.workHours![this.hours.dayOfWeek] = res;
       this.clinic = res;
       console.log(res);
       //console.log(this.clinic.workHours![this.hours.dayOfWeek]);
@@ -86,8 +87,8 @@ export class AddClinicComponent {
   checkBoxValue1(event: any) {
     console.log(event.target.checked);
     if (event.target.checked == true) {
-      this.hours.dayOfWeek = 2;
-      this.clinic.workHours![this.hours.dayOfWeek] == 2;
+      this.hours.dayOfWeek = 1;
+      this.clinic.workHours![this.hours.dayOfWeek] == 1;
 
     }
   }
@@ -95,39 +96,43 @@ export class AddClinicComponent {
   checkBoxValue2(event: any) {
     console.log(event.target.checked);
     if (event.target.checked) {
-      //this.hours.dayOfWeek == 1;
-      //this.clinic.workHours![2].day == this.hours.day;
-      //this.clinic.workHours![2] == 1;
+      this.hours.dayOfWeek = 2;
+      this.clinic.workHours![this.hours.dayOfWeek] == 2;
     }
   }
   checkBoxValue3(event: any) {
     console.log(event.target.checked);
     if (event.target.checked == true) {
-     // this.workHours.day == 2;
+      this.hours.dayOfWeek = 3;
+     // this.clinic.workHours![this.hours.dayOfWeek] = 3;
     }
   }
   checkBoxValue4(event: any) {
     console.log(event.target.checked);
     if (event.target.checked == true) {
-      this.clinic.workHours![2] == 3;
+      this.hours.dayOfWeek = 4;
+      this.clinic.workHours![this.hours.dayOfWeek] == 4;
     }
   }
   checkBoxValue5(event: any) {
     console.log(event.target.checked);
     if (event.target.checked == true) {
-      this.clinic.workHours![2] == 4;
+      this.hours.dayOfWeek = 5;
+      this.clinic.workHours![this.hours.dayOfWeek] == 5;
     }
   }
   checkBoxValue6(event: any) {
     console.log(event.target.checked);
     if (event.target.checked == true) {
-      this.clinic.workHours![2] == 5;
+      this.hours.dayOfWeek = 6;
+      this.clinic.workHours![this.hours.dayOfWeek] == 6;
     }
   }
   checkBoxValue7(event: any) {
     console.log(event.target.checked);
     if (event.target.checked == true) {
-      this.clinic.workHours![2] == 6;
+      this.hours.dayOfWeek = 7;
+      this.clinic.workHours![this.hours.dayOfWeek] == 7;
     }
   }
 
