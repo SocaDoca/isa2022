@@ -15,11 +15,10 @@
 
   .form-search input {
     margin-top: 10px;
-    height: 40px;
+    margin-bottom: 10px;
     border-radius: 6px;
     border: 1px solid rgb(116, 116, 116);
     font-size: 19px;
-    width: 300px;
     margin-left: 10px;
   }
 

@@ -11,9 +11,17 @@
 
   <div class="forma">
     <h3>Search user</h3>
-    <form class="form-search" style="text-align:center">
-      <input style="width: 250px; text-align:center" name="name" id="name" type="text"><br>
-      <input type="submit" value="search" class="btn btn-primary">
+    <form class="form-search" (ngSubmit)="loadUser()">
+      <input style="width: 250px; " align="center" name="searchCriteria" id="searchCriteria" type="text" [(ngModel)]="res.searchCriteria"><br>
+
+      <input class="form-check-input" type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="firstName" [(ngModel)]="res.sortBy">
+      <label class="form-check-label" for="inlineRadio2">first name</label>
+
+
+      <input class="form-check-input" type="radio" name="inlineRadioOptions1" id="inlineRadio1" value="lastName" [(ngModel)]="res.sortBy">
+      <label class="form-check-label" for="inlineRadio2">last name</label><br>
+
+      <input type="submit" value="search"  class="btn btn-primary">
     </form>
   </div>
   <div class="modal-dialog text-center">
@@ -21,7 +29,8 @@
       <table class="table table-striped" border="1" width="200" style="background-color:darkolivegreen; color:white">
         <thead>
           <tr width="5%">
-            <th>Name</th>
+            <th>First Name</th>
+            <th>Last Name</th>
             <th>JMBG</th>
             <th>Email</th>
             <th>Mobile</th>
@@ -32,15 +41,16 @@
           </tr>
         </thead>
         <tbody style="color:white;">
-          <tr *ngFor="let f of user">
-            <td style="color:white">{{f.name}}</td>
+          <tr app-search-user-view *ngFor="let f of loggedUser">
+            <td style="color:white">{{f.firstName}}</td>
+            <td style="color:white">{{f.lastName}}</td>
             <td style="color:white">{{f.jmbg}}</td>
             <td style="color:white">{{f.email}}</td>
             <td style="color:white">{{f.mobile}}</td>
             <td style="color:white">{{f.fullAddress}}</td>
             <td style="color:white">{{f.job}}</td>
             <td style="color:white">{{f.role}}</td>
-            <td> <button (click)="removeUser()" style=" width: 170px; height: 30px; background-color: darkred; color: white; border: none; border-radius: 8px; " >Remove user</button> </td>
+            <td> <button (click)="removeUser()" style=" width: 170px; height: 30px; background-color: darkred; color: white; border: none; border-radius: 8px; ">Remove user</button> </td>
           </tr>
         </tbody>
       </table>

@@ -17,6 +17,8 @@ export interface UserLoadModelInterface {
   mobile?: string;
   password?: string;
   isFirstTime?: boolean;
+  firstName?: string;
+  lastName?: string;
 
 
 }
@@ -37,11 +39,15 @@ export class UserLoadModel implements UserLoadModelInterface {
   mobile?: string;
   password?: string;
   isFirstTime?: boolean;
+  firstName?: string;
+  lastName?: string;
 
 
   constructor(obj: UserLoadModelInterface) {
     this.id = obj.id;
     this.name = obj.name;
+    this.firstName = obj.firstName;
+    this.lastName = obj.lastName;
     this.username = obj.username;
     this.email = obj.email;
     this.address = obj.address;

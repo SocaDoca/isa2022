@@ -9,6 +9,7 @@ import { map } from "rxjs/operators";
 import { DbClinic } from '../app/model/DbClinic';
 import { ClinicSaveModel } from '../app/model/ClinicSaveModel';
 import { WorkingHours } from '../app/model/WorkingHours';
+import { ClinicLoadParameters } from '../app/model/ClinicLoadParameters';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ import { WorkingHours } from '../app/model/WorkingHours';
 export class ClinicService {
   private access_token = null;
   url = "http://localhost:5017/Clinic/save-clinic";
+  urlgetAll = "http://localhost:5017/Clinic/load-all-clinics";
   urlWorkingHours = "http://localhost:5017/WorkingHours/save-working-hours";
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
@@ -40,6 +42,10 @@ export class ClinicService {
   saveWorkingHours(hours: WorkingHours) {
     return this.http.post<WorkingHours>(`${this.url}`, hours)
 
+  }
+
+  getAll(clinic: ClinicLoadParameters): Observable<ClinicSaveModel[]> {
+    return this.http.post<ClinicSaveModel[]>(`${this.urlgetAll}`, clinic);
   }
 
 

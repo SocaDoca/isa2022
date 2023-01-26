@@ -7,6 +7,7 @@ import { UserRequest } from '../app/model/UserRequest';
 import { ActivatedRoute } from '@angular/router';
 import { map } from "rxjs/operators";
 import { Questionnaire } from '../app/model/Questionnaire';
+import { LoadAllUsersParameters } from '../app/model/LoadAllUsersParameters';
 
 @Injectable({
   providedIn: 'root'
@@ -31,8 +32,8 @@ export class UserService {
     return this.http.delete<any>(`${this.urlRemoveUser}?id=${id}`);
   }
 
-  getAll(): Observable<UserLoadModel> {
-    return this.http.get<UserLoadModel>(`${this.urlUsers}`);
+  getAll(user: LoadAllUsersParameters): Observable<UserLoadModel[]> {
+    return this.http.post<UserLoadModel[]>(`${this.urlUsers}`, user);
   }
 
   updateUser(user: User): Observable<User> {
