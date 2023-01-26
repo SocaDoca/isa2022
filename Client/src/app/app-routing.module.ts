@@ -23,6 +23,7 @@ import { VerifyUserComponent } from './verify-user/verify-user.component';
 import { ChangePassComponent } from './change-pass/change-pass.component';
 import { AddClinicComponent } from './add-clinic/add-clinic.component';
 import { UpdateClinicComponent } from './update-clinic/update-clinic.component';
+import { ViewClinicUserComponent } from './view-clinic-user/view-clinic-user.component';
 
 
 const routes: Routes = [
@@ -36,7 +37,7 @@ const routes: Routes = [
   { path: 'profile/:id/complaint', component: UserComplaintComponent },
   { path: 'profile/:id/scheduledAppointments', component: UserScheduledAppointmentsComponent },
   { path: 'profileEmployee/:id', component: EmployeePersonalProfileComponent },
-  { path: 'profileEmployee/:id/viewClinic', component: ViewClinicComponent },
+  { path: 'profile/:id/viewClinicUser', component: ViewClinicUserComponent },
   { path: 'profileEmployee/:id/viewClinic/update', component: UpdateClinicComponent },
   { path: 'profileEmployee/:id/addTerm', component: AdminAddTermComponent },
   { path: 'profileEmployee/:id/updateEmployeeProfile', component: EmployeePersonalProfileUpdateComponent },

@@ -40,6 +40,7 @@ import { VerifyUserComponent } from './verify-user/verify-user.component';
 import { ChangePassComponent } from './change-pass/change-pass.component';
 import { AddClinicComponent } from './add-clinic/add-clinic.component';
 import { UpdateClinicComponent } from './update-clinic/update-clinic.component';
+import { ViewClinicUserComponent } from './view-clinic-user/view-clinic-user.component';
 
 
 
@@ -69,6 +70,7 @@ import { UpdateClinicComponent } from './update-clinic/update-clinic.component';
     ChangePassComponent,
     AddClinicComponent,
     UpdateClinicComponent,
+    ViewClinicUserComponent,
 
   ],
   imports: [
