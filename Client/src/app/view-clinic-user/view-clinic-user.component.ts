@@ -5,11 +5,11 @@ import { ClinicLoadParameters } from '../model/ClinicLoadParameters';
 import { ClinicSaveModel } from '../model/ClinicSaveModel';
 
 @Component({
-  selector: 'app-view-clinic',
-  templateUrl: './view-clinic.component.html',
-  styleUrls: ['./view-clinic.component.css']
+  selector: 'app-view-clinic-user',
+  templateUrl: './view-clinic-user.component.html',
+  styleUrls: ['./view-clinic-user.component.css']
 })
-export class ViewClinicComponent {
+export class ViewClinicUserComponent {
   @Input()
   id: any;
   res: ClinicLoadParameters;

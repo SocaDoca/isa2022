@@ -40,8 +40,8 @@ export class UpdateClinicComponent {
       rating: 0,
       workHours: [
         this.hours = new WorkingHours({
-          start: new Date,
-          end: new Date(),
+          start: '',
+          end: '',
           dayOfWeek: undefined
 
         })]
