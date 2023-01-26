@@ -3,6 +3,7 @@ using MedicApp.Models;
 using MedicApp.RelationshipTables;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Metrics;
+using System.Xml.Linq;
 
 namespace MedicApp.Integrations
 {
@@ -18,11 +19,13 @@ namespace MedicApp.Integrations
     {
         public readonly AppDbContext _appDbContext;
         public readonly IWorkingHoursIntegration _workingHoursIntegration;
+        
 
         public ClinicIntegration(AppDbContext appDbContext, IWorkingHoursIntegration workingHoursIntegration)
         {
             _appDbContext = appDbContext;
             _workingHoursIntegration = workingHoursIntegration;
+            
         }
 
         public Clinic SaveClinic(ClinicSaveModel clinicSave)
@@ -91,7 +94,9 @@ namespace MedicApp.Integrations
                 {
                     Id = clinic.Id,
                     Name = clinic.Name,
-                    Address = String.Format("{0}, {1}, {2}", clinic.Address, clinic.City, clinic.Country),
+                    Address = clinic.Address, 
+                    City =clinic.City, 
+                    Country = clinic.Country,
                     Phone = clinic.Phone,
                     Description = clinic.Description,
                     Rating = clinic.Rating,
@@ -128,9 +133,11 @@ namespace MedicApp.Integrations
             if (!String.IsNullOrEmpty(parameters.SearchCriteria))
                 resultList = resultList.Where(
                     x => x.Name.Contains(parameters.SearchCriteria) ||
-                         x.City.Contains(parameters.SearchCriteria) ||
-                         x.Country.Contains(parameters.SearchCriteria) ||
-                         x.Address.Contains(parameters.SearchCriteria)).ToList();
+                        x.Address.Contains(parameters.SearchCriteria) ||
+                        x.City.Contains(parameters.SearchCriteria) ||
+                        x.Country.Contains(parameters.SearchCriteria) ||
+                        
+                         ).ToList();
 
             #endregion
 
@@ -180,10 +187,31 @@ namespace MedicApp.Integrations
         public ClinicLoadModel GetClinicById(Guid Id)
         {
             var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => x.Id == Id && !x.IsDeleted);
+            var clinic2Appointment = _appDbContext.Appointment2Clinics.Where(x => x.Clinic_RefID == dbClinic.Id).ToList();
+            var clinicAppointment = _appDbContext.Appointments.Where(x => clinic2Appointment.Any(s => s.Appointment_RefID == x.Id)).ToList();
+            var clinic2WorkingHoursIds = _appDbContext.Clinic2WorkingHours.Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id).Select(x => x.WorkingHours_RefID).ToList();
+            var workingHoursList = new List<LoadWorkingHoursModel>();
+
             if (dbClinic == null)
             {
                 throw new KeyNotFoundException("Clinic does not exist");
             }
+
+            if (clinic2WorkingHoursIds.Any())
+            {
+                foreach (var id in clinic2WorkingHoursIds)
+                {
+                    workingHoursList.Add(_workingHoursIntegration.LoadWorkingHourById(Id));
+                }
+            }
+            var appointmentList = new List<Appointment>();
+            if (clinicAppointment.Any())
+            {
+                foreach (var item in clinicAppointment)
+                {
+                    appointmentList.Add(item);
+                }
+            }       
 
             var result = new ClinicLoadModel
             {
@@ -194,17 +222,11 @@ namespace MedicApp.Integrations
                 Description = dbClinic.Description,
                 Name = dbClinic.Name,
                 Phone = dbClinic.Phone,
-                Rating = dbClinic.Rating
-            };
-
-            var clinic2WorkingHoursIds = _appDbContext.Clinic2WorkingHours.Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id).Select(x => x.WorkingHours_RefID).ToList();
-            var workingHoursList = new List<LoadWorkingHoursModel>();
-            foreach (var id in clinic2WorkingHoursIds)
-            {
-                workingHoursList.Add(_workingHoursIntegration.LoadWorkingHourById(Id));
-            }
-
-            result.WorkHours = workingHoursList;
+                Rating = dbClinic.Rating,
+                WorkHours = workingHoursList,
+                Appointments = appointmentList,
+                
+            };            
 
             return result;
         }
@@ -231,12 +253,7 @@ namespace MedicApp.Integrations
             return true;
         }
 
-
     }
     #endregion
-
-
-
-
 
 }

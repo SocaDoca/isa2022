@@ -43,6 +43,7 @@
         public string Phone { get; set; }
         public float Rating { get; set; }
         public List<LoadWorkingHoursModel> WorkHours { get; set; } = new List<LoadWorkingHoursModel>();
+        public List<Appointment> Appointments { get; set; }            
        
     }
 

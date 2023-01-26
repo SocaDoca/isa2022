@@ -28,6 +28,7 @@ namespace MedicApp.Integrations
         bool VerifyUser(VerifyParams verifyParams);
         bool UpdateUser(UpdateUser updateUser);
         bool UpdatePassword(Guid Id, string password);
+        Questionnaire GetQuestionnaireByUserId(Guid Id);
         bool Delete(Guid id);
         Questionnaire CreateQuestionnaireForPatientById(Questionnaire questionnaire, Guid PatientId);
     }
@@ -164,15 +165,11 @@ namespace MedicApp.Integrations
                 question10 = questionnaire.question10,
                 question11 = questionnaire.question11,
                 question12 = questionnaire.question12,
+                Patient_RefID = dbPatient.Id
             };
+            dbQuestionnaire.IsValid = dbQuestionnaire.IsQuestionireSigned() ? true : false;
             _appDbContext.Questionnaire.Add(dbQuestionnaire);
 
-            var patient2questinnaire = new Patient2Questionnaire
-            {
-                Patient_RefId = dbPatient.Id,
-                Questionnaire_RefId = dbQuestionnaire.Id
-            };
-            _appDbContext.Patient2Questionnaires.Add(patient2questinnaire);
             _appDbContext.SaveChanges();
             return dbQuestionnaire;
         }
@@ -304,6 +301,18 @@ namespace MedicApp.Integrations
             #endregion 
 
             return resultList.Skip(parameters.Offset).Take(parameters.Limit).ToList();
+
+        }
+
+        public Questionnaire GetQuestionnaireByUserId(Guid Id)
+        {
+            var dbPatient = _appDbContext.Users.Where(x => x.Id == Id && !x.IsDeleted && x.Role == "User").FirstOrDefault();
+            var questionnaire = _appDbContext.Questionnaire.Where(x => !x.IsDeleted == false && x.Patient_RefID == dbPatient.Id).FirstOrDefault();
+            if (questionnaire is null)
+            {
+                throw new Exception("questionnaire is does not exist");
+            }
+            return questionnaire;
 
         }
 

@@ -5,7 +5,7 @@
         public Guid Id { get; set; }
         public string Start { get; set; }
         public string End { get; set; }
-        public DayOfWeek DayOfWeek { get; set; }
+        public string DayOfWeek { get; set; }
         public bool IsDeleted { get; set; }
 
         public WorkingHours()
@@ -23,13 +23,13 @@
         public Guid Id { get; set; }
         public string Start { get; set; }
         public string End { get; set; }
-        public DayOfWeek Day { get; set; }
+        public string Day { get; set; }
     }
     public class LoadWorkingHoursModel
     {
         public Guid Id { get; set; }
         public string Start { get; set; }
         public string End { get; set; }
-        public DayOfWeek Day { get; set; }
+        public string Day { get; set; }
     }
 }

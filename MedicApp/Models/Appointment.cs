@@ -49,6 +49,7 @@ namespace MedicApp.Models
         public UserLoadModel Patient { get; set; }
         public ClinicLoadModel Clinic { get; set; }
         public bool IsCanceled { get; set; }
+        public bool IsPredefiend { get; set; }
         public bool IsFinished { get; set; }
     }
 

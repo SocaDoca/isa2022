@@ -3,6 +3,7 @@
     public class Questionnaire
     {
         public Guid Id { get; set; }
+        public Guid Patient_RefID { get; set; }
         public DateTime ExpireDate { get; set; }
         public bool question1 { get; set; }
         public bool question2 { get; set; }
