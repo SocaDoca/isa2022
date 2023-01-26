@@ -38,7 +38,7 @@ namespace MedicApp.Integrations
             var dbClinicWorkingHours = allDbWorkingHours.Where(x => dbWorkingHoursId.Any(s => s == x.Id)).ToList();
 
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.Patient_RefID == x.Id && x.Role == "User");
-            var dbResponsiblePerson = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.ResponsiblePerson_RefID == x.Id && x.Role == "Employee" && !x.IsAdminCenter);
+            var dbResponsiblePerson = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.ResponsiblePerson_RefID == x.Id && x.Role == "Admin" && !x.IsAdminCenter);
             var patient2Questionnaire = _appDbContext.Patient2Questionnaires.Where(x => x.Patient_RefId == dbPatient.Id).ToList();
             //var questionnaires = _appDbContext.Questionnaire.Where(x => patient2Questionnaire.Any(s => s.Questionnaire_RefId == x.Id)).ToList();
 

@@ -28,7 +28,13 @@ namespace MedicApp.Controllers
             return Ok(_clinicIntegration.LoadAllClinics(parameters));
         }
 
+        [HttpPost("update-clinic")]
+        public bool UpdateClinic([FromBody] ClinicSaveModel updateClinic)
+        {
+            return _clinicIntegration.UpdateClinic(updateClinic);
+        }
 
-      
+
+
     }
 }

@@ -22,7 +22,6 @@ export interface UserInterface {
   isAdminCenter?: any;
   name?: string;
   isFirstTime?: boolean;
-
 }
 
 export class User implements UserInterface {

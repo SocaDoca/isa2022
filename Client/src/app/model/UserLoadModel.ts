@@ -19,6 +19,7 @@ export interface UserLoadModelInterface {
   isFirstTime?: boolean;
   firstName?: string;
   lastName?: string;
+  isValid?: any;
 
 
 }
@@ -41,6 +42,7 @@ export class UserLoadModel implements UserLoadModelInterface {
   isFirstTime?: boolean;
   firstName?: string;
   lastName?: string;
+  isValid?: any;
 
 
   constructor(obj: UserLoadModelInterface) {
@@ -61,6 +63,6 @@ export class UserLoadModel implements UserLoadModelInterface {
     this.mobile = obj.mobile;
     this.password = obj.password;
     this.isFirstTime = obj.isFirstTime;
-
+    this.isValid = obj.isValid;
   }
 }
