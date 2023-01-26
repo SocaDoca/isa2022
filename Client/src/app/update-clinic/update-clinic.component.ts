@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ClinicService } from '../../service/clinic.service';
 import { ClinicSaveModel } from '../model/ClinicSaveModel';
 import { WorkingHours } from '../model/WorkingHours';
@@ -29,7 +30,7 @@ export class UpdateClinicComponent {
   clinic: ClinicSaveModel;
   hours: WorkingHours;
 
-  constructor(private clinicService: ClinicService) {
+  constructor(private clinicService: ClinicService, private router: Router) {
     this.clinic = new ClinicSaveModel({
       name: '',
       address: '',
@@ -58,6 +59,7 @@ export class UpdateClinicComponent {
     } else {
       this.saveClinic();
       console.log(JSON.stringify(this.form.value, null, 2));
+      this.router.navigate(['/profileEmployee/:id/viewClinic']);
     }
   }
 
