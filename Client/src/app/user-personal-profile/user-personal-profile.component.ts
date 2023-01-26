@@ -38,7 +38,8 @@ export class UserPersonalProfileComponent implements OnInit{
       job: '',
       gender: undefined,
       jmbg: '',
-      password:''
+      password: '',
+      penalty: 0
 
     })
   }

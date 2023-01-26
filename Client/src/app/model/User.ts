@@ -22,6 +22,7 @@ export interface UserInterface {
   isAdminCenter?: any;
   name?: string;
   isFirstTime?: boolean;
+  penalty?: number;
 }
 
 export class User implements UserInterface {
@@ -45,6 +46,7 @@ export class User implements UserInterface {
   name?: string;
   mobile?: string;
   isFirstTime?: boolean;
+  penalty?: number;
 
   constructor(obj: UserInterface) {
     this.id = obj.id;
@@ -67,5 +69,6 @@ export class User implements UserInterface {
     this.isAdminCenter = obj.isAdminCenter;
     this.name = obj.name;
     this.isFirstTime = obj.isFirstTime;
+    this.penalty = obj.penalty;
   }
 }

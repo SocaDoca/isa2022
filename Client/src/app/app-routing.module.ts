@@ -24,6 +24,8 @@ import { ChangePassComponent } from './change-pass/change-pass.component';
 import { AddClinicComponent } from './add-clinic/add-clinic.component';
 import { UpdateClinicComponent } from './update-clinic/update-clinic.component';
 import { ViewClinicUserComponent } from './view-clinic-user/view-clinic-user.component';
+import { StartAppointmentComponent } from './start-appointment/start-appointment.component';
+import { AppointmentReportComponent } from './appointment-report/appointment-report.component';
 
 
 const routes: Routes = [
@@ -32,18 +34,20 @@ const routes: Routes = [
   { path: 'register', component: RegisterPageComponent },
   { path: 'profile/:id', component: UserPersonalProfileComponent },
   { path: 'profile/:id/visitationHistory', component: VisitationHistoryUserComponent },
-  { path: 'profile/:id/viewClinic', component: ViewClinicComponent },
+  { path: 'profile/:id/viewClinicUser', component: ViewClinicUserComponent },
   { path: 'profile/:id/questionnaire', component: TransfusionQuestionnaireComponent },
   { path: 'profile/:id/complaint', component: UserComplaintComponent },
   { path: 'profile/:id/scheduledAppointments', component: UserScheduledAppointmentsComponent },
   { path: 'profileEmployee/:id', component: EmployeePersonalProfileComponent },
-  { path: 'profile/:id/viewClinicUser', component: ViewClinicUserComponent },
+  { path: 'profileEmployee/:id/viewClinic', component: ViewClinicComponent },
   { path: 'profileEmployee/:id/viewClinic/update', component: UpdateClinicComponent },
   { path: 'profileEmployee/:id/addTerm', component: AdminAddTermComponent },
   { path: 'profileEmployee/:id/updateEmployeeProfile', component: EmployeePersonalProfileUpdateComponent },
   { path: 'profileEmployee/:id/add-clinic', component: AddClinicComponent },
   { path: 'profile/:id/updateProfile', component: UserPersonalProfileUpdateComponent },
   { path: 'profileEmployee/:id/searchUser', component: SearchUserComponent },
+  { path: 'profileEmployee/:id/searchUser/start-appointment', component: StartAppointmentComponent },
+  { path: 'profileEmployee/:id/searchUser/start-appointment/report', component: AppointmentReportComponent },
   { path: 'search', component: SearchClinicComponent },
   { path: 'change-pass', component: ChangePassComponent },
   { path: 'profileEmployee/:id/calendar', component: CalendarComponent },

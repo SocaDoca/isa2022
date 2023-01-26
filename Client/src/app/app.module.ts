@@ -41,6 +41,8 @@ import { ChangePassComponent } from './change-pass/change-pass.component';
 import { AddClinicComponent } from './add-clinic/add-clinic.component';
 import { UpdateClinicComponent } from './update-clinic/update-clinic.component';
 import { ViewClinicUserComponent } from './view-clinic-user/view-clinic-user.component';
+import { StartAppointmentComponent } from './start-appointment/start-appointment.component';
+import { AppointmentReportComponent } from './appointment-report/appointment-report.component';
 
 
 
@@ -71,6 +73,8 @@ import { ViewClinicUserComponent } from './view-clinic-user/view-clinic-user.com
     AddClinicComponent,
     UpdateClinicComponent,
     ViewClinicUserComponent,
+    StartAppointmentComponent,
+    AppointmentReportComponent,
 
   ],
   imports: [
