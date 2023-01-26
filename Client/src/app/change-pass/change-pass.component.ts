@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class ChangePassComponent {
   id: any;
-  password: any;
+  password: string = '';
   constructor(private userService: UserService, private router:Router) { }
 
 
