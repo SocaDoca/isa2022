@@ -26,7 +26,7 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit {
   closeResult = '';
   id: any;
   isFirstTime: any;
-  password: any;
+  //password: string = '';
   user: UserLoadModel;
   confirmPassword:string = '';
 
@@ -48,7 +48,8 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit {
       mobile: '',
       job: '',
       gender: undefined,
-      jmbg: ''
+      jmbg: '',
+      password:''
 
     })
   }
@@ -94,9 +95,9 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit {
 
   changePass() {
     this.id = sessionStorage.getItem('id');
-    this.userService.updatePassword(this.id, this.password).subscribe(
+    this.userService.updatePassword(this.id, this.user.password!).subscribe(
       (data: any) => {
-
+        //this.user.password = data.password;
         console.log(data)
       });
     this.user.isFirstTime = false;

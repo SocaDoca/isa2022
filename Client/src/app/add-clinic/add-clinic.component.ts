@@ -46,7 +46,7 @@ export class AddClinicComponent {
         this.hours = new WorkingHours({
           start: '',
           end: '',
-          dayOfWeek: undefined
+          day: ''
 
         })      ]
         
@@ -67,24 +67,18 @@ export class AddClinicComponent {
 
 
   saveClinic() {
-     this.checkBoxValue1(event);
-    this.checkBoxValue2(event);
-    this.checkBoxValue3(event);
-    this.checkBoxValue4(event);
-    this.checkBoxValue5(event);
-    this.checkBoxValue6(event);
-    this.checkBoxValue7(event);
+
     this.clinicService.saveClinic(this.clinic).subscribe(res => {
       //this.clinic.workHours![this.hours.dayOfWeek] = res;
       this.clinic = res;
       console.log(res);
       //console.log(this.clinic.workHours![this.hours.dayOfWeek]);
-      console.log(this.hours.dayOfWeek);
+      console.log(this.hours.day);
 
     });
   }
 
-  checkBoxValue1(event: any) {
+  /*checkBoxValue1(event: any) {
     console.log(event.target.checked);
     if (event.target.checked == true) {
       this.hours.dayOfWeek = 1;
@@ -134,6 +128,6 @@ export class AddClinicComponent {
       this.hours.dayOfWeek = 7;
       this.clinic.workHours![this.hours.dayOfWeek] == 7;
     }
-  }
+  }*/
 
 }

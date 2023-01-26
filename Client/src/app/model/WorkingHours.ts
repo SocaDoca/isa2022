@@ -6,7 +6,7 @@ export interface WorkingHoursInterface {
   id?: string;
   start?: any;
   end?: any;
-  dayOfWeek?: any;
+  day?: string;
 
 
 }
@@ -15,14 +15,14 @@ export class WorkingHours implements WorkingHoursInterface {
   id?: string;
   start?: any;
   end?: any;
-  dayOfWeek?: any;
+  day?: string;
 
 
   constructor(obj: WorkingHoursInterface) {
     this.id = obj.id;
     this.start = obj.start;
     this.end = obj.end;
-    this.dayOfWeek = obj.dayOfWeek;
+    this.day = obj.day;
 
   }
 }

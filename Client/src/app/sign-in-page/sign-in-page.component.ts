@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ReactiveFormsModule } from "@angular/forms";
 import Validation from './../utils/validation';
+import { UserLoadModel } from '../model/UserLoadModel';
 
 
 @Component({
@@ -21,19 +22,25 @@ export class SignInPageComponent implements OnInit {
     //acceptTerms: new FormControl(false),
   });
   username: any;
-  email: any;
-  password: any;
+  //email: any;
+  //password: any;
   role: any;
   id: any;
   show: boolean = false;
   invalidLogin = false;
   submitted: boolean = false;
+  user: UserLoadModel;
 
   @Output()
   LogIn: EventEmitter<void> = new EventEmitter();
 
   @Input() error: string | null | undefined;
-  constructor(private router: Router, private loginservice: AuthenticationService, private formBuilder: FormBuilder) { }
+  constructor(private router: Router, private loginservice: AuthenticationService, private formBuilder: FormBuilder) {
+    this.user = new UserLoadModel({
+      email: '',
+      password:''
+    })
+  }
 
 
   ngOnInit(): void {
@@ -75,10 +82,10 @@ export class SignInPageComponent implements OnInit {
   }
   
   login() {
-    if (this.email == '' || this.password == '')
-      this.error = "Username and password must be filled out";
-    else {
-      this.loginservice.authenticate(this.email, this.password).subscribe(
+    //if (this.email == '' || this.password == '')
+     // this.error = "Username and password must be filled out";
+    //else {
+      this.loginservice.authenticate(this.user.email!, this.user.password!).subscribe(
         (data: any) => {
           console.log(data)
           this.LogIn.next();
@@ -93,7 +100,7 @@ export class SignInPageComponent implements OnInit {
 
         })
     }
-  }
+  
 
   // click event function toggle
   password1() {

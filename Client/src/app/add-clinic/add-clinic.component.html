@@ -60,43 +60,26 @@
     
     </div>
     <div class="center" id="comp3">
-      
-        <br><br>
-        <label>Works from</label>
-        <div class="form-group">
-          <input id="start" name="start" type="text" class="from-control" [(ngModel)]="hours.start">
-        </div>
-        <label>to</label>
-        <div class="form-group">
-          <input id="end" name="end" type="text" class="from-control" [(ngModel)]="hours.end">
-        </div>
-        <br>
+
+      <br><br>
+      <label>Works from</label>
+      <div class="form-group">
+        <input id="start" name="start" type="text" class="from-control" [(ngModel)]="hours.start">
+      </div>
+      <label>to</label>
+      <div class="form-group">
+        <input id="end" name="end" type="text" class="from-control" [(ngModel)]="hours.end">
+      </div>
+      <br>
 
 
-        <label >On days</label>
+      <label>On days</label>
+      <div class="form-group">
+        <input id="day" name="day" type="text" class="from-control" [(ngModel)]="hours.day">
+      </div>
 
-        <div>
-          <input id="monday" type="checkbox" style="margin-left:20px;"  (change)="checkBoxValue1($event)" class="custom-control-input" >
-          <a style="font-size:23px; font-style:normal;">Monday</a>
-          <input id="tuesday" type="checkbox" style="margin-left: 10px;" (change)="checkBoxValue2($event)" class="custom-control-input" >
-          <a style="font-size:23px; font-style:normal;">Tuesday</a>
-          <input id="wednesday" type="checkbox" style="margin-left: 10px;" (change)="checkBoxValue3($event)" class="custom-control-input" [(ngModel)]="hours.dayOfWeek" >
-          <a style="font-size:23px; font-style:normal;">Wednesday</a>
-        </div>
-          <div>
-            <input id="thursday" type="checkbox" style="margin-left:20px;" (change)="checkBoxValue4($event)" class="custom-control-input" >
-            <a style="font-size:23px; font-style:normal;">Thursday</a>
-            <input id="friday" type="checkbox" style="margin-left: 10px;" (change)="checkBoxValue5($event)" class="custom-control-input" >
-            <a style="font-size:23px; font-style:normal;">Friday</a>
-            <input id="saturday" type="checkbox" style="margin-left: 10px;" (change)="checkBoxValue6($event)" class="custom-control-input" >
-            <a style="font-size:23px; font-style:normal;">Saturday</a>
-          </div>
-          <div>
-            <input id="sunday" type="checkbox" style="margin-left: 130px;" (change)="checkBoxValue7($event)" class="custom-control-input" >
-            &nbsp;<a style="font-size:23px; font-style:normal;">Sunday</a>
-          </div>
 
-      
+
     </div>
 
 

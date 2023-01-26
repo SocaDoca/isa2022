@@ -12,10 +12,10 @@
     <div class="modal-header" style="background-color:darkolivegreen;">
       <h4 class="modal-title" id="modal-basic-title" style="color:white">Change password</h4>
     </div>
-    <div [formGroup]="form" class="modal-body" style="background-color:darkolivegreen; color:white">
+    <div  class="modal-body" style="background-color:darkolivegreen; color:white">
 
       <div class="form-group" style="width:200px;">
-        <input id="name" name="name" type="password" class="form-control" [type]="show ? 'text' : 'password'" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" placeholder="password" [(ngModel)]="password">
+        <input id="password" name="password" type="password" class="form-control" [type]="show ? 'text' : 'password'" placeholder="password" [(ngModel)]="user.password">
         <br>
         <mat-icon (click)="pass()">{{show ? 'visibility' : 'visibility_off'}}</mat-icon>
 
