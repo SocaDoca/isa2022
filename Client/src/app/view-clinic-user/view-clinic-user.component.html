@@ -41,10 +41,10 @@
           <tr app-search-user-view *ngFor="let f of clinics">
             <td style="color:white">{{f.name}}</td>
             <td style="color:white">{{f.description}}</td>
-            <td style="color:white">{{f.address}}</td>
+            <td style="color:white">{{f.address}}, {{f.city}}, {{f.country}}</td>
             <td style="color:white">{{f.phone}}</td>
             <td style="color:white">{{f.rating}}</td>
-            <td><button  style=" width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">See available appointments</button> </td>
+            <td><button style=" width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">See available appointments</button> </td>
           </tr>
         </tbody>
       </table>

@@ -135,7 +135,7 @@ namespace MedicApp.Integrations
                     x => x.Name.Contains(parameters.SearchCriteria) ||
                         x.Address.Contains(parameters.SearchCriteria) ||
                         x.City.Contains(parameters.SearchCriteria) ||
-                        x.Country.Contains(parameters.SearchCriteria) ||
+                        x.Country.Contains(parameters.SearchCriteria)
                         
                          ).ToList();
 
