@@ -53,6 +53,15 @@ namespace MedicApp.Models
         public bool IsFinished { get; set; }
     }
 
+    public class AppotinmentInClinics
+    {
+        public Guid Id { get; set; }
+        public string Title { get; set; }
+        public DateTime StartDate { get; set; }
+        public string StartTime { get; set; }
+        public User ResponsiblePerson { get; set; }
+        public User Patient { get; set; }
+    }
     public class SavePredefiendAppointment
     {
         public string Time { get; set; }

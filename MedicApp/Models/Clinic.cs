@@ -77,6 +77,7 @@
         public string Phone { get; set; }
         public float Rating { get; set; }
         public List<LoadWorkingHoursModel> WorkingHours { get; set; } = new List<LoadWorkingHoursModel>();
+        public List<AppotinmentInClinics> Appointments { get; set; }
     }
 
 }
