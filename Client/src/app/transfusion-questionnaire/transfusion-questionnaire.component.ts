@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../service/user.service';
 import { Questionnaire } from '../model/Questionnaire';
@@ -36,7 +36,7 @@ export class TransfusionQuestionnaireComponent implements OnInit {
 
 
 
-  constructor(private userService: UserService, private modalService: NgbModal, private route: ActivatedRoute, private formBuilder: FormBuilder) {
+  constructor(private userService: UserService, private modalService: NgbModal, private route: ActivatedRoute, private router: Router) {
     this.questionnaire = new Questionnaire({
       question1: undefined,
       question2: undefined,
@@ -69,6 +69,7 @@ export class TransfusionQuestionnaireComponent implements OnInit {
     } else {
       this.submitQuestionnaire();
       //console.log(JSON.stringify(this.form.value, null, 2));
+
     }
   }
 
