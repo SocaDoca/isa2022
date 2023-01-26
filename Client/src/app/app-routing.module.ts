@@ -22,6 +22,8 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { VerifyUserComponent } from './verify-user/verify-user.component';
 import { ChangePassComponent } from './change-pass/change-pass.component';
 import { AddClinicComponent } from './add-clinic/add-clinic.component';
+import { UpdateClinicComponent } from './update-clinic/update-clinic.component';
+
 
 const routes: Routes = [
   { path: '', component: MainPageComponent },
@@ -35,6 +37,7 @@ const routes: Routes = [
   { path: 'profile/:id/scheduledAppointments', component: UserScheduledAppointmentsComponent },
   { path: 'profileEmployee/:id', component: EmployeePersonalProfileComponent },
   { path: 'profileEmployee/:id/viewClinic', component: ViewClinicComponent },
+  { path: 'profileEmployee/:id/viewClinic/update', component: UpdateClinicComponent },
   { path: 'profileEmployee/:id/addTerm', component: AdminAddTermComponent },
   { path: 'profileEmployee/:id/updateEmployeeProfile', component: EmployeePersonalProfileUpdateComponent },
   { path: 'profileEmployee/:id/add-clinic', component: AddClinicComponent },

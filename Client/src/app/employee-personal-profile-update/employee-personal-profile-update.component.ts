@@ -17,6 +17,7 @@ export class EmployeePersonalProfileUpdateComponent {
   role: any;
   addressList: string = '';
   nameList: string = '';
+  password: any;
 
 
   constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient, private userService: UserService) {
@@ -74,9 +75,12 @@ export class EmployeePersonalProfileUpdateComponent {
     console.log(this.id)
     this.id = sessionStorage.getItem('id');
     this.role = sessionStorage.getItem('role');
+    this.password = sessionStorage.getItem('password');
     if (this.role == 'User') {
       this.userService.updateUser(this.user)
-        .subscribe(res => this.router.navigate(['/profile', this.id]));
+        .subscribe(res => {
+          this.router.navigate(['/profile', this.id])
+        });
 
     } else if (this.role == 'Admin' || this.role == 'SysAdmin') {
 
@@ -88,7 +92,5 @@ export class EmployeePersonalProfileUpdateComponent {
 
 
   // click event function toggle
-  password() {
-    this.show = !this.show;
-  }
+
 }

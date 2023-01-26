@@ -42,7 +42,8 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit {
     this.user = new UserLoadModel({
       role: '',
       username: '',
-      name: '',
+      firstName: '',
+      lastName:'',
       fullAddress: '',
       mobile: '',
       job: '',

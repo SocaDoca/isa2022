@@ -15,6 +15,7 @@ export class TransfusionQuestionnaireComponent implements OnInit {
   questionnaire: Questionnaire;
   patientId: any;
   submitted: boolean = false;
+  //isValid: any;
 
   form: FormGroup = new FormGroup({
     question1: new FormControl(''),
@@ -48,7 +49,8 @@ export class TransfusionQuestionnaireComponent implements OnInit {
       question9: undefined,
       question10: undefined,
       question11: undefined,
-      question12: undefined
+      question12: undefined,
+      isValid: undefined
 
     });
 
@@ -84,7 +86,9 @@ export class TransfusionQuestionnaireComponent implements OnInit {
     this.patientId = this.route.snapshot.params['id'];
     this.userService.saveQuestionnaire(this.questionnaire, this.patientId).subscribe(res => {
       this.questionnaire = res;
+
       console.log(res);
     })
+
   }
 }

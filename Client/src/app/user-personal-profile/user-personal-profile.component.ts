@@ -31,7 +31,8 @@ export class UserPersonalProfileComponent implements OnInit{
     this.user = new UserLoadModel({
       role: '',
       username: '',
-      name: '',
+      firstName: '',
+      lastName:'',
       fullAddress: '',
       mobile: '',
       job: '',
