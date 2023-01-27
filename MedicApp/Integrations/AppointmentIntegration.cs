@@ -15,6 +15,7 @@ namespace MedicApp.Integrations
         Appointment SaveAppointment(AppointmentSaveModel appointmentSave);
         AppointmentLoadModel LoadAppointmentById(Guid Id);
         List<Appointment> CreatePredefiendAppointments(SavePredefiendAppointment predefiendAppointment);
+        List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId);
     }
     public class AppointmentIntegration : IAppointmentIntegration
     {
@@ -63,7 +64,7 @@ namespace MedicApp.Integrations
                     };
 
                     _appDbContext.Appointments.Add(appointment);
-
+                    _appDbContext.SaveChanges();
                     var report = new AppointmentReport
                     {
                         Description = appointmentSave.Report.Description,
@@ -71,7 +72,7 @@ namespace MedicApp.Integrations
                     };
 
                     _appDbContext.AppointmentsReports.Add(report);
-
+                    _appDbContext.SaveChanges();
                     var appointmnet2report = new Appointment2Report
                     {
                         Appointment_RefID = appointment.Id,
@@ -79,7 +80,7 @@ namespace MedicApp.Integrations
                     };
 
                     _appDbContext.Appointment2Reports.Add(appointmnet2report);
-
+                    _appDbContext.SaveChanges();
                     var appointment2Patient = new Appointment2Patient
                     {
                         Appointment_RefID = appointment.Id,
@@ -87,7 +88,7 @@ namespace MedicApp.Integrations
                     };
 
                     _appDbContext.Appointment2Patients.Add(appointment2Patient);
-
+                    _appDbContext.SaveChanges();
                     var appointment2Clinic = new Appointment2Clinic
                     {
                         Appointment_RefID = appointment.Id,
@@ -184,7 +185,7 @@ namespace MedicApp.Integrations
             var dbPatient = _appDbContext.Users.First(x => x.Id == patientId && x.Role == "User");
             var appointment2PatientIds = _appDbContext.Appointment2Patients.Where(x => x.Patient_RefID == dbPatient.Id).Select(x => x.Appointment_RefID).ToList();
             var dbAppointments = _appDbContext.Appointments.Where(x => appointment2PatientIds.Any(s => s == x.Id)).ToList();
-            var dbClinics = _appDbContext.Clinics.Where(x => !x.IsDeleted).GroupBy(x => x.Id).ToDictionary(x => x.Key, x => x.Single());
+            var dbClinics = _appDbContext.Clinics.ToList().Where(x => !x.IsDeleted).GroupBy(x => x.Id).ToDictionary(x => x.Key, x => x.Single());
             var result = new List<AppointmentLoadModel>();
             foreach (var item in dbAppointments)
             {

@@ -34,6 +34,11 @@ namespace MedicApp.Controllers
         public AppointmentLoadModel GetAppointmentById(Guid Id)
         {
             return _appointmentIntegration.LoadAppointmentById(Id);
+        } 
+        [HttpGet("patient/appointmets")]
+        public List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId)
+        {
+            return _appointmentIntegration.LoadAllAppointmentsByPatientId(patientId);
         }
     }
 }
