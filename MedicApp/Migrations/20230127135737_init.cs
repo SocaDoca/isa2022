@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MedicApp.Migrations
 {
-    public partial class appointment : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -206,24 +206,11 @@ namespace MedicApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Patient2Questionnaires",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    Patient_RefId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    Questionnaire_RefId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Patient2Questionnaires", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Questionnaire",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
+                    Patient_RefID = table.Column<Guid>(type: "char(36)", nullable: false),
                     ExpireDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     question1 = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     question2 = table.Column<bool>(type: "tinyint(1)", nullable: false),
@@ -296,7 +283,7 @@ namespace MedicApp.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
                     Start = table.Column<string>(type: "longtext", nullable: false),
                     End = table.Column<string>(type: "longtext", nullable: false),
-                    DayOfWeek = table.Column<int>(type: "int", nullable: false),
+                    DayOfWeek = table.Column<string>(type: "longtext", nullable: false),
                     IsDeleted = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
@@ -345,9 +332,6 @@ namespace MedicApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Employee2WokringHours");
-
-            migrationBuilder.DropTable(
-                name: "Patient2Questionnaires");
 
             migrationBuilder.DropTable(
                 name: "Questionnaire");

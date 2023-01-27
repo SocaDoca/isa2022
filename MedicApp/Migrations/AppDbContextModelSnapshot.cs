@@ -142,6 +142,9 @@ namespace MedicApp.Migrations
                     b.Property<bool>("IsValid")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<Guid>("Patient_RefID")
+                        .HasColumnType("char(36)");
+
                     b.Property<bool>("question1")
                         .HasColumnType("tinyint(1)");
 
@@ -280,8 +283,9 @@ namespace MedicApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("DayOfWeek")
-                        .HasColumnType("int");
+                    b.Property<string>("DayOfWeek")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("End")
                         .IsRequired()
@@ -497,26 +501,6 @@ namespace MedicApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employee2WokringHours");
-                });
-
-            modelBuilder.Entity("MedicApp.RelationshipTables.Patient2Questionnaire", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<Guid>("Patient_RefId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("Questionnaire_RefId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Patient2Questionnaires");
                 });
 #pragma warning restore 612, 618
         }

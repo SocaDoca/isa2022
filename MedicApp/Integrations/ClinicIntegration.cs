@@ -86,7 +86,7 @@ namespace MedicApp.Integrations
             var dbPatient = _appDbContext.Users.Where(x => x.IsDeleted == false).ToList();
             var workHoursList = new List<LoadWorkingHoursModel>();
             var dbWorkingHours = _appDbContext.WorkingHours.ToList();
-            var clinic2Appointments = _appDbContext.Appointment2Clinics.GroupBy(x => x.Clinic_RefID).ToDictionary(x => x.Key, x => x.Select(s => s.Appointment_RefID).ToList());
+            var clinic2Appointments = _appDbContext.Appointment2Clinics.ToList().GroupBy(x => x.Clinic_RefID).ToDictionary(x => x.Key, x => x.Select(s => s.Appointment_RefID).ToList());
             var dbAppointments = _appDbContext.Appointments.Where(x => !x.IsDeleted).ToList();
             var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.ToList().Where(x => !x.IsDeleted)
                 .GroupBy(x => x.Clinic_RefID)
@@ -193,8 +193,10 @@ namespace MedicApp.Integrations
         {
             var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => x.Id == Id && !x.IsDeleted);
             var clinic2Appointment = _appDbContext.Appointment2Clinics.Where(x => x.Clinic_RefID == dbClinic.Id).ToList();
-            var clinicAppointment = _appDbContext.Appointments.Where(x => clinic2Appointment.Any(s => s.Appointment_RefID == x.Id)).ToList();
-            var clinic2WorkingHoursIds = _appDbContext.Clinic2WorkingHours.Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id).Select(x => x.WorkingHours_RefID).ToList();
+            var appointmentIDs = clinic2Appointment.Select(x => x.Appointment_RefID).ToList();
+            var clinicAppointment = _appDbContext.Appointments.Where(x => appointmentIDs.Contains(x.Id)).ToList();
+            var WorkingHoursIds = _appDbContext.Clinic2WorkingHours.Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id).Select(x => x.WorkingHours_RefID).ToList();
+            var workingHours = _appDbContext.WorkingHours.Where(x => x.IsDeleted == false).ToList();
             var workingHoursList = new List<LoadWorkingHoursModel>();
 
             if (dbClinic == null)
@@ -202,11 +204,19 @@ namespace MedicApp.Integrations
                 throw new KeyNotFoundException("Clinic does not exist");
             }
 
-            if (clinic2WorkingHoursIds.Any())
+            if (WorkingHoursIds.Any())
             {
-                foreach (var id in clinic2WorkingHoursIds)
+                foreach (var id in WorkingHoursIds)
                 {
-                    workingHoursList.Add(_workingHoursIntegration.LoadWorkingHourById(Id));
+                    var workH = workingHours.FirstOrDefault(x => x.Id == id);
+                    var model = new LoadWorkingHoursModel
+                    {
+                        Day = workH.DayOfWeek,
+                        End = workH.End,
+                        Id = workH.Id,
+                        Start = workH.Start,
+                    };
+                    workingHoursList.Add(model);
                 }
             }
             var appointmentList = new List<Appointment>();

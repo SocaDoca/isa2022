@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedicApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230125202254_predefApp")]
-    partial class predefApp
+    [Migration("20230127135737_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,10 +53,6 @@ namespace MedicApp.Migrations
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("StartTime")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Title")
                         .HasColumnType("longtext");
@@ -144,6 +140,12 @@ namespace MedicApp.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("Patient_RefID")
+                        .HasColumnType("char(36)");
 
                     b.Property<bool>("question1")
                         .HasColumnType("tinyint(1)");
@@ -263,6 +265,9 @@ namespace MedicApp.Migrations
                         .IsRequired()
                         .HasColumnType("longblob");
 
+                    b.Property<int>("Penalty")
+                        .HasColumnType("int");
+
                     b.Property<string>("Role")
                         .HasColumnType("longtext");
 
@@ -280,8 +285,9 @@ namespace MedicApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("DayOfWeek")
-                        .HasColumnType("int");
+                    b.Property<string>("DayOfWeek")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("End")
                         .IsRequired()
@@ -399,6 +405,26 @@ namespace MedicApp.Migrations
                     b.ToTable("Appointment2Patients");
                 });
 
+            modelBuilder.Entity("MedicApp.RelationshipTables.Appointment2Report", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("Appointment_RefID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("ReportId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Appointment2Reports");
+                });
+
             modelBuilder.Entity("MedicApp.RelationshipTables.Clinic2Address", b =>
                 {
                     b.Property<Guid>("Id")
@@ -477,26 +503,6 @@ namespace MedicApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employee2WokringHours");
-                });
-
-            modelBuilder.Entity("MedicApp.RelationshipTables.Patient2Questionnaire", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<Guid>("Patient_RefId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("Questionnaire_RefId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Patient2Questionnaires");
                 });
 #pragma warning restore 612, 618
         }
