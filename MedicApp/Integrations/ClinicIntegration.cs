@@ -84,7 +84,6 @@ namespace MedicApp.Integrations
             List<Clinic> dbClinics = _appDbContext.Clinics.ToList();
             List<ClinicList> resultList = new List<ClinicList>();
             var dbPatient = _appDbContext.Users.Where(x => x.IsDeleted == false).ToList();
-            var workHoursList = new List<LoadWorkingHoursModel>();
             var dbWorkingHours = _appDbContext.WorkingHours.ToList();
             var clinic2Appointments = _appDbContext.Appointment2Clinics.ToList().GroupBy(x => x.Clinic_RefID).ToDictionary(x => x.Key, x => x.Select(s => s.Appointment_RefID).ToList());
             var dbAppointments = _appDbContext.Appointments.Where(x => !x.IsDeleted).ToList();
@@ -93,6 +92,7 @@ namespace MedicApp.Integrations
                 .ToDictionary(x => x.Key, x => x.Select(x => x.WorkingHours_RefID).ToList());
             foreach (var clinic in dbClinics)
             {
+                var workHoursList = new List<LoadWorkingHoursModel>();
                 var clinicModel = new ClinicList
                 {
                     Id = clinic.Id,
@@ -126,7 +126,7 @@ namespace MedicApp.Integrations
                         }
 
                     }
-                }               
+                }
 
                 resultList.Add(clinicModel);
             }
@@ -140,7 +140,7 @@ namespace MedicApp.Integrations
                         x.City.Contains(parameters.SearchCriteria) ||
 
                         x.Country.Contains(parameters.SearchCriteria)
-                        
+
                          ).ToList();
 
 
@@ -268,7 +268,7 @@ namespace MedicApp.Integrations
             return true;
         }
 
-        
+
     }
     #endregion
 
