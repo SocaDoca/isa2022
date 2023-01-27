@@ -17,7 +17,9 @@ import { ClinicLoadParameters } from '../app/model/ClinicLoadParameters';
 export class ClinicService {
   private access_token = null;
   url = "http://localhost:5017/Clinic/save-clinic";
+  urlgetById = "http://localhost:5017/Clinic/get-clinic-by-id";
   urlgetAll = "http://localhost:5017/Clinic/load-all-clinics";
+  urlUpdate = "http://localhost:5017/Clinic/update-clinic";
   urlWorkingHours = "http://localhost:5017/WorkingHours/save-working-hours";
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
@@ -27,16 +29,17 @@ export class ClinicService {
 
   saveClinic(clinic: ClinicSaveModel) {
     return this.http.post<ClinicSaveModel>(`${this.url}`, clinic)
-      /*.pipe(
-      map((userData) => {
-        sessionStorage.setItem("currentUser", JSON.stringify(userData))
-        let tokenStr = "Bearer " + userData.token.accessToken;
-        this.access_token = userData.token.accessToken;
-        sessionStorage.setItem("token", tokenStr);
-        sessionStorage.setItem("id", userData.id);
-        return userData;
-      });*/
-    //);
+
+  }
+
+  getClinicById(id: string): Observable<ClinicSaveModel>{
+    return this.http.get<ClinicSaveModel>(`${this.urlgetById}?id=${id}`);
+
+  }
+
+  updateClinic(clinic: ClinicSaveModel) {
+    return this.http.post<boolean>(`${this.urlUpdate}`, clinic);
+
   }
 
   saveWorkingHours(hours: WorkingHours) {
@@ -44,8 +47,10 @@ export class ClinicService {
 
   }
 
-  getAll(clinic: ClinicLoadParameters): Observable<ClinicSaveModel[]> {
-    return this.http.post<ClinicSaveModel[]>(`${this.urlgetAll}`, clinic);
+
+
+  getAll(clinic: ClinicLoadParameters): Observable<DbClinic[]> {
+    return this.http.post<DbClinic[]>(`${this.urlgetAll}`, clinic);
   }
 
 

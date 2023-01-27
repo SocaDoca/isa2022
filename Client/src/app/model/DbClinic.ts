@@ -10,7 +10,7 @@ export interface DbClinicInterface {
   phone?: string;
   description?: string;
   rating?: number;
-  workHours?: WorkingHours[];
+  workingHours?: WorkingHours[];
 }
 
 export class DbClinic implements DbClinicInterface {
@@ -22,7 +22,7 @@ export class DbClinic implements DbClinicInterface {
   phone?: string;
   description?: string;
   rating?: number;
-  workHours?: WorkingHours[];
+  workingHours?: WorkingHours[];
 
   constructor(obj: DbClinicInterface) {
     this.id = obj.id;
@@ -33,6 +33,6 @@ export class DbClinic implements DbClinicInterface {
     this.phone = obj.phone;
     this.description = obj.description;
     this.rating = obj.rating;
-    this.workHours = obj.workHours;
+    this.workingHours = obj.workingHours;
   }
 }

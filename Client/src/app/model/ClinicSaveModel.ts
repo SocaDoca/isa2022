@@ -10,7 +10,7 @@ export interface ClinicSaveModelInterface {
   phone?: string;
   description?: string;
   rating?: number;
-  workingHours?: WorkingHours[];
+  workHours?: WorkingHours[];
 }
 
 export class ClinicSaveModel implements ClinicSaveModelInterface {
@@ -22,7 +22,7 @@ export class ClinicSaveModel implements ClinicSaveModelInterface {
   phone?: string;
   description?: string;
   rating?: number;
-  workingHours?: WorkingHours[];
+  workHours?: WorkingHours[];
 
   constructor(obj: ClinicSaveModelInterface) {
     this.id = obj.id;
@@ -33,6 +33,6 @@ export class ClinicSaveModel implements ClinicSaveModelInterface {
     this.phone = obj.phone;
     this.description = obj.description;
     this.rating = obj.rating;
-    this.workingHours = obj.workingHours;
+    this.workHours = obj.workHours;
   }
 }

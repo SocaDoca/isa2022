@@ -14,11 +14,12 @@ import { UserLoadModel } from '../model/UserLoadModel';
 export class SearchUserComponent {
   @Input()
   id: any;
-  idUser: any;
+  userId: any;
+  role: any;
   questionnaire: any;
   res: LoadAllUsersParameters;
   patients: UserLoadModel[] = [];
-  patient!: UserLoadModel ;
+  patient: UserLoadModel ;
 
 
 
@@ -28,10 +29,13 @@ export class SearchUserComponent {
       offset: 0,
       limit: 10,
       sortBy: '',
-      orderAsc:true
+      orderAsc: true
     }),
       this.questionnaire = new Questionnaire({
         isValid: undefined
+      }),
+      this.patient = new UserLoadModel({
+        id: ''
       })
   }
 
@@ -46,10 +50,26 @@ export class SearchUserComponent {
         this.patients = res;
         //this.id = this.patients['id'];
         //this.id = Object.values()
-        console.log(this.id);
-        this.userService.getQuestionnaire(this.id).subscribe(res => {
-          this.id = res;
-        });
+        //console.log(this.patients);
+        //this.id = this.patients.find(({ id }) => id);
+        console.log(this.patients);
+        this.role = this.patients[1].role;
+        console.log(this.role);
+        if (this.role == 'Admin') {
+          this.questionnaire.isValid = false;
+          console.log('Da ovo je admin ' + this.questionnaire.isValid);
+        } else if(this.role == 'User') {
+          this.questionnaire.isValid = true;
+          console.log('Ovo ipak nije admin ' + this.questionnaire.isValid);
+          this.userId = this.patients[1].id;
+          console.log(this.userId);
+          this.userService.getQuestionnaire(this.userId).subscribe(res => {
+            this.questionnaire = res;
+            console.log(this.questionnaire);
+          });
+        }
+
+
 
       }
     );
