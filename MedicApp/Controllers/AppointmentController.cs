@@ -23,6 +23,13 @@ namespace MedicApp.Controllers
         {
             return _appointmentIntegration.SaveAppointment(appotinmentSave);
         }
+        
+        [HttpPost("save-predefiend-appointment")]
+        public List<Appointment> CreatePredefiendAppointment(SavePredefiendAppointment appotinmentSave)
+        {
+            return _appointmentIntegration.CreatePredefiendAppointments(appotinmentSave);
+        }
+
         [HttpGet("get-appointment")]
         public AppointmentLoadModel GetAppointmentById(Guid Id)
         {

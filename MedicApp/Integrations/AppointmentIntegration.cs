@@ -8,6 +8,7 @@ namespace MedicApp.Integrations
     {
         Appointment SaveAppointment(AppointmentSaveModel appointmentSave);
         AppointmentLoadModel LoadAppointmentById(Guid Id);
+        List<Appointment> CreatePredefiendAppointments(SavePredefiendAppointment predefiendAppointment);
     }
     public class AppointmentIntegration : IAppointmentIntegration
     {
@@ -150,27 +151,23 @@ namespace MedicApp.Integrations
         {
             var dbAppointments = _appDbContext.Appointments.Where(x => !x.IsDeleted && x.IsPredefiend && predefiendAppointment.Date == x.StartDate).ToList();
             var result = new List<Appointment>();
-            if (dbAppointments != null && dbAppointments.Any())
-            {
-                throw new Exception("Predefiend appointments are already made");
-            }
-            else
-            {
-                for (int i = 0; i < predefiendAppointment.NumberOfAppointmentsInDay; i++)
+      
+          
+                for (int i = 0; i <= predefiendAppointment.NumberOfAppointmentsInDay; i++)
                 {
                     var predefAppointmnet = new Appointment
                     {
                         Duration = predefiendAppointment.Duration,
                         IsPredefiend = true,
-                        StartDate = predefiendAppointment.Date.Value.Add(TimeSpan.Parse(predefiendAppointment.Time) * i)
+                        StartDate = predefiendAppointment.Date.Value.Add(TimeSpan.Parse(predefiendAppointment.Time) + TimeSpan.FromMinutes(predefiendAppointment.Duration * i))
 
                     };
                     result.Add(predefAppointmnet);
                     _appDbContext.Appointments.Add(predefAppointmnet);
                 }
                 _appDbContext.SaveChanges();
-            }
-            return result;
+            
+            return result.OrderBy(x => x.StartDate).ToList();
 
         }
 
