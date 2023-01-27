@@ -36,7 +36,7 @@ namespace MedicApp.Models
         public Guid Clinic_RefID { get; set; } // maybe only send gid?
         public bool IsCanceled { get; set; }
         public bool IsFinished { get; set; }
-        public List<AppointmentReport> Report = new List<AppointmentReport>();
+        public AppointmentReport Report { get; set; }
     }
 
     public class AppointmentLoadModel
