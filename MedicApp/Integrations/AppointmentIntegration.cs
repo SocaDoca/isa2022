@@ -1,6 +1,12 @@
-﻿using MedicApp.Database;
+﻿using IronBarCode;
+using MedicApp.Database;
 using MedicApp.Models;
 using MedicApp.RelationshipTables;
+using MedicApp.Utils;
+using MedicApp.Utils.AppSettings;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System.Drawing;
 
 namespace MedicApp.Integrations
 {
@@ -15,12 +21,16 @@ namespace MedicApp.Integrations
         private readonly AppDbContext _appDbContext;
         private readonly IUserIntegration _userIntegration;
         private readonly IClinicIntegration _clinicIntegration;
+        private readonly IEmailUtils _emailUtils;
+        public readonly IOptions<EmailSettings> _emailSettings;
 
-        public AppointmentIntegration(AppDbContext appDbContext, IUserIntegration userIntegration, IClinicIntegration clinicIntegration)
+        public AppointmentIntegration(AppDbContext appDbContext, IUserIntegration userIntegration, IClinicIntegration clinicIntegration,IOptions<EmailSettings>emailSettings ,IEmailUtils emailUtils)
         {
             _appDbContext = appDbContext;
             _userIntegration = userIntegration;
             _clinicIntegration = clinicIntegration;
+            _emailUtils = emailUtils;
+            _emailSettings = emailSettings;
         }
 
 
@@ -54,6 +64,22 @@ namespace MedicApp.Integrations
 
                     _appDbContext.Appointments.Add(appointment);
 
+                    var report = new AppointmentReport
+                    {
+                        Description = appointmentSave.Report.Description,
+                        Equipment = appointmentSave.Report.Equipment
+                    };
+
+                    _appDbContext.AppointmentsReports.Add(report);
+
+                    var appointmnet2report = new Appointment2Report
+                    {
+                        Appointment_RefID = appointment.Id,
+                        ReportId = report.Id,
+                    };
+
+                    _appDbContext.Appointment2Reports.Add(appointmnet2report);
+
                     var appointment2Patient = new Appointment2Patient
                     {
                         Appointment_RefID = appointment.Id,
@@ -69,6 +95,12 @@ namespace MedicApp.Integrations
                     };
                     _appDbContext.Appointment2Clinics.Add(appointment2Clinic);
                     _appDbContext.SaveChanges();
+
+                    var code = IronBarCode.BarcodeWriter.CreateBarcode(appointment.Id.ToByteArray(), BarcodeWriterEncoding.QRCode);
+                    code.SetMargins(100);
+                    code.ChangeBarCodeColor(Color.Purple);
+                    _emailUtils.SendMail(code.ToString(), String.Format("Appointmnet for patient {0} {1}", dbPatient.FirstName, dbPatient.LastName), dbPatient.Email, _emailSettings.Value.SenderAddress);
+
 
                     return appointment;
                 }

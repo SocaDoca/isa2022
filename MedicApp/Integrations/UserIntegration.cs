@@ -330,7 +330,7 @@ namespace MedicApp.Integrations
                 question11 = questionnaire.question11,
                 question12 = questionnaire.question12,
                 IsValid = questionnaire.IsValid
-            }
+            };
             return result;
 
         }
