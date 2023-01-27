@@ -34,7 +34,8 @@
             <th>Address</th>
             <th>Mobile</th>
             <th>Rating</th>
-            <th>Schedule </th>
+            <th>Working hours</th>
+            <th>Working days</th>
           </tr>
         </thead>
         <tbody>
@@ -44,6 +45,8 @@
             <td style="color:white">{{f.address}}, {{f.city}}, {{f.country}}</td>
             <td style="color:white">{{f.phone}}</td>
             <td style="color:white">{{f.rating}}</td>
+            <td *ngFor="let w of f.workingHours" style="color:white">{{w.start}}AM - {{w.end}}PM</td>
+            <td *ngFor="let w of f.workingHours" style="color:white">{{w.day}}</td>
             <td><button style=" width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">See available appointments</button> </td>
           </tr>
         </tbody>

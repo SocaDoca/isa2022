@@ -14,9 +14,11 @@ import { UserLoadModel } from '../model/UserLoadModel';
 export class SearchUserComponent {
   @Input()
   id: any;
+  idUser: any;
   questionnaire: any;
   res: LoadAllUsersParameters;
-  loggedUser: UserLoadModel[] =[];
+  patients: UserLoadModel[] = [];
+  patient!: UserLoadModel ;
 
 
 
@@ -34,24 +36,33 @@ export class SearchUserComponent {
   }
 
   ngOnInit(): void {
-
+   // this.loadQuestionnaire();
   }
 
-  loadUser() {
-    this.id = this.route.snapshot.params['id'];
+  loadUsers() {
+    //this.id = this.route.snapshot.params['id'];
     this.userService.getAll(this.res)
       .subscribe(res => {
-        this.loggedUser = res;
-        console.log(this.res);
-      }
+        this.patients = res;
+        //this.id = this.patients['id'];
+        //this.id = Object.values()
+        console.log(this.id);
+        this.userService.getQuestionnaire(this.id).subscribe(res => {
+          this.id = res;
+        });
 
+      }
     );
-    this.userService.getQuestionnaire(this.questionnaire).subscribe(res => {
-      this.questionnaire.isValid = res;
+
+  }
+
+  /*loadQuestionnaire() {
+    this.userService.getQuestionnaire(this.id).subscribe(res => {
+      this.id = res;
     })
     //this.isValid = this.route.snapshot.params['isValid'];
-    console.log(this.questionnaire.isValid);
-  }
+    console.log(this.id);
+  }*/
 
   removeUser() {
     console.log(this.id);
