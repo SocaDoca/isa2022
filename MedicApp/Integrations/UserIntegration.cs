@@ -235,7 +235,7 @@ namespace MedicApp.Integrations
         public List<UserLoadModel> GetAll(LoadAllUsersParameters parameters)
         {
             var resultList = new List<UserLoadModel>();
-            var dbUsers = _appDbContext.Users.ToList();
+            var dbUsers = _appDbContext.Users.Where(x => x.Role == "User").ToList();
             foreach (var user in dbUsers)
             {
 
@@ -307,7 +307,7 @@ namespace MedicApp.Integrations
         public SaveQuestionnaire GetQuestionnaireByUserId(Guid Id)
         {
             var dbPatient = _appDbContext.Users.Where(x => x.Id == Id && !x.IsDeleted && x.Role == "User").FirstOrDefault();
-            var questionnaire = _appDbContext.Questionnaire.FirstOrDefault(x => !x.IsDeleted == false && x.Patient_RefID == dbPatient.Id);
+            var questionnaire = _appDbContext.Questionnaire.FirstOrDefault(x => !x.IsDeleted && x.Patient_RefID == dbPatient.Id);
             if (questionnaire is null)
             {
                 throw new Exception("questionnaire is does not exist");

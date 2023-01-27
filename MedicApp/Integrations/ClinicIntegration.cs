@@ -195,7 +195,9 @@ namespace MedicApp.Integrations
             var clinic2Appointment = _appDbContext.Appointment2Clinics.Where(x => x.Clinic_RefID == dbClinic.Id).ToList();
             var appointmentIDs = clinic2Appointment.Select(x => x.Appointment_RefID).ToList();
             var clinicAppointment = _appDbContext.Appointments.Where(x => appointmentIDs.Contains(x.Id)).ToList();
-            var WorkingHoursIds = _appDbContext.Clinic2WorkingHours.Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id).Select(x => x.WorkingHours_RefID).ToList();
+            var WorkingHoursIds = _appDbContext.Clinic2WorkingHours.ToList()
+                .Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id)
+                .Select(x => x.WorkingHours_RefID).ToList();
             var workingHours = _appDbContext.WorkingHours.Where(x => x.IsDeleted == false).ToList();
             var workingHoursList = new List<LoadWorkingHoursModel>();
 
@@ -263,11 +265,26 @@ namespace MedicApp.Integrations
             getClinic.Phone = updateClinic.Phone;
             getClinic.Rating = updateClinic.Rating;
 
+            var dbWorkingHoursIds = _appDbContext.Clinic2WorkingHours.ToList()
+                .Where(x => !x.IsDeleted && x.Clinic_RefID == getClinic.Id)
+                .Select(x => x.WorkingHours_RefID)
+                .ToList();
+            var dbWorkingHours = _appDbContext.WorkingHours.Where(x => dbWorkingHoursIds.Any(s => s == x.Id)).ToList();
+            foreach (var item in updateClinic.WorkHours)
+            {
+                var workHour = dbWorkingHours.First(x => x.Id == item.Id);
+                workHour.Start = item.Start;
+                workHour.End = item.End;
+                workHour.DayOfWeek = item.Day;
+
+                _appDbContext.WorkingHours.Update(workHour);
+                _appDbContext.SaveChanges();
+            }
+
             _appDbContext.Clinics.Update(getClinic);
             _appDbContext.SaveChanges();
             return true;
         }
-
 
     }
     #endregion

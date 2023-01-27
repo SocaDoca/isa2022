@@ -45,13 +45,12 @@ namespace MedicApp.Models
         public string Title { get; set; }
         public DateTime StartDate { get; set; }
         public string StartTime { get; set; }
-        public UserLoadModel Patient { get; set; }
-        public ClinicLoadModel Clinic { get; set; }
+        public UserBasicInfo Patient { get; set; }
+        public ClinicBasicInfo Clinic { get; set; }
         public bool IsCanceled { get; set; }
         public bool IsPredefiend { get; set; }
         public bool IsFinished { get; set; }
-        public List<AppointmentReport> Report = new List<AppointmentReport>();
-
+        public AppointmentReport Report { get;set; }
     }
 
     public class AppotinmentInClinics
@@ -68,7 +67,7 @@ namespace MedicApp.Models
         public DateTime? Date { get; set; }
         public int NumberOfAppointmentsInDay { get; set; }
         public int Duration { get; set; }
-        public bool MakeForWeek { get; set; }
-        public bool MakeForMonth { get; set; }
+        public Guid Clinic_RefID { get; set; }
+   
     }
 }
