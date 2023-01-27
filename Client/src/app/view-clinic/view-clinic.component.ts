@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ClinicService } from '../../service/clinic.service';
 import { ClinicLoadParameters } from '../model/ClinicLoadParameters';
 import { ClinicSaveModel } from '../model/ClinicSaveModel';
+import { DbClinic } from '../model/DbClinic';
+import { WorkingHours } from '../model/WorkingHours';
 
 @Component({
   selector: 'app-view-clinic',
@@ -13,15 +15,16 @@ export class ViewClinicComponent {
   @Input()
   id: any;
   res: ClinicLoadParameters;
-  clinics: ClinicSaveModel[] = [];
+  clinics: DbClinic[] = [];
   role: any;
+  workingHours!: WorkingHours;
 
 
   constructor(private route: ActivatedRoute, private clinicService: ClinicService) {
     this.res = new ClinicLoadParameters({
       searchCriteria: '',
       offset: 0,
-      limit: 10,
+      limit: 20,
       sortBy: '',
       orderAsc: true
     })
@@ -44,7 +47,7 @@ export class ViewClinicComponent {
     this.clinicService.getAll(this.res)
       .subscribe(res => {
         this.clinics = res;
-        console.log(this.res);
+        console.log(this.clinics);
       }
 
       )

@@ -39,7 +39,7 @@ export class UpdateClinicComponent {
       description: '',
       phone: '',
       rating: 0,
-      workingHours: [
+      workHours: [
         this.hours = new WorkingHours({
           start: '',
           end: '',

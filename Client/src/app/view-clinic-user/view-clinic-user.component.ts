@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ClinicService } from '../../service/clinic.service';
 import { ClinicLoadParameters } from '../model/ClinicLoadParameters';
 import { ClinicSaveModel } from '../model/ClinicSaveModel';
+import { DbClinic } from '../model/DbClinic';
 
 @Component({
   selector: 'app-view-clinic-user',
@@ -13,7 +14,7 @@ export class ViewClinicUserComponent {
   @Input()
   id: any;
   res: ClinicLoadParameters;
-  clinics: ClinicSaveModel[] = [];
+  clinics: DbClinic[] = [];
   role: any;
 
 

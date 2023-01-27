@@ -29,8 +29,8 @@ export class UserService {
     return this.http.get<User>(`${this.url}?id=${id}`);
   }
 
-  getQuestionnaire(id: string): Observable<Questionnaire> {
-    return this.http.get<Questionnaire>(`${this.urlQuestionnaire}?id=${id}`);
+  getQuestionnaire(userId: string): Observable<Questionnaire> {
+    return this.http.get<Questionnaire>(`${this.urlQuestionnaire}?id=${userId}`);
   }
 
   removeUser(id: string) {

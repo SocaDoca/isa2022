@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ClinicService } from '../../service/clinic.service';
 import { ClinicLoadParameters } from '../model/ClinicLoadParameters';
 import { ClinicSaveModel } from '../model/ClinicSaveModel';
+import { DbClinic } from '../model/DbClinic';
 import { WorkingHours } from '../model/WorkingHours';
 
 @Component({
@@ -14,8 +15,8 @@ export class SearchClinicComponent {
   @Input()
   id: any;
   res: ClinicLoadParameters;
-  clinics: ClinicSaveModel[] = [];
-  workHours!: WorkingHours;
+  clinics: DbClinic[] = [];
+  workHours!: DbClinic;
 
 
 

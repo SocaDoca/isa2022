@@ -31,7 +31,7 @@ export class AddClinicComponent {
   });
 
   clinic: ClinicSaveModel;
-  hours: WorkingHours;
+  workHours!: WorkingHours;
 
   constructor(private clinicService: ClinicService) {
     this.clinic = new ClinicSaveModel({
@@ -42,13 +42,13 @@ export class AddClinicComponent {
       description: '',
       phone: '',
       rating: 0,
-      workingHours: [
-        this.hours = new WorkingHours({
+      workHours: [
+        this.workHours = new WorkingHours({
           start: '',
           end: '',
           day: ''
 
-        })      ]
+        })  ]    
         
     })
   }
@@ -67,13 +67,13 @@ export class AddClinicComponent {
 
 
   saveClinic() {
-
+    console.log(this.clinic);
     this.clinicService.saveClinic(this.clinic).subscribe(res => {
       //this.clinic.workHours![this.hours.dayOfWeek] = res;
-      this.clinic = res;
+      //this.clinic = res;
       console.log(res);
       //console.log(this.clinic.workHours![this.hours.dayOfWeek]);
-      console.log(this.hours.day);
+      //console.log(this.workHours.day);
 
     });
   }

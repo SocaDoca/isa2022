@@ -4,8 +4,8 @@
 
 export interface WorkingHoursInterface {
   id?: string;
-  start?: any;
-  end?: any;
+  start?: string;
+  end?: string;
   day?: string;
 
 
@@ -13,8 +13,8 @@ export interface WorkingHoursInterface {
 
 export class WorkingHours implements WorkingHoursInterface {
   id?: string;
-  start?: any;
-  end?: any;
+  start?: string;
+  end?: string;
   day?: string;
 
 

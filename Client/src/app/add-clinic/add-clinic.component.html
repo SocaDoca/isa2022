@@ -55,7 +55,7 @@
         </div>
         <br><br><br>
         <div class="form-group">
-          <button type="submit" class="btn1" style=" background-color: deepskyblue; color:white" (click)="onSubmit()">Save clinic</button><br>
+          <button type="submit" [routerLink]="['..']" class="btn1" style=" background-color: deepskyblue; color:white" (click)="onSubmit()">Save clinic</button><br>
         </div>
     
     </div>
@@ -63,19 +63,19 @@
 
       <br><br>
       <label>Works from</label>
-      <div class="form-group">
-        <input id="start" name="start" type="text" class="from-control" [(ngModel)]="hours.start">
+      <div class="form-group" >
+        <input id="start" name="start" type="text" class="from-control" [(ngModel)]="workHours.start">
       </div>
       <label>to</label>
       <div class="form-group">
-        <input id="end" name="end" type="text" class="from-control" [(ngModel)]="hours.end">
+        <input id="end" name="end" type="text" class="from-control" [(ngModel)]="workHours.end">
       </div>
       <br>
 
 
       <label>On days</label>
       <div class="form-group">
-        <input id="day" name="day" type="text" class="from-control" [(ngModel)]="hours.day">
+        <input id="day" name="day" type="text" class="from-control"[(ngModel)]="workHours.day" >
       </div>
 
 
