@@ -34,6 +34,11 @@ namespace MedicApp.Controllers
             return _clinicIntegration.UpdateClinic(updateClinic);
         }
 
+        [HttpPost("get-clinic-by-id")]
+        public ClinicLoadModel GetClinicById(Guid Id)
+        {
+            return _clinicIntegration.GetClinicById(Id);
+        }
 
 
     }

@@ -126,38 +126,7 @@ namespace MedicApp.Integrations
                         }
 
                     }
-                }
-
-                if (clinic2Appointments.ContainsKey(clinicModel.Id))
-                {
-                    if (clinic2Appointments.TryGetValue(clinicModel.Id, out var appointmentsIds))
-                    {
-                        if(appointmentsIds.Any())
-                        {
-                            foreach(var item in appointmentsIds)
-                            {
-                                var appointment = dbAppointments.FirstOrDefault(x => x.Id == item);
-                                var patient = dbPatient.FirstOrDefault(x => x.Id == appointment.Patient_RefID);
-                                var responsiblePerson = dbPatient.FirstOrDefault(x => x.Id == appointment.ResponsiblePerson_RefID);
-                                if(appointment == null)
-                                {
-                                    continue;
-                                }
-                                var model = new AppotinmentInClinics
-                                {
-                                    Id = appointment.Id,
-                                    Title = appointment.Title,
-                                    StartDate = appointment.StartDate,
-                                    StartTime = String.Format("{0}:{1}", appointment.StartDate.Hour, appointment.StartDate.Minute),
-                                    Patient = patient,
-                                    ResponsiblePerson = responsiblePerson
-                                };
-
-                                clinicModel.Appointments.Add(model);
-                            }
-                        }
-                    }
-                }
+                }               
 
                 resultList.Add(clinicModel);
             }
@@ -289,6 +258,7 @@ namespace MedicApp.Integrations
             return true;
         }
 
+        
     }
     #endregion
 

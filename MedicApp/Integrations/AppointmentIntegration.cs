@@ -25,89 +25,58 @@ namespace MedicApp.Integrations
 
         public Appointment SaveAppointment(AppointmentSaveModel appointmentSave)
         {
-            var dbAppointment = _appDbContext.Appointments.Where(x => !x.IsDeleted && x.Id == appointmentSave.Id).FirstOrDefault();
-            var dbAppointmentsInDay = _appDbContext.Appointments
-                .Where(x => !x.IsDeleted &&
-                             x.StartDate == appointmentSave.StartDate &&
-                             x.ResponsiblePerson_RefID == appointmentSave.ResponsiblePerson_RefID)
-                .ToList();
-            var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => !x.IsDeleted && x.Id == appointmentSave.Clinic_RefID);
-            var allDbWorkingHours = _appDbContext.WorkingHours.ToList();
-            var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.Where(x => x.Clinic_RefID == dbClinic.Id).ToList();
-            var dbWorkingHoursId = clinic2WorkingHours.Select(x => x.WorkingHours_RefID).ToList();
-            var dbClinicWorkingHours = allDbWorkingHours.Where(x => dbWorkingHoursId.Any(s => s == x.Id)).ToList();
+            var dbClinic = _appDbContext.Clinics.First(x => !x.IsDeleted && appointmentSave.Clinic_RefID == x.Id);
+            var dbPatient = _appDbContext.Users.First(x => !x.IsDeleted && x.Id == appointmentSave.Patient_RefID);
+            var appointment2Clinics = _appDbContext.Appointment2Clinics.Where(x => x.Clinic_RefID == appointmentSave.Clinic_RefID).Select(x => x.Appointment_RefID).ToList();
 
-            var dbPatient = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.Patient_RefID == x.Id && x.Role == "User");
-            var dbResponsiblePerson = _appDbContext.Users.FirstOrDefault(x => !x.IsDeleted && appointmentSave.ResponsiblePerson_RefID == x.Id && x.Role == "Admin" && !x.IsAdminCenter);
-           
-            //var questionnaires = _appDbContext.Questionnaire.Where(x => patient2Questionnaire.Any(s => s.Questionnaire_RefId == x.Id)).ToList();
 
-            if (dbClinic == null)
+            if (appointment2Clinics.Contains(appointmentSave.Id))
             {
-                throw new KeyNotFoundException("Clinic does not exist");
+                throw new Exception("Appointment already exist");
             }
-            if (dbResponsiblePerson == null)
+            var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.Where(x => x.Clinic_RefID == dbClinic.Id).Select(x => x.WorkingHours_RefID).ToList();
+            var dbWorkingHours = _appDbContext.WorkingHours.Where(x => clinic2WorkingHours.Any(s => s == x.Id)).ToList();
+            if (dbWorkingHours.Any())
             {
-                throw new Exception("Employee does not exist");
-            }
-            //if (questionnaires.Any(x => x.ExpireDate > DateTime.Now))
-            //{
-            //    throw new Exception("Patient have had given blood in last six months");
-            //}
-            //if (patient2Questionnaire.Any())
-            //{
-            //    foreach (var item in questionnaires)
-            //    {
-            //        if (!item.IsQuestionireSigned())
-            //        {
-            //            throw new Exception("Questionnaire is not filled");
-            //        }
-            //    }
-            //}
-            foreach (var item in dbClinicWorkingHours)
-            {
-
-                if (DateTime.Parse(appointmentSave.StartTime).Hour >= DateTime.Parse(item.Start).Hour && DateTime.Parse(appointmentSave.StartTime).Hour <= DateTime.Parse(item.End).Hour)
+                if (dbWorkingHours.Any(x => TimeOnly.Parse(x.Start) <= TimeOnly.Parse(appointmentSave.StartTime) &&
+                                           TimeOnly.Parse(x.End) >= TimeOnly.Parse(appointmentSave.StartTime)))
                 {
-                    if (dbAppointmentsInDay.Any(x => x.StartDate.Hour == DateTime.Parse(item.Start).Hour &&
-                                                     x.StartDate.Minute == DateTime.Parse(item.Start).Minute))
+                    var appointment = new Appointment()
                     {
-                        throw new Exception("Time of appointment is taken");
-                    }
+                        Title = appointmentSave.Title,
+                        Clinic_RefID = appointmentSave.Clinic_RefID,
+                        IsFinished = appointmentSave.IsFinished,
+                        IsCanceled = appointmentSave.IsCanceled,
+                        Patient_RefID = appointmentSave.Patient_RefID,
+                        StartDate = appointmentSave.StartDate.Add(TimeSpan.Parse(appointmentSave.StartTime)),
+                    };
 
-                    dbAppointment.ResponsiblePerson_RefID = dbResponsiblePerson.Id;
+                    _appDbContext.Appointments.Add(appointment);
 
-                    if (dbPatient == null)
+                    var appointment2Patient = new Appointment2Patient
                     {
-                        throw new Exception("Patient does not exist");
-                    }
-                    dbAppointment.Patient_RefID = dbPatient.Id;
-                    //if (!patient2Questionnaire.Any() && !questionnaires.Any(x => x.ExpireDate < DateTime.UtcNow))
-                    //{
-                    //    throw new Exception("Patient does not have any valid questionnaires");
-                    //}
-                    if (dbAppointment == null)
-                    {
-                        dbAppointment = new Appointment();
-                    }
-                    dbAppointment.StartDate = DateTime.Parse(appointmentSave.StartTime).Add(TimeSpan.Parse(appointmentSave.StartTime));
-                    dbAppointment.Patient_RefID = appointmentSave.Patient_RefID;
-                    dbAppointment.Clinic_RefID = appointmentSave.Clinic_RefID;
-                    dbAppointment.ResponsiblePerson_RefID = appointmentSave.ResponsiblePerson_RefID;
-                    dbAppointment.IsCanceled = appointmentSave.IsCanceled;
-                    dbAppointment.IsFinished = appointmentSave.IsFinished;
+                        Appointment_RefID = appointment.Id,
+                        Patient_RefID = dbPatient.Id,
+                    };
 
-                    var qrCode = IronBarCode.QRCodeWriter.CreateQrCode("appointment", 500);
+                    _appDbContext.Appointment2Patients.Add(appointment2Patient);
+
+                    var appointment2Clinic = new Appointment2Clinic
+                    {
+                        Appointment_RefID = appointment.Id,
+                        Clinic_RefID = dbClinic.Id
+                    };
+                    _appDbContext.Appointment2Clinics.Add(appointment2Clinic);
+                    _appDbContext.SaveChanges();
+
+                    return appointment;
                 }
-                else
-                {
-                    throw new Exception("Appointment is set to non-working hours");
-                }
+
+                return null;
+
             }
-
-            return dbAppointment;
+            return null;
         }
-
         public bool CancelAppointment(Guid appointmenetId)
         {
             var appointment = _appDbContext.Appointments.FirstOrDefault(x => !x.IsDeleted && x.Id == appointmenetId && !x.IsFinished);
@@ -136,6 +105,8 @@ namespace MedicApp.Integrations
         public AppointmentLoadModel LoadAppointmentById(Guid Id)
         {
             var dbAppointment = _appDbContext.Appointments.FirstOrDefault(x => !x.IsDeleted && x.Id == Id);
+            var dbClinic = _appDbContext.Clinics.First(x => x.Id == dbAppointment.Clinic_RefID.Value);
+            var dbUser = _appDbContext.Users.First(x => x.Id == dbAppointment.Patient_RefID.Value);
             if (dbAppointment == null)
             {
                 throw new KeyNotFoundException("Appointment does not exist");
@@ -144,18 +115,36 @@ namespace MedicApp.Integrations
             result.Id = Id;
             result.Title = dbAppointment.Title;
             result.StartDate = dbAppointment.StartDate;
-            result.Clinic = _clinicIntegration.GetClinicById(Id);
-            result.ResponsiblePerson = _userIntegration.GetUserById(dbAppointment.ResponsiblePerson_RefID.Value);
-            result.Patient = _userIntegration.GetUserById(dbAppointment.Patient_RefID.Value);
+            var clinicModel = new ClinicLoadModel()
+            {
+                Id = dbClinic.Id,
+                Address = dbClinic.Address,
+                City = dbClinic.City,
+                Country = dbClinic.Country,
+                Name = dbClinic.Name,
+                Description = dbClinic.Description,
+                Phone = dbClinic.Phone,
+                Rating = dbClinic.Rating,
+            };
+
+            result.Clinic = clinicModel;
+
+            var patientModel = new UserLoadModel()
+            {
+                Id = dbUser.Id,
+                FullAddress = String.Format("{0} {1} {2}", dbUser.Address, dbUser.City, dbUser.Country),
+                FirstName = dbUser.FirstName,
+                LastName = dbUser.LastName,
+                Email = dbUser.Email,
+                Mobile = dbUser.Mobile, 
+                JMBG = dbUser.JMBG,
+
+            };
+            result.Patient = patientModel;
 
             return result;
         }
 
-        //public List<Appointment> SavePredefinedAppointmets(List<AppointmentSaveModel> appointments)
-        //{
-        //    var dbAppointments = _appDbContext.Appointments.Where(x => appointments.Any(s => s.Id == x.Id)).ToList();
-        //    if(dbAppointments.)
-        //}
 
         public List<Appointment> CreatePredefiendAppointments(SavePredefiendAppointment predefiendAppointment)
         {
@@ -173,7 +162,7 @@ namespace MedicApp.Integrations
                     {
                         Duration = predefiendAppointment.Duration,
                         IsPredefiend = true,
-                        StartDate = predefiendAppointment.Date.Value.Add(TimeSpan.Parse(predefiendAppointment.Time) * i)                       
+                        StartDate = predefiendAppointment.Date.Value.Add(TimeSpan.Parse(predefiendAppointment.Time) * i)
 
                     };
                     result.Add(predefAppointmnet);

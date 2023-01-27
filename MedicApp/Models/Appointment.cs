@@ -21,10 +21,10 @@ namespace MedicApp.Models
             Id = Guid.NewGuid();
             IsDeleted = false;
             Duration = 15;
-            Title = "Blood appointment";            
+            Title = "Blood appointment";
         }
 
-        
+
     }
     public class AppointmentSaveModel
     {
@@ -32,25 +32,26 @@ namespace MedicApp.Models
         public string Title { get; set; }
         public DateTime StartDate { get; set; }
         public string StartTime { get; set; }
-        public Guid ResponsiblePerson_RefID { get; set; }
         public Guid Patient_RefID { get; set; }
         public Guid Clinic_RefID { get; set; } // maybe only send gid?
         public bool IsCanceled { get; set; }
         public bool IsFinished { get; set; }
+        public List<AppointmentReport> Report = new List<AppointmentReport>();
     }
 
     public class AppointmentLoadModel
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public DateTime StartDate{ get; set; }
+        public DateTime StartDate { get; set; }
         public string StartTime { get; set; }
-        public UserLoadModel ResponsiblePerson { get; set; }
         public UserLoadModel Patient { get; set; }
         public ClinicLoadModel Clinic { get; set; }
         public bool IsCanceled { get; set; }
         public bool IsPredefiend { get; set; }
         public bool IsFinished { get; set; }
+        public List<AppointmentReport> Report = new List<AppointmentReport>();
+
     }
 
     public class AppotinmentInClinics
@@ -59,7 +60,6 @@ namespace MedicApp.Models
         public string Title { get; set; }
         public DateTime StartDate { get; set; }
         public string StartTime { get; set; }
-        public User ResponsiblePerson { get; set; }
         public User Patient { get; set; }
     }
     public class SavePredefiendAppointment

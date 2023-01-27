@@ -23,5 +23,10 @@ namespace MedicApp.Controllers
         {
             return _appointmentIntegration.SaveAppointment(appotinmentSave);
         }
+        [HttpGet("get-appointment")]
+        public AppointmentLoadModel GetAppointmentById(Guid Id)
+        {
+            return _appointmentIntegration.LoadAppointmentById(Id);
+        }
     }
 }
