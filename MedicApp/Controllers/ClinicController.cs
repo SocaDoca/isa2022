@@ -23,9 +23,9 @@ namespace MedicApp.Controllers
         }
 
         [HttpPost("load-all-clinics")]
-        public async Task<IActionResult> LoadAllClinics([FromBody] ClinicLoadParameters parameters)
+        public List<ClinicList> LoadAllClinics([FromBody] ClinicLoadParameters parameters)
         {
-            return Ok(_clinicIntegration.LoadAllClinics(parameters));
+            return _clinicIntegration.LoadAllClinics(parameters));
         }
 
         [HttpPost("update-clinic")]

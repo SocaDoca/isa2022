@@ -42,7 +42,7 @@ namespace MedicApp.Controllers
         [HttpPost]
         [Route("register")]
         [AllowAnonymous]
-        public IActionResult Register([FromBody] RegisterRequest model)
+        public void Register([FromBody] RegisterRequest model)
         {
             var newUser = _userIntegration.Register(model);
 
@@ -79,8 +79,7 @@ namespace MedicApp.Controllers
             
 
             var subject = "Password verification";
-            _emailUtils.SendMail(confirmLink, subject, newUser.Email, _emailSettings.Value.SenderAddress);
-            return Ok();
+            _emailUtils.SendMail(confirmLink, subject, newUser.Email, _emailSettings.Value.SenderAddress);            
         }
 
         [HttpPost("verify-user")]
@@ -97,9 +96,9 @@ namespace MedicApp.Controllers
 
         [HttpPost]
         [Route("login")]
-        public IActionResult Login([FromBody] LoginModel model)
+        public LoginResponse Login([FromBody] LoginModel model)
         {
-            return Ok(_userIntegration.LogIn(model));
+            return _userIntegration.LogIn(model);
         }
 
 

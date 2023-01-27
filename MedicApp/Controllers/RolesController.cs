@@ -19,14 +19,9 @@ namespace MedicApp.Controllers
         }
 
         [HttpPost("save-role")]
-        public async Task<StandardIntegrationResponse> SaveRole([FromBody] SaveRole role)
+        public Roles SaveRole([FromBody] SaveRole role)
         {
-            return new StandardIntegrationResponse
-            {
-                IsSuccess = true,
-                Payload = _rolesIntegration.CreateRole(role)
-            };
-
+            return _rolesIntegration.CreateRole(role);
         }
 
         [HttpPost("load-all-roles")]
