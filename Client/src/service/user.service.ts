@@ -14,7 +14,7 @@ import { LoadAllUsersParameters } from '../app/model/LoadAllUsersParameters';
 })
 export class UserService {
   url = "http://localhost:5017/User/get-by-id";
-  urlQuestionnaire = "http://localhost:5017/User/get-questionnaire-by-id";
+  urlQuestionnaire = "http://localhost:5017/User/get-questionnaire";
   urlRemoveUser = "http://localhost:5017/User/remove";
   urlUsers = "http://localhost:5017/User/get-all";
   urlUpdate = "http://localhost:5017/User/update-user";

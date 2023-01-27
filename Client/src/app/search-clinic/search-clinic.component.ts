@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ClinicService } from '../../service/clinic.service';
 import { ClinicLoadParameters } from '../model/ClinicLoadParameters';
 import { ClinicSaveModel } from '../model/ClinicSaveModel';
+import { WorkingHours } from '../model/WorkingHours';
 
 @Component({
   selector: 'app-search-clinic',
@@ -14,6 +15,7 @@ export class SearchClinicComponent {
   id: any;
   res: ClinicLoadParameters;
   clinics: ClinicSaveModel[] = [];
+  workHours!: WorkingHours;
 
 
 
@@ -37,6 +39,7 @@ export class SearchClinicComponent {
       .subscribe(res => {
         this.clinics = res;
         console.log(this.res);
+
       }
 
       )

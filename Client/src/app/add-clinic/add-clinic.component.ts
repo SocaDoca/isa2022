@@ -22,7 +22,7 @@ export class AddClinicComponent {
     description: new FormControl(''),
     rating: new FormControl(''),
     phone: new FormControl(''),
-    workHours: new FormControl(''),
+    workingHours: new FormControl(''),
     country: new FormControl(''),
     city: new FormControl(''),
     address: new FormControl(''),
@@ -42,7 +42,7 @@ export class AddClinicComponent {
       description: '',
       phone: '',
       rating: 0,
-      workHours: [
+      workingHours: [
         this.hours = new WorkingHours({
           start: '',
           end: '',
