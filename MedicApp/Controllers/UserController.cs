@@ -52,13 +52,13 @@ namespace MedicApp.Controllers
         }
 
         [HttpPost("questionnaire")]
-        public Questionnaire SaveQuestionnaire(Questionnaire questionnaire, Guid patientId)
+        public Questionnaire SaveQuestionnaire(SaveQuestionnaire questionnaire, Guid patientId)
         {
             return _userIntegration.CreateQuestionnaireForPatientById(questionnaire, patientId);
         } 
         
         [HttpGet("get-questionnaire")]
-        public Questionnaire GetQuestionnaireByUserId(Guid userId)
+        public SaveQuestionnaire GetQuestionnaireByUserId(Guid userId)
         {
             return _userIntegration.GetQuestionnaireByUserId(userId);
         }

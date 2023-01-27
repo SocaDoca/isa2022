@@ -82,4 +82,24 @@
 
         }
     }
+
+    public class SaveQuestionnaire
+    {
+        public Guid Id { get; set; }
+        public Guid Patient_RefID { get; set; }
+        public DateTime ExpireDate { get; set; }
+        public bool question1 { get; set; }
+        public bool question2 { get; set; }
+        public bool question3 { get; set; }
+        public bool question4 { get; set; }
+        public bool question5 { get; set; }
+        public bool question6 { get; set; }
+        public bool question7 { get; set; }
+        public bool question8 { get; set; }
+        public bool question9 { get; set; }
+        public bool question10 { get; set; }
+        public bool question11 { get; set; }
+        public bool question12 { get; set; }
+        public bool IsValid { get; set; }
+    }
 }

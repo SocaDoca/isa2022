@@ -28,9 +28,9 @@ namespace MedicApp.Integrations
         bool VerifyUser(VerifyParams verifyParams);
         bool UpdateUser(UpdateUser updateUser);
         bool UpdatePassword(Guid Id, string password);
-        Questionnaire GetQuestionnaireByUserId(Guid Id);
         bool Delete(Guid id);
-        Questionnaire CreateQuestionnaireForPatientById(Questionnaire questionnaire, Guid PatientId);
+        SaveQuestionnaire GetQuestionnaireByUserId(Guid Id);
+        Questionnaire CreateQuestionnaireForPatientById(SaveQuestionnaire questionnaire, Guid PatientId);
     }
 
     public class UserIntegration : IUserIntegration
@@ -143,7 +143,7 @@ namespace MedicApp.Integrations
         }
         #endregion
 
-        public Questionnaire CreateQuestionnaireForPatientById(Questionnaire questionnaire, Guid PatientId)
+        public Questionnaire CreateQuestionnaireForPatientById(SaveQuestionnaire questionnaire, Guid PatientId)
         {   //nemamo rolu Patient, ispravila na User
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == PatientId && !x.IsDeleted && x.Role == "User");
             if (dbPatient == null)
@@ -304,15 +304,34 @@ namespace MedicApp.Integrations
 
         }
 
-        public Questionnaire GetQuestionnaireByUserId(Guid Id)
+        public SaveQuestionnaire GetQuestionnaireByUserId(Guid Id)
         {
             var dbPatient = _appDbContext.Users.Where(x => x.Id == Id && !x.IsDeleted && x.Role == "User").FirstOrDefault();
-            var questionnaire = _appDbContext.Questionnaire.Where(x => !x.IsDeleted == false && x.Patient_RefID == dbPatient.Id).FirstOrDefault();
+            var questionnaire = _appDbContext.Questionnaire.FirstOrDefault(x => !x.IsDeleted == false && x.Patient_RefID == dbPatient.Id);
             if (questionnaire is null)
             {
                 throw new Exception("questionnaire is does not exist");
             }
-            return questionnaire;
+            var result = new SaveQuestionnaire
+            {
+                Id = questionnaire.Id,
+                ExpireDate = questionnaire.ExpireDate,
+                Patient_RefID = questionnaire.Patient_RefID,
+                question1 = questionnaire.question1,
+                question2 = questionnaire.question2,
+                question3 = questionnaire.question3,
+                question4 = questionnaire.question4,
+                question5 = questionnaire.question5,
+                question6 = questionnaire.question6,
+                question7 = questionnaire.question7,
+                question8 = questionnaire.question8,
+                question9 = questionnaire.question9,
+                question10 = questionnaire.question10,
+                question11 = questionnaire.question11,
+                question12 = questionnaire.question12,
+                IsValid = questionnaire.IsValid
+            }
+            return result;
 
         }
 
