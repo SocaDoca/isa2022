@@ -25,7 +25,7 @@ namespace MedicApp.Controllers
         [HttpPost("load-all-clinics")]
         public List<ClinicList> LoadAllClinics([FromBody] ClinicLoadParameters parameters)
         {
-            return _clinicIntegration.LoadAllClinics(parameters));
+            return _clinicIntegration.LoadAllClinics(parameters);
         }
 
         [HttpPost("update-clinic")]
