@@ -361,10 +361,31 @@ namespace MedicApp.Integrations
         public UserLoadModel GetUserById(Guid id)
         {
             var dbUser = _appDbContext.Users.FirstOrDefault(x => x.Id == id);
+            var dbQuestionnaire = _appDbContext.Questionnaire.FirstOrDefault(x => x.Patient_RefID == dbUser.Id);
             if (dbUser == null)
             {
                 throw (new KeyNotFoundException("User not found"));
             }
+            var questionModel = new SaveQuestionnaire
+            {
+                Id = dbQuestionnaire.Id,
+                ExpireDate = dbQuestionnaire.ExpireDate,
+                Patient_RefID = dbQuestionnaire.Patient_RefID,
+                question1 = dbQuestionnaire.question1,
+                question2 = dbQuestionnaire.question2,
+                question3 = dbQuestionnaire.question3,
+                question4 = dbQuestionnaire.question4,
+                question5 = dbQuestionnaire.question5,
+                question6 = dbQuestionnaire.question6,
+                question7 = dbQuestionnaire.question7,
+                question8 = dbQuestionnaire.question8,
+                question9 = dbQuestionnaire.question9,
+                question10 = dbQuestionnaire.question10,
+                question11 = dbQuestionnaire.question11,
+                question12 = dbQuestionnaire.question12,
+                IsValid = dbQuestionnaire.IsValid
+            };
+
             var resultUser = new UserLoadModel
             {
                 Id = dbUser.Id,
@@ -380,7 +401,9 @@ namespace MedicApp.Integrations
                 Mobile = dbUser.Mobile ?? String.Empty,
                 JMBG = dbUser.JMBG ?? String.Empty,
                 IsAdminCenter = dbUser.IsAdminCenter,
-                IsFirstTime = dbUser.IsFirstTime
+                IsFirstTime = dbUser.IsFirstTime,
+                Penalty = dbUser.Penalty,
+                Questionnaire = questionModel
             };
 
             return resultUser;
