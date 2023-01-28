@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClinicService } from '../../service/clinic.service';
 import { AppReport } from '../model/AppReport';
 import { DbAppointment } from '../model/DbAppointment';
@@ -12,7 +12,7 @@ import { DbAppointment } from '../model/DbAppointment';
 export class ScheduleAppComponent {
   appointment: DbAppointment;
 
-  constructor(private clinicService: ClinicService, private route: ActivatedRoute) {
+  constructor(private clinicService: ClinicService, private route: ActivatedRoute, private router: Router) {
     this.appointment = new DbAppointment({
 
       title: 'Blood appointment',
@@ -42,6 +42,8 @@ export class ScheduleAppComponent {
 
     this.clinicService.saveAppointment(this.appointment).subscribe(res => {
       this.appointment = res;
-    })
+
+    });
+    this.router.navigate(['/profile', this.appointment.patient_RefId]);
   }
 }

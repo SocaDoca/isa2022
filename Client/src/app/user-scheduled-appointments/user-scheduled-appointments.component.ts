@@ -12,6 +12,7 @@ export class UserScheduledAppointmentsComponent {
 
   appointments: DbAppointment[] = [];
   appointment: DbAppointment;
+  id: any;
 
   constructor(private clinicService: ClinicService, private route: ActivatedRoute) {
     this.appointment = new DbAppointment({
@@ -23,9 +24,9 @@ export class UserScheduledAppointmentsComponent {
   }
 
   ngOnInit(): void {
-    this.appointment.patient_RefId = this.route.snapshot.params['id'];
-    console.log(this.appointment.patient_RefId);
-    this.clinicService.getAllTerms(this.appointment.patient_RefId!).subscribe(res => {
+    let patientId = this.route.snapshot.params['id'];
+    console.log(patientId);
+    this.clinicService.getAllTerms(patientId).subscribe(res => {
       this.appointments = res;
     })
   }
