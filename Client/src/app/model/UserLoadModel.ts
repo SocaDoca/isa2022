@@ -1,5 +1,6 @@
 import { Roles } from './Roles';
 import { Genders } from './Genders';
+import { Questionnaire } from './Questionnaire';
 
 export interface UserLoadModelInterface {
   id?: string;
@@ -21,6 +22,7 @@ export interface UserLoadModelInterface {
   lastName?: string;
   isValid?: any;
   penalty?: number;
+  questionnaire?: any;
 
 
 }
@@ -45,6 +47,7 @@ export class UserLoadModel implements UserLoadModelInterface {
   lastName?: string;
   isValid?: any;
   penalty?: number;
+  questionnaire?: any;
 
 
   constructor(obj: UserLoadModelInterface) {
@@ -67,5 +70,7 @@ export class UserLoadModel implements UserLoadModelInterface {
     this.isFirstTime = obj.isFirstTime;
     this.isValid = obj.isValid;
     this.penalty = obj.penalty;
+    this.questionnaire = obj.questionnaire;
+
   }
 }

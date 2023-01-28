@@ -31,9 +31,6 @@ export class SearchUserComponent {
       sortBy: '',
       orderAsc: true
     }),
-      this.questionnaire = new Questionnaire({
-        isValid: undefined
-      }),
       this.patient = new UserLoadModel({
         id: ''
       })
