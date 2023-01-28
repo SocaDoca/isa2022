@@ -45,6 +45,7 @@ export class SearchUserComponent {
       params => {
         this.patient.id = params['userId'];
       });
+
   }
 
   loadUsers() {
@@ -52,11 +53,15 @@ export class SearchUserComponent {
     this.userService.getAll(this.res)
       .subscribe(res => {
         this.patients = res;
+          this.userId = res.find(x => x.role === 'User')!.id;
+        console.log(this.userId);
+        /*this.userService.getQuestionnaire(this.userId).subscribe(res => {
+          this.questionnaire = res;
+          console.log(this.questionnaire);
+          this.questionnaire.isValid = res.isValid;
+        });*/
       });
-         /* this.userService.getQuestionnaire(this.userId).subscribe(res => {
-            this.questionnaire = res;
-            console.log(this.questionnaire);
-          });*/
+
         }
 
 

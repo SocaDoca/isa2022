@@ -8,8 +8,8 @@ export interface DbAppointmentInterface {
   numberOfAppointmentsInDay?: number;
   clinic_RefID?: string;
   title?: string;
-  startDate?: Date;
-  startTime?: string;
+  startDate?: any;
+  startTime?: any;
   patient_RefId?: string;
   isCanceled?: boolean;
   isFinished?: boolean;
@@ -24,8 +24,8 @@ export class DbAppointment implements DbAppointmentInterface {
   numberOfAppointmentsInDay?: number;
   clinic_RefID?: string;
   title?: string;
-  startDate?: Date;
-  startTime?: string;
+  startDate?: any;
+  startTime?: any;
   patient_RefId?: string;
   isCanceled?: boolean;
   isFinished?: boolean;

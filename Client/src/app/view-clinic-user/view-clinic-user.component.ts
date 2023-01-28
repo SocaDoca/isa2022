@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ClinicService } from '../../service/clinic.service';
 import { ClinicLoadParameters } from '../model/ClinicLoadParameters';
 import { ClinicSaveModel } from '../model/ClinicSaveModel';
+import { DbAppointment } from '../model/DbAppointment';
 import { DbClinic } from '../model/DbClinic';
 
 @Component({
@@ -16,6 +17,8 @@ export class ViewClinicUserComponent {
   res: ClinicLoadParameters;
   clinics: DbClinic[] = [];
   role: any;
+  appointments: DbAppointment[] = [];
+  appointment: DbAppointment;
 
 
   constructor(private route: ActivatedRoute, private clinicService: ClinicService) {
@@ -25,7 +28,15 @@ export class ViewClinicUserComponent {
       limit: 10,
       sortBy: '',
       orderAsc: true
-    })
+    }),
+      this.appointment = new DbAppointment({
+        title: '',
+        startDate: Date,
+        startTime: '',
+        isCanceled: false,
+        isFinished:false,
+      })
+
   }
 
   ngOnInit(): void {

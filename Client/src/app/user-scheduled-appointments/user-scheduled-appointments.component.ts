@@ -29,4 +29,8 @@ export class UserScheduledAppointmentsComponent {
       this.appointments = res;
     })
   }
+
+  cancelAppointment() {
+
+  }
 }

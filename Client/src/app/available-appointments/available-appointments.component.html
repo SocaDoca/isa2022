@@ -9,37 +9,36 @@
 </head>
 <body>
 
+  <div class="forma">
+    <h3>View clinic</h3>
+
+  </div>
+  <div class="modal-dialog text-center">
+    <div class="modal-content">
+      <table class="table table-striped" border="1" width="200" style="background-color:darkolivegreen; color:white">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>StartDate</th>
+            <th>Address</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr app-search-user-view >
+            <td style="color:white">{{appointment.title}}</td>
+            <td style="color:white">{{appointment.startDate}}</td>
+            <td style="color:white">{{appointment.startTime}}</td>
 
 
-  <div class="row" class="container">
-    <div class="center" id="comp1">
-      <h2 class="text-center">Add new appointment !</h2>
-      <form style="text-align:center">
+            <td><button [routerLink]="['schedule']" style=" width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Schedule appointment</button> </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
 
 
-        <label>Title</label>
-        <div class="form-group">
-          <input id="title" name="title" type="text" [ngModel]="appointment.title">
-        </div>
-        <label>Start Date</label>
-        <div class="form-group">
-          <input id="date" name="date" type="datetime" [ngModel]="appointment.startDate">
-        </div>
-        <label>Start time</label>
-        <div class="form-group">
-          <input id="startTime" name="startTime" type="time" [ngModel]="appointment.startTime">
-        </div>
-        <label>Something to report:</label>
-        <div class="form-group">
-          <input id="duration" name="time" type="text" [ngModel]="appointment.duration">
-        </div>
-
-        <div>
-          <button type="submit" class="btn btn-primary" (click)="addUserAppointment()" style="color:white">Schedule appointment</button><br>
-        </div>
-
-
-      </form>
-    </div><br>
-
-
+</body>
+</html>

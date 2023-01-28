@@ -27,6 +27,7 @@ import { ViewClinicUserComponent } from './view-clinic-user/view-clinic-user.com
 import { StartAppointmentComponent } from './start-appointment/start-appointment.component';
 import { AppointmentReportComponent } from './appointment-report/appointment-report.component';
 import { AvailableAppointmentsComponent } from './available-appointments/available-appointments.component';
+import { ScheduleAppComponent } from './schedule-app/schedule-app.component';
 
 
 const routes: Routes = [
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'profile/:id/visitationHistory', component: VisitationHistoryUserComponent },
   { path: 'profile/:id/viewClinicUser', component: ViewClinicUserComponent },
   { path: 'profile/:id/viewClinicUser/appointments/:clinicId', component: AvailableAppointmentsComponent },
+  { path: 'profile/:id/viewClinicUser/appointments/:clinicId/schedule', component: ScheduleAppComponent },
   { path: 'profile/:id/questionnaire', component: TransfusionQuestionnaireComponent },
   { path: 'profile/:id/complaint', component: UserComplaintComponent },
   { path: 'profile/:id/scheduledAppointments', component: UserScheduledAppointmentsComponent },

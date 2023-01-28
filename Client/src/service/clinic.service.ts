@@ -22,6 +22,7 @@ export class ClinicService {
   urlgetById = "http://localhost:5017/Clinic/get-clinic-by-id";
   urlgetAll = "http://localhost:5017/Clinic/load-all-clinics";
   urlgetAllTerms = "http://localhost:5017/Appointment/patient/appointmets";
+  urlgetOneTerm = "http://localhost:5017/Appointment/get-appointment";
   urlUpdate = "http://localhost:5017/Clinic/update-clinic";
   urlWorkingHours = "http://localhost:5017/WorkingHours/save-working-hours";
   urlTerm = "http://localhost:5017/Appointment/save-predefiend-appointment";
@@ -58,6 +59,10 @@ export class ClinicService {
 
   getAllTerms(patientId: string){
     return this.http.get<DbClinic[]>(`${this.urlgetAllTerms}?id=${patientId}`);
+  }
+
+  getTermById(Id: string) {
+    return this.http.get<DbAppointment>(`${this.urlgetOneTerm}?id=${Id}`);
   }
 
   addPredefinedTerm(term: PredefinedTerm): Observable<DbAppointment[]> {

@@ -67,9 +67,11 @@ export class UserPersonalProfileComponent implements OnInit{
       .subscribe(res => {
         this.user = res;
         this.showGender(res);
- 
+        this.user.penalty = res.penalty;
+        console.log(this.user.penalty);
 
       })
+
   }
 
 
