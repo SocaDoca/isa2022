@@ -26,6 +26,7 @@ import { UpdateClinicComponent } from './update-clinic/update-clinic.component';
 import { ViewClinicUserComponent } from './view-clinic-user/view-clinic-user.component';
 import { StartAppointmentComponent } from './start-appointment/start-appointment.component';
 import { AppointmentReportComponent } from './appointment-report/appointment-report.component';
+import { AvailableAppointmentsComponent } from './available-appointments/available-appointments.component';
 
 
 const routes: Routes = [
@@ -35,12 +36,13 @@ const routes: Routes = [
   { path: 'profile/:id', component: UserPersonalProfileComponent },
   { path: 'profile/:id/visitationHistory', component: VisitationHistoryUserComponent },
   { path: 'profile/:id/viewClinicUser', component: ViewClinicUserComponent },
+  { path: 'profile/:id/viewClinicUser/appointments/:clinicId', component: AvailableAppointmentsComponent },
   { path: 'profile/:id/questionnaire', component: TransfusionQuestionnaireComponent },
   { path: 'profile/:id/complaint', component: UserComplaintComponent },
   { path: 'profile/:id/scheduledAppointments', component: UserScheduledAppointmentsComponent },
   { path: 'profileEmployee/:id', component: EmployeePersonalProfileComponent },
   { path: 'profileEmployee/:id/viewClinic', component: ViewClinicComponent },
-  { path: 'profileEmployee/:id/viewClinic/update', component: UpdateClinicComponent },
+  { path: 'profileEmployee/:id/viewClinic/update/:Id', component: UpdateClinicComponent },
   { path: 'profileEmployee/:id/addTerm', component: AdminAddTermComponent },
   { path: 'profileEmployee/:id/updateEmployeeProfile', component: EmployeePersonalProfileUpdateComponent },
   { path: 'profileEmployee/:id/add-clinic', component: AddClinicComponent },

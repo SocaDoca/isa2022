@@ -48,7 +48,7 @@
             <td style="color:white">{{f.rating}}</td>
             <td *ngFor="let w of f.workingHours" style="color:white">{{w.start}}AM - {{w.end}}PM</td>
             <td *ngFor="let w of f.workingHours" style="color:white">{{w.day}}</td>
-            <td><button [routerLink]="['update']" style=" width: 170px; height: 30px; background-color: orangered; color: white; border: none; border-radius: 8px; ">Update clinic</button> </td>
+            <td><button [routerLink]="['update/', f.id]" style=" width: 170px; height: 30px; background-color: orangered; color: white; border: none; border-radius: 8px; ">Update clinic</button> </td>
           </tr>
         </tbody>
       </table>

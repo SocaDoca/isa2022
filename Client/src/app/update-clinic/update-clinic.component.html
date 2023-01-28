@@ -59,16 +59,16 @@
       </div>
 
     </div>
-    <div class="center" id="comp3">
+    <div class="center" id="comp3"  *ngFor="let w of clinic.workHours" >
 
       <br><br>
       <label>Works from</label>
-      <div class="form-group">
-        <input id="start" name="start" type="text" class="from-control" [(ngModel)]="hours.start">
+      <div class="form-group" >
+        <input id="start" name="start" type="text" class="from-control" [(ngModel)]="w.start"  >
       </div>
       <label>to</label>
       <div class="form-group">
-        <input id="end" name="end" type="text" class="from-control" [(ngModel)]="hours.end">
+        <input id="end" name="end" type="text" class="from-control" [(ngModel)]="w.end">
       </div>
       <br>
 
@@ -77,7 +77,7 @@
 
       <br><br>
       <div class="form-group">
-        <input id="day" name="day" type="text" class="from-control" [(ngModel)]="hours.day">
+        <input id="day" name="day" type="text" class="from-control" [(ngModel)]="w.day">
       </div>
 
 

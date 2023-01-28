@@ -9,7 +9,34 @@
 </head>
 <body>
 
-  <p>user-scheduled-appointments works!</p>
+  <div class="forma">
+    <h3>View clinic</h3>
+  </div>
+  <div class="modal-dialog text-center">
+    <div class="modal-content">
+      <table class="table table-striped" border="1" width="200" style="background-color:darkolivegreen; color:white">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Start date</th>
+            <th>Start Time</th>
 
-  </body>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr app-search-user-view *ngFor="let f of appointments">
+            <td style="color:white">{{f.title}}</td>
+            <td style="color:white">{{f.startDate}}</td>
+            <td style="color:white">{{f.startTime}}</td>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+
+</body>
 </html>
