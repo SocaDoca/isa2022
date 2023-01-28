@@ -19,23 +19,23 @@
 
         <label>Time</label>
         <div class="form-group">
-          <input id="time" name="time" type="time"  [ngModel]="term.time">
+          <input id="time" name="time" type="text"  [(ngModel)]="term.time">
         </div>
         <label>Start Date</label>
         <div class="form-group">
-          <input id="date" name="date" type="datetime"  [ngModel]="term.date">
+          <input id="date" name="date" type="datetime"  [(ngModel)]="term.date">
         </div>
         <label>Duration</label>
         <div class="form-group">
-          <input id="duration" name="duration" type="text"  [ngModel]="term.duration">
+          <input id="duration" name="duration" type="text"   [(ngModel)]="term.duration">
         </div>
         <label>Number of appointments in a day</label>
         <div class="form-group">
-          <input id="duration" name="time" type="text"  [ngModel]="term.numberOfAppointmentsInDay">
+          <input id="duration" name="time" type="text"   [(ngModel)]="term.numberOfAppointmentsInDay">
         </div>
         <label>Choose clinic</label>
         <div class="form-group" style="margin-right:30px;">
-          <select  (click)="onChange()" [ngModel]="term.clinic_RefID">
+          <select  (click)="onChange()"  [(ngModel)]="term.clinic_RefID">
             <option *ngFor="let clinic of clinics" value={{clinic.id}}>
               {{clinic.name}}
             </option>

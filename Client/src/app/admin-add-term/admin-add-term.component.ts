@@ -31,8 +31,8 @@ export class AdminAddTermComponent {
       orderAsc: true
     }),
       this.term = new PredefinedTerm({
-        time: '08:00',
-        date: new Date(),
+        time: '',
+        date: new Date,
         duration: 20,
         numberOfAppointmentsInDay: 1,
         clinic_RefID: ''

@@ -2,7 +2,7 @@ import { ClinicSaveModel } from "./ClinicSaveModel";
 
 export interface PredefinedTermInterface {
   id?: string;
-  time?: string;
+  time: string;
   date?: Date;
   duration?: number;
   numberOfAppointmentsInDay?: number;
@@ -11,7 +11,7 @@ export interface PredefinedTermInterface {
 
 export class PredefinedTerm implements PredefinedTermInterface {
   id?: string;
-  time?: string;
+  time: string;
   date?: Date;
   duration?: number;
   numberOfAppointmentsInDay?: number;

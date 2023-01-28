@@ -59,6 +59,7 @@ export class SearchUserComponent {
           this.questionnaire = res;
           console.log(this.questionnaire);
           this.questionnaire.isValid = res.isValid;
+          console.log(this.questionnaire.isValid);
         });*/
       });
 

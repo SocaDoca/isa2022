@@ -16,6 +16,7 @@ namespace MedicApp.Integrations
         AppointmentLoadModel LoadAppointmentById(Guid Id);
         List<Appointment> CreatePredefiendAppointments(SavePredefiendAppointment predefiendAppointment);
         List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId);
+        bool CancelAppointment(Guid appointmenetId);
     }
     public class AppointmentIntegration : IAppointmentIntegration
     {
@@ -97,11 +98,11 @@ namespace MedicApp.Integrations
                     _appDbContext.Appointment2Clinics.Add(appointment2Clinic);
                     _appDbContext.SaveChanges();
 
-                    var code = IronBarCode.BarcodeWriter.CreateBarcode(appointment.Id.ToByteArray(), BarcodeWriterEncoding.QRCode);
+                 /*   var code = IronBarCode.BarcodeWriter.CreateBarcode(appointment.Id.ToByteArray(), BarcodeWriterEncoding.QRCode);
                     code.SetMargins(100);
                     code.ChangeBarCodeColor(Color.Purple);
                     _emailUtils.SendMail(code.ToString(), String.Format("Appointmnet for patient {0} {1}", dbPatient.FirstName, dbPatient.LastName), dbPatient.Email, _emailSettings.Value.SenderAddress);
-
+                 */
 
                     return appointment;
                 }
