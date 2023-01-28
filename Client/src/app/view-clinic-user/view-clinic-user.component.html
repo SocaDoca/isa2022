@@ -47,7 +47,7 @@
             <td style="color:white">{{f.rating}}</td>
             <td *ngFor="let w of f.workingHours" style="color:white">{{w.start}}AM - {{w.end}}PM</td>
             <td *ngFor="let w of f.workingHours" style="color:white">{{w.day}}</td>
-            <td><button style=" width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">See available appointments</button> </td>
+            <td><button [routerLink]="['appointments/', f.id]" style=" width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Schedule appointment</button> </td>
           </tr>
         </tbody>
       </table>

@@ -43,6 +43,7 @@ import { UpdateClinicComponent } from './update-clinic/update-clinic.component';
 import { ViewClinicUserComponent } from './view-clinic-user/view-clinic-user.component';
 import { StartAppointmentComponent } from './start-appointment/start-appointment.component';
 import { AppointmentReportComponent } from './appointment-report/appointment-report.component';
+import { AvailableAppointmentsComponent } from './available-appointments/available-appointments.component';
 
 
 
@@ -75,6 +76,7 @@ import { AppointmentReportComponent } from './appointment-report/appointment-rep
     ViewClinicUserComponent,
     StartAppointmentComponent,
     AppointmentReportComponent,
+    AvailableAppointmentsComponent,
 
   ],
   imports: [

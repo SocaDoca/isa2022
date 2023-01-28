@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClinicService } from '../../service/clinic.service';
 import { ClinicSaveModel } from '../model/ClinicSaveModel';
 import { WorkingHours } from '../model/WorkingHours';
@@ -10,7 +10,7 @@ import { WorkingHours } from '../model/WorkingHours';
   templateUrl: './update-clinic.component.html',
   styleUrls: ['./update-clinic.component.css']
 })
-export class UpdateClinicComponent {
+export class UpdateClinicComponent{
   submitted: boolean = false;
 
   form: FormGroup = new FormGroup({
@@ -28,9 +28,10 @@ export class UpdateClinicComponent {
   });
 
   clinic: ClinicSaveModel;
-  hours: WorkingHours;
+  workHours: WorkingHours;
+  Id: any;
 
-  constructor(private clinicService: ClinicService, private router: Router) {
+  constructor(private clinicService: ClinicService, private router: Router, private route: ActivatedRoute) {
     this.clinic = new ClinicSaveModel({
       name: '',
       address: '',
@@ -40,13 +41,27 @@ export class UpdateClinicComponent {
       phone: '',
       rating: 0,
       workHours: [
-        this.hours = new WorkingHours({
+        this.workHours = new WorkingHours({
           start: '',
           end: '',
           day: ''
 
         })]
 
+    })
+  }
+
+  ngOnInit(): void {
+    this.loadClinic();
+  }
+
+  loadClinic() {
+    this.Id = this.route.snapshot.params['Id'];
+    console.log(this.Id);
+    this.clinicService.getClinicById(this.Id).subscribe(res => {
+      this.clinic = res;
+      this.clinic.workHours = res.workHours;
+      console.log(this.clinic.workHours);
     })
   }
 
@@ -57,69 +72,23 @@ export class UpdateClinicComponent {
     if (this.form.invalid) {
       return;
     } else {
-      this.saveClinic();
+      this.updateClinic();
       console.log(JSON.stringify(this.form.value, null, 2));
       this.router.navigate(['/profileEmployee/:id/viewClinic']);
     }
   }
 
 
-  saveClinic() {
+  updateClinic() {
 
-    this.clinicService.saveClinic(this.clinic).subscribe(res => {
-      this.clinic = res;
+    this.clinicService.updateClinic(this.clinic).subscribe(res => {
+      //this.clinic = res;
       console.log(res);
       //console.log(this.clinic.workHours![this.hours.dayOfWeek]);
-      console.log(this.hours.day);
+      console.log(this.workHours.day);
 
     });
   }
 
-  /*checkBoxValue1(event: any) {
-    console.log(event.target.checked);
-    if (event.target.checked == true) {
-      this.hours.dayOfWeek = 2;
-      this.clinic.workHours![this.hours.dayOfWeek] == 2;
-
-    }
-  }
-
-  checkBoxValue2(event: any) {
-    console.log(event.target.checked);
-    if (event.target.checked) {
-      //this.hours.dayOfWeek == 1;
-      //this.clinic.workHours![2].day == this.hours.day;
-      //this.clinic.workHours![2] == 1;
-    }
-  }
-  checkBoxValue3(event: any) {
-    console.log(event.target.checked);
-    if (event.target.checked == true) {
-      // this.workHours.day == 2;
-    }
-  }
-  checkBoxValue4(event: any) {
-    console.log(event.target.checked);
-    if (event.target.checked == true) {
-      this.clinic.workHours![2] == 3;
-    }
-  }
-  checkBoxValue5(event: any) {
-    console.log(event.target.checked);
-    if (event.target.checked == true) {
-      this.clinic.workHours![2] == 4;
-    }
-  }
-  checkBoxValue6(event: any) {
-    console.log(event.target.checked);
-    if (event.target.checked == true) {
-      this.clinic.workHours![2] == 5;
-    }
-  }
-  checkBoxValue7(event: any) {
-    console.log(event.target.checked);
-    if (event.target.checked == true) {
-      this.clinic.workHours![2] == 6;
-    }
-  }*/
+ 
 }

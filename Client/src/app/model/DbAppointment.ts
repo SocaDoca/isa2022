@@ -1,29 +1,48 @@
+import { AppReport } from "./AppReport";
+
 export interface DbAppointmentInterface {
-  id: number;
-  startDate: Date; //koja je razlika ako su oba tipa DateTime na back-u
-  start: Date;
-  duration: number;
-  isReserved: boolean;
-  isDeleted: boolean;
-  createdAt: Date;
+  id?: string;
+  time?: string;
+  date?: Date;
+  duration?: number;
+  numberOfAppointmentsInDay?: number;
+  clinic_RefID?: string;
+  title?: string;
+  startDate?: Date;
+  startTime?: string;
+  patient_RefId?: string;
+  isCanceled?: boolean;
+  isFinished?: boolean;
+  report?: AppReport;
 }
 
 export class DbAppointment implements DbAppointmentInterface {
-  id: number;
-  startDate: Date; 
-  start: Date;
-  duration: number;
-  isReserved: boolean;
-  isDeleted: boolean;
-  createdAt: Date;
+  id?: string;
+  time?: string;
+  date?: Date;
+  duration?: number;
+  numberOfAppointmentsInDay?: number;
+  clinic_RefID?: string;
+  title?: string;
+  startDate?: Date;
+  startTime?: string;
+  patient_RefId?: string;
+  isCanceled?: boolean;
+  isFinished?: boolean;
+  report?: AppReport;
 
   constructor(obj: DbAppointmentInterface) {
     this.id = obj.id;
+    this.time = obj.time;
+    this.date = obj.date;
+    this.title = obj.title;
     this.startDate = obj.startDate;
-    this.start = obj.start;
-    this.duration = obj.duration;
-    this.isReserved = obj.isReserved;
-    this.isDeleted = obj.isDeleted;
-    this.createdAt = obj.createdAt;
+    this.startTime = obj.startTime;
+    this.patient_RefId = obj.patient_RefId;
+    this.isCanceled = obj.isCanceled;
+    this.isFinished = obj.isFinished;
+    this.report = obj.report;
+    this.numberOfAppointmentsInDay = obj.numberOfAppointmentsInDay;
+    this.clinic_RefID = obj.clinic_RefID;
   }
 }

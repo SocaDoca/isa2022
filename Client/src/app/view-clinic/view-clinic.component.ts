@@ -16,6 +16,7 @@ export class ViewClinicComponent {
   id: any;
   res: ClinicLoadParameters;
   clinics: DbClinic[] = [];
+  clinic!: DbClinic;
   role: any;
   workingHours!: WorkingHours;
 
@@ -31,13 +32,23 @@ export class ViewClinicComponent {
   }
 
   ngOnInit(): void {
-    this.role = sessionStorage.getItem('role');
+
+   /* this.role = sessionStorage.getItem('role');
     if (this.role == 'Admin') {
       this.role = 1;
       console.log(this.role);
-    }
+    }*/
+    this.id = this.route.params.subscribe(
+      params => {
+        this.clinic.id = params['Id'];
+      });
 
 
+  }
+
+
+  catchId() {
+    // get route data (dishId and ingredientId)
 
   }
 

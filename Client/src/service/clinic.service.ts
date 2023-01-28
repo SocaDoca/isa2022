@@ -10,6 +10,8 @@ import { DbClinic } from '../app/model/DbClinic';
 import { ClinicSaveModel } from '../app/model/ClinicSaveModel';
 import { WorkingHours } from '../app/model/WorkingHours';
 import { ClinicLoadParameters } from '../app/model/ClinicLoadParameters';
+import { PredefinedTerm } from '../app/model/PredefinedTerm';
+import { DbAppointment } from '../app/model/DbAppointment';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +21,11 @@ export class ClinicService {
   url = "http://localhost:5017/Clinic/save-clinic";
   urlgetById = "http://localhost:5017/Clinic/get-clinic-by-id";
   urlgetAll = "http://localhost:5017/Clinic/load-all-clinics";
+  urlgetAllTerms = "http://localhost:5017/Appointment/patient/appointmets";
   urlUpdate = "http://localhost:5017/Clinic/update-clinic";
   urlWorkingHours = "http://localhost:5017/WorkingHours/save-working-hours";
+  urlTerm = "http://localhost:5017/Appointment/save-predefiend-appointment";
+  urlAppoint = "http://localhost:5017/Appointment/save-appointment";
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
 
@@ -32,8 +37,8 @@ export class ClinicService {
 
   }
 
-  getClinicById(id: string): Observable<ClinicSaveModel>{
-    return this.http.get<ClinicSaveModel>(`${this.urlgetById}?id=${id}`);
+  getClinicById(Id: string): Observable<ClinicSaveModel>{
+    return this.http.post<ClinicSaveModel>(`${this.urlgetById}?id=${Id}`, Id);
 
   }
 
@@ -47,14 +52,21 @@ export class ClinicService {
 
   }
 
-
-
   getAll(clinic: ClinicLoadParameters): Observable<DbClinic[]> {
     return this.http.post<DbClinic[]>(`${this.urlgetAll}`, clinic);
   }
 
+  getAllTerms(patientId: string){
+    return this.http.get<DbClinic[]>(`${this.urlgetAllTerms}?id=${patientId}`);
+  }
 
+  addPredefinedTerm(term: PredefinedTerm): Observable<DbAppointment[]> {
+    return this.http.post<DbAppointment[]>(`${this.urlTerm}`, term);
+  }
 
+  saveAppointment(appointmentSave: DbAppointment): Observable<DbAppointment> {
+    return this.http.post<DbAppointment>(`${this.urlAppoint}`, appointmentSave);
+  }
 
 
   }

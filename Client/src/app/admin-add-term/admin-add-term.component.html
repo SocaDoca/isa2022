@@ -14,26 +14,36 @@
   <div class="row" class="container">
     <div class="center" id="comp1">
       <h2 class="text-center">Add new appointment !</h2>
-      <form id="loginform" name="loginform" style="text-align:center">
+      <form   style="text-align:center">
+
+
+        <label>Time</label>
         <div class="form-group">
-          <label>Title</label>
-          <input id="title" name="title" type="text" class="from-control">
+          <input id="time" name="time" type="time"  [ngModel]="term.time">
         </div>
         <label>Start Date</label>
         <div class="form-group">
-          <input id="date" name="date" type="datetime" class="from-control">
+          <input id="date" name="date" type="datetime"  [ngModel]="term.date">
         </div>
         <label>Duration</label>
         <div class="form-group">
-          <input id="duration" name="time" type="text" class="from-control">
+          <input id="duration" name="duration" type="text"  [ngModel]="term.duration">
+        </div>
+        <label>Number of appointments in a day</label>
+        <div class="form-group">
+          <input id="duration" name="time" type="text"  [ngModel]="term.numberOfAppointmentsInDay">
         </div>
         <label>Choose clinic</label>
-        <div class="form-group">
-          <input id="clinic" name="duration" type="text" class="from-control">
+        <div class="form-group" style="margin-right:30px;">
+          <select  (click)="onChange()" [ngModel]="term.clinic_RefID">
+            <option *ngFor="let clinic of clinics" value={{clinic.id}}>
+              {{clinic.name}}
+            </option>
+          </select>
         </div>
 
         <div>
-          <button type="submit" class="btn btn-primary" style="color:white">Add appointment</button><br>
+          <button type="submit" class="btn btn-primary" (click)="addAppointment()" style="color:white">Add appointment</button><br>
         </div>
 
 

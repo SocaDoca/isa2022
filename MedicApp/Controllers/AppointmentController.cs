@@ -30,6 +30,12 @@ namespace MedicApp.Controllers
             return _appointmentIntegration.CreatePredefiendAppointments(appotinmentSave);
         }
 
+        [HttpPost("cancel-appointment")]
+        public bool CancelAppointment(Guid appointmenetId)
+        {
+            return _appointmentIntegration.CancelAppointment(appointmenetId);
+        }
+
         [HttpGet("get-appointment")]
         public AppointmentLoadModel GetAppointmentById(Guid Id)
         {
@@ -40,5 +46,7 @@ namespace MedicApp.Controllers
         {
             return _appointmentIntegration.LoadAllAppointmentsByPatientId(patientId);
         }
+
+
     }
 }

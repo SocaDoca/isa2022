@@ -41,6 +41,10 @@ export class SearchUserComponent {
 
   ngOnInit(): void {
    // this.loadQuestionnaire();
+    this.id = this.route.params.subscribe(
+      params => {
+        this.patient.id = params['userId'];
+      });
   }
 
   loadUsers() {
@@ -48,41 +52,19 @@ export class SearchUserComponent {
     this.userService.getAll(this.res)
       .subscribe(res => {
         this.patients = res;
-        //this.id = this.patients['id'];
-        //this.id = Object.values()
-        //console.log(this.patients);
-        //this.id = this.patients.find(({ id }) => id);
-        console.log(this.patients);
-        this.role = this.patients[1].role;
-        console.log(this.role);
-        if (this.role == 'Admin') {
-          this.questionnaire.isValid = false;
-          console.log('Da ovo je admin ' + this.questionnaire.isValid);
-        } else if(this.role == 'User') {
-          this.questionnaire.isValid = true;
-          console.log('Ovo ipak nije admin ' + this.questionnaire.isValid);
-          this.userId = this.patients[1].id;
-          console.log(this.userId);
-          this.userService.getQuestionnaire(this.userId).subscribe(res => {
+      });
+         /* this.userService.getQuestionnaire(this.userId).subscribe(res => {
             this.questionnaire = res;
             console.log(this.questionnaire);
-          });
+          });*/
         }
 
 
 
-      }
-    );
 
-  }
 
-  /*loadQuestionnaire() {
-    this.userService.getQuestionnaire(this.id).subscribe(res => {
-      this.id = res;
-    })
-    //this.isValid = this.route.snapshot.params['isValid'];
-    console.log(this.id);
-  }*/
+
+
 
   removeUser() {
     console.log(this.id);
