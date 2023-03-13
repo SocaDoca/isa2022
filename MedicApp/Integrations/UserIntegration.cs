@@ -366,7 +366,7 @@ namespace MedicApp.Integrations
             {
                 throw (new KeyNotFoundException("User not found"));
             }
-            var questionModel = new SaveQuestionnaire
+           /* var questionModel = new SaveQuestionnaire
             {
                 Id = dbQuestionnaire.Id,
                 ExpireDate = dbQuestionnaire.ExpireDate,
@@ -384,7 +384,7 @@ namespace MedicApp.Integrations
                 question11 = dbQuestionnaire.question11,
                 question12 = dbQuestionnaire.question12,
                 IsValid = dbQuestionnaire.IsValid
-            };
+            };*/
 
             var resultUser = new UserLoadModel
             {
@@ -403,7 +403,7 @@ namespace MedicApp.Integrations
                 IsAdminCenter = dbUser.IsAdminCenter,
                 IsFirstTime = dbUser.IsFirstTime,
                 Penalty = dbUser.Penalty,
-                Questionnaire = questionModel
+                //Questionnaire = questionModel
             };
 
             return resultUser;

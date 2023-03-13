@@ -47,6 +47,16 @@ namespace MedicApp.Controllers
             return _appointmentIntegration.LoadAllAppointmentsByPatientId(patientId);
         }
 
+        [HttpGet("clinic/appointmets")]
+        public List<AppointmentLoadModel> LoadAllAppointmentsByClinicId(Guid clinicId)
+        {
+            return _appointmentIntegration.LoadAllAppointmentsByClinicId(clinicId);
+        }
 
+        [HttpPost("save-onClick")]
+        public Appointment SaveAppOnClick(AppointmentSaveModel appointment)
+        {
+            return _appointmentIntegration.SaveAppOnClick(appointment);
+        }
     }
 }

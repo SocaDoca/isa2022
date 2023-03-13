@@ -12,6 +12,7 @@ import { WorkingHours } from '../app/model/WorkingHours';
 import { ClinicLoadParameters } from '../app/model/ClinicLoadParameters';
 import { PredefinedTerm } from '../app/model/PredefinedTerm';
 import { DbAppointment } from '../app/model/DbAppointment';
+import { Complaint } from '../app/model/Complaint';
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +23,16 @@ export class ClinicService {
   urlgetById = "http://localhost:5017/Clinic/get-clinic-by-id";
   urlgetAll = "http://localhost:5017/Clinic/load-all-clinics";
   urlgetAllTerms = "http://localhost:5017/Appointment/patient/appointmets";
+  urlgetAllClinicIdTerms = "http://localhost:5017/Appointment/clinic/appointmets";
   urlgetOneTerm = "http://localhost:5017/Appointment/get-appointment";
   urlUpdate = "http://localhost:5017/Clinic/update-clinic";
   urlWorkingHours = "http://localhost:5017/WorkingHours/save-working-hours";
   urlTerm = "http://localhost:5017/Appointment/save-predefiend-appointment";
   urlAppoint = "http://localhost:5017/Appointment/save-appointment";
+  urlAppointOnClick = "http://localhost:5017/Appointment/save-onClick";
+
+  urlSaveComplaint = "http://localhost:5017/Clinic/save-complaint";
+  urlgetAllComplaints = "http://localhost:5017/Clinic/load-all-complaints";
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
 
@@ -38,7 +44,7 @@ export class ClinicService {
 
   }
 
-  getClinicById(Id: string): Observable<ClinicSaveModel>{
+  getClinicById(Id: string): Observable<ClinicSaveModel> {
     return this.http.post<ClinicSaveModel>(`${this.urlgetById}?id=${Id}`, Id);
 
   }
@@ -57,8 +63,12 @@ export class ClinicService {
     return this.http.post<DbClinic[]>(`${this.urlgetAll}`, clinic);
   }
 
-  getAllTerms(id: string){
+  getAllTerms(id: string) {
     return this.http.get<DbClinic[]>(`${this.urlgetAllTerms}?id=${id}`);
+  }
+
+  getAllTermsByClinicId(clinicId: string) {
+    return this.http.get<DbAppointment[]>(`${this.urlgetAllClinicIdTerms}?clinicId=${clinicId}`);
   }
 
   getTermById(Id: string) {
@@ -73,8 +83,19 @@ export class ClinicService {
     return this.http.post<DbAppointment>(`${this.urlAppoint}`, appointmentSave);
   }
 
+  saveAppointmentOnClick(appointment: DbAppointment): Observable<DbAppointment> {
+    return this.http.post<DbAppointment>(`${this.urlAppointOnClick}`, appointment);
+  }
+
+  saveComplaint(complaint: Complaint): Observable<Complaint> {
+    return this.http.post<Complaint>(`${this.urlSaveComplaint}`, complaint);
+
 
   }
 
+  getAllComplaints(complaint: Complaint) {
+    return this.http.get<Complaint[]>(`${this.urlgetAllComplaints}`);
+  }
 
 
+}

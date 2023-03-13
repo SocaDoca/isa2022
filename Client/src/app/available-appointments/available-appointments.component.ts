@@ -2,7 +2,10 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ClinicService } from '../../service/clinic.service';
 import { AppReport } from '../model/AppReport';
+import { ClinicLoadParameters } from '../model/ClinicLoadParameters';
+import { ClinicSaveModel } from '../model/ClinicSaveModel';
 import { DbAppointment } from '../model/DbAppointment';
+import { DbClinic } from '../model/DbClinic';
 
 @Component({
   selector: 'app-available-appointments',
@@ -14,6 +17,10 @@ export class AvailableAppointmentsComponent {
   id: any;
   appointment: DbAppointment;
   appointments: DbAppointment[] = [];
+  address: any;
+  timeList: string = '';
+
+
 
   constructor(private clinicService: ClinicService, private route: ActivatedRoute) {
     this.appointment = new DbAppointment({
@@ -35,13 +42,28 @@ export class AvailableAppointmentsComponent {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['clinicId'];
-    console.log(this.appointment.clinic_RefID);
-    this.appointment.patient_RefId = this.route.snapshot.params['id'];
-    console.log(this.appointment.patient_RefId);
-    /*this.clinicService.getTermById(this.id).subscribe(res => {
-      this.appointment = res;
-    });*/
+    console.log(this.id);
+
+    this.clinicService.getAllTermsByClinicId(this.id).subscribe(res => {
+      this.appointments = res;
+
+
+    });
    // console.log(JSON.stringify(this.form.value, null, 2));
+  }
+
+
+  loadTime(appointment: DbAppointment) {
+    this.timeList = this.appointment.startDate;
+    var splitted = this.timeList.split(" ");
+    var splittedDate = splitted[0];
+    var splittedTime = splitted[1];
+
+    console.log(splittedDate + splittedTime);
+    this.appointment.startDate = splittedDate;
+    this.appointment.startTime = splittedTime;
+    //this.user.city = splittedCity;
+    //this.user.country = splittedCountry;
   }
 
   onSubmit() {

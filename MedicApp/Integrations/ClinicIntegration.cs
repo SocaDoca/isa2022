@@ -14,6 +14,10 @@ namespace MedicApp.Integrations
         ClinicLoadModel GetClinicById(Guid Id);
 
         bool UpdateClinic(ClinicSaveModel updateClinic);
+
+        public Complaint SaveComplaint(Complaint complaint);
+
+        public List<Complaint> LoadAllComplaints();
     }
     public class ClinicIntegration : IClinicIntegration
     {
@@ -26,6 +30,25 @@ namespace MedicApp.Integrations
             _appDbContext = appDbContext;
             _workingHoursIntegration = workingHoursIntegration;
 
+        }
+
+        public Complaint SaveComplaint(Complaint complaint)
+        {
+            var dbComplaint = _appDbContext.Complaints.FirstOrDefault(x => x.Id == complaint.Id);
+            if (dbComplaint == null)
+            {
+                dbComplaint = new Complaint();
+                _appDbContext.Complaints.Add(dbComplaint);
+            }
+
+            dbComplaint.Type = complaint.Type;
+            dbComplaint.Description = complaint.Description;
+            dbComplaint.Status = complaint.Status;
+
+
+
+            _appDbContext.SaveChanges();
+            return dbComplaint;
         }
 
         public Clinic SaveClinic(ClinicSaveModel clinicSave)
@@ -78,6 +101,22 @@ namespace MedicApp.Integrations
             return dbClinic;
         }
 
+        public List<Complaint> LoadAllComplaints()
+        {
+            var dbComplaint = _appDbContext.Complaints.FirstOrDefault();
+            List<Complaint> resultList = new List<Complaint>();
+
+                var complaintModel = new Complaint
+                {
+                    Id = dbComplaint.Id,
+                    Description = dbComplaint.Description,
+                    Type = dbComplaint.Type,
+                    Status = dbComplaint.Status,
+
+                };
+            resultList.Add(complaintModel);
+            return resultList.ToList();
+        }
 
         public List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters)
         {

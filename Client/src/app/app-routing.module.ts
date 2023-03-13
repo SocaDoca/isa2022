@@ -28,7 +28,8 @@ import { StartAppointmentComponent } from './start-appointment/start-appointment
 import { AppointmentReportComponent } from './appointment-report/appointment-report.component';
 import { AvailableAppointmentsComponent } from './available-appointments/available-appointments.component';
 import { ScheduleAppComponent } from './schedule-app/schedule-app.component';
-
+import { ComplaintHistoryComponent } from './complaint-history/complaint-history.component';
+import { AdminComplaintComponent } from './admin-complaint/admin-complaint.component';
 
 const routes: Routes = [
   { path: '', component: MainPageComponent },
@@ -36,9 +37,10 @@ const routes: Routes = [
   { path: 'register', component: RegisterPageComponent },
   { path: 'profile/:id', component: UserPersonalProfileComponent },
   { path: 'profile/:id/visitationHistory', component: VisitationHistoryUserComponent },
+  { path: 'profile/:id/complaintHistory', component: ComplaintHistoryComponent },
   { path: 'profile/:id/viewClinicUser', component: ViewClinicUserComponent },
   { path: 'profile/:id/viewClinicUser/appointments/:clinicId', component: AvailableAppointmentsComponent },
-  { path: 'profile/:id/viewClinicUser/appointments/:clinicId/schedule', component: ScheduleAppComponent },
+  { path: 'profile/:id/viewClinicUser/appointments/:clinicId/schedule/:appointmentId', component: ScheduleAppComponent },
   { path: 'profile/:id/questionnaire', component: TransfusionQuestionnaireComponent },
   { path: 'profile/:id/complaint', component: UserComplaintComponent },
   { path: 'profile/:id/scheduledAppointments', component: UserScheduledAppointmentsComponent },
@@ -48,6 +50,7 @@ const routes: Routes = [
   { path: 'profileEmployee/:id/addTerm', component: AdminAddTermComponent },
   { path: 'profileEmployee/:id/updateEmployeeProfile', component: EmployeePersonalProfileUpdateComponent },
   { path: 'profileEmployee/:id/add-clinic', component: AddClinicComponent },
+  { path: 'profileEmployee/:id/complaints', component: AdminComplaintComponent },
   { path: 'profile/:id/updateProfile', component: UserPersonalProfileUpdateComponent },
   { path: 'profileEmployee/:id/searchUser', component: SearchUserComponent },
   { path: 'profileEmployee/:id/searchUser/start-appointment', component: StartAppointmentComponent },

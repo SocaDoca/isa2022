@@ -36,7 +36,7 @@ namespace MedicApp.Database
         public DbSet<Questionnaire> Questionnaire { get; set; }
         public DbSet<AppointmentHistory> AppointmentHistories { get; set; }
 
-
+        public DbSet<Complaint> Complaints { get; set; }
 
 
         #region Assignment Tables

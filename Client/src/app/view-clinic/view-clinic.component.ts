@@ -43,7 +43,7 @@ export class ViewClinicComponent {
         this.clinic.id = params['Id'];
       });
 
-
+    this.loadClinic();
   }
 
 

@@ -46,7 +46,7 @@ export class ViewClinicUserComponent {
       console.log(this.role);
     }
 
-
+    this.loadClinic();
 
   }
 

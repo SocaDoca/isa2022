@@ -22,7 +22,7 @@ export interface UserLoadModelInterface {
   lastName?: string;
   isValid?: any;
   penalty?: number;
-  questionnaire?: any;
+  questionnaire?: Questionnaire;
 
 
 }
@@ -47,7 +47,7 @@ export class UserLoadModel implements UserLoadModelInterface {
   lastName?: string;
   isValid?: any;
   penalty?: number;
-  questionnaire?: any;
+  questionnaire?: Questionnaire;
 
 
   constructor(obj: UserLoadModelInterface) {

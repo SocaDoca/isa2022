@@ -13,6 +13,7 @@ import { Genders } from '../model/Genders';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import Validation from '../utils/validation';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @Component({
   selector: 'app-employee-personal-profile',
