@@ -10,7 +10,7 @@
 <body>
 
   <div class="forma">
-    <h3>View clinic</h3>
+    <br><h3>Complaint history</h3><br>
 
   </div>
   <div class="modal-dialog text-center">
@@ -18,22 +18,19 @@
       <table class="table table-striped" border="1" width="200" style="background-color:darkolivegreen; color:white">
         <thead>
           <tr>
-            <th>Title</th>
-            <th>StartDate</th>
-            <th>Address</th>
-
+            <th>Type</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Response</th>
           </tr>
         </thead>
         <tbody>
-          <tr app-search-user-view *ngFor="let f of appointments">
-            <td style="color:white">{{f.title}}</td>
-            <td style="color:white">{{f.startDate}}</td>
-            <td style="color:white">{{ f.clinic ? f.clinic.address : ''}}</td>
-
-
-            <td><button [routerLink]="['schedule/', f.id ]" style=" width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Schedule appointment</button> </td>
-          </tr>
-        </tbody>
+          <tr app-search-user-view *ngFor="let f of complaint">
+            <td style="color:white">{{f.type}}</td>
+            <td style="color:white">{{f.description}}</td>
+            <td style="color:white">{{f.status}}</td>
+            <td><button [routerLink]="['appointments/', f.id]" style=" width: 190px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Response to complaint</button> </td>
+</tbody>
       </table>
     </div>
 
@@ -42,3 +39,4 @@
 
 </body>
 </html>
+

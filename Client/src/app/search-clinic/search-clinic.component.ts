@@ -31,7 +31,7 @@ export class SearchClinicComponent {
   }
 
   ngOnInit(): void {
-
+    this.loadClinic();
   }
 
   loadClinic() {

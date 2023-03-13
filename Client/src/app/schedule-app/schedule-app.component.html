@@ -13,26 +13,45 @@
 
   <div class="row" class="container">
     <div class="center" id="comp1">
-      <h2 class="text-center">Add new appointment !</h2>
+      <h2 class="text-center">Schedule appointment !</h2>
       <form style="text-align:center">
 
+        <label style="font-weight: bold;">First Name</label>
+        <div class="form-group">
+          <label>{{ appointment.patient ? appointment.patient.firstName : ''}}</label>
+        </div>
+        <label style="font-weight: bold;">Last Name</label>
+        <div class="form-group">
+          <label>{{ appointment.patient ? appointment.patient.lastName : ''}}</label>
+        </div>
+        <label style="font-weight: bold;">Email</label>
+        <div class="form-group">
+          <label>{{ appointment.patient ? appointment.patient.email : ''}}</label>
+        </div>
+        <br>
+        <label style="font-weight: bold;">Clinic Name</label>
+        <div class="form-group">
+          <label>{{ appointment.clinic ? appointment.clinic.name : ''}}</label>
+        </div>
+        <label style="font-weight: bold;">Clinic Address</label>
+        <div class="form-group">
+          <label>{{ appointment.clinic ? fullAddress : ''}}</label>
+        </div>
+        <br>
+        <label style="font-weight: bold;">Appointment Title</label>
+        <div class="form-group">
+          <label>{{appointment.title}}</label>
+        </div>
+        <label style="font-weight: bold;">Appointment Start Date</label>
+        <div class="form-group">
+          <label>{{appointment.startDate}}</label>
+        </div>
 
-        <label>Title</label>
-        <div class="form-group">
-          <input id="title" name="title" type="text" [(ngModel)]="appointment.title">
-        </div>
-        <label>Start Date</label>
-        <div class="form-group">
-          <input id="date" name="date" type="datetime" [(ngModel)]="appointment.startDate">
-        </div>
-        <label>Start time</label>
-        <div class="form-group">
-          <input id="startTime" name="startTime" type="text" [(ngModel)]="appointment.startTime">
-        </div>
+
 
 
         <div>
-          <button (click)="addUserAppointment()" type="submit" class="btn btn-primary" style="color:white">Schedule appointment</button><br>
+          <button (click)="addUserAppointment()" type="submit" class="btn btn-primary" style="color:white">Confirm appointment</button><br>
         </div>
 
 

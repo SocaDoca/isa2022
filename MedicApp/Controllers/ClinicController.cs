@@ -40,6 +40,17 @@ namespace MedicApp.Controllers
             return _clinicIntegration.GetClinicById(Id);
         }
 
+        [HttpPost("save-complaint")]
+        public Complaint SaveComplaint(Complaint complaint)
+        {
+            return _clinicIntegration.SaveComplaint(complaint);
+        }
+
+        [HttpGet("load-all-complaints")]
+        public List<Complaint> LoadAllComplaints()
+        {
+            return _clinicIntegration.LoadAllComplaints();
+        }
 
     }
 }

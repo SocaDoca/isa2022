@@ -3,11 +3,11 @@ import { ClinicService } from '../../service/clinic.service';
 import { Complaint } from '../model/Complaint';
 
 @Component({
-  selector: 'app-user-complaint',
-  templateUrl: './user-complaint.component.html',
-  styleUrls: ['./user-complaint.component.css']
+  selector: 'app-complaint-history',
+  templateUrl: './complaint-history.component.html',
+  styleUrls: ['./complaint-history.component.css']
 })
-export class UserComplaintComponent {
+export class ComplaintHistoryComponent {
   complaint: any;
 
   constructor(private clinicService: ClinicService) {
@@ -19,8 +19,8 @@ export class UserComplaintComponent {
   }
 
 
-  saveComplaint() {
-    this.clinicService.saveComplaint(this.complaint).subscribe(res => {
+  ngOnInit() {
+    this.clinicService.getAllComplaints(this.complaint).subscribe(res => {
       this.complaint = res;
       console.log(this.complaint);
     });

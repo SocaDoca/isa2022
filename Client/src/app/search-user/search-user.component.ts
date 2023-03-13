@@ -32,7 +32,10 @@ export class SearchUserComponent {
       orderAsc: true
     }),
       this.patient = new UserLoadModel({
-        id: ''
+        id: '',
+        questionnaire: new Questionnaire({
+          isValid:true
+        })
       })
   }
 
@@ -42,7 +45,7 @@ export class SearchUserComponent {
       params => {
         this.patient.id = params['userId'];
       });
-
+    this.loadUsers();
   }
 
   loadUsers() {

@@ -45,6 +45,10 @@ import { StartAppointmentComponent } from './start-appointment/start-appointment
 import { AppointmentReportComponent } from './appointment-report/appointment-report.component';
 import { AvailableAppointmentsComponent } from './available-appointments/available-appointments.component';
 import { ScheduleAppComponent } from './schedule-app/schedule-app.component';
+import { ComplaintHistoryComponent } from './complaint-history/complaint-history.component';
+import { MatBadgeModule } from '@angular/material/badge';
+import { AdminComplaintComponent } from './admin-complaint/admin-complaint.component';
+
 
 
 
@@ -79,6 +83,8 @@ import { ScheduleAppComponent } from './schedule-app/schedule-app.component';
     AppointmentReportComponent,
     AvailableAppointmentsComponent,
     ScheduleAppComponent,
+    ComplaintHistoryComponent,
+    AdminComplaintComponent,
 
   ],
   imports: [
@@ -97,6 +103,7 @@ import { ScheduleAppComponent } from './schedule-app/schedule-app.component';
     ReactiveFormsModule,
     HttpClientModule,
     NgbRatingModule,
+    MatBadgeModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent],

@@ -31,12 +31,12 @@ namespace MedicApp.Models
         public Guid Id { get; set; }
         public string Title { get; set; }
         public DateTime StartDate { get; set; }
-        public string StartTime { get; set; }
-        public Guid Patient_RefID { get; set; }
-        public Guid Clinic_RefID { get; set; } // maybe only send gid?
+        public string? StartTime { get; set; }
+        public Guid? Patient_RefID { get; set; }
+        public Guid? Clinic_RefID { get; set; } // maybe only send gid?
         public bool IsCanceled { get; set; }
         public bool IsFinished { get; set; }
-        public AppointmentReport Report { get; set; }
+        public AppointmentReport? Report { get; set; }
     }
 
     public class AppointmentLoadModel
