@@ -34,6 +34,7 @@ namespace MedicApp.Models
             IsDeleted = false;
             LoyaltyPoints = 1000;
             IsFirstTime = true;
+            Penalty = 0;
         }
     }
 
@@ -67,9 +68,9 @@ namespace MedicApp.Models
         public string Email { get; set; }
         public string JMBG { get; set; }
         public string? Moblie { get; set; }
-        public string? Address { get; set; }
-        public string? Country { get; set; }
-        public string? City { get; set; }
+        public string Address { get; set; }
+        public string Country { get; set; }
+        public string City { get; set; }
         public Genders Gender { get; set; }
         public string Roles { get; set; }
         public string Job { get; set; }
@@ -128,7 +129,9 @@ namespace MedicApp.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string JMBG { get; set; }
-        public string FullAddress { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
         public string Role { get; set; }
         public string Email { get; set; }
         public string Mobile { get; set; }
@@ -144,11 +147,11 @@ namespace MedicApp.Models
     public class LoadAllUsersParameters
     {
         public string? SearchCriteria { get; set; }
-        public UserFilterParams? UserFilterParams { get; set; }
         public int Offset { get; set; }
         public int Limit { get; set; }
         public string? SortBy { get; set; }
         public bool OrderAsc { get; set; }
+        public UserFilterParams? UserFilterParams { get; set; }
     }
 
     public class UserFilterParams

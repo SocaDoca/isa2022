@@ -5,6 +5,8 @@
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string WorksFrom { get; set; }
+        public string WorksTo { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
@@ -26,10 +28,11 @@
         public string Description { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
+        public string WorksFrom { get; set; }
+        public string WorksTo { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
         public float Rating { get; set; }
-        public List<SaveWorkingHoursModel> WorkHours { get; set; } = new List<SaveWorkingHoursModel>();
        
     }
     public class ClinicLoadModel
@@ -37,12 +40,13 @@
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string WorksFrom { get; set; }
+        public string WorksTo { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
         public float Rating { get; set; }
-        public List<LoadWorkingHoursModel> WorkHours { get; set; } = new List<LoadWorkingHoursModel>();
         public List<Appointment> Appointments { get; set; }            
        
     }
@@ -52,6 +56,8 @@
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string WorksFrom { get; set; }
+        public string WorksTo { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
@@ -66,7 +72,6 @@
         public int Limit { get; set; }
         public string SortBy { get; set; }
         public bool OrderAsc { get; set; }
-
     }
 
     public class ClinicFilterData
@@ -83,11 +88,12 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public string Address { get; set; }
+        public string WorksFrom { get; set; }
+        public string WorksTo { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
         public float Rating { get; set; }
-        public List<LoadWorkingHoursModel> WorkingHours { get; set; } = new List<LoadWorkingHoursModel>();
         public List<AppotinmentInClinics> Appointments { get; set; }
     }
 

@@ -261,21 +261,22 @@ namespace MedicApp.Integrations
                 };
                 resultList.Add(new UserLoadModel
                 {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
+                    FirstName = user.FirstName ?? String.Empty,
+                    LastName = user.LastName ?? String.Empty,
+                    Email = user.Email ?? String.Empty,
                     Gender = user.Gender,
                     Id = user.Id,
                     IsAdminCenter = user.IsAdminCenter,
-                    JMBG = user.JMBG,
-                    Job = user.Job,
-                    Mobile = user.Mobile,
-                    Username = user.Username,
-                    FullAddress = String.Format("{0} {1} {2}", user.Address, user.City, user.Country),
+                    JMBG = user.JMBG ?? String.Empty,
+                    Job = user.Job ?? String.Empty,
+                    Mobile = user.Mobile ?? String.Empty,
+                    Username = user.Username ?? String.Empty,
+                    Address = user.Address ?? String.Empty,
+                    City = user.City ?? String.Empty,
+                    Country = user.Country ?? String.Empty,
                     Role = user.Role,
                     Questionnaire = questionModel,
                     Penalty = user.Penalty
-                    
                 });
             };
 
@@ -321,7 +322,7 @@ namespace MedicApp.Integrations
                         resultList.OrderBy(x => x.FirstName).ToList() : resultList.OrderByDescending(x => x.FirstName).ToList();
                     break;
             }
-            #endregion 
+            #endregion
 
             return resultList.Skip(parameters.Offset).Take(parameters.Limit).ToList();
 
@@ -389,7 +390,9 @@ namespace MedicApp.Integrations
             var resultUser = new UserLoadModel
             {
                 Id = dbUser.Id,
-                FullAddress = String.Format("{0}, {1}, {2}", dbUser.Address, dbUser.City, dbUser.Country) ?? String.Empty,
+                Address = dbUser.Address ?? String.Empty,
+                City = dbUser.City ?? String.Empty,
+                Country = dbUser.Country ?? String.Empty,
                 Gender = dbUser.Gender,
                 Job = dbUser.Job ?? String.Empty,
                 Role = dbUser.Role,
