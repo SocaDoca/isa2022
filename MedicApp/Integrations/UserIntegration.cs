@@ -29,6 +29,7 @@ namespace MedicApp.Integrations
         bool UpdateUser(UpdateUser updateUser);
         bool UpdatePassword(Guid Id, string password);
         bool Delete(Guid id);
+        List<UserBasicInfo> LoadUserBasicInfoByIds(List<Guid> userIds);
         SaveQuestionnaire GetQuestionnaireByUserId(Guid Id);
         Questionnaire CreateQuestionnaireForPatientById(SaveQuestionnaire questionnaire, Guid PatientId);
     }
@@ -411,6 +412,22 @@ namespace MedicApp.Integrations
 
             return resultUser;
 
+        }
+
+        public List<UserBasicInfo> LoadUserBasicInfoByIds(List<Guid> userIds)
+        {
+            var dbPatients = _appDbContext.Users.Where(x => x.IsDeleted == false && userIds.Any(s => s == x.Id)).ToList();
+            return dbPatients.Select(patient => new UserBasicInfo
+            {
+                Id = patient.Id,
+                Address = patient.Address,
+                City = patient.City,
+                Country = patient.Country,
+                Email = patient.Email,
+                FirstName = patient.FirstName,
+                LastName = patient.LastName,
+                Mobile = patient.Mobile
+            }).ToList();
         }
 
         #endregion

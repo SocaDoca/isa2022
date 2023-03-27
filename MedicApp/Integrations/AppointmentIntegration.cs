@@ -16,11 +16,13 @@ namespace MedicApp.Integrations
         AppointmentLoadModel LoadAppointmentById(Guid Id);
         List<Appointment> CreatePredefiendAppointments(SavePredefiendAppointment predefiendAppointment);
         List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId);
+        List<AppointmentLoadModel> LoadAllAppointmnetsByClinicId(Guid clinicId);
         bool CancelAppointment(Guid appointmenetId);
     }
     public class AppointmentIntegration : IAppointmentIntegration
     {
         private readonly AppDbContext _appDbContext;
+
         private readonly IUserIntegration _userIntegration;
         private readonly IClinicIntegration _clinicIntegration;
         private readonly IEmailUtils _emailUtils;
@@ -52,7 +54,7 @@ namespace MedicApp.Integrations
                 {
                     var appointment = new Appointment()
                     {
-                        
+
                         Clinic_RefID = appointmentSave.Clinic_RefID,
                         IsFinished = appointmentSave.IsFinished,
                         IsCanceled = appointmentSave.IsCanceled,
@@ -128,8 +130,12 @@ namespace MedicApp.Integrations
             }
 
             appointment.IsCanceled = true;
+
             _appDbContext.Appointments.Update(appointment);
             _appDbContext.SaveChanges();
+
+            var emailBody = "Your appointment has been canceled";
+            _emailUtils.SendMail(emailBody, "Appointment cancelation", dbPatient.Email, _emailSettings.Value.SenderAddress);
             return true;
 
         }
@@ -144,7 +150,7 @@ namespace MedicApp.Integrations
             }
             var result = new AppointmentLoadModel();
             result.Id = Id;
-            
+
             result.StartDate = dbAppointment.StartDate;
             var clinicModel = new ClinicBasicInfo()
             {
@@ -225,7 +231,27 @@ namespace MedicApp.Integrations
             return result;
 
         }
+        public List<AppointmentLoadModel> LoadAllAppointmnetsByClinicId(Guid clinicId)
+        {
+            var dbAppointments2Clinic = _appDbContext.Appointment2Clinics.Where(x => x.Clinic_RefID == clinicId && x.IsDeleted == false).ToList();
+            var appointmentIds = dbAppointments2Clinic.Select(x => x.Appointment_RefID).ToList();
+            var dbAppointments = _appDbContext.Appointments.Where(x => appointmentIds.Any(Id => Id == x.Id)).ToList();
+            var patientIds = dbAppointments.Where(x => x.Patient_RefID.HasValue).Select(x => x.Patient_RefID.Value).ToList();
+            var patients = _userIntegration.LoadUserBasicInfoByIds(patientIds);
+            var companyIds = dbAppointments.Where(x => x.Clinic_RefID.HasValue).Select(x => x.Clinic_RefID.Value).ToList();
+            var companyInfos = _clinicIntegration.LoadClinicBasicInfoByIds(companyIds);
+            return dbAppointments.Select(appointment => new AppointmentLoadModel
+            {
+                Clinic = companyInfos.FirstOrDefault(x => x.Id == appointment.Clinic_RefID),
+                Id = appointment.Id,
+                IsCanceled = appointment.IsCanceled,
+                IsFinished = appointment.IsFinished,
+                IsPredefiend = appointment.IsPredefiend,
+                Patient = patients.FirstOrDefault(x => x.Id == appointment.Patient_RefID),
+                StartDate = appointment.StartDate,
+            }).ToList();
 
+        }
 
         public List<Appointment> CreatePredefiendAppointments(SavePredefiendAppointment predefiendAppointment)
         {
@@ -262,7 +288,7 @@ namespace MedicApp.Integrations
 
         }
 
-        public bool ReserveAppointment(Guid appointmentId , Guid patientId)
+        public bool ReserveAppointment(Guid appointmentId, Guid patientId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsReserved == false && x.IsDeleted == false && x.Id == appointmentId);
             if (dbAppointment == null)
@@ -307,7 +333,7 @@ namespace MedicApp.Integrations
             return true;
         }
 
-        public List<LoadPredefiendAppointment>LoadPredefiendAppointments(Guid clinicId)
+        public List<LoadPredefiendAppointment> LoadPredefiendAppointments(Guid clinicId)
         {
             var appointments2Clinic = _appDbContext.Appointment2Clinics.Where(x => x.Clinic_RefID == clinicId && x.IsDeleted == false);
             var appointmentIds = appointments2Clinic.Select(x => x.Appointment_RefID).ToList();
@@ -315,6 +341,9 @@ namespace MedicApp.Integrations
 
             return appoitments.Select(x => new LoadPredefiendAppointment { Id = x.Id, StartDate = x.StartDate }).ToList();
         }
+
+
+
     }
 
 }

@@ -33,7 +33,7 @@ namespace MedicApp.Controllers
         [HttpPost("cancel-appointment")]
         public bool CancelAppointment(Guid appointmenetId)
         {
-            return _appointmentIntegration.CancelAppointment(appointmenetId);
+            return _appointmentIntegration.CancelAppointment(appointmenetId);           
         }
 
         [HttpGet("get-appointment")]
@@ -50,13 +50,8 @@ namespace MedicApp.Controllers
         [HttpGet("clinic/appointmets")]
         public List<AppointmentLoadModel> LoadAllAppointmentsByClinicId(Guid clinicId)
         {
-            return _appointmentIntegration.LoadAllAppointmentsByClinicId(clinicId);
+            return _appointmentIntegration.LoadAllAppointmnetsByClinicId(clinicId);
         }
 
-        [HttpPost("save-onClick")]
-        public Appointment SaveAppOnClick(AppointmentSaveModel appointment)
-        {
-            return _appointmentIntegration.SaveAppOnClick(appointment);
-        }
     }
 }

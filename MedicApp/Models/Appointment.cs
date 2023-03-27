@@ -11,20 +11,23 @@ namespace MedicApp.Models
         public bool IsDeleted { get; set; }
         public Guid? Clinic_RefID { get; set; }
         public Guid? Patient_RefID { get; set; }
-        public Guid? ResponsiblePerson_RefID { get; set; } //employee or nurse who is taking blood from donor
         public bool IsCanceled { get; set; }
+        public bool IsStarted { get; set; } 
         public bool IsPredefiend { get; set; }
         public bool IsFinished { get; set; }
+        public bool IsReserved { get; set; }
 
         public Appointment()
         {
             Id = Guid.NewGuid();
             IsDeleted = false;
+            IsPredefiend = false;
+            IsFinished = false;
+            IsStarted = false;
+            IsReserved = false;
             Duration = 15;
             Title = "Blood appointment";
         }
-
-
     }
     public class AppointmentSaveModel
     {
@@ -33,8 +36,9 @@ namespace MedicApp.Models
         public DateTime StartDate { get; set; }
         public string? StartTime { get; set; }
         public Guid? Patient_RefID { get; set; }
-        public Guid? Clinic_RefID { get; set; } // maybe only send gid?
+        public Guid? Clinic_RefID { get; set; }
         public bool IsCanceled { get; set; }
+        public bool IsReserved { get; set; }
         public bool IsFinished { get; set; }
         public AppointmentReport? Report { get; set; }
     }
@@ -50,7 +54,7 @@ namespace MedicApp.Models
         public bool IsCanceled { get; set; }
         public bool IsPredefiend { get; set; }
         public bool IsFinished { get; set; }
-        public AppointmentReport Report { get;set; }
+        public AppointmentReport Report { get; set; }
     }
 
     public class AppotinmentInClinics
@@ -61,6 +65,12 @@ namespace MedicApp.Models
         public string StartTime { get; set; }
         public User Patient { get; set; }
     }
+
+    public class LoadPredefiendAppointment
+    {
+        public Guid Id { get; set; }
+        public DateTime StartDate { get; set; }
+    }
     public class SavePredefiendAppointment
     {
         public string Time { get; set; }
@@ -68,6 +78,6 @@ namespace MedicApp.Models
         public int NumberOfAppointmentsInDay { get; set; }
         public int Duration { get; set; }
         public Guid Clinic_RefID { get; set; }
-   
+
     }
 }

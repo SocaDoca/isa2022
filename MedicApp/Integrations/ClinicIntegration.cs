@@ -12,7 +12,7 @@ namespace MedicApp.Integrations
         Clinic SaveClinic(ClinicSaveModel clinicSave);
         List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters);
         ClinicLoadModel GetClinicById(Guid Id);
-
+        List<ClinicBasicInfo> LoadClinicBasicInfoByIds(List<Guid> clinicIds);
         bool UpdateClinic(ClinicSaveModel updateClinic);
 
         public Complaint SaveComplaint(Complaint complaint);
@@ -69,33 +69,7 @@ namespace MedicApp.Integrations
             dbClinic.Rating = clinicSave.Rating;
 
             var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id).ToList();
-            var dbWorkingHoursIds = clinic2WorkingHours.Select(x => x.WorkingHours_RefID).ToList();
-
-            foreach (var item in clinicSave.WorkHours)
-            {
-                var workingHours = new WorkingHours();
-                if (!dbWorkingHoursIds.Contains(item.Id))
-                {
-                    workingHours = _workingHoursIntegration.SaveWorkingHours(item);
-                    var dbClinic2WorkingHours = new Clinic2WorkingHours
-                    {
-                        Clinic_RefID = dbClinic.Id,
-                        WorkingHours_RefID = workingHours.Id
-                    };
-
-                    _appDbContext.Clinic2WorkingHours.Add(dbClinic2WorkingHours);
-                    _appDbContext.SaveChanges();
-                }
-                else
-                {
-                    workingHours = _workingHoursIntegration.LoadDBWorkingHourById(item.Id);
-                    workingHours.Start = item.Start;
-                    workingHours.End = item.End;
-                    workingHours.DayOfWeek = item.Day;
-
-                    _appDbContext.WorkingHours.Update(workingHours);
-                }
-            }
+            var dbWorkingHoursIds = clinic2WorkingHours.Select(x => x.WorkingHours_RefID).ToList();            
 
             _appDbContext.SaveChanges();
             return dbClinic;
@@ -143,29 +117,7 @@ namespace MedicApp.Integrations
                     Description = clinic.Description,
                     Rating = clinic.Rating,
                 };
-                if (clinic2WorkingHours.ContainsKey(clinicModel.Id))
-                {
-                    if (clinic2WorkingHours.TryGetValue(clinic.Id, out var workHoursListIds))
-                    {
-                        if (workHoursListIds.Any() && dbWorkingHours.Any() && dbWorkingHours != null)
-                        {
-                            foreach (var workDayId in workHoursListIds)
-                            {
-                                var dbWorkHour = dbWorkingHours.FirstOrDefault(x => x.Id == workDayId);
-                                var model = new LoadWorkingHoursModel
-                                {
-                                    Id = workDayId,
-                                    Start = dbWorkHour.Start,
-                                    Day = dbWorkHour.DayOfWeek,
-                                    End = dbWorkHour.End,
-                                };
-                                workHoursList.Add(model);
-                            }
-                            clinicModel.WorkingHours = workHoursList;
-                        }
-
-                    }
-                }
+              
 
                 resultList.Add(clinicModel);
             }
@@ -279,12 +231,28 @@ namespace MedicApp.Integrations
                 Name = dbClinic.Name,
                 Phone = dbClinic.Phone,
                 Rating = dbClinic.Rating,
-                WorkHours = workingHoursList,
                 Appointments = appointmentList,
 
             };
 
             return result;
+        }
+
+        public List<ClinicBasicInfo> LoadClinicBasicInfoByIds(List<Guid> clinicIds)
+        {
+            var dbClinics = _appDbContext.Clinics.Where(x => clinicIds.Any(Id => x.Id == Id) && !x.IsDeleted).ToList();
+            return dbClinics.Select(clinc => new ClinicBasicInfo
+            {
+                Id = clinc.Id,
+                Address = clinc.Address,
+                City = clinc.City,
+                Country = clinc.Country,
+                Description = clinc.Description,
+                Name = clinc.Name,
+                Phone = clinc.Phone,
+                WorksFrom = clinc.WorksFrom,
+                WorksTo = clinc.WorksTo
+            }).ToList();
         }
 
         #region Update 
@@ -302,23 +270,7 @@ namespace MedicApp.Integrations
             getClinic.City = updateClinic.City;
             getClinic.Country = updateClinic.Country;
             getClinic.Phone = updateClinic.Phone;
-            getClinic.Rating = updateClinic.Rating;
-
-            var dbWorkingHoursIds = _appDbContext.Clinic2WorkingHours.ToList()
-                .Where(x => !x.IsDeleted && x.Clinic_RefID == getClinic.Id)
-                .Select(x => x.WorkingHours_RefID)
-                .ToList();
-            var dbWorkingHours = _appDbContext.WorkingHours.Where(x => dbWorkingHoursIds.Any(s => s == x.Id)).ToList();
-            foreach (var item in updateClinic.WorkHours)
-            {
-                var workHour = dbWorkingHours.First(x => x.Id == item.Id);
-                workHour.Start = item.Start;
-                workHour.End = item.End;
-                workHour.DayOfWeek = item.Day;
-
-                _appDbContext.WorkingHours.Update(workHour);
-                _appDbContext.SaveChanges();
-            }
+            getClinic.Rating = updateClinic.Rating;          
 
             _appDbContext.Clinics.Update(getClinic);
             _appDbContext.SaveChanges();
