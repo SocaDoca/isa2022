@@ -272,12 +272,15 @@ namespace MedicApp.Integrations
 
                 };
 
+                _appDbContext.Appointments.Add(model);
+
                 var appointment2Clinics = new Appointment2Clinic
                 {
                     Appointment_RefID = model.Id,
                     Clinic_RefID = model.Clinic_RefID.Value
                 };
 
+                _appDbContext.Appointment2Clinics.Add(appointment2Clinics);
                 count++;
                 result.Add(model);
 
@@ -297,6 +300,8 @@ namespace MedicApp.Integrations
             }
             dbAppointment.Patient_RefID = patientId;
             dbAppointment.IsReserved = true;
+            _appDbContext.Update(dbAppointment);
+            _appDbContext.SaveChanges();
             return true;
         }
 
@@ -309,6 +314,9 @@ namespace MedicApp.Integrations
             }
             dbAppointment.IsReserved = false;
             dbAppointment.IsStarted = true;
+
+            _appDbContext.Update(dbAppointment);
+            _appDbContext.SaveChanges();
             return true;
         }
 
@@ -321,15 +329,21 @@ namespace MedicApp.Integrations
             }
             dbAppointment.IsStarted = false;
             dbAppointment.IsFinished = true;
+
+            _appDbContext.Update(dbAppointment);
+            _appDbContext.SaveChanges();
             return true;
         }
 
         public bool CancelAppointmnet(Guid appointmentId)
         {
-            var dbAppointmnet = _appDbContext.Appointments.SingleOrDefault(x => x.Id == appointmentId && x.IsDeleted == false);
+            var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.Id == appointmentId && x.IsDeleted == false);
             var dbPatient = _appDbContext.Users.SingleOrDefault(x => x.Id == dbAppointmnet.Patient_RefID && x.IsDeleted == false);
-            dbAppointmnet.IsCanceled = true;
+            dbAppointmentt.IsCanceled = true;
             dbPatient.Penalty++;
+
+            _appDbContext.Update(dbAppointment);
+            _appDbContext.SaveChanges();
             return true;
         }
 
