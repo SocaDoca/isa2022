@@ -36,7 +36,7 @@ namespace MedicApp.Database
         public DbSet<AppointmentHistory> AppointmentHistories { get; set; }
         public DbSet<WorkItem> WorkItems { get; set; }
         public DbSet<WorkItem2Reports> WorkItem2Reports { get; set; }
-        public DbSet<Complaint> Complaints { get; set; }
+        public DbSet<Complaints> Complaints { get; set; }
 
 
         #region Assignment Tables
@@ -53,9 +53,11 @@ namespace MedicApp.Database
         public DbSet<Account2Clinic> Account2Clinics { get; set; }
         public DbSet<Account2Patient> Account2Patients { get; set; }
         public DbSet<Employee2WokringHours> Employee2WokringHours{ get; set; }
+        public DbSet<Complaint2Patient> Complaint2Patients { get; set; }
 
 
         #endregion
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

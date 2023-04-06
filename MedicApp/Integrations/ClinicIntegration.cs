@@ -15,40 +15,20 @@ namespace MedicApp.Integrations
         List<ClinicBasicInfo> LoadClinicBasicInfoByIds(List<Guid> clinicIds);
         bool UpdateClinic(ClinicSaveModel updateClinic);
 
-        public Complaint SaveComplaint(Complaint complaint);
+        public Complaints SaveComplaint(Complaint complaint);
 
-        public List<Complaint> LoadAllComplaints();
+        public List<Complaints> LoadAllComplaints();
     }
     public class ClinicIntegration : IClinicIntegration
     {
         public readonly AppDbContext _appDbContext;
-        public readonly IWorkingHoursIntegration _workingHoursIntegration;
 
 
-        public ClinicIntegration(AppDbContext appDbContext, IWorkingHoursIntegration workingHoursIntegration)
+        public ClinicIntegration(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
-            _workingHoursIntegration = workingHoursIntegration;
+            
 
-        }
-
-        public Complaint SaveComplaint(Complaint complaint)
-        {
-            var dbComplaint = _appDbContext.Complaints.FirstOrDefault(x => x.Id == complaint.Id);
-            if (dbComplaint == null)
-            {
-                dbComplaint = new Complaint();
-                _appDbContext.Complaints.Add(dbComplaint);
-            }
-
-            dbComplaint.Type = complaint.Type;
-            dbComplaint.Description = complaint.Description;
-            dbComplaint.Status = complaint.Status;
-
-
-
-            _appDbContext.SaveChanges();
-            return dbComplaint;
         }
 
         public Clinic SaveClinic(ClinicSaveModel clinicSave)

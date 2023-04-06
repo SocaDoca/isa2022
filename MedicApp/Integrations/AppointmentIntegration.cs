@@ -201,18 +201,30 @@ namespace MedicApp.Integrations
             var appointmentIds = dbAppointments2Clinic.Select(x => x.Appointment_RefID).ToList();
             var dbAppointments = _appDbContext.Appointments.Where(x => appointmentIds.Any(Id => Id == x.Id)).ToList();
             var patientIds = dbAppointments.Where(x => x.Patient_RefID.HasValue).Select(x => x.Patient_RefID.Value).ToList();
-            var patients = _userIntegration.LoadUserBasicInfoByIds(patientIds);
+            var patients = _userIntegration.LoadUserBasicInfoByIds(patientIds).GroupBy(x => x.Id).ToDictionary(x => x.Key, x => x.First());
             var companyIds = dbAppointments.Where(x => x.Clinic_RefID.HasValue).Select(x => x.Clinic_RefID.Value).ToList();
-            var companyInfos = _clinicIntegration.LoadClinicBasicInfoByIds(companyIds);
-            return dbAppointments.Select(appointment => new AppointmentLoadModel
+            var clinicInfo = _clinicIntegration.LoadClinicBasicInfoByIds(companyIds).GroupBy(x => x.Id).ToDictionary(x => x.Key, x => x.First());
+            return dbAppointments.Select(appointment =>
             {
-                Clinic = companyInfos.FirstOrDefault(x => x.Id == appointment.Clinic_RefID),
-                Id = appointment.Id,
-                IsCanceled = appointment.IsCanceled,
-                IsFinished = appointment.IsFinished,
-                IsPredefiend = appointment.IsPredefiend,
-                Patient = patients.FirstOrDefault(x => x.Id == appointment.Patient_RefID),
-                StartDate = appointment.StartDate,
+                var result = new List<AppointmentLoadModel>();
+                var appModel = new AppointmentLoadModel
+                {
+                    Id = appointment.Id,
+                    IsCanceled = appointment.IsCanceled,
+                    IsFinished = appointment.IsFinished,
+                    IsPredefiend = appointment.IsPredefiend,
+                    StartDate = appointment.StartDate,
+                };
+
+                if (appointment.Patient_RefID.HasValue && patients.TryGetValue(appointment.Patient_RefID.Value, out var patient))
+                {
+                    appModel.Patient = patient;
+                }
+                if (appointment.Clinic_RefID.HasValue && clinicInfo.TryGetValue(appointment.Clinic_RefID.HasValue ? appointment.Clinic_RefID.Value : Guid.Empty, out var clinic))
+                {
+                    appModel.Clinic = clinic;
+                }
+                return appModel;
             }).ToList();
 
         }
@@ -246,7 +258,6 @@ namespace MedicApp.Integrations
                 _appDbContext.Appointment2Clinics.Add(appointment2Clinics);
                 count++;
                 result.Add(model);
-
             }
             _appDbContext.SaveChanges();
 
@@ -305,8 +316,8 @@ namespace MedicApp.Integrations
         public bool CancelAppointmnet(Guid appointmentId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.Id == appointmentId && x.IsDeleted == false);
-            var dbPatient = _appDbContext.Users.SingleOrDefault(x => x.Id == dbAppointmnet.Patient_RefID && x.IsDeleted == false);
-            dbAppointmentt.IsCanceled = true;
+            var dbPatient = _appDbContext.Users.SingleOrDefault(x => x.Id == dbAppointment.Patient_RefID && x.IsDeleted == false);
+            dbAppointment.IsCanceled = true;
             dbPatient.Penalty++;
 
             _appDbContext.Update(dbAppointment);
@@ -322,9 +333,5 @@ namespace MedicApp.Integrations
 
             return appoitments.Select(x => new LoadPredefiendAppointment { Id = x.Id, StartDate = x.StartDate }).ToList();
         }
-
-
-
     }
-
 }
