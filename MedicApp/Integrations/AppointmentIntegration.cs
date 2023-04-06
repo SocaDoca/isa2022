@@ -38,77 +38,41 @@ namespace MedicApp.Integrations
         }
 
 
-        public Appointment SaveAppointment(AppointmentSaveModel appointmentSave)
+        public bool SaveAppointment(Guid appointmentId, ReportSaveModel report)
         {
-            var dbClinic = _appDbContext.Clinics.First(x => !x.IsDeleted && appointmentSave.Clinic_RefID == x.Id);
-            var dbPatient = _appDbContext.Users.First(x => !x.IsDeleted && x.Id == appointmentSave.Patient_RefID);
-            var appointment2Clinics = _appDbContext.Appointment2Clinics.Where(x => x.Clinic_RefID == appointmentSave.Clinic_RefID).Select(x => x.Appointment_RefID).ToList();
-
-
-            var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.Where(x => x.Clinic_RefID == dbClinic.Id).Select(x => x.WorkingHours_RefID).ToList();
-            var dbWorkingHours = _appDbContext.WorkingHours.Where(x => clinic2WorkingHours.Any(s => s == x.Id)).ToList();
-            if (dbWorkingHours.Any())
+            var dbAppointment = _appDbContext.Appointments.FirstOrDefault(x => x.IsDeleted == false && x.Id == appointmentId);
+            if (dbAppointment == null)
             {
-                if (dbWorkingHours.Any(x => TimeOnly.Parse(x.Start) <= TimeOnly.Parse(appointmentSave.StartTime) &&
-                                           TimeOnly.Parse(x.End) >= TimeOnly.Parse(appointmentSave.StartTime)))
-                {
-                    var appointment = new Appointment()
-                    {
-
-                        Clinic_RefID = appointmentSave.Clinic_RefID,
-                        IsFinished = appointmentSave.IsFinished,
-                        IsCanceled = appointmentSave.IsCanceled,
-                        Patient_RefID = appointmentSave.Patient_RefID,
-                        StartDate = appointmentSave.StartDate.Add(TimeSpan.Parse(appointmentSave.StartTime)),
-                    };
-
-                    _appDbContext.Appointments.Add(appointment);
-                    _appDbContext.SaveChanges();
-                    var report = new AppointmentReport
-                    {
-                        Description = appointmentSave.Report.Description,
-                        Equipment = appointmentSave.Report.Equipment
-                    };
-
-                    _appDbContext.AppointmentsReports.Add(report);
-                    _appDbContext.SaveChanges();
-                    var appointmnet2report = new Appointment2Report
-                    {
-                        Appointment_RefID = appointment.Id,
-                        ReportId = report.Id,
-                    };
-
-                    _appDbContext.Appointment2Reports.Add(appointmnet2report);
-                    _appDbContext.SaveChanges();
-                    var appointment2Patient = new Appointment2Patient
-                    {
-                        Appointment_RefID = appointment.Id,
-                        Patient_RefID = dbPatient.Id,
-                    };
-
-                    _appDbContext.Appointment2Patients.Add(appointment2Patient);
-                    _appDbContext.SaveChanges();
-                    var appointment2Clinic = new Appointment2Clinic
-                    {
-                        Appointment_RefID = appointment.Id,
-                        Clinic_RefID = dbClinic.Id
-                    };
-                    _appDbContext.Appointment2Clinics.Add(appointment2Clinic);
-                    _appDbContext.SaveChanges();
-
-                    /*   var code = IronBarCode.BarcodeWriter.CreateBarcode(appointment.Id.ToByteArray(), BarcodeWriterEncoding.QRCode);
-                       code.SetMargins(100);
-                       code.ChangeBarCodeColor(Color.Purple);
-                       _emailUtils.SendMail(code.ToString(), String.Format("Appointmnet for patient {0} {1}", dbPatient.FirstName, dbPatient.LastName), dbPatient.Email, _emailSettings.Value.SenderAddress);
-                    */
-
-                    return appointment;
-                }
-
-                return null;
-
+                throw new Exception("appointment does not exist");
             }
-            return null;
+            
+            var dbReport = _appDbContext.AppointmentsReports.FirstOrDefault(x => x.IsDeleted == false && x.Id == report.Id);
+            if(dbReport == null)
+            {
+                dbReport = new AppointmentReport();
+            }
+            
+            dbReport.Description = report.Description;
+
+            foreach (var item in report.Equipment)
+            {
+                var itemModel = new WorkItem
+                {
+                    Name = item.Name,
+                    UsedInstances = item.UsedInstances
+                };
+                _appDbContext.WorkItems.Add(itemModel);
+                var workItem2Report = new WorkItem2Reports
+                {
+                    Report_RefID = dbReport.Id,
+                    WorkItem_RefID = itemModel.Id
+                };
+
+                _appDbContext.WorkItem2Reports.Add(workItem2Report);
+            }
+            _appDbContext.SaveChanges();
+            return true;
+
         }
         public bool CancelAppointment(Guid appointmenetId)
         {
@@ -252,7 +216,6 @@ namespace MedicApp.Integrations
             }).ToList();
 
         }
-
         public List<Appointment> CreatePredefiendAppointments(SavePredefiendAppointment predefiendAppointment)
         {
             var dbAppointments = _appDbContext.Appointments.Where(x => !x.IsDeleted && x.IsPredefiend && predefiendAppointment.Date == x.StartDate).ToList();
@@ -290,7 +253,6 @@ namespace MedicApp.Integrations
             return result.OrderBy(x => x.StartDate).ToList();
 
         }
-
         public bool ReserveAppointment(Guid appointmentId, Guid patientId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsReserved == false && x.IsDeleted == false && x.Id == appointmentId);
@@ -303,6 +265,11 @@ namespace MedicApp.Integrations
             _appDbContext.Update(dbAppointment);
             _appDbContext.SaveChanges();
             return true;
+            /*   var code = IronBarCode.BarcodeWriter.CreateBarcode(appointment.Id.ToByteArray(), BarcodeWriterEncoding.QRCode);
+               code.SetMargins(100);
+               code.ChangeBarCodeColor(Color.Purple);
+               _emailUtils.SendMail(code.ToString(), String.Format("Appointmnet for patient {0} {1}", dbPatient.FirstName, dbPatient.LastName), dbPatient.Email, _emailSettings.Value.SenderAddress);
+            */
         }
 
         public bool StartAppointmnet(Guid appointmentId)

@@ -30,12 +30,12 @@ namespace MedicApp.Database
         public DbSet<User> Users { get; set; }
         public DbSet<Clinic> Clinics { get; set; }
         public DbSet<Roles> Roles { get; set; }
-        public DbSet<WorkingHours> WorkingHours { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<AppointmentReport> AppointmentsReports { get; set; }
         public DbSet<Questionnaire> Questionnaire { get; set; }
         public DbSet<AppointmentHistory> AppointmentHistories { get; set; }
-
+        public DbSet<WorkItem> WorkItems { get; set; }
+        public DbSet<WorkItem2Reports> WorkItem2Reports { get; set; }
         public DbSet<Complaint> Complaints { get; set; }
 
 
