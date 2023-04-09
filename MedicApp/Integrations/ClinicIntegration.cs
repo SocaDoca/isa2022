@@ -14,10 +14,8 @@ namespace MedicApp.Integrations
         ClinicLoadModel GetClinicById(Guid Id);
         List<ClinicBasicInfo> LoadClinicBasicInfoByIds(List<Guid> clinicIds);
         bool UpdateClinic(ClinicSaveModel updateClinic);
-
-        public Complaints SaveComplaint(Complaint complaint);
-
-        public List<Complaints> LoadAllComplaints();
+        Complaints SaveComplaint(Complaints complaint);
+        List<Complaints> LoadAllComplaints();
     }
     public class ClinicIntegration : IClinicIntegration
     {
@@ -27,8 +25,6 @@ namespace MedicApp.Integrations
         public ClinicIntegration(AppDbContext appDbContext)
         {
             _appDbContext = appDbContext;
-            
-
         }
 
         public Clinic SaveClinic(ClinicSaveModel clinicSave)
@@ -55,21 +51,10 @@ namespace MedicApp.Integrations
             return dbClinic;
         }
 
-        public List<Complaint> LoadAllComplaints()
+        public List<Complaints> LoadAllComplaints()
         {
-            var dbComplaint = _appDbContext.Complaints.FirstOrDefault();
-            List<Complaint> resultList = new List<Complaint>();
-
-                var complaintModel = new Complaint
-                {
-                    Id = dbComplaint.Id,
-                    Description = dbComplaint.Description,
-                    Type = dbComplaint.Type,
-                    Status = dbComplaint.Status,
-
-                };
-            resultList.Add(complaintModel);
-            return resultList.ToList();
+            var dbComplaints = _appDbContext.Complaints.Where(x => x.IsDeleted == false);
+            return dbComplaints.ToList();
         }
 
         public List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters)
@@ -77,7 +62,6 @@ namespace MedicApp.Integrations
             List<Clinic> dbClinics = _appDbContext.Clinics.ToList();
             List<ClinicList> resultList = new List<ClinicList>();
             var dbPatient = _appDbContext.Users.Where(x => x.IsDeleted == false).ToList();
-            var dbWorkingHours = _appDbContext.WorkingHours.ToList();
             var clinic2Appointments = _appDbContext.Appointment2Clinics.ToList().GroupBy(x => x.Clinic_RefID).ToDictionary(x => x.Key, x => x.Select(s => s.Appointment_RefID).ToList());
             var dbAppointments = _appDbContext.Appointments.Where(x => !x.IsDeleted).ToList();
             var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.ToList().Where(x => !x.IsDeleted)
@@ -85,7 +69,6 @@ namespace MedicApp.Integrations
                 .ToDictionary(x => x.Key, x => x.Select(x => x.WorkingHours_RefID).ToList());
             foreach (var clinic in dbClinics)
             {
-                var workHoursList = new List<LoadWorkingHoursModel>();
                 var clinicModel = new ClinicList
                 {
                     Id = clinic.Id,
@@ -96,12 +79,11 @@ namespace MedicApp.Integrations
                     Phone = clinic.Phone,
                     Description = clinic.Description,
                     Rating = clinic.Rating,
+                    WorksFrom = clinic.WorksFrom,
+                    WorksTo = clinic.WorksTo,
                 };
-              
-
                 resultList.Add(clinicModel);
             }
-
 
             #region SEARCH
             if (!String.IsNullOrEmpty(parameters.SearchCriteria))
@@ -116,7 +98,6 @@ namespace MedicApp.Integrations
 
 
             #endregion
-
 
             #region FILTER
 
@@ -160,6 +141,24 @@ namespace MedicApp.Integrations
             return resultList.Skip(parameters.Offset).Take(parameters.Limit).ToList();
         }
 
+        public Complaints SaveComplaint(Complaints complaint)
+        {
+            var dbComplaint = _appDbContext.Complaints.Where(x => x.IsDeleted == false && x.Id == complaint.Id).FirstOrDefault();
+            if(dbComplaint == null)
+            {
+                dbComplaint = new Complaints();
+            }
+            dbComplaint.Answer = complaint.Answer;
+            dbComplaint.IsAnswered = complaint.IsAnswered;
+            dbComplaint.IsForClinic = complaint.IsForClinic;
+            dbComplaint.IsForEmployee = complaint.IsForEmployee;
+            dbComplaint.UserInput = complaint.UserInput;
+
+            _appDbContext.Complaints.Add(dbComplaint);
+            _appDbContext.SaveChanges();
+            return dbComplaint;
+        }
+
         public ClinicLoadModel GetClinicById(Guid Id)
         {
             var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => x.Id == Id && !x.IsDeleted);
@@ -169,29 +168,13 @@ namespace MedicApp.Integrations
             var WorkingHoursIds = _appDbContext.Clinic2WorkingHours.ToList()
                 .Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id)
                 .Select(x => x.WorkingHours_RefID).ToList();
-            var workingHours = _appDbContext.WorkingHours.Where(x => x.IsDeleted == false).ToList();
-            var workingHoursList = new List<LoadWorkingHoursModel>();
 
             if (dbClinic == null)
             {
                 throw new KeyNotFoundException("Clinic does not exist");
             }
 
-            if (WorkingHoursIds.Any())
-            {
-                foreach (var id in WorkingHoursIds)
-                {
-                    var workH = workingHours.FirstOrDefault(x => x.Id == id);
-                    var model = new LoadWorkingHoursModel
-                    {
-                        Day = workH.DayOfWeek,
-                        End = workH.End,
-                        Id = workH.Id,
-                        Start = workH.Start,
-                    };
-                    workingHoursList.Add(model);
-                }
-            }
+           
             var appointmentList = new List<Appointment>();
             if (clinicAppointment.Any())
             {

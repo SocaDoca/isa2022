@@ -9,14 +9,12 @@
         public string Answer { get; set; }
         public bool IsAnswered { get; set; }
         public bool IsDeleted{ get; set; }
-
         public Complaints()
         {
             Id = Guid.NewGuid();
             IsDeleted = false;
         }
     }
-
 
     public class ComplaintSaveModel
     {
@@ -27,4 +25,5 @@
         public string Answer { get; set; }
         public bool IsAnswered { get; set; }
     }
+
 }

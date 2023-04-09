@@ -41,13 +41,13 @@ namespace MedicApp.Controllers
         }
 
         [HttpPost("save-complaint")]
-        public Complaint SaveComplaint(Complaint complaint)
+        public Complaints SaveComplaint(Complaints complaint)
         {
             return _clinicIntegration.SaveComplaint(complaint);
         }
 
         [HttpGet("load-all-complaints")]
-        public List<Complaint> LoadAllComplaints()
+        public List<Complaints> LoadAllComplaints()
         {
             return _clinicIntegration.LoadAllComplaints();
         }

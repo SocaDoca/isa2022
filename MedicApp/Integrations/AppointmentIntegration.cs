@@ -12,7 +12,7 @@ namespace MedicApp.Integrations
 {
     public interface IAppointmentIntegration
     {
-        Appointment SaveAppointment(AppointmentSaveModel appointmentSave);
+        bool SaveAppointment(Guid appointmentId, ReportSaveModel report);
         AppointmentLoadModel LoadAppointmentById(Guid Id);
         List<Appointment> CreatePredefiendAppointments(SavePredefiendAppointment predefiendAppointment);
         List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId);
