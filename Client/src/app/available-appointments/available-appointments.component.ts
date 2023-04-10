@@ -25,7 +25,7 @@ export class AvailableAppointmentsComponent {
   constructor(private clinicService: ClinicService, private route: ActivatedRoute) {
     this.appointment = new DbAppointment({
 
-      title: '',
+      title: 'Blood appointment',
       startDate: new Date,
       startTime: '',
       patient_RefId: '',
@@ -46,7 +46,7 @@ export class AvailableAppointmentsComponent {
 
     this.clinicService.getAllTermsByClinicId(this.id).subscribe(res => {
       this.appointments = res;
-
+      
 
     });
    // console.log(JSON.stringify(this.form.value, null, 2));
