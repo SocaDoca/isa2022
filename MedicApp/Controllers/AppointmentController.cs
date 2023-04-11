@@ -15,7 +15,6 @@ namespace MedicApp.Controllers
         public AppointmentController(IAppointmentIntegration appointmentIntegration)
         {
             _appointmentIntegration = appointmentIntegration;
-
         }
 
         [HttpPost("save-appointment")]
@@ -24,10 +23,26 @@ namespace MedicApp.Controllers
             return _appointmentIntegration.SaveAppointment(appointmentId, report);
         }
         
-        [HttpPost("save-predefiend-appointment")]
+        [HttpPost("create-predefiend-appointment")]
         public List<Appointment> CreatePredefiendAppointment(SavePredefiendAppointment appotinmentSave)
         {
             return _appointmentIntegration.CreatePredefiendAppointments(appotinmentSave);
+        }
+        [HttpPost("reserve-predefiend-appointment")]
+        public bool ReserveAppointment(Guid appotinmentId, Guid patientId)
+        {
+            return _appointmentIntegration.ReserveAppointment(appotinmentId,patientId);
+        }
+        [HttpPost("start-predefiend-appointment")]
+        public bool StartAppointment(Guid appotinmentId)
+        {
+            return _appointmentIntegration.StartAppointmnet(appotinmentId);
+        }
+        
+        [HttpPost("finish-predefiend-appointment")]
+        public bool FinishAppointment(Guid appotinmentId)
+        {
+            return _appointmentIntegration.FinishAppointment(appotinmentId);
         }
 
         [HttpPost("cancel-appointment")]

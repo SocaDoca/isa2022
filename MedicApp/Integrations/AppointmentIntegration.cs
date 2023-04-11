@@ -17,7 +17,11 @@ namespace MedicApp.Integrations
         List<Appointment> CreatePredefiendAppointments(SavePredefiendAppointment predefiendAppointment);
         List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId);
         List<AppointmentLoadModel> LoadAllAppointmnetsByClinicId(Guid clinicId);
+        bool ReserveAppointment(Guid appointmentId, Guid patientId);
         bool CancelAppointment(Guid appointmenetId);
+        bool StartAppointmnet(Guid appointmentId);
+        bool FinishAppointment(Guid appointmentId);
+        List<LoadPredefiendAppointment> LoadPredefiendAppointments(Guid clinicId);
     }
     public class AppointmentIntegration : IAppointmentIntegration
     {
@@ -36,7 +40,6 @@ namespace MedicApp.Integrations
             _emailUtils = emailUtils;
             _emailSettings = emailSettings;
         }
-
 
         public bool SaveAppointment(Guid appointmentId, ReportSaveModel report)
         {
@@ -282,7 +285,6 @@ namespace MedicApp.Integrations
                _emailUtils.SendMail(code.ToString(), String.Format("Appointmnet for patient {0} {1}", dbPatient.FirstName, dbPatient.LastName), dbPatient.Email, _emailSettings.Value.SenderAddress);
             */
         }
-
         public bool StartAppointmnet(Guid appointmentId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsReserved == true && x.IsDeleted == false && x.Id == appointmentId);
@@ -297,7 +299,6 @@ namespace MedicApp.Integrations
             _appDbContext.SaveChanges();
             return true;
         }
-
         public bool FinishAppointment(Guid appointmentId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsStarted == true && x.IsDeleted == false && x.Id == appointmentId);
@@ -312,7 +313,6 @@ namespace MedicApp.Integrations
             _appDbContext.SaveChanges();
             return true;
         }
-
         public bool CancelAppointmnet(Guid appointmentId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.Id == appointmentId && x.IsDeleted == false);
