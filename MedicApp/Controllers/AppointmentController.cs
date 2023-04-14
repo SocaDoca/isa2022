@@ -20,7 +20,7 @@ namespace MedicApp.Controllers
         [HttpPost("save-appointment")]
         public bool SaveAppointment(Guid appointmentId, ReportSaveModel report)
         {
-            return _appointmentIntegration.SaveAppointment(appointmentId, report);
+            return _appointmentIntegration.SaveAppointmentReport(appointmentId, report);
         }
         
         [HttpPost("create-predefiend-appointment")]
