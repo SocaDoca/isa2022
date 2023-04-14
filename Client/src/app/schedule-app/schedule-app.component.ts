@@ -19,7 +19,7 @@ export class ScheduleAppComponent {
 
   constructor(private clinicService: ClinicService, private route: ActivatedRoute, private router: Router) {
     this.appointment = new DbAppointment({
-
+      id: '',
       title: '',
       startDate: '',
       startTime: '0',
@@ -63,11 +63,11 @@ export class ScheduleAppComponent {
   }
 
   addUserAppointment() {
-    this.appointment.clinic_RefID = this.route.snapshot.params['clinicId'];
+    this.appointment.id! = this.route.snapshot.params['appointmentId'];
     this.appointment.patient_RefId = this.route.snapshot.params['id'];
-    this.clinicService.saveAppointment(this.appointment).subscribe(res => {
+    this.clinicService.reserveAppointment(this.appointment.id!, this.appointment.patient_RefId!).subscribe(res => {
       this.appointment.patient_RefId = res.patient_RefId;
-      this.appointment.clinic_RefID = res.clinic_RefID;
+      this.appointment.id = res.id;
       this.appointment = res;
 
     });

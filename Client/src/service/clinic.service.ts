@@ -28,7 +28,7 @@ export class ClinicService {
   urlUpdate = "http://localhost:5017/Clinic/update-clinic";
   urlWorkingHours = "http://localhost:5017/WorkingHours/save-working-hours";
   urlTerm = "http://localhost:5017/Appointment/save-predefiend-appointment";
-  urlAppoint = "http://localhost:5017/Appointment/save-appointment";
+  urlAppoint = "http://localhost:5017/Appointment/reserve-predefiend-appointment";
   urlAppointOnClick = "http://localhost:5017/Appointment/save-onClick";
 
   urlSaveComplaint = "http://localhost:5017/Clinic/save-complaint";
@@ -79,8 +79,12 @@ export class ClinicService {
     return this.http.post<DbAppointment[]>(`${this.urlTerm}`, term);
   }
 
-  saveAppointment(appointmentSave: DbAppointment): Observable<DbAppointment> {
-    return this.http.post<DbAppointment>(`${this.urlAppoint}`, appointmentSave);
+  reserveAppointment(id: string, patient_RefId: string) {
+    return this.http.post<any>(`${this.urlAppoint}?appotinmentId=${id}&patientId=${patient_RefId}`, null).pipe(
+      map((userData) => {
+        return userData;
+      })
+    );
   }
 
   saveAppointmentOnClick(appointment: DbAppointment): Observable<DbAppointment> {
