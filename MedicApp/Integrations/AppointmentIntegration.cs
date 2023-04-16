@@ -22,7 +22,8 @@ namespace MedicApp.Integrations
         bool StartAppointmnet(Guid appointmentId);
         bool FinishAppointment(Guid appointmentId);
         List<LoadPredefiendAppointment> LoadPredefiendAppointments(Guid clinicId);
-        List<AppointmentLoadModel> LoadAllReservedAppointments(Guid clinicId);
+        List<AppointmentLoadModel> LoadAllReservedAppointmentsByClinicId(Guid clinicId);
+        List<AppointmentLoadModel> LoadAllReservedAppointments();
 
 
     }
@@ -209,7 +210,7 @@ namespace MedicApp.Integrations
             }).ToList();
 
         }
-        public List<AppointmentLoadModel> LoadAllReservedAppointments(Guid clinicId)
+        public List<AppointmentLoadModel> LoadAllReservedAppointmentsByClinicId(Guid clinicId)
         {
             var dbAppointmentIDs = _appDbContext.Appointment2Clinics.Where(x => !x.IsDeleted && x.Clinic_RefID == clinicId).Select(x => x.Appointment_RefID).ToList();
             var dbClinics = _appDbContext.Clinics.FirstOrDefault(x => x.Id == clinicId);
@@ -254,6 +255,60 @@ namespace MedicApp.Integrations
                     WorksFrom = dbClinics.WorksFrom,
                     WorksTo = dbClinics.WorksTo
                 };
+                result.Add(model);
+            }
+            return result;
+        }
+        public List<AppointmentLoadModel> LoadAllReservedAppointmnets()
+        {
+            var dbAppointmnets = _appDbContext.Appointments.Where(x => !x.IsDeleted && x.IsReserved).ToList();
+            var clinicIds = dbAppointmnets.Select(x => x.Clinic_RefID).ToList();
+            var clinics = _appDbContext.Clinics.Where(x => clinicIds.Any(s => x.Id == s)).ToDictionary(x => x.Id, x => x);
+
+            var patientsIds = dbAppointmnets.Select(x => x.Patient_RefID).ToList();
+            var patients = _appDbContext.Users.Where(x => patientsIds.Any(u => u == x.Id)).ToDictionary(x => x.Id, x => x);
+            var reportsIds = _appDbContext.Appointment2Reports.Where(x => dbAppointmnets.Any(s => x.Appointment_RefID == s.Id)).ToList();
+            List<AppointmentLoadModel> result = new List<AppointmentLoadModel>();
+            foreach (var item in dbAppointmnets)
+            {
+                var model = new AppointmentLoadModel
+                {
+                    Id = item.Id,
+                    IsCanceled = item.IsCanceled,
+                    IsFinished = item.IsFinished,
+                    IsPredefiend = item.IsPredefiend,
+                    StartDate = item.StartDate,
+                };
+                if (clinics.TryGetValue(item.Clinic_RefID.Value, out var clinic))
+                {
+                    model.Clinic = new ClinicBasicInfo
+                    {
+                        Id = clinic.Id,
+                        Address = clinic.Address,
+                        City = clinic.City,
+                        Country = clinic.Country,
+                        Description = clinic.Description,
+                        Name = clinic.Name,
+                        Phone = clinic.Phone,
+                        WorksFrom = clinic.WorksFrom,
+                        WorksTo = clinic.WorksTo,
+                    };
+
+                }
+                if (patients.TryGetValue(item.Patient_RefID.Value, out var patient))
+                {
+                    model.Patient = new UserBasicInfo
+                    {
+                        Address = patient.Address,
+                        City = patient.City,
+                        Country = patient.Country,
+                        Email = patient.Email,
+                        FirstName = patient.FirstName,
+                        LastName = patient.LastName,
+                        Id = patient.Id,
+                        Mobile = patient.Mobile
+                    };
+                }
                 result.Add(model);
             }
             return result;
@@ -350,7 +405,7 @@ namespace MedicApp.Integrations
             var dbAppointment = _appDbContext.Appointments.First(x => !x.IsDeleted);
             dbAppointment.IsCanceled = true;
             _appDbContext.SaveChanges();
-            
+
         }
         #endregion
 
