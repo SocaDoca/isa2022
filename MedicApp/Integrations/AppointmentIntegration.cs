@@ -17,13 +17,13 @@ namespace MedicApp.Integrations
         List<Appointment> CreatePredefiendAppointments(SavePredefiendAppointment predefiendAppointment);
         List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId);
         List<AppointmentLoadModel> LoadAllAppointmnetsByClinicId(Guid clinicId);
-        bool ReserveAppointment(Guid appointmentId, Guid patientId);
-        bool CancelAppointment(Guid appointmenetId);
-        bool StartAppointmnet(Guid appointmentId);
-        bool FinishAppointment(Guid appointmentId);
+        void ReserveAppointment(Guid appointmentId, Guid patientId);
+        void CancelAppointment(Guid appointmenetId);
+        void StartAppointmnet(Guid appointmentId);
+        void FinishAppointment(Guid appointmentId);
         List<LoadPredefiendAppointment> LoadPredefiendAppointments(Guid clinicId);
         List<AppointmentLoadModel> LoadAllReservedAppointmentsByClinicId(Guid clinicId);
-        List<AppointmentLoadModel> LoadAllReservedAppointments();
+        List<AppointmentLoadModel> LoadAllReservedAppointmnets();
 
 
     }
@@ -278,6 +278,7 @@ namespace MedicApp.Integrations
                     IsFinished = item.IsFinished,
                     IsPredefiend = item.IsPredefiend,
                     StartDate = item.StartDate,
+                    Report = null,
                 };
                 if (clinics.TryGetValue(item.Clinic_RefID.Value, out var clinic))
                 {
@@ -354,55 +355,45 @@ namespace MedicApp.Integrations
 
         #region Change status appointment
 
-        public bool ReserveAppointment(Guid appointmentId, Guid patientId)
+        public void ReserveAppointment(Guid appointmentId, Guid patientId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsReserved == false && x.IsDeleted == false && x.Id == appointmentId);
-            if (dbAppointment == null)
-            {
-                return false;
-            }
+            
             dbAppointment.Patient_RefID = patientId;
             dbAppointment.IsReserved = true;
             _appDbContext.Update(dbAppointment);
             _appDbContext.SaveChanges();
-            return true;
+
             /*   var code = IronBarCode.BarcodeWriter.CreateBarcode(appointment.Id.ToByteArray(), BarcodeWriterEncoding.QRCode);
                code.SetMargins(100);
                code.ChangeBarCodeColor(Color.Purple);
                _emailUtils.SendMail(code.ToString(), String.Format("Appointmnet for patient {0} {1}", dbPatient.FirstName, dbPatient.LastName), dbPatient.Email, _emailSettings.Value.SenderAddress);
             */
         }
-        public bool StartAppointmnet(Guid appointmentId)
+        public void StartAppointmnet(Guid appointmentId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsReserved == true && x.IsDeleted == false && x.Id == appointmentId);
-            if (dbAppointment == null)
-            {
-                return false;
-            }
             dbAppointment.IsReserved = false;
             dbAppointment.IsStarted = true;
 
             _appDbContext.Update(dbAppointment);
             _appDbContext.SaveChanges();
-            return true;
+
         }
-        public bool FinishAppointment(Guid appointmentId)
+        public void FinishAppointment(Guid appointmentId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsStarted == true && x.IsDeleted == false && x.Id == appointmentId);
-            if (dbAppointment == null)
-            {
-                return false;
-            }
+            
             dbAppointment.IsStarted = false;
             dbAppointment.IsFinished = true;
 
             _appDbContext.Update(dbAppointment);
             _appDbContext.SaveChanges();
-            return true;
+
         }
         public void CancelAppointment(Guid appointmenetId)
         {
-            var dbAppointment = _appDbContext.Appointments.First(x => !x.IsDeleted);
+            var dbAppointment = _appDbContext.Appointments.First(x => !x.IsDeleted && x.Id == appointmenetId);
             dbAppointment.IsCanceled = true;
             _appDbContext.SaveChanges();
 

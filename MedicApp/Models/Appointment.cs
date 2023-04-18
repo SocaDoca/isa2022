@@ -54,7 +54,7 @@ namespace MedicApp.Models
         public bool IsCanceled { get; set; }
         public bool IsPredefiend { get; set; }
         public bool IsFinished { get; set; }
-        public AppointmentReport Report { get; set; }
+        public AppointmentReport? Report { get; set; }
     }
 
     public class AppotinmentInClinics
