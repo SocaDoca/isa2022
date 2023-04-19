@@ -30,6 +30,7 @@ import { AvailableAppointmentsComponent } from './available-appointments/availab
 import { ScheduleAppComponent } from './schedule-app/schedule-app.component';
 import { ComplaintHistoryComponent } from './complaint-history/complaint-history.component';
 import { AdminComplaintComponent } from './admin-complaint/admin-complaint.component';
+import { AdminReservedAppointmentsComponent } from './admin-reserved-appointments/admin-reserved-appointments.component';
 
 const routes: Routes = [
   { path: '', component: MainPageComponent },
@@ -52,6 +53,7 @@ const routes: Routes = [
   { path: 'profileEmployee/:id/add-clinic', component: AddClinicComponent },
   { path: 'profileEmployee/:id/complaints', component: AdminComplaintComponent },
   { path: 'profile/:id/updateProfile', component: UserPersonalProfileUpdateComponent },
+  { path: 'profileEmployee/:id/reservedAppointments', component: AdminReservedAppointmentsComponent },
   { path: 'profileEmployee/:id/searchUser', component: SearchUserComponent },
   { path: 'profileEmployee/:id/searchUser/start-appointment', component: StartAppointmentComponent },
   { path: 'profileEmployee/:id/searchUser/start-appointment/report', component: AppointmentReportComponent },
