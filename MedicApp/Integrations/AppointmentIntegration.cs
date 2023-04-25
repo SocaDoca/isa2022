@@ -267,7 +267,7 @@ namespace MedicApp.Integrations
 
             var patientsIds = dbAppointmnets.Select(x => x.Patient_RefID).ToList();
             var patients = _appDbContext.Users.Where(x => patientsIds.Any(u => u == x.Id)).ToDictionary(x => x.Id, x => x);
-            var reportsIds = _appDbContext.Appointment2Reports.Where(x => dbAppointmnets.Any(s => x.Appointment_RefID == s.Id)).ToList();
+           // var reportsIds = _appDbContext.Appointment2Reports.Where(x => dbAppointmnets.Any(s => x.Appointment_RefID == s.Id)).ToList();
             List<AppointmentLoadModel> result = new List<AppointmentLoadModel>();
             foreach (var item in dbAppointmnets)
             {

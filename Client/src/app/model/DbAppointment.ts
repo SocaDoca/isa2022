@@ -19,6 +19,8 @@ export interface DbAppointmentInterface {
   isFinished?: boolean;
   report?: AppReport;
   patient?: User;
+  worksFrom?: string;
+  worksTo?: string;
 }
 
 export class DbAppointment implements DbAppointmentInterface {
@@ -37,6 +39,8 @@ export class DbAppointment implements DbAppointmentInterface {
   clinic?: ClinicSaveModel;
   report?: AppReport;
   patient?: User;
+  worksFrom?: string;
+  worksTo?: string;
 
   constructor(obj: DbAppointmentInterface) {
     this.id = obj.id;
@@ -53,5 +57,7 @@ export class DbAppointment implements DbAppointmentInterface {
     this.clinic_RefID = obj.clinic_RefID;
     this.clinic = obj.clinic;
     this.patient = obj.patient;
+    this.worksFrom = obj.worksFrom;
+    this.worksTo = obj.worksTo;
   }
 }

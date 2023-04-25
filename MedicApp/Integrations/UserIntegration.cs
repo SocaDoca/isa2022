@@ -363,7 +363,7 @@ namespace MedicApp.Integrations
         public UserLoadModel GetUserById(Guid id)
         {
             var dbUser = _appDbContext.Users.FirstOrDefault(x => x.Id == id);
-            var dbQuestionnaire = _appDbContext.Questionnaire.FirstOrDefault(x => x.Patient_RefID == dbUser.Id);
+            //var dbQuestionnaire = _appDbContext.Questionnaire.FirstOrDefault(x => x.Patient_RefID == dbUser.Id);
             if (dbUser == null)
             {
                 throw (new KeyNotFoundException("User not found"));
