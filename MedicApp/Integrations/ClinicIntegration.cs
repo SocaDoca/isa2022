@@ -43,6 +43,8 @@ namespace MedicApp.Integrations
             dbClinic.Description = clinicSave.Description;
             dbClinic.Phone = clinicSave.Phone;
             dbClinic.Rating = clinicSave.Rating;
+            dbClinic.WorksFrom = clinicSave.WorksFrom;
+            dbClinic.WorksTo = clinicSave.WorksTo;
 
             var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id).ToList();
             var dbWorkingHoursIds = clinic2WorkingHours.Select(x => x.WorkingHours_RefID).ToList();            

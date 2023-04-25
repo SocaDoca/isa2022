@@ -30,7 +30,7 @@ export class ClinicService {
   urlTerm = "http://localhost:5017/Appointment/save-predefiend-appointment";
   urlAppoint = "http://localhost:5017/Appointment/reserve-predefiend-appointment";
   urlAppointOnClick = "http://localhost:5017/Appointment/save-onClick";
-
+  urlgetAllReservedAppointments = "http://localhost:5017/Appointment/load-reserved-appointments"
   urlSaveComplaint = "http://localhost:5017/Clinic/save-complaint";
   urlgetAllComplaints = "http://localhost:5017/Clinic/load-all-complaints";
 
@@ -85,6 +85,10 @@ export class ClinicService {
         return userData;
       })
     );
+  }
+
+  getReservedAppointments() {
+    return this.http.get<DbAppointment[]>(`${this.urlgetAllReservedAppointments}`,);
   }
 
   saveAppointmentOnClick(appointment: DbAppointment): Observable<DbAppointment> {

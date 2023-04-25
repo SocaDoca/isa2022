@@ -29,26 +29,26 @@ namespace MedicApp.Controllers
             return _appointmentIntegration.CreatePredefiendAppointments(appotinmentSave);
         }
         [HttpPost("reserve-predefiend-appointment")]
-        public bool ReserveAppointment(Guid appotinmentId, Guid patientId)
+        public void ReserveAppointment(Guid appotinmentId, Guid patientId)
         {
-            return _appointmentIntegration.ReserveAppointment(appotinmentId,patientId);
+             _appointmentIntegration.ReserveAppointment(appotinmentId,patientId);
         }
         [HttpPost("start-predefiend-appointment")]
-        public bool StartAppointment(Guid appotinmentId)
+        public void StartAppointment(Guid appotinmentId)
         {
-            return _appointmentIntegration.StartAppointmnet(appotinmentId);
+             _appointmentIntegration.StartAppointmnet(appotinmentId);
         }
         
         [HttpPost("finish-predefiend-appointment")]
-        public bool FinishAppointment(Guid appotinmentId)
+        public void FinishAppointment(Guid appotinmentId)
         {
-            return _appointmentIntegration.FinishAppointment(appotinmentId);
+             _appointmentIntegration.FinishAppointment(appotinmentId);
         }
 
         [HttpPost("cancel-appointment")]
-        public bool CancelAppointment(Guid appointmenetId)
+        public void CancelAppointment(Guid appointmenetId)
         {
-            return _appointmentIntegration.CancelAppointment(appointmenetId);           
+             _appointmentIntegration.CancelAppointment(appointmenetId);           
         }
 
         [HttpGet("get-appointment")]
@@ -67,6 +67,10 @@ namespace MedicApp.Controllers
         {
             return _appointmentIntegration.LoadAllAppointmnetsByClinicId(clinicId);
         }
-
+        [HttpGet("load-reserved-appointments")]
+        public List<AppointmentLoadModel> LoadAllReservedAppointmnets()
+        {
+            return _appointmentIntegration.LoadAllReservedAppointmnets();
+        }
     }
 }
