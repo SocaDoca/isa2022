@@ -267,7 +267,7 @@ namespace MedicApp.Integrations
 
             var patientsIds = dbAppointmnets.Select(x => x.Patient_RefID).ToList();
             var patients = _appDbContext.Users.Where(x => patientsIds.Any(u => u == x.Id)).ToDictionary(x => x.Id, x => x);
-           // var reportsIds = _appDbContext.Appointment2Reports.Where(x => dbAppointmnets.Any(s => x.Appointment_RefID == s.Id)).ToList();
+            // var reportsIds = _appDbContext.Appointment2Reports.Where(x => dbAppointmnets.Any(s => x.Appointment_RefID == s.Id)).ToList();
             List<AppointmentLoadModel> result = new List<AppointmentLoadModel>();
             foreach (var item in dbAppointmnets)
             {
@@ -332,9 +332,16 @@ namespace MedicApp.Integrations
                     StartDate = predefiendAppointment.Date.Value.AddMinutes(predefiendAppointment.Duration * count),
                     IsCanceled = false,
                     IsFinished = false,
-
+                };
+                var appointmentHistory = new AppointmentHistory
+                {
+                    AppointmentId = model.Id,
+                    BeforeChange_AppointmentStatus = null,
+                    AfterChange_AppointmentStatus = Enums.AppointmentStatus.Planned,
+                    TimeCreated = DateTime.Now,
                 };
 
+                _appDbContext.AppointmentHistories.Add(appointmentHistory);
                 _appDbContext.Appointments.Add(model);
 
                 var appointment2Clinics = new Appointment2Clinic
@@ -358,43 +365,53 @@ namespace MedicApp.Integrations
         public void ReserveAppointment(Guid appointmentId, Guid patientId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsReserved == false && x.IsDeleted == false && x.Id == appointmentId);
-            
+            var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => x.AppointmentId == appointmentId && x.AfterChange_AppointmentStatus == Enums.AppointmentStatus.Planned).FirstOrDefault();
+            var dbPatient = _appDbContext.Users.SingleOrDefault(x => x.Id == patientId);
             dbAppointment.Patient_RefID = patientId;
             dbAppointment.IsReserved = true;
-            _appDbContext.Update(dbAppointment);
+
+            appointmentHistory.AfterChange_AppointmentStatus = Enums.AppointmentStatus.Reserved;
+
             _appDbContext.SaveChanges();
 
-            /*   var code = IronBarCode.BarcodeWriter.CreateBarcode(appointment.Id.ToByteArray(), BarcodeWriterEncoding.QRCode);
-               code.SetMargins(100);
-               code.ChangeBarCodeColor(Color.Purple);
-               _emailUtils.SendMail(code.ToString(), String.Format("Appointmnet for patient {0} {1}", dbPatient.FirstName, dbPatient.LastName), dbPatient.Email, _emailSettings.Value.SenderAddress);
-            */
+            var code = IronBarCode.BarcodeWriter.CreateBarcode(dbAppointment.Id.ToByteArray(), BarcodeWriterEncoding.QRCode);
+            code.SetMargins(100);
+            code.ChangeBarCodeColor(Color.Purple);
+            _emailUtils.SendMail(code.ToString(), $"Appointmnet for patient {dbPatient.FirstName} {dbPatient.LastName}", dbPatient.Email, _emailSettings.Value.SenderAddress);
+
         }
         public void StartAppointmnet(Guid appointmentId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsReserved == true && x.IsDeleted == false && x.Id == appointmentId);
+            var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => x.AppointmentId == appointmentId && x.AfterChange_AppointmentStatus == Enums.AppointmentStatus.Planned).FirstOrDefault();
             dbAppointment.IsReserved = false;
+            appointmentHistory.AfterChange_AppointmentStatus = Enums.AppointmentStatus.Started;
             dbAppointment.IsStarted = true;
 
-            _appDbContext.Update(dbAppointment);
             _appDbContext.SaveChanges();
 
         }
         public void FinishAppointment(Guid appointmentId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsStarted == true && x.IsDeleted == false && x.Id == appointmentId);
-            
+            var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => x.AppointmentId == appointmentId && x.AfterChange_AppointmentStatus == Enums.AppointmentStatus.Started).FirstOrDefault();
+
+            appointmentHistory.AfterChange_AppointmentStatus = Enums.AppointmentStatus.Finished;
             dbAppointment.IsStarted = false;
             dbAppointment.IsFinished = true;
 
-            _appDbContext.Update(dbAppointment);
             _appDbContext.SaveChanges();
 
         }
-        public void CancelAppointment(Guid appointmenetId)
+        public void CancelAppointment(Guid appointmentId)
         {
-            var dbAppointment = _appDbContext.Appointments.First(x => !x.IsDeleted && x.Id == appointmenetId);
+            var dbAppointment = _appDbContext.Appointments.First(x => !x.IsDeleted && x.Id == appointmentId);
+            var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => x.AppointmentId == appointmentId ).FirstOrDefault();
+
+            appointmentHistory.AfterChange_AppointmentStatus = Enums.AppointmentStatus.Finished;
+
             dbAppointment.IsCanceled = true;
+            
             _appDbContext.SaveChanges();
 
         }

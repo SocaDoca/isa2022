@@ -30,10 +30,11 @@ namespace MedicApp.Integrations
         }
 
 
-        public Complaints CreateComplaint(ComplaintSaveModel complaint, Guid patientId)
+        public Complaints CreateComplaint(ComplaintSaveModel complaint, Guid patientId, Guid clinicId = default, Guid employeeId = default)
         {
             var dbComplaint = _appDbContext.Complaints.FirstOrDefault(x => x.Id == complaint.Id && x.IsDeleted == false);
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == patientId && x.IsDeleted == false && x.Role == "User");
+            
 
             if (dbPatient == null)
             {
@@ -49,6 +50,9 @@ namespace MedicApp.Integrations
                     IsAnswered = complaint.IsAnswered,
                     IsForClinic = complaint.IsForClinic,
                     IsForEmployee = complaint.IsForEmployee,
+                    IsForClinic_Clinic_RefId = clinicId != Guid.Empty ? clinicId : null,
+                    IsForEmployee_User_RefId = employeeId != Guid.Empty ? employeeId : null,
+                    ComplaintBy_User_RefId = dbPatient.Id
                 };
 
                 var complaint2Patient = new Complaint2Patient()
@@ -61,13 +65,21 @@ namespace MedicApp.Integrations
             dbComplaint.Answer = complaint.Answer;
             dbComplaint.UserInput = complaint.UserInput;
 
-
+            var body = "You have succsefully created complaint";
+            _emailUtils.SendMail(body, $"Created complaint by {dbPatient.FirstName} {dbPatient.LastName}", _emailSettings.Value.SenderAddress, dbPatient?.Email ?? string.Empty);
             _appDbContext.Complaints.Add(dbComplaint);
             _appDbContext.SaveChanges();
 
             return dbComplaint;
         }
 
+        public void AnswerComplaint(Guid complaintId, string answer)
+        {
+            var dbComplaint = _appDbContext.Complaints.FirstOrDefault(x => x.Id == complaintId && !x.IsDeleted);
+            var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == dbComplaint.ComplaintBy_User_RefId && !x.IsDeleted);
+            dbComplaint.Answer = answer;
+            _emailUtils.SendMail(answer, $"Answer on complaint", dbPatient.Email, _emailSettings.Value.SenderAddress);
+        }
 
         public List<Complaints> LoadAllComplaints()
         {
