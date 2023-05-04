@@ -32,6 +32,7 @@ namespace MedicApp.Integrations
         List<UserBasicInfo> LoadUserBasicInfoByIds(List<Guid> userIds);
         SaveQuestionnaire GetQuestionnaireByUserId(Guid Id);
         Questionnaire CreateQuestionnaireForPatientById(SaveQuestionnaire questionnaire, Guid PatientId);
+        void RemovePenalty();
     }
 
     public class UserIntegration : IUserIntegration
@@ -43,9 +44,17 @@ namespace MedicApp.Integrations
         {
             _appDbContext = context;
             _secretSettings = secretSettings;
-
         }
 
+        public void RemovePenalty()
+        {
+            var dbPenaltyUsers = _appDbContext.Users.Where(x => !x.IsDeleted).ToList();
+            foreach(var user in dbPenaltyUsers)
+            {
+                user.Penalty = 0;
+                _appDbContext.SaveChanges();
+            }
+        }
 
         #region Registration and Validation
         public bool VerifyUser(VerifyParams verifyParams)
@@ -368,25 +377,25 @@ namespace MedicApp.Integrations
             {
                 throw (new KeyNotFoundException("User not found"));
             }
-           /* var questionModel = new SaveQuestionnaire
-            {
-                Id = dbQuestionnaire.Id,
-                ExpireDate = dbQuestionnaire.ExpireDate,
-                Patient_RefID = dbQuestionnaire.Patient_RefID,
-                question1 = dbQuestionnaire.question1,
-                question2 = dbQuestionnaire.question2,
-                question3 = dbQuestionnaire.question3,
-                question4 = dbQuestionnaire.question4,
-                question5 = dbQuestionnaire.question5,
-                question6 = dbQuestionnaire.question6,
-                question7 = dbQuestionnaire.question7,
-                question8 = dbQuestionnaire.question8,
-                question9 = dbQuestionnaire.question9,
-                question10 = dbQuestionnaire.question10,
-                question11 = dbQuestionnaire.question11,
-                question12 = dbQuestionnaire.question12,
-                IsValid = dbQuestionnaire.IsValid
-            };*/
+            /* var questionModel = new SaveQuestionnaire
+             {
+                 Id = dbQuestionnaire.Id,
+                 ExpireDate = dbQuestionnaire.ExpireDate,
+                 Patient_RefID = dbQuestionnaire.Patient_RefID,
+                 question1 = dbQuestionnaire.question1,
+                 question2 = dbQuestionnaire.question2,
+                 question3 = dbQuestionnaire.question3,
+                 question4 = dbQuestionnaire.question4,
+                 question5 = dbQuestionnaire.question5,
+                 question6 = dbQuestionnaire.question6,
+                 question7 = dbQuestionnaire.question7,
+                 question8 = dbQuestionnaire.question8,
+                 question9 = dbQuestionnaire.question9,
+                 question10 = dbQuestionnaire.question10,
+                 question11 = dbQuestionnaire.question11,
+                 question12 = dbQuestionnaire.question12,
+                 IsValid = dbQuestionnaire.IsValid
+             };*/
 
             var resultUser = new UserLoadModel
             {

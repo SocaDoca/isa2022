@@ -333,11 +333,12 @@ namespace MedicApp.Integrations
                     IsCanceled = false,
                     IsFinished = false,
                 };
+
                 var appointmentHistory = new AppointmentHistory
                 {
                     AppointmentId = model.Id,
-                    BeforeChange_AppointmentStatus = null,
-                    AfterChange_AppointmentStatus = Enums.AppointmentStatus.Planned,
+                    IsStartedAppointment = false,
+                    IsFinishedAppointment = false,
                     TimeCreated = DateTime.Now,
                 };
 
@@ -365,12 +366,9 @@ namespace MedicApp.Integrations
         public void ReserveAppointment(Guid appointmentId, Guid patientId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsReserved == false && x.IsDeleted == false && x.Id == appointmentId);
-            var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => x.AppointmentId == appointmentId && x.AfterChange_AppointmentStatus == Enums.AppointmentStatus.Planned).FirstOrDefault();
             var dbPatient = _appDbContext.Users.SingleOrDefault(x => x.Id == patientId);
             dbAppointment.Patient_RefID = patientId;
             dbAppointment.IsReserved = true;
-
-            appointmentHistory.AfterChange_AppointmentStatus = Enums.AppointmentStatus.Reserved;
 
             _appDbContext.SaveChanges();
 
@@ -383,20 +381,21 @@ namespace MedicApp.Integrations
         public void StartAppointmnet(Guid appointmentId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsReserved == true && x.IsDeleted == false && x.Id == appointmentId);
-            var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => x.AppointmentId == appointmentId && x.AfterChange_AppointmentStatus == Enums.AppointmentStatus.Planned).FirstOrDefault();
+            var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => x.AppointmentId == appointmentId).FirstOrDefault();
             dbAppointment.IsReserved = false;
-            appointmentHistory.AfterChange_AppointmentStatus = Enums.AppointmentStatus.Started;
+            appointmentHistory.IsStartedAppointment = true;
             dbAppointment.IsStarted = true;
 
             _appDbContext.SaveChanges();
-
         }
+
         public void FinishAppointment(Guid appointmentId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsStarted == true && x.IsDeleted == false && x.Id == appointmentId);
-            var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => x.AppointmentId == appointmentId && x.AfterChange_AppointmentStatus == Enums.AppointmentStatus.Started).FirstOrDefault();
-
-            appointmentHistory.AfterChange_AppointmentStatus = Enums.AppointmentStatus.Finished;
+            var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => x.AppointmentId == appointmentId).FirstOrDefault();
+            
+            appointmentHistory.IsStartedAppointment = false;
+            appointmentHistory.IsFinishedAppointment = true;
             dbAppointment.IsStarted = false;
             dbAppointment.IsFinished = true;
 
@@ -406,12 +405,19 @@ namespace MedicApp.Integrations
         public void CancelAppointment(Guid appointmentId)
         {
             var dbAppointment = _appDbContext.Appointments.First(x => !x.IsDeleted && x.Id == appointmentId);
-            var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => x.AppointmentId == appointmentId ).FirstOrDefault();
+            var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == dbAppointment.Patient_RefID && !x.IsDeleted);
+            var appointmentHistory = _appDbContext.AppointmentHistories.FirstOrDefault(x => x.AppointmentId == appointmentId);
 
-            appointmentHistory.AfterChange_AppointmentStatus = Enums.AppointmentStatus.Finished;
+            if (DateTime.Now < dbAppointment.StartDate.AddDays(-1))
+            {
+                throw new Exception("Appointment cant be cancled");
+            }
 
+            dbPatient.Penalty++;
+            appointmentHistory.IsStartedAppointment = false;
+            appointmentHistory.IsFinishedAppointment = false;
             dbAppointment.IsCanceled = true;
-            
+
             _appDbContext.SaveChanges();
 
         }

@@ -13,8 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using System.Text;
-
-
+using Quartz;
+using MedicApp.Scheduler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +26,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors();
+builder.Services.AddQuartz(q =>
+{
+    q.UseMicrosoftDependencyInjectionScopedJobFactory();
+    var jobKey = new JobKey("CronJobWorker");
+    q.AddJob<CronJobWorker>(x => x.WithIdentity(jobKey));
+
+    q.AddTrigger(x =>
+    {
+        x.ForJob(jobKey);
+        x.WithCronSchedule("0 0 1 * *");
+    });
+});
+
+builder.Services.AddQuartzHostedService(x => x.WaitForJobsToComplete = true);
 var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -63,8 +77,6 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = false,
     };
 });
-
-
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

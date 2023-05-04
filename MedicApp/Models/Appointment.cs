@@ -16,6 +16,7 @@ namespace MedicApp.Models
         public bool IsPredefiend { get; set; }
         public bool IsFinished { get; set; }
         public bool IsReserved { get; set; }
+        
 
         public Appointment()
         {
