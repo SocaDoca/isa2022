@@ -33,6 +33,7 @@ namespace MedicApp.Integrations
         SaveQuestionnaire GetQuestionnaireByUserId(Guid Id);
         Questionnaire CreateQuestionnaireForPatientById(SaveQuestionnaire questionnaire, Guid PatientId);
         void RemovePenalty();
+        int RateClinic(SaveGrade grade);
     }
 
     public class UserIntegration : IUserIntegration
@@ -49,7 +50,7 @@ namespace MedicApp.Integrations
         public void RemovePenalty()
         {
             var dbPenaltyUsers = _appDbContext.Users.Where(x => !x.IsDeleted).ToList();
-            foreach(var user in dbPenaltyUsers)
+            foreach (var user in dbPenaltyUsers)
             {
                 user.Penalty = 0;
                 _appDbContext.SaveChanges();
@@ -440,6 +441,27 @@ namespace MedicApp.Integrations
         }
 
         #endregion
+
+        public int RateClinic(SaveGrade grade)
+        {
+            var dbGrade = _appDbContext.Grades.FirstOrDefault(x => x.Id == grade.Id);
+            if (dbGrade == null)
+            {
+                if (_appDbContext.Grades.Where(x => x.Clinic_RefId == grade.Clinic_RefId && x.Patient_RefId == grade.Patient_RefId).Any())
+                {
+                    throw new Exception("User already rated this clinic");
+                }
+                dbGrade = new Grade
+                {
+                    Clinic_RefId = grade.Clinic_RefId,
+                    Patient_RefId = grade.Patient_RefId
+                };
+            }
+            dbGrade.Value = grade.Value;
+            _appDbContext.Grades.Add(dbGrade);
+            _appDbContext.SaveChanges();
+            return dbGrade.Value;
+        }
 
         #region Support methods
         private bool CheckPassword(string password, User user)

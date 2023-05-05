@@ -5,19 +5,20 @@
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string WorksFrom { get; set; }
-        public string WorksTo { get; set; }
+        public DateTime WorksFrom { get; set; }
+        public DateTime WorksTo { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
-        public float Rating { get; set; }
+        public double Rating { get; set; }
         public bool IsDeleted { get; set; }
 
         public Clinic()
         {
             Id = Guid.NewGuid();
             IsDeleted = false;
+            Rating = 0;
         }
     }
 
@@ -28,11 +29,11 @@
         public string Description { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
-        public string WorksFrom { get; set; }
-        public string WorksTo { get; set; }
+        public DateTime WorksFrom { get; set; }
+        public DateTime WorksTo { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
-        public float Rating { get; set; }
+        public double Rating { get; set; }
        
     }
     public class ClinicLoadModel
@@ -40,13 +41,13 @@
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string WorksFrom { get; set; }
-        public string WorksTo { get; set; }
+        public DateTime WorksFrom { get; set; }
+        public DateTime WorksTo { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
-        public float Rating { get; set; }
+        public double Rating { get; set; }
         public List<Appointment> Appointments { get; set; }            
        
     }
@@ -56,8 +57,8 @@
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string WorksFrom { get; set; }
-        public string WorksTo { get; set; }
+        public DateTime WorksFrom { get; set; }
+        public DateTime WorksTo { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
@@ -88,12 +89,12 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public string Address { get; set; }
-        public string WorksFrom { get; set; }
-        public string WorksTo { get; set; }
+        public DateTime WorksFrom { get; set; }
+        public DateTime WorksTo { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
-        public float Rating { get; set; }
+        public double Rating { get; set; }
         public List<AppotinmentInClinics> Appointments { get; set; }
     }
 

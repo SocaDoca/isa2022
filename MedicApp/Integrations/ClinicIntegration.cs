@@ -16,6 +16,7 @@ namespace MedicApp.Integrations
         bool UpdateClinic(ClinicSaveModel updateClinic);
         Complaints SaveComplaint(Complaints complaint);
         List<Complaints> LoadAllComplaints();
+        
     }
     public class ClinicIntegration : IClinicIntegration
     {

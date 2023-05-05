@@ -30,6 +30,7 @@ namespace MedicApp.Database
         public DbSet<User> Users { get; set; }
         public DbSet<Clinic> Clinics { get; set; }
         public DbSet<Roles> Roles { get; set; }
+        public DbSet<Grade> Grades { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<AppointmentReport> AppointmentsReports { get; set; }
         public DbSet<Questionnaire> Questionnaire { get; set; }
