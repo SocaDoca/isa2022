@@ -68,6 +68,10 @@ export class UserPersonalProfileComponent implements OnInit{
         this.user = res;
         this.showGender(res);
         this.user.penalty = res.penalty;
+        const country = res.country ?? '';
+        const address = res.address ?? '';
+        const city = res.city ?? '';
+        this.user.fullAddress = `${country}, ${address}, ${city}`;
         console.log(this.user.penalty);
 
       })

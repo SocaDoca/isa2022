@@ -69,6 +69,7 @@ export class ScheduleAppComponent {
       this.appointment.patient_RefId = res.patient_RefId;
       this.appointment.id = res.id;
       this.appointment = res;
+      console.log(res)
 
     });
     this.router.navigate(['/profile', this.appointment.patient_RefId]);

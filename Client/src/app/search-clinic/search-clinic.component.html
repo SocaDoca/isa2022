@@ -46,8 +46,8 @@
             <td style="color:white">{{f.address}}, {{f.city}}, {{f.country}}</td>
             <td style="color:white">{{f.phone}}</td>
             <td style="color:white">{{f.rating}}</td>
-            <td *ngFor="let w of f.workingHours" style="color:white">{{w.start}}AM - {{w.end}}PM</td>
-            <td *ngFor="let w of f.workingHours" style="color:white">{{w.day}}</td>
+            <td style="color:white">{{f.worksFrom}}AM - {{f.worksTo}}PM</td>
+            <td style="color:white"></td>
           </tr>
         </tbody>
       </table>

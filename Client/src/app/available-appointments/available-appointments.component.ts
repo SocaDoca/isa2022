@@ -46,7 +46,7 @@ export class AvailableAppointmentsComponent {
 
     this.clinicService.getAllTermsByClinicId(this.id).subscribe(res => {
       this.appointments = res;
-      
+      console.log(res)
 
     });
    // console.log(JSON.stringify(this.form.value, null, 2));
