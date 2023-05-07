@@ -45,7 +45,6 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit {
       username: '',
       firstName: '',
       lastName:'',
-      fullAddress: '',
       mobile: '',
       job: '',
       gender: undefined,
@@ -91,6 +90,7 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit {
         }
       });
 
+    this.loadProfile();
 
   }
 
@@ -104,7 +104,6 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit {
     this.user.isFirstTime = false;
   }
   ngOnInit(): void {
-
 
 
   }
@@ -121,12 +120,19 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit {
   loadProfile() {
     this.id = this.route.snapshot.params['id'];
     this.isFirstTime = this.route.snapshot.params['isFirstTime'];
+    this.user = {};
     this.userService.getUser(this.id)
       .subscribe(res => {
         this.user = res;
         this.showGender(res);
+        const country = res.country ?? '';
+        const address = res.address ?? '';
+        const city = res.city ?? '';
+        this.user.fullAddress = `${country}, ${address}, ${city}`;
+        //this.user.fullAddress! = res.country + ", " + res.address + ", " + res.city;
         console.log(res.isFirstTime);
         console.log(res);
+        console.log(this.user.fullAddress);
       })
   }
 

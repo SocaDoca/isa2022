@@ -55,7 +55,7 @@ const routes: Routes = [
   { path: 'profile/:id/updateProfile', component: UserPersonalProfileUpdateComponent },
   { path: 'profileEmployee/:id/reservedAppointments', component: AdminReservedAppointmentsComponent },
   { path: 'profileEmployee/:id/searchUser', component: SearchUserComponent },
-  { path: 'profileEmployee/:id/searchUser/start-appointment', component: StartAppointmentComponent },
+  { path: 'profileEmployee/:id/reservedAppointments/start-appointment/:id', component: StartAppointmentComponent },
   { path: 'profileEmployee/:id/searchUser/start-appointment/report', component: AppointmentReportComponent },
   { path: 'search', component: SearchClinicComponent },
   { path: 'change-pass', component: ChangePassComponent },

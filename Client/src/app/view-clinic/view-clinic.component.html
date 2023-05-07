@@ -46,7 +46,7 @@
             <td style="color:white">{{f.address}}, {{f.city}}, {{f.country}}</td>
             <td style="color:white">{{f.phone}}</td>
             <td style="color:white">{{f.rating}}</td>
-            <td *ngFor="let w of f.workingHours" style="color:white">{{w.start}}AM - {{w.end}}PM</td>
+            <td  style="color:white">{{ f.worksFrom}}AM - {{f.worksTo}}PM </td>
             <td *ngFor="let w of f.workingHours" style="color:white">{{w.day}}</td>
             <td><button [routerLink]="['update/', f.id]" style=" width: 170px; height: 30px; background-color: orangered; color: white; border: none; border-radius: 8px; ">Update clinic</button> </td>
           </tr>

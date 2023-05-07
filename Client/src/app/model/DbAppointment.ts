@@ -17,6 +17,7 @@ export interface DbAppointmentInterface {
   patient_RefId?: string;
   isCanceled?: boolean;
   isFinished?: boolean;
+  isReserved?: boolean;
   report?: AppReport;
   patient?: User;
   worksFrom?: string;
@@ -36,6 +37,7 @@ export class DbAppointment implements DbAppointmentInterface {
   patient_RefId?: string;
   isCanceled?: boolean;
   isFinished?: boolean;
+  isReserved?: boolean;
   clinic?: ClinicSaveModel;
   report?: AppReport;
   patient?: User;
@@ -59,5 +61,6 @@ export class DbAppointment implements DbAppointmentInterface {
     this.patient = obj.patient;
     this.worksFrom = obj.worksFrom;
     this.worksTo = obj.worksTo;
+    this.isReserved = obj.isReserved;
   }
 }

@@ -44,8 +44,8 @@ export class AddClinicComponent {
       rating: 0,
       workHours: [
         this.workHours = new WorkingHours({
-          start: '',
-          end: '',
+          worksFrom: '',
+          worksTo: '',
           day: ''
 
         })  ]    

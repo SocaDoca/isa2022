@@ -26,12 +26,14 @@
         </thead>
         <tbody>
           <tr app-search-user-view *ngFor="let f of appointments">
-            <td style="color:white">{{f.title}}</td>
-            <td style="color:white">{{f.startDate}}</td>
-            <td style="color:white">{{ f.clinic ? f.clinic.address : ''}}</td>
+            <ng-container *ngIf="!f.isReserved">
+              <td style="color:white">{{f.title}}</td>
+              <td style="color:white">{{f.startDate}}</td>
+              <td style="color:white">{{ f.clinic ? f.clinic.address : ''}}</td>
 
 
-            <td><button [routerLink]="['schedule/', f.id ]" style=" width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Schedule appointment</button> </td>
+              <td><button [routerLink]="['schedule/', f.id ]" style=" width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Schedule appointment</button> </td>
+             </ng-container>
           </tr>
         </tbody>
       </table>

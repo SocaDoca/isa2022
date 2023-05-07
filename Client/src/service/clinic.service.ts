@@ -33,6 +33,7 @@ export class ClinicService {
   urlgetAllReservedAppointments = "http://localhost:5017/Appointment/load-reserved-appointments"
   urlSaveComplaint = "http://localhost:5017/Clinic/save-complaint";
   urlgetAllComplaints = "http://localhost:5017/Clinic/load-all-complaints";
+  urlCancelAppointment = "http://localhost:5017/Appointment/cancel-appointment"
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
 
@@ -97,8 +98,10 @@ export class ClinicService {
 
   saveComplaint(complaint: Complaint): Observable<Complaint> {
     return this.http.post<Complaint>(`${this.urlSaveComplaint}`, complaint);
+  }
 
-
+  cancelAppointment(Id: string) {
+    return this.http.post<boolean>(`${this.urlCancelAppointment}?appointmenetId=${Id}`, Id);
   }
 
   getAllComplaints(complaint: Complaint) {

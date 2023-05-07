@@ -1,4 +1,6 @@
 export interface QuestionnaireInterface {
+  id?: any;
+  patient_RefID?: string;
   question1?: any;
   question2?: any;
   question3?: any;
@@ -15,6 +17,8 @@ export interface QuestionnaireInterface {
 }
 
 export class Questionnaire implements QuestionnaireInterface {
+  id?: any;
+  patient_RefID?: string;
   question1?: any;
   question2?: any;
   question3?: any;
@@ -30,6 +34,8 @@ export class Questionnaire implements QuestionnaireInterface {
   isValid?: any;
 
   constructor(obj: QuestionnaireInterface) {
+    this.id = obj.id;
+    this.patient_RefID = obj.patient_RefID;
     this.question1 = obj.question1;
     this.question2 = obj.question2;
     this.question3 = obj.question3;
