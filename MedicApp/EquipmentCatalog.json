@@ -1,0 +1,25 @@
+{
+  "EquipmentItems": [
+    {
+      "Id": "98e872a3-64e0-40eb-8c8d-cdc858ca663e",
+      "Name": "Needle"
+    },
+    {
+      "Id": "98e872a3-64e0-40eb-8c8d-cdc858ca663e",
+      "Name": "Blood-bag"
+    },
+    {
+      "Id": "98e872a3-64e0-40eb-8c8d-cdc858ca663e",
+      "Name": "Tube"
+    },
+    {
+      "Id": "98e872a3-64e0-40eb-8c8d-cdc858ca663e",
+      "Name": "Needle"
+    },
+    {
+      "Id": "98e872a3-64e0-40eb-8c8d-cdc858ca663e",
+      "Name": "Needle"
+    },
+
+  ]
+} 
