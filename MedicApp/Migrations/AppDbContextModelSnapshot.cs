@@ -43,10 +43,13 @@ namespace MedicApp.Migrations
                     b.Property<bool>("IsPredefiend")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<Guid?>("Patient_RefID")
-                        .HasColumnType("char(36)");
+                    b.Property<bool>("IsReserved")
+                        .HasColumnType("tinyint(1)");
 
-                    b.Property<Guid?>("ResponsiblePerson_RefID")
+                    b.Property<bool>("IsStarted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid?>("Patient_RefID")
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("StartDate")
@@ -69,13 +72,16 @@ namespace MedicApp.Migrations
                     b.Property<Guid?>("AppointmentId")
                         .HasColumnType("char(36)");
 
-                    b.Property<int>("AppointmentStatus")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("ChangedByUser_RefID")
                         .HasColumnType("char(36)");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsFinishedAppointment")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsStartedAppointment")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime>("TimeCreated")
@@ -93,10 +99,6 @@ namespace MedicApp.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Equipment")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -141,34 +143,81 @@ namespace MedicApp.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<float>("Rating")
-                        .HasColumnType("float");
+                    b.Property<double>("Rating")
+                        .HasColumnType("double");
+
+                    b.Property<DateTime>("WorksFrom")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("WorksTo")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Clinics");
                 });
 
-            modelBuilder.Entity("MedicApp.Models.Complaint", b =>
+            modelBuilder.Entity("MedicApp.Models.Complaints", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Answer")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("Status")
+                    b.Property<Guid>("ComplaintBy_User_RefId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("IsAnswered")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("Type")
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsForClinic")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid?>("IsForClinic_Clinic_RefId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("IsForEmployee")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid?>("IsForEmployee_User_RefId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("UserInput")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.ToTable("Complaints");
+                });
+
+            modelBuilder.Entity("MedicApp.Models.Grade", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("Clinic_RefId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("Patient_RefId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("MedicApp.Models.Questionnaire", b =>
@@ -321,30 +370,30 @@ namespace MedicApp.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MedicApp.Models.WorkingHours", b =>
+            modelBuilder.Entity("MedicApp.Models.WorkItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("DayOfWeek")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("End")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid?>("AppointmentReportId")
+                        .HasColumnType("char(36)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("Start")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("UsedInstances")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("WorkingHours");
+                    b.HasIndex("AppointmentReportId");
+
+                    b.ToTable("WorkItems");
                 });
 
             modelBuilder.Entity("MedicApp.RelationshipTables.Account2Clinic", b =>
@@ -527,6 +576,26 @@ namespace MedicApp.Migrations
                     b.ToTable("Clinic2WorkingHours");
                 });
 
+            modelBuilder.Entity("MedicApp.RelationshipTables.Complaint2Patient", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("Complaint_RefId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("Patient_RefId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Complaint2Patients");
+                });
+
             modelBuilder.Entity("MedicApp.RelationshipTables.Employee2WokringHours", b =>
                 {
                     b.Property<Guid>("Id")
@@ -545,6 +614,38 @@ namespace MedicApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employee2WokringHours");
+                });
+
+            modelBuilder.Entity("MedicApp.RelationshipTables.WorkItem2Reports", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("Report_RefID")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("WorkItem_RefID")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WorkItem2Reports");
+                });
+
+            modelBuilder.Entity("MedicApp.Models.WorkItem", b =>
+                {
+                    b.HasOne("MedicApp.Models.AppointmentReport", null)
+                        .WithMany("Equipment")
+                        .HasForeignKey("AppointmentReportId");
+                });
+
+            modelBuilder.Entity("MedicApp.Models.AppointmentReport", b =>
+                {
+                    b.Navigation("Equipment");
                 });
 #pragma warning restore 612, 618
         }

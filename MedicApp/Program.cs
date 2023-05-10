@@ -35,7 +35,7 @@ builder.Services.AddQuartz(q =>
     q.AddTrigger(x =>
     {
         x.ForJob(jobKey);
-        x.WithCronSchedule("0 0 1 * *");
+        x.WithCronSchedule("0 15 06 01 * ?");
     });
 });
 
