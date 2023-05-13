@@ -27,7 +27,7 @@ export class ClinicService {
   urlgetOneTerm = "http://localhost:5017/Appointment/get-appointment";
   urlUpdate = "http://localhost:5017/Clinic/update-clinic";
   urlWorkingHours = "http://localhost:5017/WorkingHours/save-working-hours";
-  urlTerm = "http://localhost:5017/Appointment/save-predefiend-appointment";
+  urlTerm = "http://localhost:5017/Appointment/create-predefiend-appointment";
   urlAppoint = "http://localhost:5017/Appointment/reserve-predefiend-appointment";
   urlAppointOnClick = "http://localhost:5017/Appointment/save-onClick";
   urlgetAllReservedAppointments = "http://localhost:5017/Appointment/load-reserved-appointments"
