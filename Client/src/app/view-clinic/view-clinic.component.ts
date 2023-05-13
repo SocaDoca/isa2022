@@ -32,12 +32,6 @@ export class ViewClinicComponent {
   }
 
   ngOnInit(): void {
-
-   /* this.role = sessionStorage.getItem('role');
-    if (this.role == 'Admin') {
-      this.role = 1;
-      console.log(this.role);
-    }*/
     this.id = this.route.params.subscribe(
       params => {
         this.clinic.id = params['Id'];
@@ -46,10 +40,11 @@ export class ViewClinicComponent {
     this.loadClinic();
   }
 
-
-  catchId() {
-    // get route data (dishId and ingredientId)
-
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
   }
 
   loadClinic() {
@@ -59,8 +54,11 @@ export class ViewClinicComponent {
       .subscribe(res => {
         this.clinics = res;
         console.log(this.clinics);
-      }
-
-      )
+        this.clinics.forEach(clinic => {
+          clinic.worksFrom = this.formatDate(clinic.worksFrom!);
+          clinic.worksTo = this.formatDate(clinic.worksTo!);
+          console.log(clinic.worksTo);
+        });
+      })
   }
 }

@@ -1,6 +1,6 @@
 .center {
   margin: 10px;
-  width: 50%;
+  width: 500px;
   padding: 10px;
   background-color: darkolivegreen;
   color: white;
@@ -13,7 +13,7 @@ h1, h2, h3 {
 
 .container {
   display: flex;
-  justify-content: space-between;
+  margin-left: 220px;
   margin-top: 20px;
   margin-bottom: 30px;
   font-style: normal;
@@ -22,7 +22,7 @@ h1, h2, h3 {
 .comp1, .comp2, .comp3 {
   border: 1px solid black;
   flex-grow: 1;
-  margin-left: 30px;
+  margin-left: 10px;
   font-style: normal;
 }
 
@@ -34,7 +34,8 @@ h1, h2, h3 {
 .btn1 {
   width: 200px;
   height: 50px;
-  margin-left: 100px;
+  margin-right: 10px;
+  margin-left: 20px;
   background-color: deepskyblue;
   border: none;
   border-radius: 8px;
@@ -68,11 +69,6 @@ label {
   width: 300px;
 }
 
-.ngForm input {
-  margin-left: 100px;
-}
-
-
 .form-group input {
   margin-left: 50px;
   margin-top: 10px;
@@ -101,12 +97,3 @@ label {
   margin-left: 690px;
   width: 400px;
 }
-
-.form-search {
-  text-align: center;
-  font-size: 14px;
-}
-
-  .form-search input {
-    margin-left: 10px;
-  }

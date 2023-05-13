@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClinicService } from '../../service/clinic.service';
 import { ClinicSaveModel } from '../model/ClinicSaveModel';
+import { DbClinic } from '../model/DbClinic';
 import { WorkingHours } from '../model/WorkingHours';
 
 @Component({
@@ -27,12 +28,11 @@ export class UpdateClinicComponent{
 
   });
 
-  clinic: ClinicSaveModel;
-  workHours: WorkingHours;
+  clinic: DbClinic;
   Id: any;
 
   constructor(private clinicService: ClinicService, private router: Router, private route: ActivatedRoute) {
-    this.clinic = new ClinicSaveModel({
+    this.clinic = new DbClinic({
       name: '',
       address: '',
       city: '',
@@ -40,13 +40,6 @@ export class UpdateClinicComponent{
       description: '',
       phone: '',
       rating: 0,
-      workHours: [
-        this.workHours = new WorkingHours({
-          worksFrom: '',
-          worksTo: '',
-          day: ''
-
-        })]
 
     })
   }
@@ -60,8 +53,6 @@ export class UpdateClinicComponent{
     console.log(this.Id);
     this.clinicService.getClinicById(this.Id).subscribe(res => {
       this.clinic = res;
-      this.clinic.workHours = res.workHours;
-      console.log(this.clinic.workHours);
     })
   }
 
@@ -85,7 +76,7 @@ export class UpdateClinicComponent{
       //this.clinic = res;
       console.log(res);
       //console.log(this.clinic.workHours![this.hours.dayOfWeek]);
-      console.log(this.workHours.day);
+      //console.log(this.workHours.day);
 
     });
   }
