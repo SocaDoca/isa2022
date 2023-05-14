@@ -22,6 +22,7 @@ export class AdminAddTermComponent {
   clinic!: DbClinic;
   idList: any;
 
+
   constructor(private clinicService: ClinicService) {
     this.res = new ClinicLoadParameters({
       searchCriteria: '',
@@ -32,7 +33,7 @@ export class AdminAddTermComponent {
     }),
       this.term = new PredefinedTerm({
         time: '',
-        date: new Date,
+        date: '',
         duration: 20,
         numberOfAppointmentsInDay: 1,
         clinic_RefID: ''
@@ -43,50 +44,38 @@ export class AdminAddTermComponent {
     this.clinicService.getAll(this.res)
       .subscribe(res => {
         this.clinics = res;
-
-        let projectNames = this.clinics.map(item => {
-          return item.id;
-
-
-        });
-
-
-        var n = projectNames.length;
-        console.log(n);
-        var splitted = projectNames.pop();
-        console.log(splitted);
-        this.term.clinic_RefID = splitted;
-        console.log(this.term.clinic_RefID);
-
-
-
-
-        //let project1 = projectNames.split(",");
-        //console.log(typeof( projectNames)); //vraca listu id ["id1", "id2"]
-        //console.log(this.clinics.find("id"));
-       // console.log(this.clinics);
       });
   }
 
-  onChange() {
-    console.log(this.clinics);
-    this.clinicService.getClinicById(this.term.clinic_RefID!).subscribe(res => {
-      this.term.clinic_RefID = res.id;
-      console.log(this.term.clinic_RefID);
-    })
+  onChange(event: any) {
+    const selectedClinicId = event.target.value;
+    console.log(selectedClinicId); // this will log the selected clinic ID
+    this.term.clinic_RefID = selectedClinicId;
   }
 
-  addAppointment() {
-
+  addAppointment() {  
     console.log(this.term.clinic_RefID);
     this.clinicService.addPredefinedTerm(this.term).subscribe(res => {
       this.terms = res;
-      
-      console.log(this.terms);
+      const dateTime = new Date(`${this.term.date}T${this.term.time}:00.000Z`);
+
+      this.term.startDate = dateTime.toISOString();
+      console.log(this.term.startDate); // "2023-05-17T10:00:00.000Z"
+      //this.term.startDate = this.formatDatetime(this.term.date, this.term.time);
+      //console.log(this.terms);
     });
 }
 
+  private formatDatetime(dateString: string, timeString: string): string {
+    const date = new Date(dateString);
+    const [hours, minutes] = timeString.split(':');
+    date.setHours(Number(hours));
+    date.setMinutes(Number(minutes));
+    date.setSeconds(0);
+    date.setMilliseconds(0);
 
+    return date.toISOString();
+  }
 
 
 }

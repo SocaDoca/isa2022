@@ -12,23 +12,24 @@
 
 
   <div class="row" class="container">
-    <div class="center" id="comp1">
-      <br><br>
+    <div class="center" id="comp1" style="text-align:center">
+      <h2 class="text-center">Update clinic!</h2>
+      <br>
 
-      <label>Name</label>
-      <div class="form-group">
+      <label style="font-weight: bold;">Name</label>
+      <div class="form-group" style="margin-right:40px;" class="form-group">
         <input id="name" name="name" type="text" class="from-control" [(ngModel)]="clinic.name">
       </div>
-      <label>Description</label>
-      <div class="form-group">
+      <label style="font-weight: bold;">Description</label>
+      <div class="form-group" style="margin-right:40px;" class="form-group">
         <input id="description" name="description" type="text" class="from-control" [(ngModel)]="clinic.description">
       </div>
-      <label>Phone</label>
-      <div class="form-group">
+      <label style="font-weight: bold;">Phone</label>
+      <div class="form-group" style="margin-right:40px;" class="form-group">
         <input id="phone" name="phone" type="text" class="from-control" [(ngModel)]="clinic.phone">
       </div>
-      <label>Rating</label>
-      <div class="form-group">
+      <label style="font-weight: bold;">Rating</label>
+      <div class="form-group" style="margin-right:40px;" class="form-group">
         <input id="rating" name="rating" type="text" class="from-control" [(ngModel)]="clinic.rating">
       </div>
 
@@ -37,47 +38,44 @@
       <br><br><br><br>
     </div>
 
-    <div class="center" id="comp2">
-      <h2 class="text-center">Update clinic!</h2>
+    <div class="center" id="comp2" style="text-align:center">
+      <br><br>
 
-
-      <label>Address</label>
-      <div class="form-group">
+      <label style="font-weight: bold;">Address</label>
+      <div class="form-group" style="margin-right:40px;" class="form-group">
         <input id="address" name="address" type="text" class="from-control" [(ngModel)]="clinic.address">
       </div>
-      <label>City</label>
-      <div class="form-group">
+      <label style="font-weight: bold;">City</label>
+      <div class="form-group" style="margin-right:40px;" class="form-group">
         <input id="city" name="city" type="text" class="from-control" [(ngModel)]="clinic.city">
       </div>
-      <label>Country</label>
-      <div class="form-group">
+      <label style="font-weight: bold;">Country</label>
+      <div class="form-group" style="margin-right:40px;" class="form-group">
         <input id="country" name="country" type="text" class="from-control" [(ngModel)]="clinic.country">
       </div>
       <br><br><br>
-      <div class="form-group">
+      <div class="form-group" style="margin-right:40px;" class="form-group">
         <button type="submit" class="btn1" style=" background-color: deepskyblue; color:white" (click)="onSubmit()">Save changes</button><br>
       </div>
 
     </div>
-    <div class="center" id="comp3"  *ngFor="let w of clinic.workHours" >
+    <div class="center" id="comp3" style="text-align:center" >
 
       <br><br>
-      <label>Works from</label>
-      <div class="form-group" >
-        <input id="start" name="start" type="text" class="from-control" [(ngModel)]="w.worksFrom"  >
+      <label style="font-weight: bold;">Works from</label>
+      <div class="form-group" style="margin-right:40px;" >
+        <input id="start" name="start" type="text" class="from-control" [(ngModel)]="clinic.worksFrom"  >
       </div>
-      <label>to</label>
-      <div class="form-group">
-        <input id="end" name="end" type="text" class="from-control" [(ngModel)]="w.worksTo">
+      <label style="font-weight: bold;">to</label>
+      <div class="form-group" style="margin-right:40px;">
+        <input id="end" name="end" type="text" class="from-control" [(ngModel)]="clinic.worksTo">
       </div>
       <br>
 
 
-      <label>On days</label>
-
-      <br><br>
-      <div class="form-group">
-        <input id="day" name="day" type="text" class="from-control" [(ngModel)]="w.day">
+      <label style="font-weight: bold;">On days</label>
+      <div class="form-group" style="margin-right:40px;" class="form-group">
+        <input id="day" name="day" type="text" class="from-control">
       </div>
 
 
