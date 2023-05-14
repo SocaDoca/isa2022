@@ -197,7 +197,7 @@ namespace MedicApp.Migrations
                     b.ToTable("Complaints");
                 });
 
-            modelBuilder.Entity("MedicApp.Models.Grade", b =>
+            modelBuilder.Entity("MedicApp.Models.Grades", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()

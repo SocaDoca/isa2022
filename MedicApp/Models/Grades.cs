@@ -1,6 +1,6 @@
 ﻿namespace MedicApp.Models
 {
-    public class Grade
+    public class Grades
     {
         public Guid Id { get; set; }
         public int Value { get; set; } = 0;
@@ -8,7 +8,7 @@
         public Guid Clinic_RefId { get; set; }
         public bool IsDeleted { get; set; }
 
-        public Grade()
+        public Grades()
         {
             Id =Guid.NewGuid();
             IsDeleted = false;

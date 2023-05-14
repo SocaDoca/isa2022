@@ -451,7 +451,7 @@ namespace MedicApp.Integrations
                 {
                     throw new Exception("User already rated this clinic");
                 }
-                dbGrade = new Grade
+                dbGrade = new Grades
                 {
                     Clinic_RefId = grade.Clinic_RefId,
                     Patient_RefId = grade.Patient_RefId
