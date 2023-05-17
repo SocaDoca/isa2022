@@ -12,9 +12,11 @@
         public bool IsAnswered { get; set; }
         public bool IsDeleted { get; set; }
         public Guid ComplaintBy_User_RefId { get; set; }
+        public DateTime Creation_TimeStamp { get; set; }
         public Complaints()
         {
             Id = Guid.NewGuid();
+            Creation_TimeStamp = DateTime.Now;
             IsDeleted = false;
         }
     }
@@ -27,6 +29,7 @@
         public string UserInput { get; set; }
         public string Answer { get; set; }
         public bool IsAnswered { get; set; }
+
     }
 
 }

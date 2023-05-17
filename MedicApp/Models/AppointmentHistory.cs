@@ -10,12 +10,12 @@ namespace MedicApp.Models
         public bool IsFinishedAppointment { get; set; }    
         public Guid ChangedByUser_RefID { get; set; }
         public bool IsDeleted { get; set; }
-        public DateTime TimeCreated { get; set; }
+        public DateTime Creation_TimeStamp { get; set; }
 
         public AppointmentHistory()
         {
             Id = Guid.NewGuid();
-            TimeCreated = DateTime.Now;
+            Creation_TimeStamp = DateTime.Now;
             IsDeleted = false;
         }
     }

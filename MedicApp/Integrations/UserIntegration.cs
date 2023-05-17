@@ -24,6 +24,8 @@ namespace MedicApp.Integrations
         User? Register(RegisterRequest model);
         LoginResponse LogIn(LoginModel model);
         List<UserLoadModel> GetAll(LoadAllUsersParameters parameters);
+        List<UserListModel>GetAllUsers(LoadAllUsersParameters parameters);
+
         UserLoadModel GetUserById(Guid id);
         bool VerifyUser(VerifyParams verifyParams);
         bool UpdateUser(UpdateUser updateUser);
@@ -70,7 +72,6 @@ namespace MedicApp.Integrations
             _appDbContext.SaveChanges();
             return true;
         }
-
         public LoginResponse LogIn(LoginModel model)
         {
             var findUser = _appDbContext.Users.FirstOrDefault(x => x.Email == model.Email);
@@ -109,7 +110,6 @@ namespace MedicApp.Integrations
                 IsFirstTime = findUser.IsFirstTime
             };
         }
-
         public User? Register(RegisterRequest model)
         {
             if (_appDbContext.Users.Any(x => x.Username == model.Username))
@@ -153,7 +153,6 @@ namespace MedicApp.Integrations
             return newUser;
         }
         #endregion
-
         public Questionnaire CreateQuestionnaireForPatientById(SaveQuestionnaire questionnaire, Guid PatientId)
         {   //nemamo rolu Patient, ispravila na User
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == PatientId && !x.IsDeleted && x.Role == "User");
@@ -184,7 +183,6 @@ namespace MedicApp.Integrations
             _appDbContext.SaveChanges();
             return dbQuestionnaire;
         }
-
         #region Delete
         public bool Delete(Guid id)
         {
@@ -475,6 +473,29 @@ namespace MedicApp.Integrations
             return result;
         }
         #endregion
+
+        public List<UserListModel> GetAllUsers(LoadAllUsersParameters parameters)
+        {
+            var dbUser = _appDbContext.Users.Where(x => !x.IsDeleted && x.Role == "User").ToList();
+            var dbAppointments2Patient = _appDbContext.Appointment2Patients.Where(x => !x.IsDeleted).GroupBy(x => x.Patient_RefID).ToDictionary(x => x.Key, x => x.OrderByDescending(s => s.Creation_TimeStamp).ToList());
+            var result = new List<UserListModel>();
+            foreach (var user in dbUser)
+            {
+                var model = new UserListModel
+                {
+                    FirstName = user.FirstName ?? string.Empty,
+                    Id = user.Id,
+                    LastName = user.LastName ?? string.Empty
+                };
+                if(dbAppointments2Patient.TryGetValue(user.Id, out var appointments))
+                {
+                    model.LastAppointmentDate = appointments.First().Creation_TimeStamp;
+                }
+                result.Add(model);
+            }
+            return result;
+        }
+
     }
 
 

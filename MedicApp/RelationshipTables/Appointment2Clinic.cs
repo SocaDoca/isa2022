@@ -5,13 +5,14 @@
         public Guid Id { get;set; }
         public Guid Appointment_RefID { get;set; }
         public Guid Clinic_RefID { get;set; }
-        public bool IsDeleted { get;set; }  
-
+        public bool IsDeleted { get;set; }
+        public DateTime Creation_TimeStamp { get; set; }
 
         public Appointment2Clinic()
         {
             Id = Guid.NewGuid();
             IsDeleted = false;
+            Creation_TimeStamp = DateTime.Now;
         }
     }
 }

@@ -9,23 +9,25 @@ namespace MedicApp.Models
         public DateTime StartDate { get; set; }
         public int Duration { get; set; } //in minutes rounded
         public bool IsDeleted { get; set; }
+        public DateTime Creation_TimeStamp { get; set; }
         public Guid? Clinic_RefID { get; set; }
         public Guid? Patient_RefID { get; set; }
         public bool IsCanceled { get; set; }
         public bool IsStarted { get; set; } 
         public bool IsPredefiend { get; set; }
         public bool IsFinished { get; set; }
-        public bool IsReserved { get; set; }
-        
+        public bool IsReserved { get; set; }        
 
         public Appointment()
         {
             Id = Guid.NewGuid();
             IsDeleted = false;
+            Creation_TimeStamp = DateTime.Now;
             IsPredefiend = false;
             IsFinished = false;
             IsStarted = false;
             IsReserved = false;
+            IsCanceled = false;
             Duration = 15;
             Title = "Blood appointment";
         }

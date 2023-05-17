@@ -338,8 +338,7 @@ namespace MedicApp.Integrations
                 {
                     AppointmentId = model.Id,
                     IsStartedAppointment = false,
-                    IsFinishedAppointment = false,
-                    TimeCreated = DateTime.Now,
+                    IsFinishedAppointment = false
                 };
 
                 _appDbContext.AppointmentHistories.Add(appointmentHistory);
@@ -427,7 +426,7 @@ namespace MedicApp.Integrations
         {
             var appointments2Clinic = _appDbContext.Appointment2Clinics.Where(x => x.Clinic_RefID == clinicId && x.IsDeleted == false);
             var appointmentIds = appointments2Clinic.Select(x => x.Appointment_RefID).ToList();
-            var appoitments = _appDbContext.Appointments.Where(x => x.IsPredefiend == true && appointmentIds.Any(Id => x.Id == Id)).ToList();
+            var appoitments = _appDbContext.Appointments.Where(x => x.IsPredefiend == true && appointmentIds.Any(Id => x.Id == Id) && !x.IsReserved ).ToList();
 
             return appoitments.Select(x => new LoadPredefiendAppointment { Id = x.Id, StartDate = x.StartDate }).ToList();
         }

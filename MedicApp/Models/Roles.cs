@@ -6,11 +6,12 @@
         public string Name { get; set; }
         public bool IsDeleted { get; set; }
 
-
+        public DateTime Creation_TimeStamp { get; set; }
         public Roles()
         {
             Id = Guid.NewGuid();
             IsDeleted = false;
+            Creation_TimeStamp = DateTime.Now;
         }
     }
 

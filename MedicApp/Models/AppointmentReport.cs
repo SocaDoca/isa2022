@@ -8,10 +8,11 @@ namespace MedicApp.Models
         public string Description { get; set; }
         public List<WorkItem> Equipment { get; set; }
         public bool IsDeleted { get; set; }
-
+        public DateTime Creation_TimeStamp { get; set; }
         public AppointmentReport()
         {
             Id = Guid.NewGuid();
+            Creation_TimeStamp = DateTime.Now;
             IsDeleted = false;
             Equipment = new List<WorkItem>();
         }

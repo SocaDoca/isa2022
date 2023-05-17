@@ -236,7 +236,8 @@ namespace MedicApp.Integrations
             getClinic.City = updateClinic.City;
             getClinic.Country = updateClinic.Country;
             getClinic.Phone = updateClinic.Phone;
-            getClinic.Rating = updateClinic.Rating;          
+            getClinic.WorksFrom = updateClinic.WorksFrom;
+            getClinic.WorksTo = updateClinic.WorksTo;
 
             _appDbContext.Clinics.Update(getClinic);
             _appDbContext.SaveChanges();

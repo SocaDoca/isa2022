@@ -19,10 +19,12 @@
         public bool question12 { get; set; }
         public bool IsValid { get; set; }
         public bool IsDeleted { get; set; }
+        public DateTime Creation_TimeStamp { get; set; }
 
         public Questionnaire()
         {
             Id = Guid.NewGuid();
+            Creation_TimeStamp = DateTime.Now;
             IsDeleted = false;
             IsValid = false;
         }

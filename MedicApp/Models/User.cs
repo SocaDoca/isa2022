@@ -27,11 +27,12 @@ namespace MedicApp.Models
         public bool IsFirstTime { get; set; }
         public bool IsDeleted { get; set; }
         public int Penalty { get; set; }
-
+        public DateTime Creation_TimeStamp { get; set; }
         public User()
         {
             Id = Guid.NewGuid();
             IsDeleted = false;
+            Creation_TimeStamp = DateTime.Now;
             LoyaltyPoints = 1000;
             IsFirstTime = true;
             Penalty = 0;
@@ -158,10 +159,17 @@ namespace MedicApp.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
 
+    }
+
+    public class UserListModel
+    {
+        public Guid Id { get; set; }
+        public String FirstName { get; set; }
+        public String LastName { get; set; }
+        public DateTime LastAppointmentDate { get; set; }
     }
 }

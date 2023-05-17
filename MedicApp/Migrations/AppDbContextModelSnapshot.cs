@@ -28,6 +28,9 @@ namespace MedicApp.Migrations
                     b.Property<Guid?>("Clinic_RefID")
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
@@ -75,6 +78,9 @@ namespace MedicApp.Migrations
                     b.Property<Guid>("ChangedByUser_RefID")
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
@@ -83,9 +89,6 @@ namespace MedicApp.Migrations
 
                     b.Property<bool>("IsStartedAppointment")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<DateTime>("TimeCreated")
-                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -97,6 +100,9 @@ namespace MedicApp.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -127,6 +133,9 @@ namespace MedicApp.Migrations
                     b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -170,6 +179,9 @@ namespace MedicApp.Migrations
                     b.Property<Guid>("ComplaintBy_User_RefId")
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<bool>("IsAnswered")
                         .HasColumnType("tinyint(1)");
 
@@ -206,6 +218,9 @@ namespace MedicApp.Migrations
                     b.Property<Guid>("Clinic_RefId")
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
@@ -225,6 +240,9 @@ namespace MedicApp.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("ExpireDate")
                         .HasColumnType("datetime(6)");
@@ -285,6 +303,9 @@ namespace MedicApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
@@ -311,6 +332,9 @@ namespace MedicApp.Migrations
 
                     b.Property<string>("Country")
                         .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
@@ -379,6 +403,9 @@ namespace MedicApp.Migrations
                     b.Property<Guid?>("AppointmentReportId")
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
@@ -408,6 +435,9 @@ namespace MedicApp.Migrations
                     b.Property<Guid>("Clinic_RefID")
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
@@ -424,6 +454,9 @@ namespace MedicApp.Migrations
 
                     b.Property<Guid>("Account_RefID")
                         .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
@@ -448,6 +481,9 @@ namespace MedicApp.Migrations
                     b.Property<Guid>("Clinic_RefID")
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
@@ -464,6 +500,9 @@ namespace MedicApp.Migrations
 
                     b.Property<Guid>("Appointment_RefID")
                         .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid>("Doctor_RefID")
                         .HasColumnType("char(36)");
@@ -485,6 +524,9 @@ namespace MedicApp.Migrations
                     b.Property<Guid>("Appointment_RefID")
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
@@ -504,6 +546,9 @@ namespace MedicApp.Migrations
 
                     b.Property<Guid>("Appointment_RefID")
                         .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
@@ -545,6 +590,9 @@ namespace MedicApp.Migrations
                     b.Property<Guid>("Clinic_RefID")
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<Guid>("Employee_RefID")
                         .HasColumnType("char(36)");
 
@@ -564,6 +612,9 @@ namespace MedicApp.Migrations
 
                     b.Property<Guid>("Clinic_RefID")
                         .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
@@ -585,6 +636,9 @@ namespace MedicApp.Migrations
                     b.Property<Guid>("Complaint_RefId")
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
@@ -601,6 +655,9 @@ namespace MedicApp.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<Guid>("Employee_RefID")
                         .HasColumnType("char(36)");
@@ -621,6 +678,9 @@ namespace MedicApp.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("Creation_TimeStamp")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");

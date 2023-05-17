@@ -13,11 +13,14 @@
         public string Phone { get; set; }
         public double Rating { get; set; }
         public bool IsDeleted { get; set; }
+        public DateTime Creation_TimeStamp { get; set; }
+
 
         public Clinic()
         {
             Id = Guid.NewGuid();
             IsDeleted = false;
+            Creation_TimeStamp = DateTime.Now;
             Rating = 0;
         }
     }
@@ -49,6 +52,7 @@
         public string Phone { get; set; }
         public double Rating { get; set; }
         public List<Appointment> Appointments { get; set; }            
+
        
     }
 
