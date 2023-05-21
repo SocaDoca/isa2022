@@ -62,6 +62,11 @@ namespace MedicApp.Controllers
         {
             return _userIntegration.GetQuestionnaireByUserId(userId);
         }
+        [HttpGet("get-all-users-with-appointments")]
+        public List<UserListModel> GetAllUsersByAdmin(LoadAllUsersParameters parameters)
+        {
+            return _userIntegration.GetAllUsers(parameters);
+        }
 
        
     }
