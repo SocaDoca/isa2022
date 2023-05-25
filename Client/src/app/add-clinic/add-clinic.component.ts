@@ -42,14 +42,8 @@ export class AddClinicComponent {
       description: '',
       phone: '',
       rating: 0,
-      workHours: [
-        this.workHours = new WorkingHours({
-          worksFrom: '',
-          worksTo: '',
-          day: ''
-
-        })  ]    
-        
+      worksFrom: '',
+      worksTo: ''
     })
   }
 
@@ -65,18 +59,46 @@ export class AddClinicComponent {
     }
   }
 
-
   saveClinic() {
-    console.log(this.clinic);
-    this.clinicService.saveClinic(this.clinic).subscribe(res => {
-      //this.clinic.workHours![this.hours.dayOfWeek] = res;
-      //this.clinic = res;
-      console.log(res);
-      //console.log(this.clinic.workHours![this.hours.dayOfWeek]);
-      //console.log(this.workHours.day);
+    const currentTimezoneOffset = new Date().getTimezoneOffset();
 
+    // Adjust the worksFrom and worksTo values based on the timezone offset
+    const worksFromTime = this.adjustTimeByTimezone(this.clinic.worksFrom, currentTimezoneOffset);
+    const worksToTime = this.adjustTimeByTimezone(this.clinic.worksTo, currentTimezoneOffset);
+
+    // Get the current date
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentDay = currentDate.getDate();
+
+    // Create the worksFrom and worksTo Date objects using the current date and adjusted time values
+    const worksFromDateTime = new Date(`${currentYear}-${currentMonth}-${currentDay} ${worksFromTime}`);
+    const worksToDateTime = new Date(`${currentYear}-${currentMonth}-${currentDay} ${worksToTime}`);
+
+    // Assign the formatted date-time values to the clinic object
+    this.clinic.worksFrom = worksFromDateTime.toISOString();
+    this.clinic.worksTo = worksToDateTime.toISOString();
+
+    console.log(this.clinic);
+
+    // Proceed with saving the clinic
+    this.clinicService.saveClinic(this.clinic).subscribe(res => {
+      console.log(res);
     });
   }
+
+  adjustTimeByTimezone(time: string, timezoneOffset: number): string {
+    const [hours, minutes] = time.split(':').map(Number);
+
+    // Apply the timezone offset to adjust the time
+    const adjustedHours = hours - timezoneOffset / 60;
+    const adjustedTime = `${adjustedHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
+    return adjustedTime;
+  }
+
+
 
   /*checkBoxValue1(event: any) {
     console.log(event.target.checked);

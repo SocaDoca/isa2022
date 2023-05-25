@@ -40,12 +40,25 @@ export class ViewClinicComponent {
     this.loadClinic();
   }
 
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
+  formatDate(timeString: string): string {
+    const currentDate = new Date(); // Current date
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = currentDate.getDate().toString().padStart(2, '0');
+    const timeParts = timeString.split(':');
+    const hours = timeParts[0].padStart(2, '0');
+    const minutes = timeParts[1].padStart(2, '0');
+    const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}:00.000Z`;
+    return formattedDateTime;
   }
+
+  formatTime(time: Date): string {
+    const hours = time.getHours().toString().padStart(2, '0');
+    const minutes = time.getMinutes().toString().padStart(2, '0');
+    const formattedTime = `${hours}:${minutes}`;
+    return formattedTime;
+  }
+
 
   loadClinic() {
     this.id = this.route.snapshot.params['id'];
@@ -55,10 +68,30 @@ export class ViewClinicComponent {
         this.clinics = res;
         console.log(this.clinics);
         this.clinics.forEach(clinic => {
-          clinic.worksFrom = this.formatDate(clinic.worksFrom!);
-          clinic.worksTo = this.formatDate(clinic.worksTo!);
+          const worksFromDateTime = new Date(clinic.worksFrom); // Convert worksFrom to Date object
+          const worksToDateTime = new Date(clinic.worksTo); // Convert worksTo to Date object
+
+          clinic.worksFrom = this.formatTime(worksFromDateTime); // Format worksFromDateTime as time string
+          clinic.worksTo = this.formatTime(worksToDateTime); // Format worksToDateTime as time string
+
+          console.log(clinic.worksFrom);
           console.log(clinic.worksTo);
         });
-      })
+      });
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
