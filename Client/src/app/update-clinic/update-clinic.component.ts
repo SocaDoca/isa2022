@@ -29,7 +29,7 @@ export class UpdateClinicComponent{
   });
 
   clinic: DbClinic;
-  Id: any;
+  id: any;
 
   constructor(private clinicService: ClinicService, private router: Router, private route: ActivatedRoute) {
     this.clinic = new DbClinic({
@@ -48,13 +48,32 @@ export class UpdateClinicComponent{
     this.loadClinic();
   }
 
-  loadClinic() {
-    this.Id = this.route.snapshot.params['Id'];
-    console.log(this.Id);
-    this.clinicService.getClinicById(this.Id).subscribe(res => {
-      this.clinic = res;
-    })
+  formatTime(time: Date): string {
+    const hours = time.getHours().toString().padStart(2, '0');
+    const minutes = time.getMinutes().toString().padStart(2, '0');
+    const formattedTime = `${hours}:${minutes}`;
+    return formattedTime;
   }
+
+  loadClinic() {
+    this.id = this.route.snapshot.params['id'];
+
+    this.clinicService.getClinicById(this.id).subscribe(res => {
+      const clinic = res;
+
+      const worksFromDateTime = new Date(clinic.worksFrom); // Convert worksFrom to Date object
+      const worksToDateTime = new Date(clinic.worksTo); // Convert worksTo to Date object
+
+      clinic.worksFrom = this.formatTime(worksFromDateTime); // Format worksFromDateTime as time string
+      clinic.worksTo = this.formatTime(worksToDateTime); // Format worksToDateTime as time string
+
+      console.log(clinic.worksFrom);
+      console.log(clinic.worksTo);
+
+      this.clinic = clinic;
+    });
+  }
+
 
   onSubmit(): void {
     this.submitted = true;

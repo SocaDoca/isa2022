@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ClinicService } from '../../service/clinic.service';
 import { AppReport } from '../model/AppReport';
 import { ClinicLoadParameters } from '../model/ClinicLoadParameters';
@@ -19,10 +21,24 @@ export class AvailableAppointmentsComponent {
   appointments: DbAppointment[] = [];
   address: any;
   timeList: string = '';
+  @ViewChild('mymodal')
+  public mymodal: ModalDirective | undefined;
+  isModalOpen = false;
+
+  openModal(appoitnmentId: any) {
+    console.log(appoitnmentId);
+    this.id = this.route.snapshot.params['id'];
+    this.modalService.open(this.mymodal).result.then((result) => {
+      this.clinicService.reserveAppointment(appoitnmentId, this.id).subscribe(res => {
+        this.appointment.id = res.id;
+        this.appointment.patient_RefId = res.patient_RefId;
+      });
+    });
+  }
 
 
 
-  constructor(private clinicService: ClinicService, private route: ActivatedRoute) {
+  constructor(private modalService: NgbModal,private clinicService: ClinicService, private route: ActivatedRoute) {
     this.appointment = new DbAppointment({
 
       title: 'Blood appointment',
@@ -45,12 +61,13 @@ export class AvailableAppointmentsComponent {
     console.log(this.id);
 
     this.clinicService.getAllTermsByClinicId(this.id).subscribe(res => {
-      this.appointments = res;
-      console.log(res)
+      console.log(res); // Log the received appointments for inspection
 
+      this.appointments = res.filter(appointment => !appointment.isReserved);
+      console.log(this.appointments);
     });
-   // console.log(JSON.stringify(this.form.value, null, 2));
   }
+
 
 
   loadTime(appointment: DbAppointment) {
