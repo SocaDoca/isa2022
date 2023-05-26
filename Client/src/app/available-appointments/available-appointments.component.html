@@ -8,7 +8,21 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+  <ng-template #mymodal let-modal>
+    <div class="modal-header" style="background-color:darkolivegreen;">
+      <h4 class="modal-title" id="modal-basic-title" style="color:white; margin-left:100px">Schedule appointment</h4>
+    </div>
+    <div class="modal-body" style="background-color:darkolivegreen; color:white">
 
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary" style="width:160px; margin-left:10px" (click)="modal.close()">Confirm</button>
+
+
+      <button type="button" class="btn btn-primary" style="width:160px; margin-left:140px" (click)="modal.close()">Cancel</button>
+
+    </div>
+
+  </ng-template>
   <div class="forma">
     <h3>View clinic</h3>
 
@@ -32,8 +46,8 @@
               <td style="color:white">{{ f.clinic ? f.clinic.address : ''}}</td>
 
 
-              <td><button [routerLink]="['schedule/', f.id ]" style=" width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Schedule appointment</button> </td>
-             </ng-container>
+              <td><button (click)="openModal(f.id)" style=" width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Schedule appointment</button> </td>
+            </ng-container>
           </tr>
         </tbody>
       </table>
