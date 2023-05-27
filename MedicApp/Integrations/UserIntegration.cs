@@ -214,6 +214,7 @@ namespace MedicApp.Integrations
             getUser.Mobile = updateUser.Mobile;
             getUser.City = updateUser.City;
             getUser.Country = updateUser.Country;
+            getUser.Job = updateUser.Job;
 
             _appDbContext.Users.Update(getUser);
             _appDbContext.SaveChanges();

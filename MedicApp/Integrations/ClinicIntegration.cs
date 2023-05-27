@@ -167,16 +167,12 @@ namespace MedicApp.Integrations
             var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => x.Id == Id && !x.IsDeleted);
             var clinic2Appointment = _appDbContext.Appointment2Clinics.Where(x => x.Clinic_RefID == dbClinic.Id).ToList();
             var appointmentIDs = clinic2Appointment.Select(x => x.Appointment_RefID).ToList();
-            var clinicAppointment = _appDbContext.Appointments.Where(x => appointmentIDs.Contains(x.Id)).ToList();
-            var WorkingHoursIds = _appDbContext.Clinic2WorkingHours.ToList()
-                .Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id)
-                .Select(x => x.WorkingHours_RefID).ToList();
+            var clinicAppointment = _appDbContext.Appointments.Where(x => appointmentIDs.Contains(x.Id)).ToList();          
 
             if (dbClinic == null)
             {
                 throw new KeyNotFoundException("Clinic does not exist");
             }
-
            
             var appointmentList = new List<Appointment>();
             if (clinicAppointment.Any())
@@ -193,6 +189,8 @@ namespace MedicApp.Integrations
                 Address = dbClinic.Address,
                 City = dbClinic.City,
                 Country = dbClinic.Country,
+                WorksFrom = dbClinic.WorksFrom,
+                WorksTo  = dbClinic.WorksTo,
                 Description = dbClinic.Description,
                 Name = dbClinic.Name,
                 Phone = dbClinic.Phone,
