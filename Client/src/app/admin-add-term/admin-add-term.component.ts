@@ -32,8 +32,6 @@ export class AdminAddTermComponent {
       orderAsc: true
     }),
       this.term = new PredefinedTerm({
-        time: '',
-        date: '',
         duration: 20,
         numberOfAppointmentsInDay: 1,
         clinic_RefID: ''
@@ -53,18 +51,22 @@ export class AdminAddTermComponent {
     this.term.clinic_RefID = selectedClinicId;
   }
 
-  addAppointment() {  
+  addAppointment() {
     console.log(this.term.clinic_RefID);
+    const dateTime = new Date(`${this.term.date}T${this.term.time}:00.000Z`);
+    this.term.date = dateTime.toISOString();
+    console.log(this.term.date); // "2023-05-26T11:00:00.000Z"
+
     this.clinicService.addPredefinedTerm(this.term).subscribe(res => {
       this.terms = res;
-      const dateTime = new Date(`${this.term.date}T${this.term.time}:00.000Z`);
-
-      this.term.startDate = dateTime.toISOString();
-      console.log(this.term.startDate); // "2023-05-17T10:00:00.000Z"
-      //this.term.startDate = this.formatDatetime(this.term.date, this.term.time);
-      //console.log(this.terms);
+      // Handle the response from the backend
     });
-}
+  }
+
+
+
+
+
 
   private formatDatetime(dateString: string, timeString: string): string {
     const date = new Date(dateString);
