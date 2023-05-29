@@ -61,12 +61,20 @@ export class AvailableAppointmentsComponent {
     console.log(this.id);
 
     this.clinicService.getAllTermsByClinicId(this.id).subscribe(res => {
-      console.log(res); // Log the received appointments for inspection
+      console.log(res);
 
       this.appointments = res.filter(appointment => !appointment.isReserved);
+
+      // Replace the "T" separator with a space in the date and time string
+      const regex = /T/g;
+      this.appointments.forEach(appointment => {
+        appointment.startDate = appointment.startDate.replace(regex, ' ');
+      });
+
       console.log(this.appointments);
     });
   }
+
 
 
 

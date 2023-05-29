@@ -34,16 +34,26 @@ export class SearchClinicComponent {
     this.loadClinic();
   }
 
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+
   loadClinic() {
     this.id = this.route.snapshot.params['id'];
+
     this.clinicService.getAll(this.res)
       .subscribe(res => {
         this.clinics = res;
-        console.log(this.res);
-
-      }
-
-      )
+        console.log(this.clinics);
+        this.clinics.forEach(clinic => {
+          clinic.worksFrom = this.formatDate(clinic.worksFrom!);
+          clinic.worksTo = this.formatDate(clinic.worksTo!);
+          console.log(clinic.worksTo);
+        });
+      })
   }
 }
 
