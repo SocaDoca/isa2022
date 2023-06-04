@@ -142,7 +142,7 @@ namespace MedicApp.Models
         public bool IsAdminCenter { get; set; }
         public int Penalty { get; set; }
         public bool IsFirstTime { get; set; }
-        public SaveQuestionnaire Questionnaire { get; set; }
+        public SaveQuestionnaire? Questionnaire { get; set; }
     }
 
     public class LoadAllUsersParameters

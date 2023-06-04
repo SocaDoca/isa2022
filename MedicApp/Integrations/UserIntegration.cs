@@ -24,7 +24,7 @@ namespace MedicApp.Integrations
         User? Register(RegisterRequest model);
         LoginResponse LogIn(LoginModel model);
         List<UserLoadModel> GetAll(LoadAllUsersParameters parameters);
-        List<UserListModel>GetAllUsers(LoadAllUsersParameters parameters);
+        List<UserListModel> GetAllUsers(LoadAllUsersParameters parameters);
 
         UserLoadModel GetUserById(Guid id);
         bool VerifyUser(VerifyParams verifyParams);
@@ -246,29 +246,33 @@ namespace MedicApp.Integrations
         {
             var resultList = new List<UserLoadModel>();
             var dbUsers = _appDbContext.Users.Where(x => x.Role == "User").ToList();
-            var dbQuestionnnaire = _appDbContext.Questionnaire.ToList().GroupBy(x => x.Patient_RefID).ToDictionary(x => x.Key, x => x.Single());
+            var dbQuestionnnaire = _appDbContext.Questionnaire.ToList()
+                .GroupBy(x => x.Patient_RefID)
+                .ToDictionary(x => x.Key, x => x.OrderByDescending(x => x.Creation_TimeStamp).ToList());
             foreach (var user in dbUsers)
             {
-                var questionnare = dbQuestionnnaire.TryGetValue(user.Id, out var question);
-                var questionModel = new SaveQuestionnaire
+                SaveQuestionnaire questionnaireModel = null;
+                if (dbQuestionnnaire.TryGetValue(user.Id, out var questionList))
                 {
-                    Id = question.Id,
-                    Patient_RefID = question.Patient_RefID,
-                    ExpireDate = question.ExpireDate,
-                    IsValid = question.IsValid,
-                    question1 = question.question1,
-                    question2 = question.question2,
-                    question3 = question.question3,
-                    question4 = question.question4,
-                    question5 = question.question5,
-                    question6 = question.question6,
-                    question7 = question.question7,
-                    question8 = question.question8,
-                    question9 = question.question9,
-                    question10 = question.question10,
-                    question11 = question.question11,
-                    question12 = question.question12
-                };
+                    var question = questionList.First();
+                    questionnaireModel.Id = question.Id;
+                    questionnaireModel.Patient_RefID = question.Patient_RefID;
+                    questionnaireModel.ExpireDate = question.ExpireDate;
+                    questionnaireModel.IsValid = question.IsValid;
+                    questionnaireModel.question1 = question.question1;
+                    questionnaireModel.question2 = question.question2;
+                    questionnaireModel.question3 = question.question3;
+                    questionnaireModel.question4 = question.question4;
+                    questionnaireModel.question5 = question.question5;
+                    questionnaireModel.question6 = question.question6;
+                    questionnaireModel.question7 = question.question7;
+                    questionnaireModel.question8 = question.question8;
+                    questionnaireModel.question9 = question.question9;
+                    questionnaireModel.question10 = question.question10;
+                    questionnaireModel.question11 = question.question11;
+                    questionnaireModel.question12 = question.question12;
+                }
+
                 resultList.Add(new UserLoadModel
                 {
                     FirstName = user.FirstName ?? String.Empty,
@@ -285,7 +289,7 @@ namespace MedicApp.Integrations
                     City = user.City ?? String.Empty,
                     Country = user.Country ?? String.Empty,
                     Role = user.Role,
-                    Questionnaire = questionModel,
+                    Questionnaire = questionnaireModel ?? null,
                     Penalty = user.Penalty
                 });
             };
@@ -488,7 +492,7 @@ namespace MedicApp.Integrations
                     Id = user.Id,
                     LastName = user.LastName ?? string.Empty
                 };
-                if(dbAppointments2Patient.TryGetValue(user.Id, out var appointments))
+                if (dbAppointments2Patient.TryGetValue(user.Id, out var appointments))
                 {
                     model.LastAppointmentDate = appointments.First().Creation_TimeStamp;
                 }

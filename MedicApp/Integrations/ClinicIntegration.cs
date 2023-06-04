@@ -220,7 +220,7 @@ namespace MedicApp.Integrations
         }
 
         #region Update 
-        public bool UpdateClinic(ClinicSaveModel updateClinic)
+        public bool UpdateClinic(ClinicSaveModel     updateClinic)
         {
             var getClinic = _appDbContext.Clinics.First(x => x.Id == updateClinic.Id);
 
