@@ -7,6 +7,7 @@ using MedicApp.Utils.AppSettings;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Drawing;
+using System.Linq;
 
 namespace MedicApp.Integrations
 {
@@ -188,7 +189,7 @@ namespace MedicApp.Integrations
             var clinicInfo = _clinicIntegration.LoadClinicBasicInfoByIds(companyIds).GroupBy(x => x.Id).ToDictionary(x => x.Key, x => x.First());
             return dbAppointments.Select(appointment =>
             {
-                var result = new List<AppointmentLoadModel>();
+                var result = new List<AppointmentLoadModel>();                
                 var appModel = new AppointmentLoadModel
                 {
                     Id = appointment.Id,
@@ -196,6 +197,8 @@ namespace MedicApp.Integrations
                     IsFinished = appointment.IsFinished,
                     IsPredefiend = appointment.IsPredefiend,
                     StartDate = appointment.StartDate,
+                    Title = appointment.Title ?? string.Empty,
+                    IsReserved = appointment.IsReserved,
                 };
 
                 if (appointment.Patient_RefID.HasValue && patients.TryGetValue(appointment.Patient_RefID.Value, out var patient))
