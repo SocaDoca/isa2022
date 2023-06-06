@@ -24,7 +24,7 @@ namespace MedicApp.Integrations
         User? Register(RegisterRequest model);
         LoginResponse LogIn(LoginModel model);
         List<UserLoadModel> GetAll(LoadAllUsersParameters parameters);
-        List<UserListModel>GetAllUsers(LoadAllUsersParameters parameters);
+        List<UserListModel> GetAllUsers(LoadAllUsersParameters parameters);
         List<UserListModel> GetAllEmployess();
 
         UserLoadModel GetUserById(Guid id);
@@ -247,26 +247,27 @@ namespace MedicApp.Integrations
             var dbQuestionnnaire = _appDbContext.Questionnaire.ToList().GroupBy(x => x.Patient_RefID).ToDictionary(x => x.Key, x => x.Single());
             foreach (var user in dbUsers)
             {
-                var questionnare = dbQuestionnnaire.TryGetValue(user.Id, out var question);
-                var questionModel = new SaveQuestionnaire
+                SaveQuestionnaire questionModel = null;
+                if (dbQuestionnnaire.TryGetValue(user.Id, out var question))
                 {
-                    Id = question.Id,
-                    Patient_RefID = question.Patient_RefID,
-                    ExpireDate = question.ExpireDate,
-                    IsValid = question.IsValid,
-                    question1 = question.question1,
-                    question2 = question.question2,
-                    question3 = question.question3,
-                    question4 = question.question4,
-                    question5 = question.question5,
-                    question6 = question.question6,
-                    question7 = question.question7,
-                    question8 = question.question8,
-                    question9 = question.question9,
-                    question10 = question.question10,
-                    question11 = question.question11,
-                    question12 = question.question12
-                };
+                    questionModel.Id = question.Id;
+                    questionModel.Patient_RefID = question.Patient_RefID;
+                    questionModel.ExpireDate = question.ExpireDate;
+                    questionModel.IsValid = question.IsValid;
+                    questionModel.question1 = question.question1;
+                    questionModel.question2 = question.question2;
+                    questionModel.question3 = question.question3;
+                    questionModel.question4 = question.question4;
+                    questionModel.question5 = question.question5;
+                    questionModel.question6 = question.question6;
+                    questionModel.question7 = question.question7;
+                    questionModel.question8 = question.question8;
+                    questionModel.question9 = question.question9;
+                    questionModel.question10 = question.question10;
+                    questionModel.question11 = question.question11;
+                    questionModel.question12 = question.question12;
+                }
+
                 resultList.Add(new UserLoadModel
                 {
                     FirstName = user.FirstName ?? String.Empty,
@@ -504,7 +505,7 @@ namespace MedicApp.Integrations
                     Id = user.Id,
                     LastName = user.LastName ?? string.Empty
                 };
-                if(dbAppointments2Patient.TryGetValue(user.Id, out var appointments))
+                if (dbAppointments2Patient.TryGetValue(user.Id, out var appointments))
                 {
                     model.LastAppointmentDate = appointments.First().Creation_TimeStamp;
                 }
