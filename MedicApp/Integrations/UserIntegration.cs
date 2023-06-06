@@ -244,30 +244,16 @@ namespace MedicApp.Integrations
         {
             var resultList = new List<UserLoadModel>();
             var dbUsers = _appDbContext.Users.Where(x => x.Role == "User").ToList();
-            var dbQuestionnnaire = _appDbContext.Questionnaire.ToList().GroupBy(x => x.Patient_RefID).ToDictionary(x => x.Key, x => x.Single());
+            var dbQuestionnnaire = _appDbContext.Questionnaire.ToList().GroupBy(x => x.Patient_RefID).ToDictionary(x => x.Key, x => x.OrderByDescending(x => x.Creation_TimeStamp).ToList();
             foreach (var user in dbUsers)
             {
-                SaveQuestionnaire questionModel = null;
-                if (dbQuestionnnaire.TryGetValue(user.Id, out var question))
-                {
-                    questionModel.Id = question.Id;
-                    questionModel.Patient_RefID = question.Patient_RefID;
-                    questionModel.ExpireDate = question.ExpireDate;
-                    questionModel.IsValid = question.IsValid;
-                    questionModel.question1 = question.question1;
-                    questionModel.question2 = question.question2;
-                    questionModel.question3 = question.question3;
-                    questionModel.question4 = question.question4;
-                    questionModel.question5 = question.question5;
-                    questionModel.question6 = question.question6;
-                    questionModel.question7 = question.question7;
-                    questionModel.question8 = question.question8;
-                    questionModel.question9 = question.question9;
-                    questionModel.question10 = question.question10;
-                    questionModel.question11 = question.question11;
-                    questionModel.question12 = question.question12;
-                }
 
+                bool isQesionareValid = false;
+                if (dbQuestionnnaire.TryGetValue(user.Id, out var questioneList))
+                {
+                    var lastQuestionnaire = questioneList.FirstOrDefault();
+                    if (lastQuestionnaire != null) isQesionareValid = lastQuestionnaire.IsValid;
+                }
                 resultList.Add(new UserLoadModel
                 {
                     FirstName = user.FirstName ?? String.Empty,
@@ -284,9 +270,11 @@ namespace MedicApp.Integrations
                     City = user.City ?? String.Empty,
                     Country = user.Country ?? String.Empty,
                     Role = user.Role,
-                    Questionnaire = questionModel,
+                    IsQuestionnaireValid = isQesionareValid,
                     Penalty = user.Penalty
                 });
+
+               
             };
 
             #region SEARCH
