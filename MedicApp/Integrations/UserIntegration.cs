@@ -25,6 +25,7 @@ namespace MedicApp.Integrations
         LoginResponse LogIn(LoginModel model);
         List<UserLoadModel> GetAll(LoadAllUsersParameters parameters);
         List<UserListModel>GetAllUsers(LoadAllUsersParameters parameters);
+        List<UserListModel> GetAllEmployess();
 
         UserLoadModel GetUserById(Guid id);
         bool VerifyUser(VerifyParams verifyParams);
@@ -36,6 +37,7 @@ namespace MedicApp.Integrations
         Questionnaire CreateQuestionnaireForPatientById(SaveQuestionnaire questionnaire, Guid PatientId);
         void RemovePenalty();
         int RateClinic(SaveGrade grade);
+
     }
 
     public class UserIntegration : IUserIntegration
@@ -48,7 +50,6 @@ namespace MedicApp.Integrations
             _appDbContext = context;
             _secretSettings = secretSettings;
         }
-
         public void RemovePenalty()
         {
             var dbPenaltyUsers = _appDbContext.Users.Where(x => !x.IsDeleted).ToList();
@@ -195,7 +196,6 @@ namespace MedicApp.Integrations
             _appDbContext.SaveChanges();
             return true;
         }
-
         #endregion
 
         #region Update 
@@ -237,8 +237,6 @@ namespace MedicApp.Integrations
             _appDbContext.SaveChanges();
             return true;
         }
-
-
         #endregion
 
         #region Get Methods
@@ -336,6 +334,24 @@ namespace MedicApp.Integrations
 
             return resultList.Skip(parameters.Offset).Take(parameters.Limit).ToList();
 
+        }
+
+        public List<UserListModel> GetAllEmployess()
+        {
+            var employees = _appDbContext.Users.Where(x => x.Role == "Admin" && !x.IsDeleted).ToList();
+            var result = new List<UserListModel>();
+            foreach (var item in employees)
+            {
+                var model = new UserListModel
+                {
+                    Id = item.Id,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName
+                };
+                result.Add(model);
+            }
+
+            return result;
         }
 
         public SaveQuestionnaire GetQuestionnaireByUserId(Guid Id)

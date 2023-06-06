@@ -44,6 +44,7 @@ namespace MedicApp.Models
         public bool IsReserved { get; set; }
         public bool IsFinished { get; set; }
         public AppointmentReport? Report { get; set; }
+        public List<WorkItem> WorkItems { get; set; } = new List<WorkItem>();
     }
 
     public class AppointmentLoadModel

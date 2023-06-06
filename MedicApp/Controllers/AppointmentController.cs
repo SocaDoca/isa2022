@@ -10,7 +10,7 @@ namespace MedicApp.Controllers
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentIntegration _appointmentIntegration;
-        
+
 
         public AppointmentController(IAppointmentIntegration appointmentIntegration)
         {
@@ -18,9 +18,9 @@ namespace MedicApp.Controllers
         }
 
         [HttpPost("save-appointment")]
-        public bool SaveAppointment(Guid appointmentId, ReportSaveModel report)
+        public bool SaveAppointment([FromBody] SaveAppointmentRequest parameters )
         {
-            return _appointmentIntegration.SaveAppointmentReport(appointmentId, report);
+            return _appointmentIntegration.SaveAppointmentReport(parameters);
         }
         
         [HttpPost("create-predefiend-appointment")]
