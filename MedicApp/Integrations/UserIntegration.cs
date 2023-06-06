@@ -244,7 +244,7 @@ namespace MedicApp.Integrations
         {
             var resultList = new List<UserLoadModel>();
             var dbUsers = _appDbContext.Users.Where(x => x.Role == "User").ToList();
-            var dbQuestionnnaire = _appDbContext.Questionnaire.ToList().GroupBy(x => x.Patient_RefID).ToDictionary(x => x.Key, x => x.OrderByDescending(x => x.Creation_TimeStamp).ToList();
+            var dbQuestionnnaire = _appDbContext.Questionnaire.ToList().GroupBy(x => x.Patient_RefID).ToDictionary(x => x.Key, x => x.OrderByDescending(x => x.Creation_TimeStamp).ToList());
             foreach (var user in dbUsers)
             {
 

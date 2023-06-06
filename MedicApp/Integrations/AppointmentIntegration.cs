@@ -130,7 +130,11 @@ namespace MedicApp.Integrations
         }
         public List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId)
         {
-            var dbPatient = _appDbContext.Users.First(x => x.Id == patientId && x.Role == "User");
+            var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == patientId && x.Role == "User" && !x.IsDeleted);
+            if(dbPatient == null)
+            {
+                throw new Exception("patient does not exist");
+            }
             var appointment2PatientIds = _appDbContext.Appointment2Patients.Where(x => x.Patient_RefID == dbPatient.Id).Select(x => x.Appointment_RefID).ToList();
             var dbAppointments = _appDbContext.Appointments.Where(x => appointment2PatientIds.Any(s => s == x.Id)).ToList();
             var dbClinics = _appDbContext.Clinics.ToList().Where(x => !x.IsDeleted).GroupBy(x => x.Id).ToDictionary(x => x.Key, x => x.Single());
@@ -375,6 +379,12 @@ namespace MedicApp.Integrations
             }
             dbAppointment.Patient_RefID = patientId;
             dbAppointment.IsReserved = true;
+
+            var appointment2Patient = new Appointment2Patient()
+            {
+                Appointment_RefID = dbAppointment.Id,
+                Patient_RefID = dbPatient.Id
+            };
 
             _appDbContext.SaveChanges();
             return true;

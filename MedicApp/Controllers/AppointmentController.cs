@@ -51,13 +51,13 @@ namespace MedicApp.Controllers
              _appointmentIntegration.CancelAppointment(appointmenetId);           
         }
 
-        [HttpGet("get-appointment")]
-        public AppointmentLoadModel GetAppointmentById(Guid Id)
+        [HttpPost("get-appointment")]
+        public AppointmentLoadModel GetAppointmentById([FromBody]Guid Id)
         {
             return _appointmentIntegration.LoadAppointmentById(Id);
         } 
-        [HttpGet("patient/appointmets")]
-        public List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId)
+        [HttpPost("patient/appointmets")]
+        public List<AppointmentLoadModel> LoadAllAppointmentsByPatientId([FromBody]Guid patientId)
         {
             return _appointmentIntegration.LoadAllAppointmentsByPatientId(patientId);
         }
