@@ -11,6 +11,11 @@ h1, h2, h3 {
   font-style: normal;
 }
 
+.disabled-input {
+  background-color: #f8f9fa;
+  opacity: 0.7;
+}
+
 .container {
   display: flex;
   margin-left: 220px;

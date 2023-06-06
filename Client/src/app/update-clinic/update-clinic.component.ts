@@ -56,7 +56,7 @@ export class UpdateClinicComponent{
   }
 
   loadClinic() {
-    this.id = this.route.snapshot.params['id'];
+ /*   this.id = this.route.snapshot.params['id'];
 
     this.clinicService.getClinicById(this.id).subscribe(res => {
       const clinic = res;
@@ -71,7 +71,7 @@ export class UpdateClinicComponent{
       console.log(clinic.worksTo);
 
       this.clinic = clinic;
-    });
+    });*/
   }
 
 

@@ -9,6 +9,7 @@ import { Complaint } from '../model/Complaint';
 })
 export class UserComplaintComponent {
   complaint: any;
+  selectedOption: any;
 
   constructor(private clinicService: ClinicService) {
     this.complaint = new Complaint({
@@ -24,5 +25,12 @@ export class UserComplaintComponent {
       this.complaint = res;
       console.log(this.complaint);
     });
+    this.complaint = new Complaint({
+      description: '',
+      status: true,
+      type: ''
+    });
+    this.selectedOption = '';
   }
-}
+ }
+
