@@ -14,8 +14,6 @@ namespace MedicApp.Integrations
         ClinicLoadModel GetClinicById(Guid Id);
         List<ClinicBasicInfo> LoadClinicBasicInfoByIds(List<Guid> clinicIds);
         bool UpdateClinic(ClinicSaveModel updateClinic);
-        Complaints SaveComplaint(Complaints complaint);
-        List<Complaints> LoadAllComplaints();
         
     }
     public class ClinicIntegration : IClinicIntegration
@@ -54,11 +52,6 @@ namespace MedicApp.Integrations
             return dbClinic;
         }
 
-        public List<Complaints> LoadAllComplaints()
-        {
-            var dbComplaints = _appDbContext.Complaints.Where(x => x.IsDeleted == false);
-            return dbComplaints.ToList();
-        }
 
         public List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters)
         {

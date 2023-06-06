@@ -57,7 +57,7 @@ namespace MedicApp.Controllers
             return _appointmentIntegration.LoadAppointmentById(Id);
         } 
         [HttpPost("patient/appointmets")]
-        public List<AppointmentLoadModel> LoadAllAppointmentsByPatientId([FromBody]Guid patientId)
+        public List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId)
         {
             return _appointmentIntegration.LoadAllAppointmentsByPatientId(patientId);
         }
