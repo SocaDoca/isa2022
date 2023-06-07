@@ -9,7 +9,9 @@ namespace MedicApp.Integrations
 {
     public interface IComplaintIntegration
     {
-
+        Complaints CreateComplaint(SaveComplaintsRequest parameters);
+        bool AnswerComplaint(AnswerCompaintRequest parameters);
+        List<ComplaintListModel> LoadAllComplaints();
     }
     public class ComplaintIntegration
     {
@@ -30,11 +32,11 @@ namespace MedicApp.Integrations
         }
 
 
-        public Complaints CreateComplaint(ComplaintSaveModel complaint, Guid patientId, Guid clinicId = default, Guid employeeId = default)
+        public Complaints CreateComplaint(SaveComplaintsRequest parameters)
         {
+            var complaint = parameters.Complaint;
             var dbComplaint = _appDbContext.Complaints.FirstOrDefault(x => x.Id == complaint.Id && x.IsDeleted == false);
-            var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == patientId && x.IsDeleted == false && x.Role == "User");
-            
+            var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == parameters.PatientId && x.IsDeleted == false && x.Role == "User");
 
             if (dbPatient == null)
             {
@@ -50,15 +52,15 @@ namespace MedicApp.Integrations
                     IsAnswered = complaint.IsAnswered,
                     IsForClinic = complaint.IsForClinic,
                     IsForEmployee = complaint.IsForEmployee,
-                    IsForClinic_Clinic_RefId = clinicId != Guid.Empty ? clinicId : null,
-                    IsForEmployee_User_RefId = employeeId != Guid.Empty ? employeeId : null,
+                    IsForClinic_Clinic_RefId = parameters.ClinicId.HasValue ? parameters.ClinicId.Value : null,
+                    IsForEmployee_User_RefId = parameters.EmployeeId.HasValue ? parameters.EmployeeId.Value : null,
                     ComplaintBy_User_RefId = dbPatient.Id
                 };
 
                 var complaint2Patient = new Complaint2Patient()
                 {
                     Complaint_RefId = dbComplaint.Id,
-                    Patient_RefId = patientId
+                    Patient_RefId = parameters.PatientId
                 };
                 _appDbContext.Complaint2Patients.Add(complaint2Patient);
             }
@@ -73,29 +75,34 @@ namespace MedicApp.Integrations
             return dbComplaint;
         }
 
-        public void AnswerComplaint(Guid complaintId, string answer)
+        public bool AnswerComplaint(AnswerCompaintRequest parameters)
         {
-            var dbComplaint = _appDbContext.Complaints.FirstOrDefault(x => x.Id == complaintId && !x.IsDeleted);
+            var dbComplaint = _appDbContext.Complaints.FirstOrDefault(x => x.Id == parameters.ComplaintId && !x.IsDeleted);
+            if (dbComplaint == null) return false;
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == dbComplaint.ComplaintBy_User_RefId && !x.IsDeleted);
-            dbComplaint.Answer = answer;
-            _emailUtils.SendMail(answer, $"Answer on complaint", dbPatient.Email, _emailSettings.Value.SenderAddress);
+            dbComplaint.Answer = parameters.Answer;
+            _emailUtils.SendMail(parameters.Answer, $"Answer on complaint", dbPatient.Email, _emailSettings.Value.SenderAddress);
+            return true;
         }
 
-        public List<Complaints> LoadAllComplaints()
+        public List<ComplaintListModel> LoadAllComplaints()
         {
             var dbComplaints = _appDbContext.Complaints.Where(x => x.IsDeleted == false).ToList();
-            List<Complaints> resultList = new List<Complaints>();
+            var userIds = dbComplaints.Select(x => x.ComplaintBy_User_RefId).ToList();
+            var dbUser = _appDbContext.Users.Where(x => userIds.Any(s => s == x.Id)).ToList();
+            List<ComplaintListModel> resultList = new List<ComplaintListModel>();
 
             foreach (var complaint in dbComplaints)
             {
-                var complaintModel = new Complaints
+                var user = dbUser.FirstOrDefault(x => x.Id == complaint.ComplaintBy_User_RefId);
+                var complaintModel = new ComplaintListModel
                 {
                     Id = complaint.Id,
-                    Answer = complaint.Answer,
-                    UserInput = complaint.UserInput,
                     IsForClinic = complaint.IsForClinic,
                     IsForEmployee = complaint.IsForEmployee,
                     IsAnswered = complaint.IsAnswered,
+                    UserEmail = user.Email,
+                    UserName = String.Format("{0} {1}", user.FirstName, user.LastName)
                 };
                 resultList.Add(complaintModel);
             }

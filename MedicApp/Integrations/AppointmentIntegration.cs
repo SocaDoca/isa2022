@@ -174,6 +174,7 @@ namespace MedicApp.Integrations
                     IsFinished = item.IsFinished,
                     IsPredefiend = item.IsPredefiend,
                     StartTime = item.StartDate.TimeOfDay.ToString(),
+                    Title = item.Title
                 };
                 result.Add(model);
             }

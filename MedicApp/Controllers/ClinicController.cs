@@ -47,7 +47,7 @@ namespace MedicApp.Controllers
         }
 
         [HttpGet("load-all-complaints")]
-        public List<Complaints> LoadAllComplaints()
+        public List<ComplaintListModel> LoadAllComplaints()
         {
             return _clinicIntegration.LoadAllComplaints();
         }
