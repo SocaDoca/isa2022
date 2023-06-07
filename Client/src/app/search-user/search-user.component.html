@@ -48,10 +48,10 @@
             <td style="color:white">{{f.jmbg}}</td>
             <td style="color:white">{{f.email}}</td>
             <td style="color:white">{{f.mobile}}</td>
-            <td style="color:white">{{f.fullAddress}}</td>
+            <td style="color:white">{{f.address + ", " + f.city + ", " + f.country}}</td>
             <td style="color:white">{{f.job}}</td>
             <td style="color:white">{{f.role}}</td>
-            <td style="color:white">{{ f.questionnaire ? f.questionnaire.isValid : ''}}</td>
+            <td style="color:white">{{f.isQuestionnaireValid}}</td>
             <td> <button [routerLink]="['start-appointment']" style=" width: 170px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Start appointment</button> </td>
             <td> <button (click)="removeUser()" style=" width: 170px; height: 30px; background-color: darkred; color: white; border: none; border-radius: 8px; ">Remove user</button> </td>
           </tr>

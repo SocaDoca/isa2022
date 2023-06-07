@@ -14,6 +14,7 @@ export interface QuestionnaireInterface {
   question11?: any;
   question12?: any;
   isValid?: any;
+  isQuestionnaireValid?: any;
 }
 
 export class Questionnaire implements QuestionnaireInterface {
@@ -32,6 +33,7 @@ export class Questionnaire implements QuestionnaireInterface {
   question11?: any;
   question12?: any;
   isValid?: any;
+  isQuestionnaireValid?: any;
 
   constructor(obj: QuestionnaireInterface) {
     this.id = obj.id;
@@ -49,5 +51,6 @@ export class Questionnaire implements QuestionnaireInterface {
     this.question11 = obj.question11;
     this.question12 = obj.question12;
     this.isValid = obj.isValid;
+    this.isQuestionnaireValid = obj.isQuestionnaireValid;
   }
 }

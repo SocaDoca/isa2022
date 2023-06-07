@@ -65,7 +65,7 @@ export class ClinicService {
   }
 
   getAllTerms(id: string) {
-    return this.http.get<DbClinic[]>(`${this.urlgetAllTerms}?id=${id}`);
+    return this.http.post<DbClinic[]>(`${this.urlgetAllTerms}?patientId=${id}`,id);
   }
 
   getAllTermsByClinicId(clinicId: string) {

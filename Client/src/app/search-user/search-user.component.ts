@@ -34,7 +34,8 @@ export class SearchUserComponent {
       this.patient = new UserLoadModel({
         id: '',
         questionnaire: new Questionnaire({
-          isValid:true
+          isValid: true,
+          isQuestionnaireValid: false
         })
       })
   }
