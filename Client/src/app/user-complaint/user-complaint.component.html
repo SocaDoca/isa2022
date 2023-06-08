@@ -8,36 +8,45 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-
-
-
   <div class="row" class="container">
     <div class="center" id="comp1">
       <h2 class="text-center">Write a complaint:</h2>
       <br>
       <form id="loginform" name="loginform" style="text-align:center">
         <div>
-        <label>About</label><br>
-        <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="clinic" >
-        <label class="form-check-label" for="inlineRadio2"> clinic</label>
+          <label>About</label><br>
+          <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="clinic" (click)="selectedOption = 'clinic'">
+          <label class="form-check-label" for="inlineRadio2">Clinic</label>
 
-        &nbsp;
-        <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="employee" >
-        <label class="form-check-label" for="inlineRadio2"> employee</label><br>
+          &nbsp;
+          <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="employee" (click)="selectedOption = 'employee'">
+          <label class="form-check-label" for="inlineRadio2">Employee</label><br>
         </div>
-        <div class="form-group"><br>
+        <div *ngIf="selectedOption === 'clinic'">
+          <label>Select Clinic</label>
+          <select class="form-select" [(ngModel)]="complaint.clinicId">
+            <option value="">-- Select Clinic --</option>
+          </select>
+        </div>
+        <div *ngIf="selectedOption === 'employee'">
+          <label>Select Employee</label>
+          <select class="form-select" [(ngModel)]="complaint.employeeId">
+            <option value="">-- Select Employee --</option>
+
+          </select>
+        </div>
+        <div class="form-group">
+          <br>
           <label>Description</label>
           <input style="height:100px;" id="description" name="description" type="text" class="from-control" [(ngModel)]="complaint.description">
         </div>
         <br>
-
         <br>
         <div>
           <button type="submit" class="btn btn-primary" (click)="saveComplaint()" style="color:white">Submit</button><br>
         </div>
-
-
       </form>
-    </div><br>
-
-
+    </div>
+  </div>
+</body>
+</html>

@@ -409,11 +409,10 @@ namespace MedicApp.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<int>("UsedInstances")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkItemType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

@@ -32,6 +32,11 @@ namespace MedicApp.Controllers
         {
             return _userIntegration.GetAll(parameters);
         }
+        [HttpPost("get-all-employees")]
+        public List<UserListModel> GetAllEmployess()
+        {
+            return _userIntegration.GetAllEmployess();
+        }
 
         [HttpDelete("remove")]
         public bool DeleteUserById(Guid id)

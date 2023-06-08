@@ -3,8 +3,8 @@
     public class WorkItem
     {
         public Guid Id { get; set; }
-        public String Name { get; set; }
-        public int UsedInstances { get; set; }
+        public WorkItemType WorkItemType { get; set; }
+        public int UsedInstances { get; set; } 
         public bool IsDeleted { get; set; }
         public DateTime Creation_TimeStamp { get; set; }
         public WorkItem()
@@ -16,9 +16,19 @@
 
         public class WorkItemInfo
         {
-            public String Name { get; set; }
+            public WorkItemType WorkItemType { get; set; }
             public int UsedInstances { get; set; }
         }
+    }
+
+    public enum WorkItemType
+    {
+        Needle,
+        Syringe,
+        TransfusionBag,
+        TransfusionPipe,
+        Gloves,
+        TestTube        
     }
 
 }

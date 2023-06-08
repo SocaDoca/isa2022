@@ -23,7 +23,7 @@ export interface UserLoadModelInterface {
   isValid?: any;
   penalty?: number;
   questionnaire?: Questionnaire;
-
+  isQuestionnaireValid?: any;
 
 }
 
@@ -48,6 +48,8 @@ export class UserLoadModel implements UserLoadModelInterface {
   isValid?: any;
   penalty?: number;
   questionnaire?: Questionnaire;
+  isQuestionnaireValid?: any;
+
 
 
   constructor(obj: UserLoadModelInterface) {
@@ -71,6 +73,6 @@ export class UserLoadModel implements UserLoadModelInterface {
     this.isValid = obj.isValid;
     this.penalty = obj.penalty;
     this.questionnaire = obj.questionnaire;
-
+    this.isQuestionnaireValid = obj.isQuestionnaireValid;
   }
 }

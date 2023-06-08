@@ -14,8 +14,6 @@ namespace MedicApp.Integrations
         ClinicLoadModel GetClinicById(Guid Id);
         List<ClinicBasicInfo> LoadClinicBasicInfoByIds(List<Guid> clinicIds);
         bool UpdateClinic(ClinicSaveModel updateClinic);
-        Complaints SaveComplaint(Complaints complaint);
-        List<Complaints> LoadAllComplaints();
         
     }
     public class ClinicIntegration : IClinicIntegration
@@ -54,11 +52,6 @@ namespace MedicApp.Integrations
             return dbClinic;
         }
 
-        public List<Complaints> LoadAllComplaints()
-        {
-            var dbComplaints = _appDbContext.Complaints.Where(x => x.IsDeleted == false);
-            return dbComplaints.ToList();
-        }
 
         public List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters)
         {
@@ -165,7 +158,8 @@ namespace MedicApp.Integrations
         public ClinicLoadModel GetClinicById(Guid Id)
         {
             var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => x.Id == Id && !x.IsDeleted);
-            var clinic2Appointment = _appDbContext.Appointment2Clinics.Where(x => x.Clinic_RefID == dbClinic.Id).ToList();
+            if (dbClinic == null) throw new Exception("Clinic does not exist");
+            var clinic2Appointment = _appDbContext.Appointment2Clinics.Where(x => x.Clinic_RefID == dbClinic.Id && !x.IsDeleted).ToList();
             var appointmentIDs = clinic2Appointment.Select(x => x.Appointment_RefID).ToList();
             var clinicAppointment = _appDbContext.Appointments.Where(x => appointmentIDs.Contains(x.Id)).ToList();          
 

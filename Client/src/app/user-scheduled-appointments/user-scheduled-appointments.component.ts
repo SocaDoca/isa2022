@@ -26,8 +26,12 @@ export class UserScheduledAppointmentsComponent {
   ngOnInit(): void {
     let patientId = this.route.snapshot.params['id'];
     console.log(patientId);
+    const regex = /T/g;
     this.clinicService.getAllTerms(patientId).subscribe(res => {
       this.appointments = res;
+      this.appointments.forEach(appointment => {
+        appointment.startDate = appointment.startDate.replace(regex, ' ');
+      });
     })
   }
 

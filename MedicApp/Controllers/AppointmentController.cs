@@ -10,7 +10,7 @@ namespace MedicApp.Controllers
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentIntegration _appointmentIntegration;
-        
+
 
         public AppointmentController(IAppointmentIntegration appointmentIntegration)
         {
@@ -18,9 +18,9 @@ namespace MedicApp.Controllers
         }
 
         [HttpPost("save-appointment")]
-        public bool SaveAppointment(Guid appointmentId, ReportSaveModel report)
+        public bool SaveAppointment([FromBody] SaveAppointmentRequest parameters )
         {
-            return _appointmentIntegration.SaveAppointmentReport(appointmentId, report);
+            return _appointmentIntegration.SaveAppointmentReport(parameters);
         }
         
         [HttpPost("create-predefiend-appointment")]
@@ -51,12 +51,12 @@ namespace MedicApp.Controllers
              _appointmentIntegration.CancelAppointment(appointmenetId);           
         }
 
-        [HttpGet("get-appointment")]
-        public AppointmentLoadModel GetAppointmentById(Guid Id)
+        [HttpPost("get-appointment")]
+        public AppointmentLoadModel GetAppointmentById([FromBody]Guid Id)
         {
             return _appointmentIntegration.LoadAppointmentById(Id);
         } 
-        [HttpGet("patient/appointmets")]
+        [HttpPost("patient/appointmets")]
         public List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId)
         {
             return _appointmentIntegration.LoadAllAppointmentsByPatientId(patientId);

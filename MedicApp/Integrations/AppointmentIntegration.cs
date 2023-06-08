@@ -13,19 +13,18 @@ namespace MedicApp.Integrations
 {
     public interface IAppointmentIntegration
     {
-        bool SaveAppointmentReport(Guid appointmentId, ReportSaveModel report);
+        bool SaveAppointmentReport(SaveAppointmentRequest parameters);
         AppointmentLoadModel LoadAppointmentById(Guid Id);
         List<Appointment> CreatePredefiendAppointments(SavePredefiendAppointment predefiendAppointment);
         List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId);
         List<AppointmentLoadModel> LoadAllAppointmnetsByClinicId(Guid clinicId);
-        void ReserveAppointment(Guid appointmentId, Guid patientId);
+        bool ReserveAppointment(Guid appointmentId, Guid patientId);
         void CancelAppointment(Guid appointmenetId);
         void StartAppointmnet(Guid appointmentId);
         void FinishAppointment(Guid appointmentId);
         List<LoadPredefiendAppointment> LoadPredefiendAppointments(Guid clinicId);
         List<AppointmentLoadModel> LoadAllReservedAppointmentsByClinicId(Guid clinicId);
         List<AppointmentLoadModel> LoadAllReservedAppointmnets();
-
 
     }
     public class AppointmentIntegration : IAppointmentIntegration
@@ -48,27 +47,27 @@ namespace MedicApp.Integrations
         }
         #endregion
 
-        public bool SaveAppointmentReport(Guid appointmentId, ReportSaveModel report)
+        public bool SaveAppointmentReport(SaveAppointmentRequest parameters)
         {
-            var dbAppointment = _appDbContext.Appointments.FirstOrDefault(x => x.IsDeleted == false && x.Id == appointmentId);
+            var dbAppointment = _appDbContext.Appointments.FirstOrDefault(x => x.IsDeleted == false && x.Id == parameters.appointmentId);
             if (dbAppointment == null)
             {
-                throw new Exception("appointment does not exist");
+                throw new Exception("Appointment does not exist");
             }
 
-            var dbReport = _appDbContext.AppointmentsReports.FirstOrDefault(x => x.IsDeleted == false && x.Id == report.Id);
+            var dbReport = _appDbContext.AppointmentsReports.FirstOrDefault(x => x.IsDeleted == false && x.Id == parameters.report.Id);
             if (dbReport == null)
             {
                 dbReport = new AppointmentReport();
             }
 
-            dbReport.Description = report.Description;
+            dbReport.Description = parameters.report.Description;
 
-            foreach (var item in report.Equipment)
+            foreach (var item in parameters.report.Equipment)
             {
                 var itemModel = new WorkItem
                 {
-                    Name = item.Name,
+                    WorkItemType = item.WorkItemType,
                     UsedInstances = item.UsedInstances
                 };
                 _appDbContext.WorkItems.Add(itemModel);
@@ -83,7 +82,7 @@ namespace MedicApp.Integrations
             _appDbContext.SaveChanges();
             return true;
 
-        }
+        } // dobra metoda
         #region Load methods
 
         public AppointmentLoadModel LoadAppointmentById(Guid Id)
@@ -131,7 +130,11 @@ namespace MedicApp.Integrations
         }
         public List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId)
         {
-            var dbPatient = _appDbContext.Users.First(x => x.Id == patientId && x.Role == "User");
+            var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == patientId && x.Role == "User" && !x.IsDeleted);
+            if(dbPatient == null)
+            {
+                throw new Exception("patient does not exist");
+            }
             var appointment2PatientIds = _appDbContext.Appointment2Patients.Where(x => x.Patient_RefID == dbPatient.Id).Select(x => x.Appointment_RefID).ToList();
             var dbAppointments = _appDbContext.Appointments.Where(x => appointment2PatientIds.Any(s => s == x.Id)).ToList();
             var dbClinics = _appDbContext.Clinics.ToList().Where(x => !x.IsDeleted).GroupBy(x => x.Id).ToDictionary(x => x.Key, x => x.Single());
@@ -171,6 +174,7 @@ namespace MedicApp.Integrations
                     IsFinished = item.IsFinished,
                     IsPredefiend = item.IsPredefiend,
                     StartTime = item.StartDate.TimeOfDay.ToString(),
+                    Title = item.Title
                 };
                 result.Add(model);
             }
@@ -365,19 +369,30 @@ namespace MedicApp.Integrations
 
         #region Change status appointment
 
-        public void ReserveAppointment(Guid appointmentId, Guid patientId)
+        public bool ReserveAppointment(Guid appointmentId, Guid patientId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsReserved == false && x.IsDeleted == false && x.Id == appointmentId);
             var dbPatient = _appDbContext.Users.SingleOrDefault(x => x.Id == patientId);
+            var patient2Questionary = _appDbContext.Questionnaire.Where(x => x.Patient_RefID == dbPatient.Id).ToList();
+            if(patient2Questionary.Any(x => !x.IsValid))
+            {
+                return false;
+            }
             dbAppointment.Patient_RefID = patientId;
             dbAppointment.IsReserved = true;
 
-            _appDbContext.SaveChanges();
+            var appointment2Patient = new Appointment2Patient()
+            {
+                Appointment_RefID = dbAppointment.Id,
+                Patient_RefID = dbPatient.Id
+            };
 
-            var code = IronBarCode.BarcodeWriter.CreateBarcode(dbAppointment.Id.ToByteArray(), BarcodeWriterEncoding.QRCode);
-            code.SetMargins(100);
-            code.ChangeBarCodeColor(Color.Purple);
-            _emailUtils.SendMail(code.ToString(), $"Appointmnet for patient {dbPatient.FirstName} {dbPatient.LastName}", dbPatient.Email, _emailSettings.Value.SenderAddress);
+            _appDbContext.SaveChanges();
+            return true;
+            //var code = IronBarCode.BarcodeWriter.CreateBarcode(dbAppointment.Id.ToByteArray(), BarcodeWriterEncoding.QRCode);
+            //code.SetMargins(100);
+            //code.ChangeBarCodeColor(Color.Purple);
+            //_emailUtils.SendMail(code.ToString(), $"Appointmnet for patient {dbPatient.FirstName} {dbPatient.LastName}", dbPatient.Email, _emailSettings.Value.SenderAddress);
 
         }
         public void StartAppointmnet(Guid appointmentId)
