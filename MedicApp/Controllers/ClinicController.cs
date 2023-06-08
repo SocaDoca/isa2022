@@ -38,19 +38,7 @@ namespace MedicApp.Controllers
         public ClinicLoadModel GetClinicById(Guid Id)
         {
             return _clinicIntegration.GetClinicById(Id);
-        }
-
-        [HttpPost("save-complaint")]
-        public Complaints SaveComplaint(Complaints complaint)
-        {
-            return _clinicIntegration.SaveComplaint(complaint);
-        }
-
-        [HttpGet("load-all-complaints")]
-        public List<ComplaintListModel> LoadAllComplaints()
-        {
-            return _clinicIntegration.LoadAllComplaints();
-        }
+        }      
 
     }
 }
