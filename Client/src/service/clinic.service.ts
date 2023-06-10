@@ -29,6 +29,7 @@ export class ClinicService {
   urlWorkingHours = "http://localhost:5017/WorkingHours/save-working-hours";
   urlTerm = "http://localhost:5017/Appointment/create-predefiend-appointment";
   urlAppoint = "http://localhost:5017/Appointment/reserve-predefiend-appointment";
+  urlStartTerm = "http://localhost:5017/Appointment/start-predefiend-appointment";
   urlAppointOnClick = "http://localhost:5017/Appointment/save-onClick";
   urlgetAllReservedAppointments = "http://localhost:5017/Appointment/load-reserved-appointments"
   urlSaveComplaint = "http://localhost:5017/Clinic/save-complaint";
@@ -78,6 +79,10 @@ export class ClinicService {
 
   addPredefinedTerm(term: PredefinedTerm): Observable<DbAppointment[]> {
     return this.http.post<DbAppointment[]>(`${this.urlTerm}`, term);
+  }
+
+  startTerm(id: string){
+    return this.http.post<boolean>(`${this.urlStartTerm}?appotinmentId=${id}`, id);
   }
 
   reserveAppointment(id: string, patient_RefId: string) {

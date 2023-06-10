@@ -17,6 +17,7 @@ export class UserService {
   urlQuestionnaire = "http://localhost:5017/User/get-questionnaire";
   urlRemoveUser = "http://localhost:5017/User/remove";
   urlUsers = "http://localhost:5017/User/get-all";
+  urlEmployees = "http://localhost:5017/User/get-all-employees";
   urlUpdate = "http://localhost:5017/User/update-user";
   urlUpdatePass = "http://localhost:5017/User";
   urlSaveQuestionnaire = "http://localhost:5017/User/questionnaire";
@@ -39,6 +40,10 @@ export class UserService {
 
   getAll(user: LoadAllUsersParameters): Observable<UserLoadModel[]> {
     return this.http.post<UserLoadModel[]>(`${this.urlUsers}`, user);
+  }
+
+  getEmployees() {
+    return this.http.post<User[]>(`${this.urlEmployees}`, null);
   }
 
   updateUser(user: User): Observable<User> {

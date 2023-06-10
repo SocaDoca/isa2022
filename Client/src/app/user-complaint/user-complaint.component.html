@@ -26,13 +26,14 @@
           <label>Select Clinic</label>
           <select class="form-select" [(ngModel)]="complaint.clinicId">
             <option value="">-- Select Clinic --</option>
+            <option *ngFor="let clinic of clinics" [value]="clinic.id">{{ clinic.name }}</option>
           </select>
         </div>
         <div *ngIf="selectedOption === 'employee'">
           <label>Select Employee</label>
           <select class="form-select" [(ngModel)]="complaint.employeeId">
             <option value="">-- Select Employee --</option>
-
+            <option *ngFor="let user of users" [value]="user.id">{{ user.firstName }} {{user.lastName}}</option>
           </select>
         </div>
         <div class="form-group">
