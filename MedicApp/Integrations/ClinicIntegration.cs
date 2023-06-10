@@ -1,9 +1,5 @@
 ﻿using MedicApp.Database;
 using MedicApp.Models;
-using MedicApp.RelationshipTables;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Metrics;
-using System.Xml.Linq;
 
 namespace MedicApp.Integrations
 {
@@ -14,12 +10,12 @@ namespace MedicApp.Integrations
         ClinicLoadModel GetClinicById(Guid Id);
         List<ClinicBasicInfo> LoadClinicBasicInfoByIds(List<Guid> clinicIds);
         bool UpdateClinic(ClinicSaveModel updateClinic);
+        List<ClinicDropdownModel> LoadListClinics();
         
     }
     public class ClinicIntegration : IClinicIntegration
     {
         public readonly AppDbContext _appDbContext;
-
 
         public ClinicIntegration(AppDbContext appDbContext)
         {
@@ -52,7 +48,41 @@ namespace MedicApp.Integrations
             return dbClinic;
         }
 
+        public List<ClinicDropdownModel> LoadListClinics()
+        {
+            var dbClinics = _appDbContext.Clinics.Where(x => !x.IsDeleted).ToList();
+            var result = new List<ClinicDropdownModel>();
+            foreach(var clinic in dbClinics)
+            {
+                var model = new ClinicDropdownModel 
+                { 
+                    Id = clinic.Id,
+                    Name = clinic.Name,
+                };
 
+                result.Add(model);
+            }
+            return result;
+        }
+
+        public void UpdateRateClinic(Guid clinicId,Guid patientId ,double rating)
+        {
+            var dbClinic = _appDbContext.Clinics.Where(x => !x.IsDeleted && x.Id == patientId).Single();
+            var clinicRating2Patient = _appDbContext.ClinicRating2Patients.Where(x => !x.IsDeleted && patientId == x.PatientId).FirstOrDefault();
+            if(clinicRating2Patient == null)
+            {
+                clinicRating2Patient = new ClinicRating2Patient
+                {
+                    ClinicId = clinicId,
+                    PatientId = patientId,
+                    Value = rating
+                };               
+            }
+            clinicRating2Patient.Value = rating;
+            _appDbContext.ClinicRating2Patients.Add(clinicRating2Patient);
+            _appDbContext.SaveChanges();
+            return;
+        }
         public List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters)
         {
             List<Clinic> dbClinics = _appDbContext.Clinics.ToList();
@@ -63,6 +93,8 @@ namespace MedicApp.Integrations
             var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.ToList().Where(x => !x.IsDeleted)
                 .GroupBy(x => x.Clinic_RefID)
                 .ToDictionary(x => x.Key, x => x.Select(x => x.WorkingHours_RefID).ToList());
+
+            var clinicRating = _appDbContext.ClinicRating2Patients.Where(x => !x.IsDeleted).GroupBy(x => x.ClinicId).ToDictionary(x => x.Key, x => x.ToList());
             foreach (var clinic in dbClinics)
             {
                 var clinicModel = new ClinicList
@@ -77,7 +109,13 @@ namespace MedicApp.Integrations
                     Rating = clinic.Rating,
                     WorksFrom = clinic.WorksFrom,
                     WorksTo = clinic.WorksTo,
+                    
                 };
+
+                if(clinicRating.TryGetValue(clinic.Id, out var ratings))
+                {
+                    clinicModel.Rating = ratings.Select(x => x.Value).Average();
+                }
                 resultList.Add(clinicModel);
             }
 

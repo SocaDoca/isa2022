@@ -27,6 +27,11 @@ namespace MedicApp.Controllers
         {
             return _clinicIntegration.LoadAllClinics(parameters);
         }
+        [HttpPost("load-dropdown-clinics")]
+        public List<ClinicDropdownModel> LoadListClinics()
+        {
+            return _clinicIntegration.LoadListClinics();
+        }
 
         [HttpPost("update-clinic")]
         public bool UpdateClinic([FromBody] ClinicSaveModel updateClinic)
