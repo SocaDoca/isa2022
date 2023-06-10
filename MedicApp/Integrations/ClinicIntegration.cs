@@ -230,7 +230,7 @@ namespace MedicApp.Integrations
                 Description = dbClinic.Description,
                 Name = dbClinic.Name,
                 Phone = dbClinic.Phone,
-                Rating = clinicRating2Patient.Select(x => x.Value).Average()
+                Rating = clinicRating2Patient.Select(x => x.Value).Average(),
                 Appointments = appointmentList,
 
             };
