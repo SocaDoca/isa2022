@@ -27,6 +27,7 @@ namespace MedicApp.Integrations
         public Clinic SaveClinic(ClinicSaveModel clinicSave)
         {
             var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => x.Id == clinicSave.Id && !x.IsDeleted);
+            
             if (dbClinic == null)
             {
                 dbClinic = new Clinic();
@@ -201,7 +202,8 @@ namespace MedicApp.Integrations
             if (dbClinic == null) throw new Exception("Clinic does not exist");
             var clinic2Appointment = _appDbContext.Appointment2Clinics.Where(x => x.Clinic_RefID == dbClinic.Id && !x.IsDeleted).ToList();
             var appointmentIDs = clinic2Appointment.Select(x => x.Appointment_RefID).ToList();
-            var clinicAppointment = _appDbContext.Appointments.Where(x => appointmentIDs.Contains(x.Id)).ToList();          
+            var clinicAppointment = _appDbContext.Appointments.Where(x => appointmentIDs.Contains(x.Id)).ToList();
+            var clinicRating2Patient = _appDbContext.ClinicRating2Patients.Where(x => !x.IsDeleted && Id == x.ClinicId).ToList();
 
             if (dbClinic == null)
             {
@@ -224,11 +226,11 @@ namespace MedicApp.Integrations
                 City = dbClinic.City,
                 Country = dbClinic.Country,
                 WorksFrom = dbClinic.WorksFrom,
-                WorksTo  = dbClinic.WorksTo,
+                WorksTo = dbClinic.WorksTo,
                 Description = dbClinic.Description,
                 Name = dbClinic.Name,
                 Phone = dbClinic.Phone,
-                Rating = dbClinic.Rating,
+                Rating = clinicRating2Patient.Select(x => x.Value).Average()
                 Appointments = appointmentList,
 
             };
