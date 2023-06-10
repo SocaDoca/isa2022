@@ -13,7 +13,7 @@ namespace MedicApp.Integrations
         bool AnswerComplaint(AnswerCompaintRequest parameters);
         List<ComplaintListModel> LoadAllComplaints();
     }
-    public class ComplaintIntegration
+    public class ComplaintIntegration : IComplaintIntegration
     {
         private readonly AppDbContext _appDbContext;
 

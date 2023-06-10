@@ -53,6 +53,7 @@ builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 builder.Services.AddTransient<IUserIntegration, UserIntegration>();
 builder.Services.AddTransient<IClinicIntegration, ClinicIntegration>();
 builder.Services.AddTransient<IRolesIntegration, RolesIntegration>();
+builder.Services.AddTransient<IComplaintIntegration, ComplaintIntegration>();
 builder.Services.AddTransient<IAppointmentIntegration, AppointmentIntegration>();
 builder.Services.AddScoped<IUrlHelper>(x => {
     var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
