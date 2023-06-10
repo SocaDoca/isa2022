@@ -22,7 +22,6 @@
             <th>Mobile</th>
             <th>Clinic</th>
             <th>Appointment</th>
-            <th>Questionnaire</th>
 
 
           </tr>
@@ -34,11 +33,6 @@
             <td style="color:white">{{ f.patient ? f.patient.mobile : ''}}</td>
             <td style="color:white">{{ f.clinic ? f.clinic.name : ''}}</td>
             <td style="color:white">{{f.startDate}}</td>
-            <td style="color:white">
-              <div *ngFor="let q of questionnaires">
-                <span *ngIf="q.patient_RefID === f.patient?.id">{{ q.isValid ? 'Yes' : 'No' }}</span>
-              </div>
-            </td>
 
 
             <td><button [routerLink]="['start-appointment/', f.id]" style=" width: 170px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Start appointment</button> </td>
