@@ -11,7 +11,9 @@ namespace MedicApp.Integrations
         List<ClinicBasicInfo> LoadClinicBasicInfoByIds(List<Guid> clinicIds);
         bool UpdateClinic(ClinicSaveModel updateClinic);
         List<ClinicDropdownModel> LoadListClinics();
-        
+        bool UpdateRateClinic(Guid clinicId, Guid patientId, double rating);
+
+
     }
     public class ClinicIntegration : IClinicIntegration
     {
@@ -65,7 +67,7 @@ namespace MedicApp.Integrations
             return result;
         }
 
-        public void UpdateRateClinic(Guid clinicId,Guid patientId ,double rating)
+        public bool UpdateRateClinic(Guid clinicId,Guid patientId ,double rating)
         {
             var dbClinic = _appDbContext.Clinics.Where(x => !x.IsDeleted && x.Id == patientId).Single();
             var clinicRating2Patient = _appDbContext.ClinicRating2Patients.Where(x => !x.IsDeleted && patientId == x.PatientId).FirstOrDefault();
@@ -81,7 +83,7 @@ namespace MedicApp.Integrations
             clinicRating2Patient.Value = rating;
             _appDbContext.ClinicRating2Patients.Add(clinicRating2Patient);
             _appDbContext.SaveChanges();
-            return;
+            return true;
         }
         public List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters)
         {
