@@ -11,7 +11,7 @@ namespace MedicApp.Integrations
         List<ClinicBasicInfo> LoadClinicBasicInfoByIds(List<Guid> clinicIds);
         bool UpdateClinic(ClinicSaveModel updateClinic);
         List<ClinicDropdownModel> LoadListClinics();
-        bool UpdateRateClinic(Guid clinicId, Guid patientId, double rating);
+        bool UpdateRateClinic(ClinicRatingParameters parameters);
 
 
     }
@@ -67,20 +67,20 @@ namespace MedicApp.Integrations
             return result;
         }
 
-        public bool UpdateRateClinic(Guid clinicId,Guid patientId ,double rating)
+        public bool UpdateRateClinic(ClinicRatingParameters parameters)
         {
-            var dbClinic = _appDbContext.Clinics.Where(x => !x.IsDeleted && x.Id == patientId).Single();
-            var clinicRating2Patient = _appDbContext.ClinicRating2Patients.Where(x => !x.IsDeleted && patientId == x.PatientId).FirstOrDefault();
+            var dbClinic = _appDbContext.Clinics.Where(x => !x.IsDeleted && x.Id == parameters.ClinicId).Single();
+            var clinicRating2Patient = _appDbContext.ClinicRating2Patients.Where(x => !x.IsDeleted && parameters.PatientId == x.PatientId).FirstOrDefault();
             if(clinicRating2Patient == null)
             {
                 clinicRating2Patient = new ClinicRating2Patient
                 {
-                    ClinicId = clinicId,
-                    PatientId = patientId,
-                    Value = rating
+                    ClinicId = parameters.ClinicId,
+                    PatientId = parameters.PatientId,
+                    Value = parameters.Rating
                 };               
             }
-            clinicRating2Patient.Value = rating;
+            clinicRating2Patient.Value = parameters.Rating;
             _appDbContext.ClinicRating2Patients.Add(clinicRating2Patient);
             _appDbContext.SaveChanges();
             return true;

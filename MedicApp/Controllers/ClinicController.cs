@@ -34,9 +34,9 @@ namespace MedicApp.Controllers
             return _clinicIntegration.LoadListClinics();
         }
         [HttpPost("update-rating")]
-        public bool UpdateRateClinic(Guid clinicId, Guid patientId, double rating)
+        public bool UpdateRateClinic([FromBody] ClinicRatingParameters parameters)
         {
-             return _clinicIntegration.UpdateRateClinic(clinicId,patientId,rating);
+             return _clinicIntegration.UpdateRateClinic(parameters);
         }
 
         [HttpPost("update-clinic")]
