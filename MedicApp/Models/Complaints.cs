@@ -26,8 +26,8 @@
         public Guid Id { get; set; }
         public bool IsForClinic { get; set; }
         public bool IsForEmployee { get; set; }
-        public string UserInput { get; set; }
-        public string Answer { get; set; }
+        public string? UserInput { get; set; }
+        public string? Answer { get; set; }
         public bool IsAnswered { get; set; }
     }
 
