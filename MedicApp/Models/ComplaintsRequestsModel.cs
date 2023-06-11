@@ -11,6 +11,6 @@
     public class AnswerCompaintRequest
     {
         public Guid ComplaintId { get; set; }
-        public string Answer { get; set; }
+        public string? Answer { get; set; }
     }
 }
