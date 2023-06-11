@@ -1,5 +1,6 @@
 ﻿using MedicApp.Integrations;
 using MedicApp.Models;
+using MedicApp.Models.RequestModels;
 using MedicApp.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

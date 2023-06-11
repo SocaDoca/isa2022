@@ -1,6 +1,7 @@
 ﻿using MedicApp.Database;
 using MedicApp.Integrations;
 using MedicApp.Models;
+using MedicApp.Models.RequestModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedicApp.Controllers
@@ -29,9 +30,9 @@ namespace MedicApp.Controllers
             return _appointmentIntegration.CreatePredefiendAppointments(appotinmentSave);
         }
         [HttpPost("reserve-predefiend-appointment")]
-        public void ReserveAppointment(Guid appotinmentId, Guid patientId)
+        public void ReserveAppointment(ReserveAppointmentRequest parameters)
         {
-             _appointmentIntegration.ReserveAppointment(appotinmentId,patientId);
+             _appointmentIntegration.ReserveAppointment(parameters);
         }
         [HttpPost("start-predefiend-appointment")]
         public void StartAppointment(Guid appotinmentId)

@@ -19,7 +19,7 @@ namespace MedicApp.Integrations
         List<Appointment> CreatePredefiendAppointments(SavePredefiendAppointment predefiendAppointment);
         List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId);
         List<AppointmentLoadModel> LoadAllAppointmnetsByClinicId(Guid clinicId);
-        bool ReserveAppointment(Guid appointmentId, Guid patientId);
+        bool ReserveAppointment(ReserveAppointmentRequest parameters);
         void CancelAppointment(Guid appointmenetId);
         void StartAppointmnet(Guid appointmentId);
         void FinishAppointment(Guid appointmentId);
