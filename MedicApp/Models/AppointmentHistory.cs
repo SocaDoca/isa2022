@@ -19,4 +19,11 @@ namespace MedicApp.Models
             IsDeleted = false;
         }
     }
+
+    public class AppointmentListHistory
+    {
+        public Guid Id { get; set; }
+        public Guid? AppointmentId { get; set; }
+        public DateTime TimeFinished { get; set; }
+    }
 }

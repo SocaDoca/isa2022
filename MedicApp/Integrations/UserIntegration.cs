@@ -377,6 +377,9 @@ namespace MedicApp.Integrations
         public UserLoadModel GetUserById(Guid id)
         {
             var dbUser = _appDbContext.Users.FirstOrDefault(x => x.Id == id);
+            var user2Appointment = _appDbContext.Appointment2Patients.Where(x => x.Patient_RefID == dbUser.Id).ToList();
+            var appointmIds = user2Appointment.Select(x => x.Appointment_RefID).ToList();
+            var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => appointmIds.Any(s => s == x.AppointmentId) && x.IsFinishedAppointment).ToList();
             //var dbQuestionnaire = _appDbContext.Questionnaire.FirstOrDefault(x => x.Patient_RefID == dbUser.Id);
             if (dbUser == null)
             {
@@ -421,11 +424,17 @@ namespace MedicApp.Integrations
                 IsAdminCenter = dbUser.IsAdminCenter,
                 IsFirstTime = dbUser.IsFirstTime,
                 Penalty = dbUser.Penalty,
-                //Questionnaire = questionModel
             };
-
+            if(appointmentHistory.Any())
+            {
+                resultUser.AppointmentHistories = appointmentHistory.Select(history => new AppointmentListHistory
+                {
+                    AppointmentId = history.AppointmentId,
+                    Id = history.Id,
+                    TimeFinished = history.Creation_TimeStamp
+                }).ToList();
+            };
             return resultUser;
-
         }
 
         public List<UserBasicInfo> LoadUserBasicInfoByIds(List<Guid> userIds)

@@ -410,10 +410,12 @@ namespace MedicApp.Integrations
         public void FinishAppointment(Guid appointmentId)
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsStarted == true && x.IsDeleted == false && x.Id == appointmentId);
-            var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => x.AppointmentId == appointmentId).FirstOrDefault();
-            
-            appointmentHistory.IsStartedAppointment = false;
-            appointmentHistory.IsFinishedAppointment = true;
+            var appointmentHistory = new AppointmentHistory
+            {
+                AppointmentId = dbAppointment.Id,
+                IsFinishedAppointment = true,
+                IsStartedAppointment = false
+            };
             dbAppointment.IsStarted = false;
             dbAppointment.IsFinished = true;
 
