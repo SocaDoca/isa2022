@@ -1,5 +1,6 @@
 ﻿using MedicApp.Database;
 using MedicApp.Models;
+using MedicApp.Models.RequestModels;
 using MedicApp.RelationshipTables;
 using MedicApp.Utils;
 using MedicApp.Utils.AppSettings;

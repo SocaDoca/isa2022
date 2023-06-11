@@ -1,4 +1,4 @@
-﻿namespace MedicApp.Models
+﻿namespace MedicApp.Models.RequestModels
 {
     public class SaveComplaintsRequest
     {

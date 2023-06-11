@@ -1,5 +1,6 @@
 ﻿using MedicApp.Database;
 using MedicApp.Models;
+using MedicApp.Models.RequestModels;
 
 namespace MedicApp.Integrations
 {
@@ -11,7 +12,7 @@ namespace MedicApp.Integrations
         List<ClinicBasicInfo> LoadClinicBasicInfoByIds(List<Guid> clinicIds);
         bool UpdateClinic(ClinicSaveModel updateClinic);
         List<ClinicDropdownModel> LoadListClinics();
-        bool UpdateRateClinic(ClinicRatingParameters parameters);
+        bool UpdateRateClinic(ClinicRatingRequest parameters);
 
     }
     public class ClinicIntegration : IClinicIntegration
@@ -67,7 +68,7 @@ namespace MedicApp.Integrations
             return result;
         }
 
-        public bool UpdateRateClinic(ClinicRatingParameters parameters)
+        public bool UpdateRateClinic(ClinicRatingRequest parameters)
         {
             var dbClinic = _appDbContext.Clinics.Where(x => !x.IsDeleted && x.Id == parameters.ClinicId).Single();
             var clinicRating2Patient = _appDbContext.ClinicRating2Patients.Where(x => !x.IsDeleted && parameters.PatientId == x.PatientId).FirstOrDefault();

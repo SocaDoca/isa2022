@@ -1,6 +1,6 @@
-﻿namespace MedicApp.Models
+﻿namespace MedicApp.Models.RequestModels
 {
-    public class ClinicRatingParameters
+    public class ClinicRatingRequest
     {
         public Guid ClinicId { get; set; }
         public Guid PatientId { get; set; }

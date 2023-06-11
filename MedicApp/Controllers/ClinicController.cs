@@ -1,5 +1,6 @@
 ﻿using MedicApp.Integrations;
 using MedicApp.Models;
+using MedicApp.Models.RequestModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,7 +35,7 @@ namespace MedicApp.Controllers
             return _clinicIntegration.LoadListClinics();
         }
         [HttpPost("update-rating")]
-        public bool UpdateRateClinic([FromBody] ClinicRatingParameters parameters)
+        public bool UpdateRateClinic([FromBody] ClinicRatingRequest parameters)
         {
              return _clinicIntegration.UpdateRateClinic(parameters);
         }
