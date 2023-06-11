@@ -376,7 +376,7 @@ namespace MedicApp.Integrations
             var dbPatient = _appDbContext.Users.SingleOrDefault(x => x.Id == parameters.PatientId);
             var patient2Questionary = _appDbContext.Questionnaire.Where(x => x.Patient_RefID == dbPatient.Id).ToList();
             
-            if(patient2Questionary.Any(x => x.IsValid == false) && !patient2Questionary.Any())
+            if(patient2Questionary.Any(x => x.IsValid == false) || !patient2Questionary.Any())
             {
                 return false;
             }
