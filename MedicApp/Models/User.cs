@@ -143,7 +143,7 @@ namespace MedicApp.Models
         public int Penalty { get; set; }
         public bool IsFirstTime { get; set; }
         public bool? IsQuestionnaireValid { get; set; }
-        public List<AppointmentListHistory> AppointmentHistories { get; set; }
+        public List<AppointmentListHistory> AppointmentHistories { get; set; } = new List<AppointmentListHistory>();
     }
 
     public class LoadAllUsersParameters
