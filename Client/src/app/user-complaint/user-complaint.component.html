@@ -15,11 +15,11 @@
       <form id="loginform" name="loginform" style="text-align:center">
         <div>
           <label>About</label><br>
-          <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="clinic" (click)="selectedOption = 'clinic'">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="clinic" (change)="selectedOption = 'clinic'; complaint.isForClinic = true;">
           <label class="form-check-label" for="inlineRadio2">Clinic</label>
 
           &nbsp;
-          <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="employee" (click)="selectedOption = 'employee'">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="employee" (change)="selectedOption = 'employee'; complaint.isForEmployee = true;">
           <label class="form-check-label" for="inlineRadio2">Employee</label><br>
         </div>
         <div *ngIf="selectedOption === 'clinic'">
@@ -39,7 +39,7 @@
         <div class="form-group">
           <br>
           <label>Description</label>
-          <input style="height:100px;" id="description" name="description" type="text" class="from-control" [(ngModel)]="complaint.description">
+          <input style="height:100px;" id="description" name="description" type="text" class="from-control" [(ngModel)]="complaint.userInput">
         </div>
         <br>
         <br>

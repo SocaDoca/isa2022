@@ -32,6 +32,7 @@ export class AvailableAppointmentsComponent {
       this.clinicService.reserveAppointment(appoitnmentId, this.id).subscribe(res => {
         this.appointment.id = res.id;
         this.appointment.patient_RefId = res.patient_RefId;
+        console.log(this.appointment);
       });
     });
   }

@@ -22,6 +22,7 @@ export class ClinicService {
   url = "http://localhost:5017/Clinic/save-clinic";
   urlgetById = "http://localhost:5017/Clinic/get-clinic-by-id";
   urlgetAll = "http://localhost:5017/Clinic/load-all-clinics";
+  urlgetAllClinics = "http://localhost:5017/Clinic/load-dropdown-clinics";
   urlgetAllTerms = "http://localhost:5017/Appointment/patient/appointmets";
   urlgetAllClinicIdTerms = "http://localhost:5017/Appointment/clinic/appointmets";
   urlgetOneTerm = "http://localhost:5017/Appointment/get-appointment";
@@ -32,7 +33,7 @@ export class ClinicService {
   urlStartTerm = "http://localhost:5017/Appointment/start-predefiend-appointment";
   urlAppointOnClick = "http://localhost:5017/Appointment/save-onClick";
   urlgetAllReservedAppointments = "http://localhost:5017/Appointment/load-reserved-appointments"
-  urlSaveComplaint = "http://localhost:5017/Clinic/save-complaint";
+  urlSaveComplaint = "http://localhost:5017/Complaints/save-complaints";
   urlgetAllComplaints = "http://localhost:5017/Clinic/load-all-complaints";
   urlCancelAppointment = "http://localhost:5017/Appointment/cancel-appointment"
 
@@ -63,6 +64,10 @@ export class ClinicService {
 
   getAll(clinic: ClinicLoadParameters): Observable<DbClinic[]> {
     return this.http.post<DbClinic[]>(`${this.urlgetAll}`, clinic);
+  }
+
+  getAllClinics(clinic: ClinicLoadParameters): Observable<DbClinic[]> {
+    return this.http.post<DbClinic[]>(`${this.urlgetAllClinics}`, clinic);
   }
 
   getAllTerms(id: string) {
