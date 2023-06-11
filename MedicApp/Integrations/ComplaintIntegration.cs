@@ -117,7 +117,7 @@ namespace MedicApp.Integrations
        
         public List<Complaints> LoadComplaintByUserId(Guid userId)
         {
-            return dbComplaints = _appDbContext.Complaints.Where(x => !x.IsDeleted && x.ComplaintBy_User_RefId == userId).ToList();
+            return _appDbContext.Complaints.Where(x => !x.IsDeleted && x.ComplaintBy_User_RefId == userId).ToList();
            
         }
     }
