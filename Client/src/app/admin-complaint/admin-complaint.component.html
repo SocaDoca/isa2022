@@ -18,18 +18,19 @@
       <table class="table table-striped" border="1" width="200" style="background-color:darkolivegreen; color:white">
         <thead>
           <tr>
-            <th>Type</th>
+            <th>User</th>
             <th>Description</th>
+            <th>Email</th>
             <th>Status</th>
-            <th>Response</th>
           </tr>
         </thead>
         <tbody>
           <tr app-search-user-view *ngFor="let f of complaint">
-            <td style="color:white">{{f.type}}</td>
-            <td style="color:white">{{f.description}}</td>
-            <td style="color:white">{{f.status}}</td>
-            <td><button [routerLink]="['appointments/', f.id]" style=" width: 190px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Response to complaint</button> </td>
+            <td style="color:white">{{f.userName}}</td>
+            <td style="color:white"></td>
+            <td style="color:white">{{f.userEmail}}</td>
+            <td style="color:white">{{ f.isAnswered ? 'Answered' : 'Not Answered' }}</td>
+            <td><button *ngIf="!f.isAnswered" [routerLink]="['appointments/', f.id]" style=" width: 190px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Response to complaint</button> </td>
 </tbody>
       </table>
     </div>

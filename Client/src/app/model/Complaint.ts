@@ -12,6 +12,7 @@ export interface ComplaintInterface {
   userInput?: any;
   answer?: any;
   employeeId?: any;
+  isAnswered?: boolean;
 }
 
 export class Complaint implements ComplaintInterface {
@@ -26,6 +27,7 @@ export class Complaint implements ComplaintInterface {
   userInput?: any;
   answer?: any;
   employeeId?: any;
+  isAnswered?: boolean;
 
 
   constructor(obj: ComplaintInterface) {
@@ -40,5 +42,6 @@ export class Complaint implements ComplaintInterface {
     this.clinicId = obj.clinicId;
     this.patientId = obj.patientId;
     this.employeeId = obj.employeeId;
+    this.isAnswered = obj.isAnswered;
   }
 }

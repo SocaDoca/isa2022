@@ -13,19 +13,17 @@ import { User } from '../model/User';
   styleUrls: ['./user-complaint.component.css']
 })
 export class UserComplaintComponent {
-  complaint: Complaint;
   selectedOption: any;
   users!: User[];
   clinic!: ClinicLoadParameters;
   clinics!: DbClinic[];
   id: any;
+  complaint!: Complaint;
 
   constructor(private clinicService: ClinicService, private userService: UserService, private route: ActivatedRoute) {
     this.complaint = new Complaint({
-      userInput: '',
-      status: true,
-      type: '',
-      clinicId: ''
+
+
     })
   }
 
@@ -58,12 +56,25 @@ export class UserComplaintComponent {
 
 
   saveComplaint() {
-    this.id = this.route.snapshot.params['id'];
+    this.complaint.patientId = this.route.snapshot.params['id'];
 
+    const payload = {
+      complaint: {
+        isForClinic: this.complaint.isForClinic,
+        userInput: this.complaint.userInput,
+        isAnswered: this.complaint.isAnswered,
+        clinicId: this.complaint.clinicId,
+        employeeId: this.complaint.employeeId
+      },
+      patientId: this.route.snapshot.params['id'],
+      clinicId: this.complaint.clinicId,
+      employeeId: this.complaint.employeeId
+    };
 
-    this.clinicService.saveComplaint(this.complaint).subscribe(res => {
+    this.clinicService.saveComplaint(payload).subscribe(res => {
       this.complaint = res;
-      this.complaint.patientId = this.id;
+      this.complaint.patientId = res.patientId;
+      console.log(res.patientId);
       console.log(this.complaint);
     });
     this.selectedOption = '';

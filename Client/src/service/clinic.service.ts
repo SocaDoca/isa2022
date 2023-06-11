@@ -34,7 +34,7 @@ export class ClinicService {
   urlAppointOnClick = "http://localhost:5017/Appointment/save-onClick";
   urlgetAllReservedAppointments = "http://localhost:5017/Appointment/load-reserved-appointments"
   urlSaveComplaint = "http://localhost:5017/Complaints/save-complaints";
-  urlgetAllComplaints = "http://localhost:5017/Clinic/load-all-complaints";
+  urlgetAllComplaints = "http://localhost:5017/Complaints/load-all-complaints";
   urlCancelAppointment = "http://localhost:5017/Appointment/cancel-appointment"
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
@@ -115,7 +115,7 @@ export class ClinicService {
   }
 
   getAllComplaints(complaint: Complaint) {
-    return this.http.get<Complaint[]>(`${this.urlgetAllComplaints}`);
+    return this.http.post<Complaint[]>(`${this.urlgetAllComplaints}`, null);
   }
 
 
