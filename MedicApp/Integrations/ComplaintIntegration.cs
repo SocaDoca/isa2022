@@ -38,7 +38,7 @@ namespace MedicApp.Integrations
             var complaint = parameters.Complaint;
             var dbComplaint = _appDbContext.Complaints.FirstOrDefault(x => x.Id == complaint.Id && x.IsDeleted == false);
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == parameters.PatientId && x.IsDeleted == false && x.Role == "User");
-
+            var patient2Appointment = _appDbContext.Appointment2Patients.Where(x => x.Patient_RefID == dbPatient.Id).ToList();
             if (dbPatient == null)
             {
                 throw new Exception("Patient does not exist");
@@ -46,6 +46,10 @@ namespace MedicApp.Integrations
 
             if (dbComplaint == null)
             {
+                if(!patient2Appointment.Any())
+                {
+                    throw new Exception("Patient does not have appointment");
+                }
                 dbComplaint = new Complaints
                 {
                     Answer = complaint.Answer,
@@ -101,6 +105,7 @@ namespace MedicApp.Integrations
                     Id = complaint.Id,
                     IsForClinic = complaint.IsForClinic,
                     IsForEmployee = complaint.IsForEmployee,
+                    UserInput = complaint.UserInput,
                     IsAnswered = complaint.IsAnswered,
                     UserEmail = user.Email,
                     UserName = String.Format("{0} {1}", user.FirstName, user.LastName)
@@ -108,6 +113,12 @@ namespace MedicApp.Integrations
                 resultList.Add(complaintModel);
             }
             return resultList;
+        }
+       
+        public List<Complaints> LoadComplaintByUserId(Guid userId)
+        {
+            return dbComplaints = _appDbContext.Complaints.Where(x => !x.IsDeleted && x.ComplaintBy_User_RefId == userId).ToList();
+           
         }
     }
 }

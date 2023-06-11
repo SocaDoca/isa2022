@@ -379,7 +379,7 @@ namespace MedicApp.Integrations
             var dbUser = _appDbContext.Users.FirstOrDefault(x => x.Id == id);
             var user2Appointment = _appDbContext.Appointment2Patients.Where(x => x.Patient_RefID == dbUser.Id).ToList();
             var appointmIds = user2Appointment.Select(x => x.Appointment_RefID).ToList();
-            var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => appointmIds.Any(s => s == x.AppointmentId)).ToList();
+            var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => appointmIds.Any(s => s == x.AppointmentId.Value)).ToList();
             //var dbQuestionnaire = _appDbContext.Questionnaire.FirstOrDefault(x => x.Patient_RefID == dbUser.Id);
             if (dbUser == null)
             {
