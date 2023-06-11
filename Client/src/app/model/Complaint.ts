@@ -7,8 +7,10 @@ export interface ComplaintInterface {
   type?: string;
   isForClinic?: boolean;
   isForEmployee?: boolean;
-  isForClinic_Clinic_RefId?: any;
-  isForEmployee_Employee_RefId?: any;
+  patientId?: any;
+  clinicId?: any;
+  userInput?: any;
+  answer?: any;
 }
 
 export class Complaint implements ComplaintInterface {
@@ -18,8 +20,10 @@ export class Complaint implements ComplaintInterface {
   type?: string;
   isForClinic?: boolean;
   isForEmployee?: boolean;
-  isForClinic_Clinic_RefId?: any;
-  isForEmployee_Employee_RefId?: any;
+  patientId?: any;
+  clinicId?: any;
+  userInput?: any;
+  answer?: any;
 
 
   constructor(obj: ComplaintInterface) {
@@ -29,8 +33,10 @@ export class Complaint implements ComplaintInterface {
     this.type = obj.type;
     this.isForClinic = obj.isForClinic;
     this.isForEmployee = obj.isForEmployee;
-    this.isForClinic_Clinic_RefId = obj.isForClinic_Clinic_RefId;
-    this.isForEmployee_Employee_RefId = obj.isForEmployee_Employee_RefId;
+    this.answer = obj.answer;
+    this.userInput = obj.userInput;
+    this.clinicId = obj.clinicId;
+    this.patientId = obj.patientId;
 
   }
 }

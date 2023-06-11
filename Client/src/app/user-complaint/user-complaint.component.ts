@@ -20,7 +20,7 @@ export class UserComplaintComponent {
 
   constructor(private clinicService: ClinicService, private userService: UserService) {
     this.complaint = new Complaint({
-      description: '',
+      userInput: '',
       status: true,
       type: ''
     })
@@ -38,7 +38,7 @@ export class UserComplaintComponent {
   }
 
   loadAllClinics() {
-    this.clinicService.getAll(this.clinic).subscribe(res => {
+    this.clinicService.getAllClinics(this.clinic).subscribe(res => {
       this.clinics = res;
     })
   }
@@ -48,11 +48,6 @@ export class UserComplaintComponent {
     this.clinicService.saveComplaint(this.complaint).subscribe(res => {
       this.complaint = res;
       console.log(this.complaint);
-    });
-    this.complaint = new Complaint({
-      description: '',
-      status: true,
-      type: ''
     });
     this.selectedOption = '';
   }
