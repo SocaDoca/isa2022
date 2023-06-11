@@ -369,17 +369,17 @@ namespace MedicApp.Integrations
 
         #region Change status appointment
 
-        public bool ReserveAppointment(Guid appointmentId, Guid patientId)
+        public bool ReserveAppointment(ReserveAppointmentRequest parameters)
         {
-            var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsReserved == false && x.IsDeleted == false && x.Id == appointmentId);
-            var dbPatient = _appDbContext.Users.SingleOrDefault(x => x.Id == patientId);
+            var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsReserved == false && x.IsDeleted == false && x.Id == parameters.AppointmentId);
+            var dbPatient = _appDbContext.Users.SingleOrDefault(x => x.Id == parameters.PatientId);
             var patient2Questionary = _appDbContext.Questionnaire.Where(x => x.Patient_RefID == dbPatient.Id).ToList();
             
             if(patient2Questionary.Any(x => x.IsValid == false) && !patient2Questionary.Any())
             {
                 return false;
             }
-            dbAppointment.Patient_RefID = patientId;
+            dbAppointment.Patient_RefID = parameters.PatientId;
             dbAppointment.IsReserved = true;
 
             var appointment2Patient = new Appointment2Patient()
