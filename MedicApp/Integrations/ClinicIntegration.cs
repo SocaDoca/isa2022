@@ -13,7 +13,6 @@ namespace MedicApp.Integrations
         List<ClinicDropdownModel> LoadListClinics();
         bool UpdateRateClinic(ClinicRatingParameters parameters);
 
-
     }
     public class ClinicIntegration : IClinicIntegration
     {
@@ -97,7 +96,7 @@ namespace MedicApp.Integrations
                 .GroupBy(x => x.Clinic_RefID)
                 .ToDictionary(x => x.Key, x => x.Select(x => x.WorkingHours_RefID).ToList());
 
-            var clinicRating = _appDbContext.ClinicRating2Patients.Where(x => !x.IsDeleted).GroupBy(x => x.ClinicId).ToDictionary(x => x.Key, x => x.ToList());
+            var clinicRating = _appDbContext.ClinicRating2Patients.Where(x => !x.IsDeleted).ToList().GroupBy(x => x.ClinicId).ToDictionary(x => x.Key, x => x.ToList());
             foreach (var clinic in dbClinics)
             {
                 var clinicModel = new ClinicList
