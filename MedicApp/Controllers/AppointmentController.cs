@@ -30,9 +30,9 @@ namespace MedicApp.Controllers
             return _appointmentIntegration.CreatePredefiendAppointments(appotinmentSave);
         }
         [HttpPost("reserve-predefiend-appointment")]
-        public void ReserveAppointment(ReserveAppointmentRequest parameters)
+        public bool ReserveAppointment(ReserveAppointmentRequest parameters)
         {
-             _appointmentIntegration.ReserveAppointment(parameters);
+             return _appointmentIntegration.ReserveAppointment(parameters);
         }
         [HttpPost("start-predefiend-appointment")]
         public void StartAppointment(Guid appotinmentId)
