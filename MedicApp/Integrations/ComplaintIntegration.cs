@@ -70,7 +70,7 @@ namespace MedicApp.Integrations
 
             var body = "You have succsefully created complaint";
             _emailUtils.SendMail(body, $"Created complaint by {dbPatient.FirstName} {dbPatient.LastName}", _emailSettings.Value.SenderAddress, dbPatient?.Email ?? string.Empty);
-            
+            _appDbContext.Complaints.Add(dbComplaint);
             _appDbContext.SaveChanges();
 
             return dbComplaint;
