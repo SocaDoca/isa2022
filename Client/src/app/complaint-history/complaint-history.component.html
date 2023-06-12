@@ -19,18 +19,18 @@
         <thead>
           <tr>
             <th>Type</th>
-            <th>Description</th>
-            <th>Status</th>
+            <th>Name</th>
+            <th>Answered</th>
 
           </tr>
         </thead>
         <tbody>
           <tr app-search-user-view *ngFor="let f of complaint">
-            <td style="color:white">{{f.type}}</td>
-            <td style="color:white">{{f.description}}</td>
-            <td style="color:white">{{f.status}}</td>
+            <td style="color:white">{{ f.isForClinic ? 'Clinic' : 'Employee' }}</td>
+            <td style="color:white">{{f.userName ?? f.clinicName}}</td>
+            <td style="color:white">{{f.isAnswered ? 'Yes' : 'No'}}</td>
 
-        </tbody>
+</tbody>
       </table>
     </div>
 

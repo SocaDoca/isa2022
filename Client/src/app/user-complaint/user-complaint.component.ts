@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ClinicService } from '../../service/clinic.service';
 import { UserService } from '../../service/user.service';
 import { ClinicLoadParameters } from '../model/ClinicLoadParameters';
@@ -20,7 +20,7 @@ export class UserComplaintComponent {
   id: any;
   complaint!: Complaint;
 
-  constructor(private clinicService: ClinicService, private userService: UserService, private route: ActivatedRoute) {
+  constructor(private clinicService: ClinicService, private userService: UserService, private route: ActivatedRoute, private router: Router) {
     this.complaint = new Complaint({
 
 
@@ -78,6 +78,7 @@ export class UserComplaintComponent {
       console.log(this.complaint);
     });
     this.selectedOption = '';
+    this.router.navigate(['profile', this.complaint.patientId, 'complaintHistory']);
   }
 
 }
