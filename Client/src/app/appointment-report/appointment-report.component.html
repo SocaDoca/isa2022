@@ -10,28 +10,36 @@
 <body>
 
 
-
   <div class="row" class="container">
     <div class="center" id="comp1">
-      <h2 class="text-center">Write a report:</h2>
-    <br>
-      <form id="loginform" name="loginform" style="text-align:center">
-        <div class="form-group">
-          <label>Description</label>
-          <input style="height:100px;" id="description" name="description" type="text" class="from-control">
+      <h2 class="text-center">Write a report</h2>
+      <br>
+      <div>
+        <h4 class="text-center; color=white;">Enter used equipment:</h4>
+        <div *ngFor="let type of workItemTypes">
+          <label>{{ type }}</label>
+          <br>
+          <input type="checkbox" [(ngModel)]="checkedTypes[type]">
+          <input type="number" [disabled]="!checkedTypes[type]" [(ngModel)]="usedInstances[type]" placeholder="Enter value">
         </div>
         <br>
-        <label>Used equipment</label>
-        <div class="form-group">
-          <input id="equipment" name="equipment" type="text" class="from-control">
+        <div class="col">
+          <label for="description">Description</label>
+          <textarea class="form-control" id="description" name="description" [(ngModel)]="report.description"></textarea>
         </div>
         <br>
-        <div>
-          <button type="submit" class="btn btn-primary" style="color:white">End appointment</button><br>
+        <div class="form-group">
+          <button class="btn1" type="submit" (click)="saveValues()" style="margin-left: 80px; width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Submit report </button>
+          <br><br>
+          <button class="btn1" type="submit" (click)="saveValues()" style="margin-left: 80px; width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">End appointment </button>
+
         </div>
 
+      </div>
+  </div>
+    </div>
 
-      </form>
-    </div><br>
 
+</body>
+</html>
 

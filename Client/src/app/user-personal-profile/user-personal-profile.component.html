@@ -38,9 +38,12 @@
             <label>----------------------------------------</label><br>
             <label style="font-weight: bold;">Gender</label>
             <label>{{user.gender}}</label>
-            <label>----------------------------------------</label><br>
-
+            <label>----------------------------------------</label><br><br><br><br><br><br>
+            <p style="color: white;">Is Questionnaire Valid:
+            <span *ngIf="questionnaire.isValid; else noText">Yes</span>
+            <ng-template #noText>No</ng-template></p>
           </div>
+
     <div class="center" id="comp3">
 
       <br>

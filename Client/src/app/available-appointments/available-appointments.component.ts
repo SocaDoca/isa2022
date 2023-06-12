@@ -58,11 +58,7 @@ export class AvailableAppointmentsComponent {
       clinic_RefID: '',
       isCanceled: false,
       isFinished: false,
-      report: new AppReport({
-        description: '0',
-        equipment: '0',
-        isDeleted:false
-      })
+
     })
   }
 

@@ -13,6 +13,7 @@ import { ClinicLoadParameters } from '../app/model/ClinicLoadParameters';
 import { PredefinedTerm } from '../app/model/PredefinedTerm';
 import { DbAppointment } from '../app/model/DbAppointment';
 import { Complaint } from '../app/model/Complaint';
+import { AppReport } from '../app/model/AppReport';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,7 @@ export class ClinicService {
   urlWorkingHours = "http://localhost:5017/WorkingHours/save-working-hours";
   urlTerm = "http://localhost:5017/Appointment/create-predefiend-appointment";
   urlAppoint = "http://localhost:5017/Appointment/reserve-predefiend-appointment";
+  urlSaveAppoint = "http://localhost:5017/Appointment/save-appointment";
   urlStartTerm = "http://localhost:5017/Appointment/start-predefiend-appointment";
   urlAppointOnClick = "http://localhost:5017/Appointment/save-onClick";
   urlgetAllReservedAppointments = "http://localhost:5017/Appointment/load-reserved-appointments"
@@ -98,7 +100,9 @@ export class ClinicService {
     return this.http.post<boolean>(`${this.urlAppoint}`, body, { headers });
   }
 
-
+  saveApp(report: AppReport) {
+    return this.http.post<boolean>(`${this.urlSaveAppoint}`, report);
+  }
 
   getReservedAppointments() {
     return this.http.get<DbAppointment[]>(`${this.urlgetAllReservedAppointments}`,);

@@ -11,6 +11,7 @@ import { UserService } from '../../service/user.service';
 import { UserLoadModel } from '../../app/model/UserLoadModel';
 import { Genders } from '../model/Genders';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { Questionnaire } from '../model/Questionnaire';
 
 
 
@@ -26,6 +27,8 @@ export class UserPersonalProfileComponent implements OnInit{
   user: UserLoadModel;
   addressList: string = '';
   password: any;
+  userId: any;
+  questionnaire!: Questionnaire;
 
   constructor(private modalService: NgbModal, private userService: UserService, private route: ActivatedRoute) {
     this.user = new UserLoadModel({
@@ -50,6 +53,7 @@ export class UserPersonalProfileComponent implements OnInit{
 
   ngOnInit(): void {
     this.loadProfile();
+    this.loadQuestionnaire();
   }
 
   showGender(user: UserLoadModel) {
@@ -59,6 +63,15 @@ export class UserPersonalProfileComponent implements OnInit{
       user.gender = 'Female';
     } else
       user.gender = 'Other';
+  }
+
+  loadQuestionnaire() {
+    this.userId = this.route.snapshot.params['id'];
+    console.log(this.userId);
+    this.userService.getQuestionnaire(this.userId).subscribe(res => {
+      this.questionnaire = res;
+      console.log(res);
+    });
   }
 
   loadProfile() {
