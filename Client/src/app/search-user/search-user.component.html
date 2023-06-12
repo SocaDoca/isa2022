@@ -51,7 +51,7 @@
             <td style="color:white">{{f.address + ", " + f.city + ", " + f.country}}</td>
             <td style="color:white">{{f.job}}</td>
             <td style="color:white">{{f.role}}</td>
-            <td style="color:white">{{f.isQuestionnaireValid}}</td>
+            <td style="color:white">{{f.isQuestionnaireValid ? 'is valid' : 'not valid'}}</td>
             <td> <button (click)="removeUser()" style=" width: 170px; height: 30px; background-color: darkred; color: white; border: none; border-radius: 8px; ">Remove user</button> </td>
           </tr>
         </tbody>
