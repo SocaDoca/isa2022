@@ -15,14 +15,15 @@
     <div class="modal-body" style="background-color:darkolivegreen; color:white">
 
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <button type="button" class="btn btn-primary" style="width:160px; margin-left:10px" (click)="modal.close()" >Confirm</button>
+      <button type="button" class="btn btn-primary" style="width:160px; margin-left:10px" (click)="reserve()">Confirm</button>
 
 
       <button type="button" class="btn btn-primary" style="width:160px; margin-left:140px" (click)="modal.close()">Cancel</button>
-
+      <div *ngIf="errorMessage" style="color: red; margin-left:50px;">Your questionnaire is not valid, you cannot proceed!</div>
     </div>
 
   </ng-template>
+
   <div class="forma">
     <h3>View clinic</h3>
 
