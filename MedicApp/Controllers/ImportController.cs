@@ -6,18 +6,18 @@ namespace MedicApp.Controllers
 {
     public class ImportController: ControllerBase
     {
+        private readonly IImportIntegration _importIntegration;
 
-        //[HttpPost("import-users")]
-        //public void ImportUsers()
-        //{
-        //    var usersCatalog =
-        //}
+        public ImportController(IImportIntegration importIntegration)
+        {
+            _importIntegration = importIntegration;
+        }
+        [HttpPost("import-equiment")]
+        public void ImportEquipment()
+        {
+            _importIntegration.ImportEquipment();
+        }
 
-        //[HttpPost("load-all-roles")]
-        //public List<LoadRole> GetAllRoles()
-        //{
-        //    return _rolesIntegration.GetAllRoles();
-        //}
     }
 
 }

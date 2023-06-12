@@ -68,7 +68,7 @@ namespace MedicApp.Integrations
             {
                 var itemModel = new WorkItem
                 {
-                    WorkItemType = item.WorkItemType,
+                    Name = item.Name,
                     UsedInstances = item.UsedInstances
                 };
                 _appDbContext.WorkItems.Add(itemModel);

@@ -199,7 +199,6 @@ namespace MedicApp.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Answer")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<Guid>("ComplaintBy_User_RefId")
@@ -227,7 +226,6 @@ namespace MedicApp.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("UserInput")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -435,10 +433,11 @@ namespace MedicApp.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("UsedInstances")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
-                    b.Property<int>("WorkItemType")
+                    b.Property<int>("UsedInstances")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

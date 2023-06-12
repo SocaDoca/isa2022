@@ -157,31 +157,43 @@ namespace MedicApp.Integrations
         public Questionnaire CreateQuestionnaireForPatientById(SaveQuestionnaire questionnaire, Guid PatientId)
         {   //nemamo rolu Patient, ispravila na User
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == PatientId && !x.IsDeleted && x.Role == "User");
+            var patient2Question = _appDbContext.Questionnaire.Where(x => x.Patient_RefID == PatientId).OrderByDescending(x => x.Creation_TimeStamp).ToList();
+            var dbQuestionnaire = _appDbContext.Questionnaire.FirstOrDefault(x => x.Id == questionnaire.Id);
+            var timePeriod1 = DateTime.Now;
+            var timePeriod2 = DateTime.Now.AddMonths(-6);
             if (dbPatient == null)
             {
                 throw new Exception("Patient does not exist");
             }
-            var dbQuestionnaire = new Questionnaire
+            if(patient2Question.FirstOrDefault().Creation_TimeStamp >= timePeriod2 && patient2Question.FirstOrDefault().Creation_TimeStamp <= timePeriod1)
             {
-                ExpireDate = DateTime.Now.AddMonths(6),
-                question1 = questionnaire.question1,
-                question2 = questionnaire.question2,
-                question3 = questionnaire.question3,
-                question4 = questionnaire.question4,
-                question5 = questionnaire.question5,
-                question6 = questionnaire.question6,
-                question7 = questionnaire.question7,
-                question8 = questionnaire.question8,
-                question9 = questionnaire.question9,
-                question10 = questionnaire.question10,
-                question11 = questionnaire.question11,
-                question12 = questionnaire.question12,
-                Patient_RefID = dbPatient.Id
-            };
+                throw new Exception("Patient has questionnare in last 6 months");
+            }
+            if (dbQuestionnaire == null)
+            {
+                dbQuestionnaire = new Questionnaire
+                {
+                    ExpireDate = DateTime.Now.AddMonths(6),
+                    Patient_RefID = dbPatient.Id
+                };
+            }
+            dbQuestionnaire.question1 = questionnaire.question1;
+            dbQuestionnaire.question2 = questionnaire.question2;
+            dbQuestionnaire.question3 = questionnaire.question3;
+            dbQuestionnaire.question4 = questionnaire.question4;
+            dbQuestionnaire.question5 = questionnaire.question5;
+            dbQuestionnaire.question6 = questionnaire.question6;
+            dbQuestionnaire.question7 = questionnaire.question7;
+            dbQuestionnaire.question8 = questionnaire.question8;
+            dbQuestionnaire.question9 = questionnaire.question9;
+            dbQuestionnaire.question10 = questionnaire.question10;
+            dbQuestionnaire.question11 = questionnaire.question11;
+            dbQuestionnaire.question12 = questionnaire.question12;
             dbQuestionnaire.IsValid = dbQuestionnaire.IsQuestionireSigned() ? true : false;
             _appDbContext.Questionnaire.Add(dbQuestionnaire);
 
             _appDbContext.SaveChanges();
+
             return dbQuestionnaire;
         }
         #region Delete
@@ -274,7 +286,7 @@ namespace MedicApp.Integrations
                     Penalty = user.Penalty
                 });
 
-               
+
             };
 
             #region SEARCH
@@ -380,30 +392,14 @@ namespace MedicApp.Integrations
             var user2Appointment = _appDbContext.Appointment2Patients.Where(x => x.Patient_RefID == dbUser.Id).ToList();
             var appointmIds = user2Appointment.Select(x => x.Appointment_RefID).ToList();
             var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => appointmIds.Any(s => s == x.AppointmentId.Value)).ToList();
-            //var dbQuestionnaire = _appDbContext.Questionnaire.FirstOrDefault(x => x.Patient_RefID == dbUser.Id);
+            var dbQuestionnaire = _appDbContext.Questionnaire.Where(x => x.Patient_RefID == dbUser.Id)
+                .ToList()
+                .OrderByDescending(x => x.Creation_TimeStamp)
+                .ToList();
             if (dbUser == null)
             {
                 throw (new KeyNotFoundException("User not found"));
             }
-            /* var questionModel = new SaveQuestionnaire
-             {
-                 Id = dbQuestionnaire.Id,
-                 ExpireDate = dbQuestionnaire.ExpireDate,
-                 Patient_RefID = dbQuestionnaire.Patient_RefID,
-                 question1 = dbQuestionnaire.question1,
-                 question2 = dbQuestionnaire.question2,
-                 question3 = dbQuestionnaire.question3,
-                 question4 = dbQuestionnaire.question4,
-                 question5 = dbQuestionnaire.question5,
-                 question6 = dbQuestionnaire.question6,
-                 question7 = dbQuestionnaire.question7,
-                 question8 = dbQuestionnaire.question8,
-                 question9 = dbQuestionnaire.question9,
-                 question10 = dbQuestionnaire.question10,
-                 question11 = dbQuestionnaire.question11,
-                 question12 = dbQuestionnaire.question12,
-                 IsValid = dbQuestionnaire.IsValid
-             };*/
 
             var resultUser = new UserLoadModel
             {
@@ -424,8 +420,9 @@ namespace MedicApp.Integrations
                 IsAdminCenter = dbUser.IsAdminCenter,
                 IsFirstTime = dbUser.IsFirstTime,
                 Penalty = dbUser.Penalty,
+                IsQuestionnaireValid = dbQuestionnaire.First().IsValid
             };
-            if(appointmentHistory.Any())
+            if (appointmentHistory.Any())
             {
                 appointmentHistory = appointmentHistory.Where(x => x.IsFinishedAppointment).ToList();
                 resultUser.AppointmentHistories = appointmentHistory.Select(history => new AppointmentListHistory
