@@ -34,6 +34,7 @@ export class ClinicService {
   urlAppointOnClick = "http://localhost:5017/Appointment/save-onClick";
   urlgetAllReservedAppointments = "http://localhost:5017/Appointment/load-reserved-appointments"
   urlSaveComplaint = "http://localhost:5017/Complaints/save-complaints";
+  urlAnswerComplaint = "http://localhost:5017/Complaints/answer-complaint";
   urlgetAllComplaints = "http://localhost:5017/Complaints/load-all-complaints";
   urlCancelAppointment = "http://localhost:5017/Appointment/cancel-appointment"
 
@@ -90,13 +91,14 @@ export class ClinicService {
     return this.http.post<boolean>(`${this.urlStartTerm}?appotinmentId=${id}`, id);
   }
 
-  reserveAppointment(id: string, patient_RefId: string) {
-    return this.http.post<any>(`${this.urlAppoint}?appotinmentId=${id}&patientId=${patient_RefId}`, null).pipe(
-      map((userData) => {
-        return userData;
-      })
-    );
+  reserveAppointment(appointmentId: string, patientId: string) {
+    const body = { appointmentId, patientId }; // Create the request body object
+    const headers = { 'Content-Type': 'application/json' };
+
+    return this.http.post<boolean>(`${this.urlAppoint}`, body, { headers });
   }
+
+
 
   getReservedAppointments() {
     return this.http.get<DbAppointment[]>(`${this.urlgetAllReservedAppointments}`,);
@@ -118,5 +120,13 @@ export class ClinicService {
     return this.http.post<Complaint[]>(`${this.urlgetAllComplaints}`, null);
   }
 
+  answerComplaint(complaintId: any, answer: string) {
+    const body = { complaintId, answer }; // Create the request body object
+
+    // Set the headers to specify the content type
+    const headers = { 'Content-Type': 'application/json' };
+
+    return this.http.post<boolean>(`${this.urlAnswerComplaint}`, body, { headers });
+  }
 
 }

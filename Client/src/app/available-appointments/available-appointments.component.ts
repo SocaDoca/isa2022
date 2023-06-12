@@ -24,20 +24,29 @@ export class AvailableAppointmentsComponent {
   @ViewChild('mymodal')
   public mymodal: ModalDirective | undefined;
   isModalOpen = false;
+  showError!: true;
+  errorMessage!:any;
 
   openModal(appoitnmentId: any) {
     console.log(appoitnmentId);
-    this.id = this.route.snapshot.params['id'];
+    this.id = appoitnmentId;
     this.modalService.open(this.mymodal).result.then((result) => {
-      this.clinicService.reserveAppointment(appoitnmentId, this.id).subscribe(res => {
-        this.appointment.id = res.id;
-        this.appointment.patient_RefId = res.patient_RefId;
-        console.log(this.appointment);
-      });
+
     });
   }
 
-
+  reserve() {
+    this.appointment.patientId = this.route.snapshot.params['id'];
+    this.clinicService.reserveAppointment(this.id, this.appointment.patientId).subscribe(res => {
+      if (res === true) {
+        this.modalService.dismissAll();
+        window.location.reload();
+      }
+      else {
+          this.errorMessage = 'An error occurred. Please try again.';
+        
+      }
+    });}
 
   constructor(private modalService: NgbModal,private clinicService: ClinicService, private route: ActivatedRoute) {
     this.appointment = new DbAppointment({
