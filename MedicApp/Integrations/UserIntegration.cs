@@ -16,6 +16,7 @@ using MedicApp.RelationshipTables;
 using System.Security.Policy;
 using MedicApp.Utils.AppSettings;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace MedicApp.Integrations
 {
@@ -364,7 +365,7 @@ namespace MedicApp.Integrations
             var questionnaire = _appDbContext.Questionnaire.FirstOrDefault(x => !x.IsDeleted && x.Patient_RefID == dbPatient.Id);
             if (questionnaire is null)
             {
-                throw new Exception("questionnaire is does not exist");
+                return null;
             }
             var result = new SaveQuestionnaire
             {
