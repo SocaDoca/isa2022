@@ -34,7 +34,7 @@ namespace MedicApp.Controllers
         {
              return _appointmentIntegration.ReserveAppointment(parameters);
         }
-        [HttpPost("reserve-predefiend-appointment")]
+        [HttpPost("load-predefiend-appointments")]
         public List<LoadPredefiendAppointment> LoadPredefiendAppointments(Guid clinicId)
         {
              return _appointmentIntegration.LoadPredefiendAppointments(clinicId);
