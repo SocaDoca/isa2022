@@ -51,7 +51,7 @@ export class UserService {
   }
 
   saveQuestionnaire(questionnaire: Questionnaire, patientId: string): Observable<Questionnaire> {
-    return this.http.post<Questionnaire>(`${this.urlSaveQuestionnaire}?patientId=${patientId}`, questionnaire);
+    return this.http.post<Questionnaire>(`${this.urlSaveQuestionnaire}`, null);
   }
 
 
