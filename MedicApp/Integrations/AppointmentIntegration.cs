@@ -396,7 +396,7 @@ namespace MedicApp.Integrations
                 Patient_RefID = dbPatient.Id
             };
 
-            _appDbContext.Appointment2Patient.Add(appointment2Patient); 
+            _appDbContext.Appointment2Patients.Add(appointment2Patient); 
             _appDbContext.SaveChanges();
             return true;
             //var code = IronBarCode.BarcodeWriter.CreateBarcode(dbAppointment.Id.ToByteArray(), BarcodeWriterEncoding.QRCode);
