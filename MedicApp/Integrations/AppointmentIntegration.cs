@@ -429,7 +429,7 @@ namespace MedicApp.Integrations
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsStarted == true && x.IsDeleted == false && x.Id == appointmentId);
             var appointmentHistory = _appDbContext.AppointmentHistories.FirstOrDefault(x => x.AppointmentId == dbAppointment.Id);
-         
+            appointmentHistory.IsFinishedAppointment = true;
             dbAppointment.IsStarted = false;
             dbAppointment.IsFinished = true;
 
