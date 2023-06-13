@@ -394,7 +394,17 @@ namespace MedicApp.Integrations
         {
             var dbUser = _appDbContext.Users.FirstOrDefault(x => x.Id == id);
             var user2Appointment = _appDbContext.Appointment2Patients.Where(x => x.Patient_RefID == dbUser.Id).ToList();
+           
             var appointmIds = user2Appointment.Select(x => x.Appointment_RefID).ToList();
+            var clinicAppointments = _appDbContext.Appointment2Clinics.Where(x => appointmIds.Any(s => s == x.Appointment_RefID)).ToList();
+            var clinicsIds = clinicAppointments.Select(x => x.Clinic_RefID).ToList();
+            var clinics = _appDbContext.Clinics.Where(x => clinicsIds.Any(s => s == x.Id)).ToList();
+
+
+            var patientAppointments = _appDbContext.Appointments.Where(x => x.Patient_RefID == dbUser.Id).ToList();
+            var app2reports = _appDbContext.Appointment2Reports.Where(x => patientAppointments.Any(s => s.Id == x.Appointment_RefID)).ToList();
+           
+            var reports = _appDbContext.AppointmentsReports.Where(x => app2reports.Any(s => s.ReportId == x.Id)).ToList();
             var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => appointmIds.Any(s => s == x.AppointmentId.Value)).ToList();
             var dbQuestionnaire = _appDbContext.Questionnaire.Where(x => x.Patient_RefID == dbUser.Id)
                 .ToList()
@@ -436,7 +446,9 @@ namespace MedicApp.Integrations
                 {
                     AppointmentId = history.AppointmentId,
                     Id = history.Id,
-                    TimeFinished = history.Creation_TimeStamp
+                    TimeFinished = history.Creation_TimeStamp,
+                    ClinicName = clinics.FirstOrDefault(x => clinicAppointments.FirstOrDefault(s => history.AppointmentId == s.Appointment_RefID).Clinic_RefID == x.Id).Name
+                    ReportDescription = reports.FirstOrDefault(x => app2reports.FirstOrDefault(s => s.Appointment_RefID == history.AppointmentId).ReportId == x.Id).Description
                 }).ToList();
             };
             return resultUser;

@@ -25,5 +25,7 @@ namespace MedicApp.Models
         public Guid Id { get; set; }
         public Guid? AppointmentId { get; set; }
         public DateTime TimeFinished { get; set; }
+        public string ClinicName { get; set; }
+        public string ReportDescription { get; set; }
     }
 }
