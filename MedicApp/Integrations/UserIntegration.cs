@@ -447,6 +447,7 @@ namespace MedicApp.Integrations
                     Id = history.Id,
                     TimeFinished = history.Creation_TimeStamp,
                     ClinicName = clinics.FirstOrDefault(x => clinicAppointments.FirstOrDefault(s => history.AppointmentId == s.Appointment_RefID).Clinic_RefID == x.Id).Name,
+                    ClinciId = clinics.FirstOrDefault(x => clinicAppointments.FirstOrDefault(s => history.AppointmentId == s.Appointment_RefID).Clinic_RefID == x.Id).Id,
                     ReportDescription = reports.FirstOrDefault(x => app2reports.FirstOrDefault(s => s.Appointment_RefID == history.AppointmentId).ReportId == x.Id).Description
                 }).ToList();
             };
