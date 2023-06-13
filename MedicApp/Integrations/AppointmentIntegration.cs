@@ -62,8 +62,16 @@ namespace MedicApp.Integrations
             {
                 dbReport = new AppointmentReport();
                 _appDbContext.AppointmentsReports.Add(dbReport);
-            }
 
+                var appointment2Report = new Appointment2Report
+                {
+                    Appointment_RefID = dbAppointment.Id,
+                    ReportId = dbReport.Id
+                };
+                _appDbContext.Appointment2Reports.Add(appointment2Report);
+
+            }
+            
             dbReport.Description = parameters.report.Description;
             
             foreach (var item in parameters.report.Equipment)
