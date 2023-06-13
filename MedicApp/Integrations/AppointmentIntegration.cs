@@ -472,9 +472,9 @@ namespace MedicApp.Integrations
         {
             var appointments2Clinic = _appDbContext.Appointment2Clinics.Where(x => x.Clinic_RefID == clinicId && x.IsDeleted == false);
             var appointmentIds = appointments2Clinic.Select(x => x.Appointment_RefID).ToList();
-            var appoitments = _appDbContext.Appointments.Where(x => x.IsPredefiend == true && !x.IsFinished && !x.IsStarted && appointmentIds.Any(Id => x.Id == Id) && !x.IsReserved).ToList();
+            var appoitments = _appDbContext.Appointments.Where(x => x.IsPredefiend == true && !x.IsFinished && !x.IsStarted && appointmentIds.Any(Id => x.Id == Id) && !x.IsReserved).ToList().OrderBy(x => x.StartDate).ToList();
 
-            return appoitments.Select(x => new LoadPredefiendAppointment { Id = x.Id, StartDate = x.StartDate }).ToList().OrderBy(x => x.StartDate).ToList();
+            return appoitments.Select(x => new LoadPredefiendAppointment { Id = x.Id, StartDate = x.StartDate }).ToList();
         }
     }
 }
