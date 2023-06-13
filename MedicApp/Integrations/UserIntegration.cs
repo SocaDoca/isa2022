@@ -402,8 +402,8 @@ namespace MedicApp.Integrations
 
             var patientAppointments = _appDbContext.Appointments.Where(x => x.Patient_RefID == dbUser.Id).ToList().Select(x => x.Id).ToList();
             var app2reports = _appDbContext.Appointment2Reports.Where(x => patientAppointments.Any(s => s == x.Appointment_RefID)).ToList();
-           
-            var reports = _appDbContext.AppointmentsReports.Where(x => app2reports.Any(s => s.ReportId == x.Id)).ToList();
+            var reportIds = app2reports.Select(x => x.ReportId).ToList();
+            var reports = _appDbContext.AppointmentsReports.Where(x => reportIds.Any(s => s == x.Id)).ToList();
             var appointmentHistory = _appDbContext.AppointmentHistories.Where(x => appointmIds.Any(s => s == x.AppointmentId.Value)).ToList();
             var dbQuestionnaire = _appDbContext.Questionnaire.Where(x => x.Patient_RefID == dbUser.Id)
                 .ToList()
