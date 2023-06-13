@@ -85,8 +85,8 @@ namespace MedicApp.Integrations
             return true;
 
         } // dobra metoda
+        
         #region Load methods
-
         public AppointmentLoadModel LoadAppointmentById(Guid Id)
         {
             var dbAppointment = _appDbContext.Appointments.FirstOrDefault(x => !x.IsDeleted && x.Id == Id);
@@ -396,6 +396,7 @@ namespace MedicApp.Integrations
                 Patient_RefID = dbPatient.Id
             };
 
+            _appDbContext.Appointment2Patient.Add(appointment2Patient); 
             _appDbContext.SaveChanges();
             return true;
             //var code = IronBarCode.BarcodeWriter.CreateBarcode(dbAppointment.Id.ToByteArray(), BarcodeWriterEncoding.QRCode);
