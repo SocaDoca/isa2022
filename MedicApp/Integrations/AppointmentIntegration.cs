@@ -61,10 +61,11 @@ namespace MedicApp.Integrations
             if (dbReport == null)
             {
                 dbReport = new AppointmentReport();
+                _appDbContext.AppointmentsReports.Add(dbReport);
             }
 
             dbReport.Description = parameters.report.Description;
-
+            
             foreach (var item in parameters.report.Equipment)
             {
                 var itemModel = new WorkItem
