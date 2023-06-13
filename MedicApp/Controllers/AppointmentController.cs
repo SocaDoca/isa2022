@@ -46,10 +46,15 @@ namespace MedicApp.Controllers
              _appointmentIntegration.FinishAppointment(appotinmentId);
         }
 
-        [HttpPost("cancel-appointment")]
-        public void CancelAppointment(Guid appointmenetId)
+        [HttpPost("cancel-appointment-by-user")]
+        public bool CancelAppointmentByUser(Guid appointmenetId)
         {
-             _appointmentIntegration.CancelAppointment(appointmenetId);           
+             return _appointmentIntegration.CancelAppointmentByUser(appointmenetId);           
+        }
+        [HttpPost("cancel-appointment-by-admin")]
+        public bool CancelAppointmentByAdmin(Guid appointmenetId)
+        {
+            return _appointmentIntegration.CancelAppointmentByAdmin(appointmenetId);           
         }
 
         [HttpPost("get-appointment")]

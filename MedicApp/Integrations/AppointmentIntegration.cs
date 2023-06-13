@@ -20,7 +20,8 @@ namespace MedicApp.Integrations
         List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId);
         List<AppointmentLoadModel> LoadAllAppointmnetsByClinicId(Guid clinicId);
         bool ReserveAppointment(ReserveAppointmentRequest parameters);
-        void CancelAppointment(Guid appointmenetId);
+        bool CancelAppointmentByAdmin(Guid appointmenetId);
+        bool CancelAppointmentByUser(Guid appointmenetId);
         void StartAppointmnet(Guid appointmentId);
         void FinishAppointment(Guid appointmentId);
         List<LoadPredefiendAppointment> LoadPredefiendAppointments(Guid clinicId);
@@ -429,7 +430,7 @@ namespace MedicApp.Integrations
             _appDbContext.SaveChanges();
 
         }
-        public void CancelAppointmentByUser(Guid appointmentId)
+        public bool CancelAppointmentByUser(Guid appointmentId)
         {
             var dbAppointment = _appDbContext.Appointments.First(x => !x.IsDeleted && x.Id == appointmentId);
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == dbAppointment.Patient_RefID && !x.IsDeleted);
@@ -437,14 +438,27 @@ namespace MedicApp.Integrations
 
             if (DateTime.Now < dbAppointment.StartDate.AddDays(-1))
             {
-                throw new Exception("Appointment cant be cancled");
+                return false;
             }
             dbAppointment.IsPredefiend = true;
             appointmentHistory.IsStartedAppointment = false;
             appointmentHistory.IsFinishedAppointment = false;
 
             _appDbContext.SaveChanges();
+            return true;
+        }
+        public bool CancelAppointmentByAdmin(Guid appointmentId)
+        {
+            var dbAppointment = _appDbContext.Appointments.First(x => !x.IsDeleted && x.Id == appointmentId);
+            var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == dbAppointment.Patient_RefID && !x.IsDeleted);
+            var appointmentHistory = _appDbContext.AppointmentHistories.FirstOrDefault(x => x.AppointmentId == appointmentId);
 
+            dbAppointment.IsPredefiend = true;
+            appointmentHistory.IsStartedAppointment = false;
+            appointmentHistory.IsFinishedAppointment = false;
+            dbPatient.Penalty++;
+            _appDbContext.SaveChanges();
+            return true;
         }
         #endregion
 
