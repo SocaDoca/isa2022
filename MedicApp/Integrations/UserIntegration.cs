@@ -34,7 +34,7 @@ namespace MedicApp.Integrations
         bool Delete(Guid id);
         List<UserBasicInfo> LoadUserBasicInfoByIds(List<Guid> userIds);
         SaveQuestionnaire GetQuestionnaireByUserId(Guid Id);
-        Questionnaire CreateQuestionnaireForPatientById(SaveQuestionnaire questionnaire, Guid PatientId);
+        Questionnaire CreateQuestionnaireForPatientById(SaveQuestionnaire parameters);
         void RemovePenalty();
         int RateClinic(SaveGrade grade);
 
@@ -154,47 +154,50 @@ namespace MedicApp.Integrations
             return newUser;
         }
         #endregion
-        public Questionnaire CreateQuestionnaireForPatientById(SaveQuestionnaire questionnaire, Guid PatientId)
+        public Questionnaire CreateQuestionnaireForPatientById(SaveQuestionnaire parameters)
         {   //nemamo rolu Patient, ispravila na User
-            var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == PatientId && !x.IsDeleted && x.Role == "User");
-            var patient2Question = _appDbContext.Questionnaire.Where(x => x.Patient_RefID == PatientId).OrderByDescending(x => x.Creation_TimeStamp).ToList();
-            var dbQuestionnaire = _appDbContext.Questionnaire.FirstOrDefault(x => x.Id == questionnaire.Id);
+            var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == parameters.Patient_RefID && !x.IsDeleted && x.Role == "User");
+            var patient2Question = _appDbContext.Questionnaire.Where(x => x.Patient_RefID == dbPatient.Id).OrderByDescending(x => x.Creation_TimeStamp).ToList();
+            var lastPatientQuestionnare = patient2Question.FirstOrDefault();
             var timePeriod1 = DateTime.Now;
             var timePeriod2 = DateTime.Now.AddMonths(-6);
             if (dbPatient == null)
             {
                 throw new Exception("Patient does not exist");
             }
-            if(patient2Question.FirstOrDefault().Creation_TimeStamp >= timePeriod2 && patient2Question.FirstOrDefault().Creation_TimeStamp <= timePeriod1)
+
+            if (lastPatientQuestionnare != null)
             {
-                throw new Exception("Patient has questionnare in last 6 months");
-            }
-            if (dbQuestionnaire == null)
-            {
-                dbQuestionnaire = new Questionnaire
+                if (lastPatientQuestionnare.Creation_TimeStamp >= timePeriod2 && lastPatientQuestionnare.Creation_TimeStamp <= timePeriod1)
                 {
-                    ExpireDate = DateTime.Now.AddMonths(6),
-                    Patient_RefID = dbPatient.Id
-                };
+                    throw new Exception("Patient has questionnare in last 6 months");
+                }
             }
-            dbQuestionnaire.question1 = questionnaire.question1;
-            dbQuestionnaire.question2 = questionnaire.question2;
-            dbQuestionnaire.question3 = questionnaire.question3;
-            dbQuestionnaire.question4 = questionnaire.question4;
-            dbQuestionnaire.question5 = questionnaire.question5;
-            dbQuestionnaire.question6 = questionnaire.question6;
-            dbQuestionnaire.question7 = questionnaire.question7;
-            dbQuestionnaire.question8 = questionnaire.question8;
-            dbQuestionnaire.question9 = questionnaire.question9;
-            dbQuestionnaire.question10 = questionnaire.question10;
-            dbQuestionnaire.question11 = questionnaire.question11;
-            dbQuestionnaire.question12 = questionnaire.question12;
-            dbQuestionnaire.IsValid = dbQuestionnaire.IsQuestionireSigned() ? true : false;
-            _appDbContext.Questionnaire.Add(dbQuestionnaire);
+
+            lastPatientQuestionnare = new Questionnaire
+            {
+                ExpireDate = DateTime.Now.AddMonths(6),
+                Patient_RefID = dbPatient.Id
+            };
+
+            lastPatientQuestionnare.question1 = parameters.question1;
+            lastPatientQuestionnare.question2 = parameters.question2;
+            lastPatientQuestionnare.question3 = parameters.question3;
+            lastPatientQuestionnare.question4 = parameters.question4;
+            lastPatientQuestionnare.question5 = parameters.question5;
+            lastPatientQuestionnare.question6 = parameters.question6;
+            lastPatientQuestionnare.question7 = parameters.question7;
+            lastPatientQuestionnare.question8 = parameters.question8;
+            lastPatientQuestionnare.question9 = parameters.question9;
+            lastPatientQuestionnare.question10 = parameters.question10;
+            lastPatientQuestionnare.question11 = parameters.question11;
+            lastPatientQuestionnare.question12 = parameters.question12;
+            lastPatientQuestionnare.IsValid = lastPatientQuestionnare.IsQuestionireSigned() ? true : false;
+            _appDbContext.Questionnaire.Add(lastPatientQuestionnare);
 
             _appDbContext.SaveChanges();
 
-            return dbQuestionnaire;
+            return lastPatientQuestionnare;
         }
         #region Delete
         public bool Delete(Guid id)
@@ -419,9 +422,12 @@ namespace MedicApp.Integrations
                 JMBG = dbUser.JMBG ?? String.Empty,
                 IsAdminCenter = dbUser.IsAdminCenter,
                 IsFirstTime = dbUser.IsFirstTime,
-                Penalty = dbUser.Penalty,
-                IsQuestionnaireValid = dbQuestionnaire.First().IsValid
+                Penalty = dbUser.Penalty
             };
+            if (dbQuestionnaire.Any())
+            {
+                resultUser.IsQuestionnaireValid = dbQuestionnaire.First().IsValid;
+            }
             if (appointmentHistory.Any())
             {
                 appointmentHistory = appointmentHistory.Where(x => x.IsFinishedAppointment).ToList();
