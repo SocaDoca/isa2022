@@ -86,6 +86,7 @@ namespace MedicApp.Integrations
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == dbComplaint.ComplaintBy_User_RefId && !x.IsDeleted);
             dbComplaint.Answer = parameters.Answer;
             dbComplaint.IsAnswered = true;
+            _appDbContext.SaveChanges();
             _emailUtils.SendMail(parameters.Answer, $"Answer on complaint", dbPatient.Email, _emailSettings.Value.SenderAddress);
             return true;
         }

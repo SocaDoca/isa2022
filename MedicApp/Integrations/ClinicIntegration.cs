@@ -71,7 +71,12 @@ namespace MedicApp.Integrations
         public bool UpdateRateClinic(ClinicRatingRequest parameters)
         {
             var dbClinic = _appDbContext.Clinics.Where(x => !x.IsDeleted && x.Id == parameters.ClinicId).Single();
+            var targetAppoitnments = _appDbContext.Appointments.Where(x => x.Clinic_RefID == dbClinic.Id && x.Patient_RefID == parameters.PatientId).ToList();  
             var clinicRating2Patient = _appDbContext.ClinicRating2Patients.Where(x => !x.IsDeleted && parameters.PatientId == x.PatientId).FirstOrDefault();
+            if (targetAppoitnments.Any())
+            {
+                return false;
+            }
             if(clinicRating2Patient == null)
             {
                 clinicRating2Patient = new ClinicRating2Patient

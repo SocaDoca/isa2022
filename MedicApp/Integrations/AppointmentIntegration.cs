@@ -132,7 +132,7 @@ namespace MedicApp.Integrations
         public List<AppointmentLoadModel> LoadAllAppointmentsByPatientId(Guid patientId)
         {
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == patientId && x.Role == "User" && !x.IsDeleted);
-            if(dbPatient == null)
+            if (dbPatient == null)
             {
                 throw new Exception("patient does not exist");
             }
@@ -194,7 +194,7 @@ namespace MedicApp.Integrations
             var clinicInfo = _clinicIntegration.LoadClinicBasicInfoByIds(companyIds).GroupBy(x => x.Id).ToDictionary(x => x.Key, x => x.First());
             return dbAppointments.Select(appointment =>
             {
-                var result = new List<AppointmentLoadModel>();                
+                var result = new List<AppointmentLoadModel>();
                 var appModel = new AppointmentLoadModel
                 {
                     Id = appointment.Id,
@@ -329,7 +329,7 @@ namespace MedicApp.Integrations
             var dbAppointments = _appDbContext.Appointments.Where(x => !x.IsDeleted && x.IsPredefiend && predefiendAppointment.Date == x.StartDate).ToList();
             var dbClinic = _appDbContext.Clinics.First(x => x.Id == predefiendAppointment.Clinic_RefID);
             var result = new List<Appointment>();
-            var count = 0;
+            var count = 1;
             while (count <= predefiendAppointment.NumberOfAppointmentsInDay)
             {
                 var model = new Appointment
@@ -375,8 +375,14 @@ namespace MedicApp.Integrations
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsReserved == false && x.IsDeleted == false && x.Id == parameters.AppointmentId);
             var dbPatient = _appDbContext.Users.SingleOrDefault(x => x.Id == parameters.PatientId);
             var patient2Questionary = _appDbContext.Questionnaire.Where(x => x.Patient_RefID == dbPatient.Id).ToList();
-            
-            if(patient2Questionary.Any(x => x.IsValid == false) || !patient2Questionary.Any())
+            var patient2AppointmentIds = _appDbContext.Appointment2Patients.Where(x => x.Patient_RefID == dbPatient.Id).ToList().Select(x => x.Appointment_RefID).ToList();
+            var targetAppointment = _appDbContext.Appointments.Where(x => patient2AppointmentIds.Any(s => s == x.Id)).ToList();
+            targetAppointment = targetAppointment.Where(x => x.Clinic_RefID == dbAppointment.Clinic_RefID).ToList();
+            if (targetAppointment.Any(x => x.StartDate == dbAppointment.StartDate))
+            {
+                return false;
+            }
+            if (patient2Questionary.Any(x => x.IsValid == false) || !patient2Questionary.Any())
             {
                 return false;
             }
@@ -423,7 +429,7 @@ namespace MedicApp.Integrations
             _appDbContext.SaveChanges();
 
         }
-        public void CancelAppointment(Guid appointmentId)
+        public void CancelAppointmentByUser(Guid appointmentId)
         {
             var dbAppointment = _appDbContext.Appointments.First(x => !x.IsDeleted && x.Id == appointmentId);
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == dbAppointment.Patient_RefID && !x.IsDeleted);
@@ -433,11 +439,9 @@ namespace MedicApp.Integrations
             {
                 throw new Exception("Appointment cant be cancled");
             }
-
-            dbPatient.Penalty++;
+            dbAppointment.IsPredefiend = true;
             appointmentHistory.IsStartedAppointment = false;
             appointmentHistory.IsFinishedAppointment = false;
-            dbAppointment.IsCanceled = true;
 
             _appDbContext.SaveChanges();
 
@@ -448,7 +452,7 @@ namespace MedicApp.Integrations
         {
             var appointments2Clinic = _appDbContext.Appointment2Clinics.Where(x => x.Clinic_RefID == clinicId && x.IsDeleted == false);
             var appointmentIds = appointments2Clinic.Select(x => x.Appointment_RefID).ToList();
-            var appoitments = _appDbContext.Appointments.Where(x => x.IsPredefiend == true && appointmentIds.Any(Id => x.Id == Id) && !x.IsReserved ).ToList();
+            var appoitments = _appDbContext.Appointments.Where(x => x.IsPredefiend == true && appointmentIds.Any(Id => x.Id == Id) && !x.IsReserved).ToList();
 
             return appoitments.Select(x => new LoadPredefiendAppointment { Id = x.Id, StartDate = x.StartDate }).ToList();
         }
