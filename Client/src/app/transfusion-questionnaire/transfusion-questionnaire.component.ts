@@ -13,7 +13,7 @@ import { Questionnaire } from '../model/Questionnaire';
 export class TransfusionQuestionnaireComponent implements OnInit {
 
   questionnaire: Questionnaire;
-  patientId: any;
+  patient_RefID: any;
   submitted: boolean = false;
   //isValid: any;
 
@@ -69,7 +69,9 @@ export class TransfusionQuestionnaireComponent implements OnInit {
     } else {
       this.submitQuestionnaire();
       //console.log(JSON.stringify(this.form.value, null, 2));
-
+     // this.router.navigateByUrl(`/profile/${this.patient_RefID}`).then(() => {
+     //   window.location.reload();
+     // });
     }
   }
 
@@ -84,12 +86,20 @@ export class TransfusionQuestionnaireComponent implements OnInit {
   }
 
   submitQuestionnaire() {
-    this.patientId = this.route.snapshot.params['id'];
-    this.userService.saveQuestionnaire(this.questionnaire, this.patientId).subscribe(res => {
-      this.questionnaire = res;
+    this.patient_RefID = this.route.snapshot.params['id'];
+    this.questionnaire.patient_RefID = this.patient_RefID; // Set the patient_RefID from the route parameter
 
-      console.log(res);
-    })
+    this.userService.saveQuestionnaire(this.questionnaire).subscribe(
+      res => {
+        console.log(this.questionnaire);
+      },
+      error => {
+        console.error("Error saving questionnaire:", error);
+        // Handle the error as needed
+      }
+    );
 
   }
+
+
 }

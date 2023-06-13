@@ -25,7 +25,7 @@ export class ClinicService {
   urlgetAll = "http://localhost:5017/Clinic/load-all-clinics";
   urlgetAllClinics = "http://localhost:5017/Clinic/load-dropdown-clinics";
   urlgetAllTerms = "http://localhost:5017/Appointment/patient/appointmets";
-  urlgetAllClinicIdTerms = "http://localhost:5017/Appointment/clinic/appointmets";
+  urlgetAllClinicIdTerms = "http://localhost:5017/Appointment/load-predefiend-appointments";
   urlgetOneTerm = "http://localhost:5017/Appointment/get-appointment";
   urlUpdate = "http://localhost:5017/Clinic/update-clinic";
   urlWorkingHours = "http://localhost:5017/WorkingHours/save-working-hours";
@@ -78,7 +78,7 @@ export class ClinicService {
   }
 
   getAllTermsByClinicId(clinicId: string) {
-    return this.http.get<DbAppointment[]>(`${this.urlgetAllClinicIdTerms}?clinicId=${clinicId}`);
+    return this.http.post<DbAppointment[]>(`${this.urlgetAllClinicIdTerms}?clinicId=${clinicId}`, clinicId);
   }
 
   getTermById(Id: string) {

@@ -69,7 +69,7 @@
 
         <div class="form-group">
           <label style="font-weight: bold;">Role</label>
-          <input id="roles" name="roles" type="text" placeholder="Admin/Staff or User" formControlName="roles" [ngClass]="{ 'is-invalid': submitted && f['roles'].errors }" [(ngModel)]="newUser.roles">
+          <input id="roles" name="roles" type="text" placeholder="User" formControlName="roles" [ngClass]="{ 'is-invalid': submitted && f['roles'].errors }" [(ngModel)]="newUser.roles">
 
           <div *ngIf="submitted && f['roles'].errors" class="invalid-feedback">
             <div *ngIf="f['roles'].errors['required']" style="text-align:center">Role is required</div>

@@ -59,7 +59,7 @@ export class RegisterPageComponent implements OnInit {
         job: ['', Validators.required],
         moblie: ['', Validators.required],
         jmbg: ['', [Validators.required, Validators.maxLength(13), Validators.minLength(13)]],
-        roles: ['', [Validators.required, Validators.pattern(/^(User|Admin)$/)]],
+        roles: ['', [Validators.required, Validators.pattern(/^(User)$/)]],
         username: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         password: [

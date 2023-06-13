@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from './../app/model/User';
 import { UserLoadModel } from './../app/model/UserLoadModel';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { UserRequest } from '../app/model/UserRequest';
 import { ActivatedRoute } from '@angular/router';
 import { map } from "rxjs/operators";
@@ -50,8 +50,9 @@ export class UserService {
     return this.http.post<User>(`${this.urlUpdate}`, user);
   }
 
-  saveQuestionnaire(questionnaire: Questionnaire, patientId: string): Observable<Questionnaire> {
-    return this.http.post<Questionnaire>(`${this.urlSaveQuestionnaire}`, null);
+  saveQuestionnaire(questionnaire: Questionnaire): Observable<Questionnaire> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.post<Questionnaire>(`${this.urlSaveQuestionnaire}`, questionnaire, { headers });
   }
 
 
