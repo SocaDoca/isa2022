@@ -51,7 +51,7 @@ export class ClinicService {
   }
 
   getClinicById(Id: string): Observable<ClinicSaveModel> {
-    return this.http.post<ClinicSaveModel>(`${this.urlgetById}?id=${Id}`, Id);
+    return this.http.post<ClinicSaveModel>(`${this.urlgetById}?Id=${Id}`, Id);
 
   }
 
