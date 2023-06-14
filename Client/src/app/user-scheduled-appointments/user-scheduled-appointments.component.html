@@ -29,7 +29,7 @@
             <td style="color:white">{{f.title}}</td>
             <td style="color:white">{{f.startDate}}</td>
             <td style="color:white">{{f.startTime}}</td>
-            <td><button [routerLink]="['..']" (click)="cancelAppointment()" style=" width: 170px; height: 30px; background-color: darkred; color: white; border: none; border-radius: 8px; ">Cancel appointment</button> </td>
+            <td><button (click)="cancelAppointment(f.id)" style=" width: 170px; height: 30px; background-color: darkred; color: white; border: none; border-radius: 8px; ">Cancel appointment</button> </td>
 
           </tr>
         </tbody>

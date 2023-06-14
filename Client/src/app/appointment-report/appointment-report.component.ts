@@ -15,6 +15,10 @@ export class AppointmentReportComponent {
   report!: AppReport;
   workitem!: WorkItem;
   lastId: any;
+  isSaving: boolean = false;
+  successMessage: string = '';
+  appotinmentId!: any;
+
 
   checkedTypes: { [key in WorkItemType]: boolean } = {
     [WorkItemType.Needle]: false,
@@ -60,11 +64,11 @@ export class AppointmentReportComponent {
     const enumValuesAsNumbers = this.workItemTypes
       .filter(type => this.checkedTypes[type] && this.usedInstances[type] !== 0)
       .map(type => ({
-        workItemType: WorkItemType[type], 
+        name: WorkItemType[type],
         usedInstances: this.usedInstances[type]
       }))
       .map(item => ({
-        workItemType: this.getEnumNumberValue(item.workItemType),
+        name: item.name,
         usedInstances: item.usedInstances
       }));
 
@@ -75,12 +79,16 @@ export class AppointmentReportComponent {
       },
       appointmentId: this.lastId
     };
-
+    this.isSaving = true;
+    this.successMessage = '';
     this.clinicService.saveApp(payload).subscribe(
       res => {
-
         console.log("Report saved successfully:", res);
-        // Handle the response as needed
+
+        this.successMessage = 'Report saved successfully!';
+
+        // Re-enable input fields
+        this.isSaving = false;
       },
       error => {
         console.error("Error saving report:", error);
@@ -88,18 +96,9 @@ export class AppointmentReportComponent {
       }
     );
   }
-
-  getEnumNumberValue(enumValue: string): number {
-    // Perform the conversion from string value to numeric value
-    switch (enumValue) {
-      case WorkItemType.Needle: return 0;
-      case WorkItemType.Syringe: return 1;
-      case WorkItemType.TransfusionBag: return 2;
-      case WorkItemType.TransfusionPipe: return 3;
-      case WorkItemType.Gloves: return 4;
-      case WorkItemType.TestTube: return 5;
-      default: return -1; // Handle any other cases or errors
-    }
-
+  finishApp() {
+    this.appotinmentId = this.route.snapshot.paramMap.get('id');
+    console.log(this.appotinmentId);
+    this.clinicService.finishAppointment(this.appotinmentId).subscribe(res => { });
   }
 }

@@ -14,6 +14,7 @@ import { PredefinedTerm } from '../app/model/PredefinedTerm';
 import { DbAppointment } from '../app/model/DbAppointment';
 import { Complaint } from '../app/model/Complaint';
 import { AppReport } from '../app/model/AppReport';
+import { ClinicRating } from '../app/model/ClinicRating';
 
 @Injectable({
   providedIn: 'root'
@@ -33,20 +34,34 @@ export class ClinicService {
   urlAppoint = "http://localhost:5017/Appointment/reserve-predefiend-appointment";
   urlSaveAppoint = "http://localhost:5017/Appointment/save-appointment";
   urlStartTerm = "http://localhost:5017/Appointment/start-predefiend-appointment";
+  urlFinish = "http://localhost:5017/Appointment/finish-predefiend-appointment";
   urlAppointOnClick = "http://localhost:5017/Appointment/save-onClick";
   urlgetAllReservedAppointments = "http://localhost:5017/Appointment/load-reserved-appointments"
   urlSaveComplaint = "http://localhost:5017/Complaints/save-complaints";
   urlAnswerComplaint = "http://localhost:5017/Complaints/answer-complaint";
   urlgetAllComplaints = "http://localhost:5017/Complaints/load-all-complaints";
   urlCancelAppointment = "http://localhost:5017/Appointment/cancel-appointment"
+  urlCancelUser = "http://localhost:5017/Appointment/cancel-appointment-by-user"
+  urlUpdateRating = "http://localhost:5017/Clinic/update-rating";
+  urladdPenalty = "http://localhost:5017/Appointment/cancel-appointment-by-admin";
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {
 
   }
 
 
+  finishAppointment(appotinmentId: string) {
+    return this.http.post<void>(`${this.urlFinish}?appotinmentId=${appotinmentId}`, appotinmentId)
+
+  }
+
   saveClinic(clinic: ClinicSaveModel) {
     return this.http.post<ClinicSaveModel>(`${this.url}`, clinic)
+
+  }
+
+  addPenalty(appointmenetId: string) {
+    return this.http.post<boolean>(`${this.urladdPenalty}`, appointmenetId)
 
   }
 
@@ -57,6 +72,19 @@ export class ClinicService {
 
   updateClinic(clinic: ClinicSaveModel) {
     return this.http.post<boolean>(`${this.urlUpdate}`, clinic);
+
+  }
+
+  cancelAppUser(appointmentId: string) {
+    return this.http.post<boolean>(`${this.urlCancelUser}`, appointmentId);
+
+  }
+
+  updateClinicRating(rating: ClinicRating) {
+    const body = { rating  }; // Create the request body object
+    const headers = { 'Content-Type': 'application/json' };
+
+    return this.http.post<boolean>(`${this.urlUpdateRating}`, body, { headers });
 
   }
 

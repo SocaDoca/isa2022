@@ -13,6 +13,7 @@ export class UserScheduledAppointmentsComponent {
   appointments: DbAppointment[] = [];
   appointment: DbAppointment;
   id: any;
+  appointmentId!: any;
 
   constructor(private clinicService: ClinicService, private route: ActivatedRoute) {
     this.appointment = new DbAppointment({
@@ -35,7 +36,11 @@ export class UserScheduledAppointmentsComponent {
     })
   }
 
-  cancelAppointment() {
-
+  cancelAppointment(id: any) {
+    this.id = this.appointmentId;
+    //console.log(appointmentId);
+    this.clinicService.cancelAppUser(this.appointmentId).subscribe(res => {
+      // Handle the response from the service
+    });
   }
 }

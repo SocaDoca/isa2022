@@ -11,6 +11,7 @@ import { DbAppointment } from '../model/DbAppointment';
 export class StartAppointmentComponent {
   id?: any;
   appointment?: DbAppointment;
+  appointmenetId?: any;
   constructor(private route: ActivatedRoute, private clinicService: ClinicService, private router: Router) { }
 
 
@@ -25,4 +26,12 @@ export class StartAppointmentComponent {
     this.router.navigate(['/profileEmployee', this.id, 'reservedAppointments', 'start-appointment', this.id, 'report']);
 
   }
+
+  addPenalty() {
+    this.appointmenetId = this.route.snapshot.params['id'];
+    console.log(this.appointmenetId);
+    this.clinicService.addPenalty(this.appointmenetId).subscribe(res => {
+      
+    });
+    }
 }

@@ -1,5 +1,6 @@
 import { Roles } from './Roles';
 import { Genders } from './Genders';
+import { AppointmentHistory } from './AppointmentHistory';
 
 export interface UserInterface {
   id?: string;
@@ -23,6 +24,7 @@ export interface UserInterface {
   name?: string;
   isFirstTime?: boolean;
   penalty?: number;
+  appointmentHistories?: AppointmentHistory[];
 }
 
 export class User implements UserInterface {
@@ -47,6 +49,7 @@ export class User implements UserInterface {
   mobile?: string;
   isFirstTime?: boolean;
   penalty?: number;
+  appointmentHistories?: AppointmentHistory[];
 
   constructor(obj: UserInterface) {
     this.id = obj.id;
@@ -70,5 +73,6 @@ export class User implements UserInterface {
     this.name = obj.name;
     this.isFirstTime = obj.isFirstTime;
     this.penalty = obj.penalty;
+    this.appointmentHistories = obj.appointmentHistories;
   }
 }

@@ -25,13 +25,14 @@
         <br>
         <div class="col">
           <label for="description">Description</label>
-          <textarea class="form-control" id="description" name="description" [(ngModel)]="report.description"></textarea>
+          <textarea class="form-control" id="description" name="description" [(ngModel)]="report.description" [disabled]="isSaving"></textarea>
         </div>
         <br>
         <div class="form-group">
           <button class="btn1" type="submit" (click)="saveValues()" style="margin-left: 80px; width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Submit report </button>
+          <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
           <br><br>
-          <button class="btn1" type="submit" (click)="saveValues()" style="margin-left: 80px; width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">End appointment </button>
+          <button class="btn1" type="submit" (click)="finishApp()" style="margin-left: 80px; width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">End appointment </button>
 
         </div>
 

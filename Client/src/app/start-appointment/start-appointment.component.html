@@ -17,15 +17,11 @@
       <form id="loginform" name="loginform" style="text-align:center">
         <div class="form-group">
           <br>
-          <label>Questionnaire:</label>
-          <div>
-            <button [routerLink]="['..']" type="submit" class="btn btn-primary" style="color:white">Not valid</button><br>
-          </div>
         </div>
         <div class="form-group">
           <label>User did not show up:</label>
           <div>
-            <button type="submit" class="btn btn-primary" style="color:white">Add penalty</button><br>
+            <button type="submit" class="btn btn-primary" (click)="addPenalty()" style="color:white">Add penalty</button><br>
           </div>
         </div>
 

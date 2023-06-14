@@ -1,6 +1,7 @@
 import { AppReport } from "./AppReport";
 import { ClinicLoadParameters } from "./ClinicLoadParameters";
 import { ClinicSaveModel } from "./ClinicSaveModel";
+import { DbClinic } from "./DbClinic";
 import { User } from "./User";
 
 export interface DbAppointmentInterface {
@@ -10,7 +11,7 @@ export interface DbAppointmentInterface {
   duration?: number;
   numberOfAppointmentsInDay?: number;
   clinic_RefID?: string;
-  clinic?: ClinicSaveModel;
+ // clinic?: ClinicSaveModel;
   title?: string;
   startDate?: any;
   startTime?: any;
@@ -24,6 +25,7 @@ export interface DbAppointmentInterface {
   worksTo?: string;
   appointmentId?: any;
   patientId?: any;
+  clinic?: DbClinic;
 }
 
 export class DbAppointment implements DbAppointmentInterface {
@@ -40,13 +42,14 @@ export class DbAppointment implements DbAppointmentInterface {
   isCanceled?: boolean;
   isFinished?: boolean;
   isReserved?: boolean;
-  clinic?: ClinicSaveModel;
+ // clinic?: ClinicSaveModel;
   report?: AppReport;
   patient?: User;
   worksFrom?: string;
   worksTo?: string;
   appointmentId?: any;
   patientId?: any;
+  clinic?: DbClinic;
 
   constructor(obj: DbAppointmentInterface) {
     this.id = obj.id;

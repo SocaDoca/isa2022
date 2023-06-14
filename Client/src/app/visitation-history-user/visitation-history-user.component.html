@@ -8,18 +8,34 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+  <ng-template #mymodal let-modal>
+    <div class="modal-header" style="background-color:darkolivegreen;">
+      <h4 class="modal-title" id="modal-basic-title" style="color:white; margin-left:140px">Rate the clinic</h4>
+    </div>
+    <div class="modal-body" style="background-color:darkolivegreen; color:white">
+      <div class="form-group" style="width:200px; margin-left:10px">
+        <input class="form-control" id="description" name="description" [(ngModel)]="rating">
+        </div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="button" class="btn btn-primary" style="width:160px; margin-left:10px" (click)="reserve()">Confirm</button>
 
+
+        <button type="button" class="btn btn-primary" style="width:160px; margin-left:140px" (click)="modal.close()">Cancel</button>
+        <div *ngIf="errorMessage" style="color: red; margin-left:50px;">Your questionnaire is not valid, you cannot proceed!</div>
+      </div>
+
+</ng-template>
   <div class="forma">
     <h3>Visitation history</h3>
-    <form class="form-search" >
+    <form class="form-search">
       <input style="width: 250px; " align="center" name="search" id="search" type="text"><br>
 
       <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="name">
       <label class="form-check-label" for="inlineRadio2">name</label>
 
 
-      <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="address" >
-      <label class="form-check-label" for="inlineRadio2">address</label><br>
+      <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="time">
+      <label class="form-check-label" for="inlineRadio2">time</label><br>
 
       <input type="submit" value="search" class="btn btn-primary">
     </form>
@@ -29,20 +45,19 @@
       <table class="table table-striped" border="1" width="200" style="background-color:darkolivegreen; color:white">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Address</th>
-            <th>Mobile</th>
-            <th>Rating</th>
-            <th>Working hours</th>
+            <th>Clinic name</th>
+            <th>Report description</th>
+            <th>Appointment time</th>
           </tr>
         </thead>
         <tbody>
-          <tr app-search-user-view >
-            
+          <tr app-search-user-view *ngFor="let appointment of user.appointmentHistories">
+            <td style="color:white;">{{ appointment.clinicName }}</td>
+            <td style="color:white;">{{ appointment.reportDescription }}</td>
+            <td style="color:white;">{{ appointment.timeFinished }}</td>
 
-            <td><button  style=" width: 220px; height: 30px; background-color: orangered; color: white; border: none; border-radius: 8px; ">Rate clinic</button> </td>
-          </tr>
+            <td><button  (click)="openModal(appointment.clinicId)" style=" width: 220px; height: 30px; background-color: orangered; color: white; border: none; border-radius: 8px; ">Rate clinic</button> </td>
+
         </tbody>
       </table>
     </div>
