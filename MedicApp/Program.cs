@@ -40,8 +40,8 @@ builder.Services.AddQuartz(q =>
 });
 
 builder.Services.AddQuartzHostedService(x => x.WaitForJobsToComplete = true);
-1
 
+var connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
                                             options.UseMySQL(connectionString));
 
