@@ -83,14 +83,15 @@ namespace MedicApp.Integrations
                 {
                     ClinicId = parameters.ClinicId,
                     PatientId = parameters.PatientId,
-                    Value = parameters.Rating
+                    Value = double.Parse(parameters.Rating)
                 };               
             }
-            clinicRating2Patient.Value = parameters.Rating;
+            clinicRating2Patient.Value = double.Parse(parameters.Rating);
             _appDbContext.ClinicRating2Patients.Add(clinicRating2Patient);
             _appDbContext.SaveChanges();
             return true;
         }
+
         public List<ClinicList> LoadAllClinics(ClinicLoadParameters parameters)
         {
             List<Clinic> dbClinics = _appDbContext.Clinics.ToList();

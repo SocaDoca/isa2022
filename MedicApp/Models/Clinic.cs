@@ -15,7 +15,6 @@
         public bool IsDeleted { get; set; }
         public DateTime Creation_TimeStamp { get; set; }
 
-
         public Clinic()
         {
             Id = Guid.NewGuid();

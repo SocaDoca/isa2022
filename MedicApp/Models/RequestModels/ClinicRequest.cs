@@ -4,6 +4,6 @@
     {
         public Guid ClinicId { get; set; }
         public Guid PatientId { get; set; }
-        public double Rating { get; set; }
+        public string Rating { get; set; }
     }
 }

@@ -65,16 +65,16 @@ namespace MedicApp.Database
             base.OnModelCreating(builder);
         }
 
-        public class MysqlEntityFrameworkDesignTimeServices : IDesignTimeServices
+       
+    }
+    public class MysqlEntityFrameworkDesignTimeServices : IDesignTimeServices
+    {
+        public void ConfigureDesignTimeServices(IServiceCollection serviceCollection)
         {
-            public void ConfigureDesignTimeServices(IServiceCollection serviceCollection)
-            {
-                serviceCollection.AddEntityFrameworkMySQL();
-                new EntityFrameworkRelationalDesignServicesBuilder(serviceCollection)
-                    .TryAddCoreServices();
-            }
+            serviceCollection.AddEntityFrameworkMySQL();
+            new EntityFrameworkRelationalDesignServicesBuilder(serviceCollection)
+                .TryAddCoreServices();
         }
     }
-
 
 }
