@@ -32,7 +32,7 @@
           <button class="btn1" type="submit" (click)="saveValues()" style="margin-left: 80px; width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Submit report </button>
           <p *ngIf="successMessage" class="success-message">{{ successMessage }}</p>
           <br><br>
-          <button class="btn1" type="submit" (click)="finishApp()" style="margin-left: 80px; width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">End appointment </button>
+          <button class="btn1" type="submit" (click)="finishApp()" [routerLink]="['../../../']"  style="margin-left: 80px; width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">End appointment </button>
 
         </div>
 

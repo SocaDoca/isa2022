@@ -21,9 +21,9 @@ export class VisitationHistoryUserComponent {
   isModalOpen = false;
   showError!: true;
   errorMessage!: any;
-  rating!: any;
   patientId!: any;
   ratingData!: ClinicRating;
+  rating!: string;
 
   constructor(private userService: UserService, private route: ActivatedRoute, private modalService: NgbModal, private clinicService: ClinicService) {
 
@@ -46,8 +46,9 @@ export class VisitationHistoryUserComponent {
     const ratingData: ClinicRating = {
       clinicId: this.id,
       patientId: this.patientId,
-      rating: parseFloat(this.rating)
+      rating: this.rating
     };
+    console.log(typeof this.rating)
 
     this.clinicService.updateClinicRating(ratingData).subscribe(res => {
       // Handle the response from the service

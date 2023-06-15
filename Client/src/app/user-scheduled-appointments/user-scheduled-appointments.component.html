@@ -19,18 +19,20 @@
           <tr>
             <th>Title</th>
             <th>Start date</th>
-            <th>Start Time</th>
-
+            <th>Start time</th>
+            <th>Status</th>
 
           </tr>
         </thead>
         <tbody>
-          <tr app-search-user-view *ngFor="let f of appointments">
+          <tr app-search-user-view *ngFor="let f of appointments" >
+          <ng-container *ngIf="!f.isFinished">
             <td style="color:white">{{f.title}}</td>
             <td style="color:white">{{f.startDate}}</td>
             <td style="color:white">{{f.startTime}}</td>
+            <td style="color:white">Reserved</td>
             <td><button (click)="cancelAppointment(f.id)" style=" width: 170px; height: 30px; background-color: darkred; color: white; border: none; border-radius: 8px; ">Cancel appointment</button> </td>
-
+            </ng-container>
           </tr>
         </tbody>
       </table>

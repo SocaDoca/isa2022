@@ -398,7 +398,6 @@ namespace MedicApp.Integrations
             }
             dbAppointment.Patient_RefID = parameters.PatientId;
             dbAppointment.IsReserved = true;
-
             var appointment2Patient = new Appointment2Patient()
             {
                 Appointment_RefID = dbAppointment.Id,
@@ -429,10 +428,16 @@ namespace MedicApp.Integrations
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsStarted == true && x.IsDeleted == false && x.Id == appointmentId);
             var appointmentHistory = _appDbContext.AppointmentHistories.FirstOrDefault(x => x.AppointmentId == dbAppointment.Id);
+            var dbPatient = _appDbContext.Users.SingleOrDefault(x => x.Id == dbAppointment.Patient_RefID);
+            var patient2Questionary = _appDbContext.Questionnaire.Where(x => x.Patient_RefID == dbPatient.Id).ToList().OrderByDescending(x => x.Creation_TimeStamp).ToList();
             appointmentHistory.IsFinishedAppointment = true;
             dbAppointment.IsStarted = false;
             dbAppointment.IsFinished = true;
-
+            var questionnaire = patient2Questionary.FirstOrDefault();
+            if (questionnaire != null)
+            {
+                questionnaire.IsValid = false;
+            }
             _appDbContext.SaveChanges();
 
         }
@@ -474,7 +479,7 @@ namespace MedicApp.Integrations
             var appointmentIds = appointments2Clinic.Select(x => x.Appointment_RefID).ToList();
             var appoitments = _appDbContext.Appointments.Where(x => x.IsPredefiend == true && !x.IsFinished && !x.IsStarted && appointmentIds.Any(Id => x.Id == Id) && !x.IsReserved).ToList().OrderBy(x => x.StartDate).ToList();
 
-            return appoitments.Select(x => new LoadPredefiendAppointment { Id = x.Id, StartDate = x.StartDate }).ToList();
+            return appoitments.Select(x => new LoadPredefiendAppointment { Id = x.Id, StartDate = x.StartDate, Title = x.Title }).ToList();
         }
     }
 }

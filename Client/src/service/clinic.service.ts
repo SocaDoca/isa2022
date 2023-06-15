@@ -81,12 +81,12 @@ export class ClinicService {
   }
 
   updateClinicRating(rating: ClinicRating) {
-    const body = { rating  }; // Create the request body object
+    const body = JSON.stringify(rating); 
     const headers = { 'Content-Type': 'application/json' };
 
     return this.http.post<boolean>(`${this.urlUpdateRating}`, body, { headers });
-
   }
+
 
   saveWorkingHours(hours: WorkingHours) {
     return this.http.post<WorkingHours>(`${this.url}`, hours)

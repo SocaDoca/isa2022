@@ -35,7 +35,6 @@
           <tr>
             <th>Title</th>
             <th>StartDate</th>
-            <th>Address</th>
 
           </tr>
         </thead>
@@ -44,7 +43,6 @@
             <ng-container *ngIf="!f.isReserved">
               <td style="color:white">{{f.title}}</td>
               <td style="color:white">{{f.startDate}}</td>
-              <td style="color:white">{{ f.clinic ? f.clinic.address : ''}}</td>
 
 
               <td><button (click)="openModal(f.id)" style=" width: 220px; height: 30px; background-color: forestgreen; color: white; border: none; border-radius: 8px; ">Schedule appointment</button> </td>

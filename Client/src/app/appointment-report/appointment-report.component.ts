@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClinicService } from '../../service/clinic.service';
 import { AppReport } from '../model/AppReport';
+import { User } from '../model/User';
 import { WorkItem } from '../model/WorkItem';
 import { WorkItemType } from '../model/WorkItemType';
 
@@ -18,6 +19,7 @@ export class AppointmentReportComponent {
   isSaving: boolean = false;
   successMessage: string = '';
   appotinmentId!: any;
+  user!: User;
 
 
   checkedTypes: { [key in WorkItemType]: boolean } = {
@@ -42,7 +44,7 @@ export class AppointmentReportComponent {
     this.lastId = this.route.snapshot.paramMap.get('id');
   }
 
-  constructor(private clinicService: ClinicService, private route: ActivatedRoute) {
+  constructor(private clinicService: ClinicService, private route: ActivatedRoute, private router: Router) {
     this.report = new AppReport({});
   }
 
@@ -99,6 +101,8 @@ export class AppointmentReportComponent {
   finishApp() {
     this.appotinmentId = this.route.snapshot.paramMap.get('id');
     console.log(this.appotinmentId);
-    this.clinicService.finishAppointment(this.appotinmentId).subscribe(res => { });
+    /*this.clinicService.finishAppointment(this.appotinmentId).subscribe(res => {
+      
+    });*/
   }
 }

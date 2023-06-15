@@ -75,6 +75,7 @@ namespace MedicApp.Models
     {
         public Guid Id { get; set; }
         public DateTime StartDate { get; set; }
+        public String Title { get; set; }
     }
     public class SavePredefiendAppointment
     {

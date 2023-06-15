@@ -1,13 +1,13 @@
 export interface ClinicRatingInterface {
   clinicId?: any;
   patientId?: any;
-  rating?: any;
+  rating?: string;
 }
 
 export class ClinicRating implements ClinicRatingInterface{
   clinicId?: any;
   patientId?: any;
-  rating?: any;
+  rating?: string;
 
 
   constructor(obj: ClinicRatingInterface) {
