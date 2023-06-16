@@ -33,7 +33,6 @@ export class AdminAddTermComponent {
     }),
       this.term = new PredefinedTerm({
         duration: 20,
-        numberOfAppointmentsInDay: 1,
         clinic_RefID: ''
       })
   }

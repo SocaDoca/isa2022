@@ -23,7 +23,7 @@
           <input type="number" [disabled]="!checkedTypes[type]" [(ngModel)]="usedInstances[type]" placeholder="Enter value">
         </div>
         <br>
-        <div class="col">
+        <div class="col" id="comp2">
           <label for="description">Description</label>
           <textarea class="form-control" id="description" name="description" [(ngModel)]="report.description" [disabled]="isSaving"></textarea>
         </div>

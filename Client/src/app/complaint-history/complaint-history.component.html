@@ -9,17 +9,18 @@
 </head>
 <body>
 
-  <div class="forma">
+  <div class="forma" >
     <br><h3>Complaint history</h3><br>
 
   </div>
-  <div class="modal-dialog text-center">
+  <div class="modal-dialog text-center" >
     <div class="modal-content">
       <table class="table table-striped" border="1" width="200" style="background-color:darkolivegreen; color:white">
         <thead>
           <tr>
             <th>Type</th>
             <th>Name</th>
+            <th>Complaint</th>
             <th>Answered</th>
 
           </tr>
@@ -28,6 +29,7 @@
           <tr app-search-user-view *ngFor="let f of complaint">
             <td style="color:white">{{ f.isForClinic ? 'Clinic' : 'Employee' }}</td>
             <td style="color:white">{{f.userName ?? f.clinicName}}</td>
+            <td style="color:white">{{f.userInput}}</td>
             <td style="color:white">{{f.isAnswered ? 'Yes' : 'No'}}</td>
 
 </tbody>

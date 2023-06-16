@@ -27,12 +27,6 @@
         <div class="form-group">
           <input id="phone" name="phone" type="text" class="from-control" [(ngModel)]="clinic.phone">
         </div>
-        <label>Rating</label>
-        <div class="form-group">
-          <input id="rating" name="rating" [disabled]="true" type="text" class="from-control">
-        </div>
-
-
       
       <br><br><br><br>
     </div>
@@ -63,7 +57,7 @@
 
       <br><br>
       <label>Works from</label>
-      <div class="form-group"  >
+      <div class="form-group">
         <input id="start" name="start" type="text" class="from-control" [(ngModel)]="clinic.worksFrom">
       </div>
       <label>to</label>
@@ -71,11 +65,9 @@
         <input id="end" name="end" type="text" class="from-control" [(ngModel)]="clinic.worksTo">
       </div>
       <br>
-
-
-      <label>On days</label>
+      <label>Rating</label>
       <div class="form-group">
-        <input id="day" name="day" type="text" class="from-control"[(ngModel)]="workHours.day" >
+        <input id="rating" name="rating" [disabled]="true" type="text" class="from-control">
       </div>
 
 

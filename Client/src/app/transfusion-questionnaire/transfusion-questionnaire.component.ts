@@ -15,6 +15,7 @@ export class TransfusionQuestionnaireComponent implements OnInit {
   questionnaire: Questionnaire;
   patient_RefID: any;
   submitted: boolean = false;
+  errorMessage!: any;
   //isValid: any;
 
   form: FormGroup = new FormGroup({
@@ -63,16 +64,12 @@ export class TransfusionQuestionnaireComponent implements OnInit {
   onSubmit(): void {
     this.submitted = true;
 
-
-    if (this.form.invalid) {
-      return;
-    } else {
-      this.submitQuestionnaire();
+    this.submitQuestionnaire();
       //console.log(JSON.stringify(this.form.value, null, 2));
      // this.router.navigateByUrl(`/profile/${this.patient_RefID}`).then(() => {
      //   window.location.reload();
      // });
-    }
+    
   }
 
   isSubmitted = false;
@@ -94,8 +91,13 @@ export class TransfusionQuestionnaireComponent implements OnInit {
         console.log(this.questionnaire);
       },
       error => {
-        console.error("Error saving questionnaire:", error);
-        // Handle the error as needed
+        // Handle the error
+        console.error("Error:", error);
+        if (error.error && typeof error.error === 'string') {
+           this.errorMessage = error.error;
+        } else {
+          this.errorMessage = "An error occurred. Please try again."; // Default error message
+        }
       }
     );
 

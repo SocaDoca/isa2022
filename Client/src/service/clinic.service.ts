@@ -61,8 +61,10 @@ export class ClinicService {
   }
 
   addPenalty(appointmenetId: string) {
-    return this.http.post<boolean>(`${this.urladdPenalty}`, appointmenetId)
+    const body = JSON.stringify(appointmenetId);
+    const headers = { 'Content-Type': 'application/json' };
 
+    return this.http.post<boolean>(`${this.urladdPenalty}`, body, { headers });
   }
 
   getClinicById(Id: string): Observable<ClinicSaveModel> {

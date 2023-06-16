@@ -36,10 +36,9 @@ export class UserScheduledAppointmentsComponent {
     })
   }
 
-  cancelAppointment(id: any) {
-    this.id = this.appointmentId;
-    //console.log(appointmentId);
-    this.clinicService.cancelAppUser(this.appointmentId).subscribe(res => {
+  cancelAppointment(appId: any) {
+    console.log(appId);
+    this.clinicService.cancelAppUser(appId).subscribe(res => {
       // Handle the response from the service
     });
   }

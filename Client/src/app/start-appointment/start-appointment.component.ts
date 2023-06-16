@@ -16,14 +16,18 @@ export class StartAppointmentComponent {
 
 
   startApp() {
-    this.id = this.route.snapshot.params['id'];
     this.clinicService.startTerm(this.id)
       .subscribe(res => {
         this.id = res;
         
         console.log(this.id);
       });
-    this.router.navigate(['/profileEmployee', this.id, 'reservedAppointments', 'start-appointment', this.id, 'report']);
+    const ids = this.route.snapshot.paramMap.getAll('id');
+    const lastId = ids[ids.length - 1];
+    const urlSegments = this.route.snapshot.url;
+    const firstId = urlSegments[1].path;
+    this.router.navigate(['/profileEmployee', firstId, 'reservedAppointments', 'start-appointment', lastId, 'report']);
+
 
   }
 

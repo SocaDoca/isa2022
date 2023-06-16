@@ -1,7 +1,7 @@
 .center {
   margin: 10px;
   width: 500px;
-  padding: 10px;
+  padding: 20px;
   background-color: darkolivegreen;
   color: white;
 }
@@ -18,8 +18,8 @@ h1, h2, h3 {
 
 .container {
   display: flex;
-  margin-left: 220px;
-  margin-top: 20px;
+  margin-left: 170px;
+  margin-top: 60px;
   margin-bottom: 30px;
   font-style: normal;
 }
