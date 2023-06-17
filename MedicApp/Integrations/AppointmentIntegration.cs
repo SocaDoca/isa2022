@@ -27,6 +27,7 @@ namespace MedicApp.Integrations
         List<LoadPredefiendAppointment> LoadPredefiendAppointments(Guid clinicId);
         List<AppointmentLoadModel> LoadAllReservedAppointmentsByClinicId(Guid clinicId);
         List<AppointmentLoadModel> LoadAllReservedAppointmnets();
+        List<AppointmentLoadModel> LoadAllAppointmentsInDateRange(DateTime date);
 
     }
     public class AppointmentIntegration : IAppointmentIntegration
@@ -71,9 +72,9 @@ namespace MedicApp.Integrations
                 _appDbContext.Appointment2Reports.Add(appointment2Report);
 
             }
-            
+
             dbReport.Description = parameters.report.Description;
-            
+
             foreach (var item in parameters.report.Equipment)
             {
                 var itemModel = new WorkItem
@@ -94,7 +95,7 @@ namespace MedicApp.Integrations
             return true;
 
         } // dobra metoda
-        
+
         #region Load methods
         public AppointmentLoadModel LoadAppointmentById(Guid Id)
         {
@@ -146,7 +147,7 @@ namespace MedicApp.Integrations
             {
                 throw new Exception("patient does not exist");
             }
-            var appointment2PatientIds = _appDbContext.Appointment2Patients.Where(x => x.Patient_RefID == dbPatient.Id).Select(x => x.Appointment_RefID).ToList();
+            var appointment2PatientIds = _appDbContext.Appointment2Patients.Where(x => x.Patient_RefID == dbPatient.Id && !x.IsDeleted).Select(x => x.Appointment_RefID).ToList();
             var dbAppointments = _appDbContext.Appointments.Where(x => appointment2PatientIds.Any(s => s == x.Id)).ToList();
             var dbClinics = _appDbContext.Clinics.ToList().Where(x => !x.IsDeleted).GroupBy(x => x.Id).ToDictionary(x => x.Key, x => x.Single());
             var result = new List<AppointmentLoadModel>();
@@ -384,18 +385,23 @@ namespace MedicApp.Integrations
         {
             var dbAppointment = _appDbContext.Appointments.SingleOrDefault(x => x.IsReserved == false && x.IsDeleted == false && x.Id == parameters.AppointmentId);
             var dbPatient = _appDbContext.Users.SingleOrDefault(x => x.Id == parameters.PatientId);
-            var patient2Questionary = _appDbContext.Questionnaire.Where(x => x.Patient_RefID == dbPatient.Id).ToList();
-            var patient2AppointmentIds = _appDbContext.Appointment2Patients.Where(x => x.Patient_RefID == dbPatient.Id).ToList().Select(x => x.Appointment_RefID).ToList();
+            var patient2Questionary = _appDbContext.Questionnaire.Where(x => x.Patient_RefID == dbPatient.Id && !x.IsDeleted).OrderByDescending(x => x.Creation_TimeStamp).ToList();
+            var patient2AppointmentIds = _appDbContext.Appointment2Patients.Where(x => x.Patient_RefID == dbPatient.Id && !x.IsDeleted).ToList().Select(x => x.Appointment_RefID).ToList();
             var targetAppointment = _appDbContext.Appointments.Where(x => patient2AppointmentIds.Any(s => s == x.Id)).ToList();
-            targetAppointment = targetAppointment.Where(x => x.Clinic_RefID == dbAppointment.Clinic_RefID).ToList();
+            targetAppointment = targetAppointment.Where(x => x.Clinic_RefID == dbAppointment.Clinic_RefID && x.Patient_RefID == dbPatient.Id).ToList();
             if (targetAppointment.Any(x => x.StartDate == dbAppointment.StartDate))
             {
                 return false;
             }
-            if (patient2Questionary.Any(x => x.IsValid == false) || !patient2Questionary.Any())
+            var quest = patient2Questionary.FirstOrDefault();
+            if (quest != null)
             {
-                return false;
+                if (quest.IsValid == false)
+                {
+                    return false;
+                }
             }
+
             dbAppointment.Patient_RefID = parameters.PatientId;
             dbAppointment.IsReserved = true;
             var appointment2Patient = new Appointment2Patient()
@@ -404,7 +410,7 @@ namespace MedicApp.Integrations
                 Patient_RefID = dbPatient.Id
             };
 
-            _appDbContext.Appointment2Patients.Add(appointment2Patient); 
+            _appDbContext.Appointment2Patients.Add(appointment2Patient);
             _appDbContext.SaveChanges();
             return true;
             //var code = IronBarCode.BarcodeWriter.CreateBarcode(dbAppointment.Id.ToByteArray(), BarcodeWriterEncoding.QRCode);
@@ -445,16 +451,19 @@ namespace MedicApp.Integrations
         {
             var dbAppointment = _appDbContext.Appointments.First(x => !x.IsDeleted && x.Id == appointmentId);
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == dbAppointment.Patient_RefID && !x.IsDeleted);
+            var appointment2patient = _appDbContext.Appointment2Patients.FirstOrDefault(x => x.Appointment_RefID == appointmentId && !x.IsDeleted);
             var appointmentHistory = _appDbContext.AppointmentHistories.FirstOrDefault(x => x.AppointmentId == appointmentId);
-
-            if (DateTime.Now < dbAppointment.StartDate.AddDays(-1))
+            var timeSpan = Math.Floor(Math.Abs(DateTime.Now.Subtract(dbAppointment.StartDate.AddDays(-1)).TotalDays));
+            if (timeSpan <= 1)
             {
                 return false;
             }
             dbAppointment.IsPredefiend = true;
+            dbAppointment.Patient_RefID = null;
+            dbAppointment.IsReserved = false;
             appointmentHistory.IsStartedAppointment = false;
             appointmentHistory.IsFinishedAppointment = false;
-
+            appointment2patient.IsDeleted = true;
             _appDbContext.SaveChanges();
             return true;
         }
@@ -462,11 +471,15 @@ namespace MedicApp.Integrations
         {
             var dbAppointment = _appDbContext.Appointments.First(x => !x.IsDeleted && x.Id == appointmentId);
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == dbAppointment.Patient_RefID && !x.IsDeleted);
+            var appointment2patient = _appDbContext.Appointment2Patients.FirstOrDefault(x => x.Appointment_RefID == appointmentId);
             var appointmentHistory = _appDbContext.AppointmentHistories.FirstOrDefault(x => x.AppointmentId == appointmentId);
 
             dbAppointment.IsPredefiend = true;
+            dbAppointment.Patient_RefID = null;
+            dbAppointment.IsReserved = false;
             appointmentHistory.IsStartedAppointment = false;
             appointmentHistory.IsFinishedAppointment = false;
+            appointment2patient.IsDeleted = true;
             dbPatient.Penalty++;
             _appDbContext.SaveChanges();
             return true;
@@ -480,6 +493,64 @@ namespace MedicApp.Integrations
             var appoitments = _appDbContext.Appointments.Where(x => x.IsPredefiend == true && !x.IsFinished && !x.IsStarted && appointmentIds.Any(Id => x.Id == Id) && !x.IsReserved).ToList().OrderBy(x => x.StartDate).ToList();
 
             return appoitments.Select(x => new LoadPredefiendAppointment { Id = x.Id, StartDate = x.StartDate, Title = x.Title }).ToList();
+        }
+
+
+        public List<AppointmentLoadModel> LoadAllAppointmentsInDateRange(DateTime date)
+        {
+            var dbAppointments = _appDbContext.Appointments.Where(x => x.StartDate == date && !x.IsDeleted).ToList();
+            var clinicsIds = dbAppointments.Select(x => x.Clinic_RefID).ToList();
+            var patients = dbAppointments.Select(x => x.Patient_RefID).ToList();
+            var dbClinics = _appDbContext.Clinics.Where(x => clinicsIds.Any(s => s == x.Id) && !x.IsDeleted).ToList();
+            var dbPatients = _appDbContext.Users.Where(x => patients.Any(s => s == x.Id) && !x.IsDeleted).ToList();
+            var result = new List<AppointmentLoadModel>();
+            foreach (var item in dbAppointments)
+            {
+                var clinic = dbClinics.FirstOrDefault(x => x.Id == item.Clinic_RefID);
+                if (clinic is null)
+                {
+                    throw new Exception("Clinic does not exist");
+                }
+
+                User patient = item.Patient_RefID.HasValue ? dbPatients.FirstOrDefault(x => x.Id == item.Patient_RefID.Value) : null;
+
+                var model = new AppointmentLoadModel
+                {
+                    Id = item.Id,
+                    Title = item.Title,
+                    IsCanceled = item.IsCanceled,
+                    IsFinished = item.IsFinished,
+                    IsPredefiend = item.IsPredefiend,
+                    IsReserved = item.IsReserved,
+                    Clinic = new ClinicBasicInfo
+                    {
+                        Id = clinic.Id,
+                        Address = clinic.Address,
+                        City = clinic.City,
+                        Country = clinic.Country,
+                        Description = clinic.Description,
+                        Name = clinic.Name,
+                        Phone = clinic.Phone,
+                        WorksFrom = clinic.WorksFrom,
+                        WorksTo = clinic.WorksTo
+                    },
+
+                    Patient = patient == null ? null : new UserBasicInfo
+                    {
+                        Id = patient.Id,
+                        Address = patient.Address ?? string.Empty,
+                        City = patient.City ?? string.Empty,
+                        Country = patient.Country ?? string.Empty,
+                        Email = patient.Email ?? string.Empty,
+                        FirstName = patient.FirstName ?? string.Empty,
+                        LastName = patient.LastName ?? string.Empty,
+                        Mobile = patient.Mobile ?? string.Empty
+                    },
+                };
+                result.Add(model);
+            }
+
+            return result;
         }
     }
 }

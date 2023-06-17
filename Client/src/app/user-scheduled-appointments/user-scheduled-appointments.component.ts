@@ -41,5 +41,6 @@ export class UserScheduledAppointmentsComponent {
     this.clinicService.cancelAppUser(appId).subscribe(res => {
       // Handle the response from the service
     });
+    window.location.reload();
   }
 }

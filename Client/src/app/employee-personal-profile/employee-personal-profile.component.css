@@ -18,7 +18,7 @@ h1, h2, h3 {
 .container {
   display: flex;
   justify-content: space-between;
-  margin-top: 60px;
+  margin-top: 10px;
   margin-bottom: 30px;
 }
 

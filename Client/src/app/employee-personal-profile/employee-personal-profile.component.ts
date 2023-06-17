@@ -128,7 +128,7 @@ export class EmployeePersonalProfileComponent implements OnInit, AfterViewInit {
         const country = res.country ?? '';
         const address = res.address ?? '';
         const city = res.city ?? '';
-        this.user.fullAddress = `${country}, ${address}, ${city}`;
+        this.user.fullAddress = `${address}, ${city}, ${country}`;
         //this.user.fullAddress! = res.country + ", " + res.address + ", " + res.city;
         console.log(res.isFirstTime);
         console.log(res);

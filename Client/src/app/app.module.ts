@@ -48,6 +48,7 @@ import { ComplaintHistoryComponent } from './complaint-history/complaint-history
 import { MatBadgeModule } from '@angular/material/badge';
 import { AdminComplaintComponent } from './admin-complaint/admin-complaint.component';
 import { AdminReservedAppointmentsComponent } from './admin-reserved-appointments/admin-reserved-appointments.component';
+import { AdminAvailableAppointmentsComponent } from './admin-available-appointments/admin-available-appointments.component';
 
 
 
@@ -84,6 +85,7 @@ import { AdminReservedAppointmentsComponent } from './admin-reserved-appointment
     ComplaintHistoryComponent,
     AdminComplaintComponent,
     AdminReservedAppointmentsComponent,
+    AdminAvailableAppointmentsComponent,
 
   ],
   imports: [

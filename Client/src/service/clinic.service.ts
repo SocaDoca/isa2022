@@ -64,7 +64,7 @@ export class ClinicService {
     const body = JSON.stringify(appointmenetId);
     const headers = { 'Content-Type': 'application/json' };
 
-    return this.http.post<boolean>(`${this.urladdPenalty}`, body, { headers });
+    return this.http.post<boolean>(`${this.urladdPenalty}?appointmenetId=${appointmenetId}`, body, { headers });
   }
 
   getClinicById(Id: string): Observable<ClinicSaveModel> {
@@ -78,7 +78,7 @@ export class ClinicService {
   }
 
   cancelAppUser(appointmentId: string) {
-    return this.http.post<boolean>(`${this.urlCancelUser}`, appointmentId);
+    return this.http.post<boolean>(`${this.urlCancelUser}?appointmenetId=${appointmentId}`, appointmentId);
 
   }
 

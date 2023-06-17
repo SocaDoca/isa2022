@@ -50,9 +50,9 @@ export class UserService {
     return this.http.post<User>(`${this.urlUpdate}`, user);
   }
 
-  saveQuestionnaire(questionnaire: Questionnaire): Observable<Questionnaire> {
+  saveQuestionnaire(questionnaire: Questionnaire) {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.post<Questionnaire>(`${this.urlSaveQuestionnaire}`, questionnaire, { headers });
+    return this.http.post<boolean>(`${this.urlSaveQuestionnaire}`, questionnaire, { headers });
   }
 
 

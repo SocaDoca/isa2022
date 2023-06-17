@@ -85,5 +85,11 @@ namespace MedicApp.Controllers
         {
             return _appointmentIntegration.LoadAllReservedAppointmnets();
         }
+
+        [HttpPost("load-all-appointments")]
+        public List<AppointmentLoadModel> LoadAllAppointmentsInDateRange([FromBody] DateTime date)
+        {
+            return _appointmentIntegration.LoadAllAppointmentsInDateRange(date);
+        }
     }
 }

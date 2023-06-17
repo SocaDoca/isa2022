@@ -88,15 +88,12 @@ export class TransfusionQuestionnaireComponent implements OnInit {
 
     this.userService.saveQuestionnaire(this.questionnaire).subscribe(
       res => {
-        console.log(this.questionnaire);
-      },
-      error => {
-        // Handle the error
-        console.error("Error:", error);
-        if (error.error && typeof error.error === 'string') {
-           this.errorMessage = error.error;
-        } else {
-          this.errorMessage = "An error occurred. Please try again."; // Default error message
+        if (res === true) {
+          
+        }
+        else {
+          this.errorMessage = 'An error occurred. Please try again.';
+
         }
       }
     );

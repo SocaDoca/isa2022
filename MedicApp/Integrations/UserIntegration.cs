@@ -35,7 +35,7 @@ namespace MedicApp.Integrations
         bool Delete(Guid id);
         List<UserBasicInfo> LoadUserBasicInfoByIds(List<Guid> userIds);
         SaveQuestionnaire GetQuestionnaireByUserId(Guid Id);
-        Questionnaire CreateQuestionnaireForPatientById(SaveQuestionnaire parameters);
+        bool CreateQuestionnaireForPatientById(SaveQuestionnaire parameters);
         void RemovePenalty();
         int RateClinic(SaveGrade grade);
 
@@ -155,7 +155,7 @@ namespace MedicApp.Integrations
             return newUser;
         }
         #endregion
-        public Questionnaire CreateQuestionnaireForPatientById(SaveQuestionnaire parameters)
+        public bool CreateQuestionnaireForPatientById(SaveQuestionnaire parameters)
         {   //nemamo rolu Patient, ispravila na User
             var dbPatient = _appDbContext.Users.FirstOrDefault(x => x.Id == parameters.Patient_RefID && !x.IsDeleted && x.Role == "User");
             var patient2Question = _appDbContext.Questionnaire.Where(x => x.Patient_RefID == dbPatient.Id).OrderByDescending(x => x.Creation_TimeStamp).ToList();
@@ -164,14 +164,14 @@ namespace MedicApp.Integrations
             var timePeriod2 = DateTime.Now.AddMonths(-6);
             if (dbPatient == null)
             {
-                throw new Exception("Patient does not exist");
+                return false;
             }
 
             if (lastPatientQuestionnare != null)
             {
                 if (lastPatientQuestionnare.Creation_TimeStamp >= timePeriod2 && lastPatientQuestionnare.Creation_TimeStamp <= timePeriod1)
                 {
-                    throw new Exception("Patient has questionnare in last 6 months");
+                    return false;
                 }
             }
 
@@ -198,7 +198,7 @@ namespace MedicApp.Integrations
 
             _appDbContext.SaveChanges();
 
-            return lastPatientQuestionnare;
+            return true;
         }
         #region Delete
         public bool Delete(Guid id)

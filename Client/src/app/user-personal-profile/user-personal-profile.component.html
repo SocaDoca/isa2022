@@ -13,7 +13,7 @@
     <div class="center" id="comp1">
 
       <h3> PROFILE</h3>
-
+      <img src="../assets/homePictures/profile.png" style="width: 150px; height: 150px; margin-left: 120px;">
       <label>{{user.firstName}} {{user.lastName}}</label>
 
       <label> {{user.role}} </label>
@@ -38,8 +38,9 @@
             <label>----------------------------------------</label><br>
             <label style="font-weight: bold;">Gender</label>
             <label>{{user.gender}}</label>
-            <label>----------------------------------------</label><br><br><br><br><br><br>
-            <p style="color: white;">Is Questionnaire Valid:
+            <label>----------------------------------------</label><br><br><br><br><br><br><br><br><br><br><br>
+            <p style="color: white;">
+              Is Questionnaire Valid:
               <span>{{ questionnaire.isValid ? 'Yes' : 'No' }}</span>
           </div>
 

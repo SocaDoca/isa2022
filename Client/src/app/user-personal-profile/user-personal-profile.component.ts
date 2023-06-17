@@ -84,7 +84,7 @@ export class UserPersonalProfileComponent implements OnInit{
         const country = res.country ?? '';
         const address = res.address ?? '';
         const city = res.city ?? '';
-        this.user.fullAddress = `${country}, ${address}, ${city}`;
+        this.user.fullAddress = `${address}, ${city}, ${country}`;
         console.log(this.user.penalty);
 
       })

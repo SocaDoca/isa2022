@@ -152,7 +152,7 @@
         </form>
         <br>
         <div class="form-group">
-          <button type="submit" class="btn1" [routerLink]="['..']" style=" background-color: deepskyblue; color:white" (click)="onSubmit()">Submit questionnaire</button><br>
+          <button type="submit" class="btn1" style=" background-color: deepskyblue; color:white" (click)="onSubmit()">Submit questionnaire</button><br>
           <div *ngIf="errorMessage" style="color: red; margin-left:50px;">You cannot submit questionnaire less than six months from previous appointment!</div>
         </div>
       </form>
