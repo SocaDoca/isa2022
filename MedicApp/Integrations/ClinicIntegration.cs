@@ -129,13 +129,19 @@ namespace MedicApp.Integrations
                         else
                         {
                             var patient = dbPatient.FirstOrDefault(x => x.Id == appointment.Patient_RefID);
-                            if (patient is null) continue;
-                            clinicModel.Appointments.Add(new AppotinmentInClinics
+                            
+                            var model =  new AppotinmentInClinics
                             {
                                 Id = appointment.Id,
                                 StartDate = appointment.StartDate,
                                 Title = appointment.Title,
-                                Patient = new UserBasicInfo
+                               
+                            };
+
+                            if (patient is null) model.Patient = null ;
+                            else
+                            {
+                                model.Patient = new UserBasicInfo
                                 {
                                     Id = patient.Id,
                                     Address = patient.Address,
@@ -145,8 +151,9 @@ namespace MedicApp.Integrations
                                     FirstName = patient.FirstName,
                                     LastName = patient.LastName,
                                     Mobile = patient.Mobile
-                                }
-                            });
+                                };
+                            }
+                            clinicModel.Appointments.Add(model);
                         }
                     }
                 }
