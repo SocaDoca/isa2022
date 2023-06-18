@@ -129,6 +129,7 @@ namespace MedicApp.Integrations
                         else
                         {
                             var patient = dbPatient.FirstOrDefault(x => x.Id == appointment.Patient_RefID);
+                            if (patient is null) continue;
                             clinicModel.Appointments.Add(new AppotinmentInClinics
                             {
                                 Id = appointment.Id,
@@ -159,7 +160,7 @@ namespace MedicApp.Integrations
             #region SEARCH
             if (DateTime.TryParse(parameters.SearchCriteria, out var date))
             {
-                resultList.Where(x => x.Appointments.Any(s => s.StartDate == date)).ToList();
+                resultList.Where(x => x.Appointments.Any(s => s.StartDate.Date == date.Date || s.StartDate.ToShortTimeString() == date.ToShortTimeString())).ToList();
             }
             else if (!String.IsNullOrEmpty(parameters.SearchCriteria))
                 resultList = resultList.Where(

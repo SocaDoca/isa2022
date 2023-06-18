@@ -99,7 +99,7 @@
         public string Country { get; set; }
         public string Phone { get; set; }
         public double Rating { get; set; }
-        public List<AppotinmentInClinics> Appointments { get; set; }
+        public List<AppotinmentInClinics> Appointments { get; set; } = new List<AppotinmentInClinics>();
     }
 
 
