@@ -27,7 +27,7 @@ namespace MedicApp.Integrations
         public Clinic SaveClinic(ClinicSaveModel clinicSave)
         {
             var dbClinic = _appDbContext.Clinics.FirstOrDefault(x => x.Id == clinicSave.Id && !x.IsDeleted);
-            
+
             if (dbClinic == null)
             {
                 dbClinic = new Clinic();
@@ -45,7 +45,7 @@ namespace MedicApp.Integrations
             dbClinic.WorksTo = clinicSave.WorksTo;
 
             var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.Where(x => !x.IsDeleted && x.Clinic_RefID == dbClinic.Id).ToList();
-            var dbWorkingHoursIds = clinic2WorkingHours.Select(x => x.WorkingHours_RefID).ToList();            
+            var dbWorkingHoursIds = clinic2WorkingHours.Select(x => x.WorkingHours_RefID).ToList();
 
             _appDbContext.SaveChanges();
             return dbClinic;
@@ -55,10 +55,10 @@ namespace MedicApp.Integrations
         {
             var dbClinics = _appDbContext.Clinics.Where(x => !x.IsDeleted).ToList();
             var result = new List<ClinicDropdownModel>();
-            foreach(var clinic in dbClinics)
+            foreach (var clinic in dbClinics)
             {
-                var model = new ClinicDropdownModel 
-                { 
+                var model = new ClinicDropdownModel
+                {
                     Id = clinic.Id,
                     Name = clinic.Name,
                 };
@@ -71,20 +71,20 @@ namespace MedicApp.Integrations
         public bool UpdateRateClinic(ClinicRatingRequest parameters)
         {
             var dbClinic = _appDbContext.Clinics.Where(x => !x.IsDeleted && x.Id == parameters.ClinicId).Single();
-            var targetAppoitnments = _appDbContext.Appointments.Where(x => x.Clinic_RefID == dbClinic.Id && x.Patient_RefID == parameters.PatientId).ToList();  
+            var targetAppoitnments = _appDbContext.Appointments.Where(x => x.Clinic_RefID == dbClinic.Id && x.Patient_RefID == parameters.PatientId).ToList();
             var clinicRating2Patient = _appDbContext.ClinicRating2Patients.Where(x => !x.IsDeleted && parameters.PatientId == x.PatientId).FirstOrDefault();
             if (!targetAppoitnments.Any())
             {
                 return false;
             }
-            if(clinicRating2Patient == null)
+            if (clinicRating2Patient == null)
             {
                 clinicRating2Patient = new ClinicRating2Patient
                 {
                     ClinicId = parameters.ClinicId,
                     PatientId = parameters.PatientId,
                     Value = double.Parse(parameters.Rating)
-                };               
+                };
             }
             clinicRating2Patient.Value = double.Parse(parameters.Rating);
             _appDbContext.ClinicRating2Patients.Add(clinicRating2Patient);
@@ -99,9 +99,6 @@ namespace MedicApp.Integrations
             var dbPatient = _appDbContext.Users.Where(x => x.IsDeleted == false).ToList();
             var clinic2Appointments = _appDbContext.Appointment2Clinics.ToList().GroupBy(x => x.Clinic_RefID).ToDictionary(x => x.Key, x => x.Select(s => s.Appointment_RefID).ToList());
             var dbAppointments = _appDbContext.Appointments.Where(x => !x.IsDeleted).ToList();
-            var clinic2WorkingHours = _appDbContext.Clinic2WorkingHours.ToList().Where(x => !x.IsDeleted)
-                .GroupBy(x => x.Clinic_RefID)
-                .ToDictionary(x => x.Key, x => x.Select(x => x.WorkingHours_RefID).ToList());
 
             var clinicRating = _appDbContext.ClinicRating2Patients.Where(x => !x.IsDeleted).ToList().GroupBy(x => x.ClinicId).ToDictionary(x => x.Key, x => x.ToList());
             foreach (var clinic in dbClinics)
@@ -118,10 +115,41 @@ namespace MedicApp.Integrations
                     Rating = clinic.Rating,
                     WorksFrom = clinic.WorksFrom,
                     WorksTo = clinic.WorksTo,
-                    
-                };
 
-                if(clinicRating.TryGetValue(clinic.Id, out var ratings))
+                };
+                if (clinic2Appointments.TryGetValue(clinic.Id, out var appointments))
+                {
+                    foreach (var app in appointments)
+                    {
+                        var appointment = dbAppointments.FirstOrDefault(x => x.Id == app);
+                        if (appointment is null)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            var patient = dbPatient.FirstOrDefault(x => x.Id == appointment.Patient_RefID);
+                            clinicModel.Appointments.Add(new AppotinmentInClinics
+                            {
+                                Id = appointment.Id,
+                                StartDate = appointment.StartDate,
+                                Title = appointment.Title,
+                                Patient = new UserBasicInfo
+                                {
+                                    Id = patient.Id,
+                                    Address = patient.Address,
+                                    City = patient.City,
+                                    Country = patient.Country,
+                                    Email = patient.Email,
+                                    FirstName = patient.FirstName,
+                                    LastName = patient.LastName,
+                                    Mobile = patient.Mobile
+                                }
+                            });
+                        }
+                    }
+                }
+                if (clinicRating.TryGetValue(clinic.Id, out var ratings))
                 {
                     clinicModel.Rating = ratings.Select(x => x.Value).Average();
                 }
@@ -129,17 +157,16 @@ namespace MedicApp.Integrations
             }
 
             #region SEARCH
-            if (!String.IsNullOrEmpty(parameters.SearchCriteria))
+            if (DateTime.TryParse(parameters.SearchCriteria, out var date))
+            {
+                resultList.Where(x => x.Appointments.Any(s => s.StartDate == date)).ToList();
+            }
+            else if (!String.IsNullOrEmpty(parameters.SearchCriteria))
                 resultList = resultList.Where(
                     x => x.Name.Contains(parameters.SearchCriteria) ||
                         x.Address.Contains(parameters.SearchCriteria) ||
                         x.City.Contains(parameters.SearchCriteria) ||
-
-                        x.Country.Contains(parameters.SearchCriteria)
-
-                         ).ToList();
-
-
+                        x.Country.Contains(parameters.SearchCriteria)).ToList();
             #endregion
 
             #region FILTER
@@ -178,6 +205,10 @@ namespace MedicApp.Integrations
                     resultList = parameters.OrderAsc ?
                         resultList.OrderBy(x => x.Country.ToLower()).ToList() : resultList.OrderByDescending(x => x.Country.ToLower()).ToList();
                     break;
+                case "rating":
+                    resultList = parameters.OrderAsc ?
+                        resultList.OrderBy(x => x.Rating).ToList() : resultList.OrderByDescending(x => x.Rating).ToList();
+                    break;
             }
             #endregion
 
@@ -187,7 +218,7 @@ namespace MedicApp.Integrations
         public Complaints SaveComplaint(Complaints complaint)
         {
             var dbComplaint = _appDbContext.Complaints.Where(x => x.IsDeleted == false && x.Id == complaint.Id).FirstOrDefault();
-            if(dbComplaint == null)
+            if (dbComplaint == null)
             {
                 dbComplaint = new Complaints();
             }
@@ -215,7 +246,7 @@ namespace MedicApp.Integrations
             {
                 throw new KeyNotFoundException("Clinic does not exist");
             }
-           
+
             var appointmentList = new List<Appointment>();
             if (clinicAppointment.Any())
             {
@@ -239,7 +270,7 @@ namespace MedicApp.Integrations
                 Appointments = appointmentList,
             };
 
-            if(clinicRating2Patient.Any())
+            if (clinicRating2Patient.Any())
             {
                 result.Rating = clinicRating2Patient.Select(x => x.Value).Average();
             }
@@ -265,7 +296,7 @@ namespace MedicApp.Integrations
         }
 
         #region Update 
-        public bool UpdateClinic(ClinicSaveModel     updateClinic)
+        public bool UpdateClinic(ClinicSaveModel updateClinic)
         {
             var getClinic = _appDbContext.Clinics.First(x => x.Id == updateClinic.Id);
 

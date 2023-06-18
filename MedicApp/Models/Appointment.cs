@@ -67,8 +67,7 @@ namespace MedicApp.Models
         public Guid Id { get; set; }
         public string Title { get; set; }
         public DateTime StartDate { get; set; }
-        public string StartTime { get; set; }
-        public User Patient { get; set; }
+        public UserBasicInfo Patient { get; set; }
     }
 
     public class LoadPredefiendAppointment
