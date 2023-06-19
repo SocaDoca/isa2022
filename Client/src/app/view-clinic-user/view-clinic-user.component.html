@@ -12,11 +12,13 @@
   <div class="forma">
     <h3>View clinic</h3>
     <form class="form-search" (ngSubmit)="loadClinic()">
-      <input style="width: 250px; " align="center" name="search" id="search" type="text" [(ngModel)]="res.searchCriteria"><br>
+      <input style="width: 250px; " align="center" name="search" id="search" type="text" placeholder="e.g. 2023-06-23 10:20 " [(ngModel)]="res.searchCriteria"><br>
 
       <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="name" [(ngModel)]="res.sortBy">
       <label class="form-check-label" for="inlineRadio2">name</label>
 
+      <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="rating" [(ngModel)]="res.sortBy">
+      <label class="form-check-label" for="inlineRadio2">rating</label>
 
       <input class="form-check-input" type="radio" name="inlineRadioOptions2" id="inlineRadio2" value="address" [(ngModel)]="res.sortBy">
       <label class="form-check-label" for="inlineRadio2">address</label><br>

@@ -114,10 +114,8 @@ namespace MedicApp.Integrations
         }
         public User? Register(RegisterRequest model)
         {
-            if (_appDbContext.Users.Any(x => x.Username == model.Username))
-                throw new AppException("Username '" + model.Username + "' is already taken");
-
-            // map model to new user object
+            if (_appDbContext.Users.Any(x => x.Username == model.Username || x.Email == model.Email))
+                throw new AppException($"User name or email is already taken");
             var newUser = new User()
             {
                 Username = model.Username,

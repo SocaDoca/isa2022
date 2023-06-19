@@ -39,25 +39,27 @@
             <label style="font-weight: bold;">Gender</label>
             <label>{{user.gender}}</label>
             <label>----------------------------------------</label><br><br><br><br><br><br><br><br><br><br><br>
-            <p style="color: white;">
-              Is Questionnaire Valid:
-              <span>{{ questionnaire.isValid ? 'Yes' : 'No' }}</span>
+            <div>
+              <p style="color: white;">
+                Is Questionnaire Valid:
+                {{ questionnaire?.isValid ? 'Yes' : (questionnaire?.isValid === false ? 'No' : 'Not Existing') }} </p>
+</div>
           </div>
 
-    <div class="center" id="comp3">
+      <div class="center" id="comp3">
 
-      <br>
-      <label style="font-weight: bold;">Mobile</label>
-      <label>{{user.mobile}}</label>
-      <label>----------------------------------------</label><br>
-      <label style="font-weight: bold;">Address</label>
-      <label>{{user.fullAddress}}</label>
-      <label>----------------------------------------</label><br>
-      <label style="font-weight: bold;">Profession</label>
-      <label>{{user.job}}</label>
-      <label>----------------------------------------</label><br>
+        <br>
+        <label style="font-weight: bold;">Mobile</label>
+        <label>{{user.mobile}}</label>
+        <label>----------------------------------------</label><br>
+        <label style="font-weight: bold;">Address</label>
+        <label>{{user.fullAddress}}</label>
+        <label>----------------------------------------</label><br>
+        <label style="font-weight: bold;">Profession</label>
+        <label>{{user.job}}</label>
+        <label>----------------------------------------</label><br>
 
-    </div>
+      </div>
   </div>
 
   

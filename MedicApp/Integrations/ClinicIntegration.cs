@@ -167,14 +167,24 @@ namespace MedicApp.Integrations
             #region SEARCH
             if (DateTime.TryParse(parameters.SearchCriteria, out var date))
             {
-                resultList.Where(x => x.Appointments.Any(s => s.StartDate.Date == date.Date || s.StartDate.ToShortTimeString() == date.ToShortTimeString())).ToList();
+                resultList = resultList.Where(x => x.Appointments.Any()).ToList();
+                foreach (var item in resultList)
+                {
+                    if (item.Appointments.Any(x => x.StartDate.Date == date.Date  && x.StartDate.ToShortTimeString() == date.ToShortTimeString()))
+                    {
+                        item.Appointments = item.Appointments.Where(x => x.StartDate.Date == date.Date && x.StartDate.ToShortTimeString() == date.ToShortTimeString()).ToList();
+                    }
+                }
             }
             else if (!String.IsNullOrEmpty(parameters.SearchCriteria))
+            {
+                var search = parameters.SearchCriteria.ToLower();
                 resultList = resultList.Where(
-                    x => x.Name.Contains(parameters.SearchCriteria) ||
-                        x.Address.Contains(parameters.SearchCriteria) ||
-                        x.City.Contains(parameters.SearchCriteria) ||
-                        x.Country.Contains(parameters.SearchCriteria)).ToList();
+                   x => x.Name.ToLower().Contains(search) ||
+                       x.Address.Contains(search) ||
+                       x.City.Contains(search) ||
+                       x.Country.Contains(search)).ToList();
+            }
             #endregion
 
             #region FILTER
