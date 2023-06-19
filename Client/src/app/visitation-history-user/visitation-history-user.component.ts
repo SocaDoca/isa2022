@@ -51,7 +51,8 @@ export class VisitationHistoryUserComponent {
     console.log(typeof this.rating)
 
     this.clinicService.updateClinicRating(ratingData).subscribe(res => {
-      // Handle the response from the service
+      this.modalService.dismissAll();
+      window.location.reload();
     });
   }
 

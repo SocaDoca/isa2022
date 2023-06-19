@@ -1,6 +1,7 @@
 ﻿using MedicApp.Database;
 using MedicApp.Models;
 using MedicApp.Models.RequestModels;
+using Microsoft.AspNetCore.Http;
 
 namespace MedicApp.Integrations
 {
@@ -72,7 +73,7 @@ namespace MedicApp.Integrations
         {
             var dbClinic = _appDbContext.Clinics.Where(x => !x.IsDeleted && x.Id == parameters.ClinicId).Single();
             var targetAppoitnments = _appDbContext.Appointments.Where(x => x.Clinic_RefID == dbClinic.Id && x.Patient_RefID == parameters.PatientId).ToList();
-            var clinicRating2Patient = _appDbContext.ClinicRating2Patients.Where(x => !x.IsDeleted && parameters.PatientId == x.PatientId).FirstOrDefault();
+            var clinicRating2Patient = _appDbContext.ClinicRating2Patients.Where(x => !x.IsDeleted && parameters.PatientId == x.PatientId && x.ClinicId == parameters.ClinicId).FirstOrDefault();
             if (!targetAppoitnments.Any())
             {
                 return false;
@@ -85,9 +86,10 @@ namespace MedicApp.Integrations
                     PatientId = parameters.PatientId,
                     Value = double.Parse(parameters.Rating)
                 };
+                _appDbContext.ClinicRating2Patients.Add(clinicRating2Patient);
             }
+
             clinicRating2Patient.Value = double.Parse(parameters.Rating);
-            _appDbContext.ClinicRating2Patients.Add(clinicRating2Patient);
             _appDbContext.SaveChanges();
             return true;
         }
@@ -167,6 +169,7 @@ namespace MedicApp.Integrations
             #region SEARCH
             if (DateTime.TryParse(parameters.SearchCriteria, out var date))
             {
+                var listIdsToRemove = new List<Guid>();
                 resultList = resultList.Where(x => x.Appointments.Any()).ToList();
                 foreach (var item in resultList)
                 {
@@ -174,7 +177,12 @@ namespace MedicApp.Integrations
                     {
                         item.Appointments = item.Appointments.Where(x => x.StartDate.Date == date.Date && x.StartDate.ToShortTimeString() == date.ToShortTimeString()).ToList();
                     }
+                    else
+                    {
+                        listIdsToRemove.Add(item.Id);
+                    }
                 }
+                resultList = resultList.Where(x => !listIdsToRemove.Any(id => id == x.Id)).ToList();
             }
             else if (!String.IsNullOrEmpty(parameters.SearchCriteria))
             {
@@ -185,6 +193,7 @@ namespace MedicApp.Integrations
                        x.City.Contains(search) ||
                        x.Country.Contains(search)).ToList();
             }
+
             #endregion
 
             #region FILTER

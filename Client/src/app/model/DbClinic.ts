@@ -1,4 +1,5 @@
 //proveriti da li treba da se dodaju liste
+import { DbAppointment } from './DbAppointment';
 import { WorkingHours } from './WorkingHours';
 
 export interface DbClinicInterface {
@@ -13,6 +14,7 @@ export interface DbClinicInterface {
   workingHours?: WorkingHours[];
   worksFrom?: any;
   worksTo?: any;
+  appointments?: DbAppointment[];
 }
 
 export class DbClinic implements DbClinicInterface {
@@ -27,6 +29,7 @@ export class DbClinic implements DbClinicInterface {
   workingHours?: WorkingHours[];
   worksFrom?: any;
   worksTo?: any;
+  appointments?: DbAppointment[];
 
   constructor(obj: DbClinicInterface) {
     this.id = obj.id;
@@ -40,5 +43,6 @@ export class DbClinic implements DbClinicInterface {
     this.workingHours = obj.workingHours;
     this.worksFrom = obj.worksFrom;
     this.worksTo = obj.worksTo;
+    this.appointments = obj.appointments;
   }
 }

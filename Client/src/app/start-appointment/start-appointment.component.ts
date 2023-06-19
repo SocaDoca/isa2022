@@ -16,6 +16,8 @@ export class StartAppointmentComponent {
 
 
   startApp() {
+    this.id = this.route.snapshot.paramMap.getAll('id');
+    console.log(this.id);
     this.clinicService.startTerm(this.id)
       .subscribe(res => {
         this.id = res;

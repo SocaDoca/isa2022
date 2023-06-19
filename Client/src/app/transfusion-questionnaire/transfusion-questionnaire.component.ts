@@ -16,6 +16,7 @@ export class TransfusionQuestionnaireComponent implements OnInit {
   patient_RefID: any;
   submitted: boolean = false;
   errorMessage!: any;
+  message!: any;
   //isValid: any;
 
   form: FormGroup = new FormGroup({
@@ -89,7 +90,7 @@ export class TransfusionQuestionnaireComponent implements OnInit {
     this.userService.saveQuestionnaire(this.questionnaire).subscribe(
       res => {
         if (res === true) {
-          
+          this.message = 'Succesfully submitted questionnaire!';
         }
         else {
           this.errorMessage = 'An error occurred. Please try again.';

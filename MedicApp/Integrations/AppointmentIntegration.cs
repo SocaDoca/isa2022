@@ -456,6 +456,10 @@ namespace MedicApp.Integrations
                     return false;
                 }
             }
+            else
+            {
+                return false;
+            }
 
             dbAppointment.Patient_RefID = parameters.PatientId;
             dbAppointment.IsReserved = true;

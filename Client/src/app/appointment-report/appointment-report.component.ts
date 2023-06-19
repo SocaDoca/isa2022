@@ -101,8 +101,8 @@ export class AppointmentReportComponent {
   finishApp() {
     this.appotinmentId = this.route.snapshot.paramMap.get('id');
     console.log(this.appotinmentId);
-    /*this.clinicService.finishAppointment(this.appotinmentId).subscribe(res => {
+    this.clinicService.finishAppointment(this.appotinmentId).subscribe(res => {
       
-    });*/
+    });
   }
 }
